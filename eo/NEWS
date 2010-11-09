@@ -1,4 +1,4 @@
-* release 1.1 (not yet released)
+* release 1.1.0
   - provide cmake build system, remove the old autotools one
   - package generation system
   - GCC 4.3 compatibility

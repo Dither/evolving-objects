@@ -1,4 +1,210 @@
 Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Tue Nov 9 11:44:28 2010 +0100
+
+    fix most of the doxygen warnings
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Mon Nov 8 22:58:37 2010 +0100
+
+    default log output to debug for the ostream monitor ; better documentation
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Mon Nov 8 18:29:25 2010 +0100
+
+    new eoAerageSizeStat class
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Mon Nov 8 18:27:58 2010 +0100
+
+    check for self assignement in copy operator of eoDualFitness
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Mon Nov 8 18:27:19 2010 +0100
+
+    deactivate gpsymreg that uses the now unsuported multi-objective feature
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Sun Nov 7 23:43:58 2010 +0100
+
+    fix some doxygen warnings
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Sun Nov 7 23:16:45 2010 +0100
+
+    remove multi-objective stuff, deprecated by ParadisEO-PEO
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Sun Nov 7 23:12:28 2010 +0100
+
+    add tests interfaces as examples in the doc ; remove unused test binaries ; some code formating
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Sun Nov 7 23:09:35 2010 +0100
+
+    remove unused test binaries, some code formating
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Sun Nov 7 11:19:33 2010 +0100
+
+    in the doc's main page: brief section first with a link to the modules list
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Sat Nov 6 17:31:39 2010 +0100
+
+    do not documentify: test, tutorial, contrib and app, that are not part of the framework by itself
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Sat Nov 6 17:24:00 2010 +0100
+
+    removing obsolete win directory, we now se CMake that can generate VC++ project files by itself
+
+Author: nojhan <johann@dreo.fr>
+Date:   Sat Nov 6 09:19:17 2010 +0100
+
+    small fixes in the doc
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Fri Nov 5 22:46:15 2010 +0100
+
+    and finally... still more grouping in documentation.
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Fri Nov 5 15:59:35 2010 +0100
+
+    grouping classes in documentation
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Fri Nov 5 14:28:28 2010 +0100
+
+    name of variables in english ; use the eo::log instead of cerr ; doc grouping
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Fri Nov 5 11:26:04 2010 +0100
+
+    grouping classes in documentation
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Tue Nov 2 17:23:27 2010 +0100
+
+    readable size for the evolutionry algorithm diagram
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Tue Nov 2 16:57:13 2010 +0100
+
+    evolutionary algorithm diagram with lego blocks, fancier
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Mon Nov 1 23:08:58 2010 +0100
+
+    more doc groups, cleaner modules hierarchy
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Mon Nov 1 22:09:40 2010 +0100
+
+    replace TODO comments by @ŧodo doxygen command
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Mon Nov 1 22:08:37 2010 +0100
+
+    more explanations in doc main page, remove HTML markup, remove deprecated link pages
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Mon Nov 1 18:20:56 2010 +0100
+
+    Create more doxygen groups for base classes, clean some doc
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Mon Nov 1 18:19:37 2010 +0100
+
+    delete the obsolete directory (still versionned in the repository if necessary)
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Mon Nov 1 15:34:27 2010 +0100
+
+    grouping algorithms in a module of the doc
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Mon Nov 1 13:37:24 2010 +0100
+
+    added Johann and Caner as authors on the web page
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Mon Nov 1 13:32:37 2010 +0100
+
+    more shortcut links on the webpage, toward the chat and the trac
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Sun Oct 31 23:01:16 2010 +0100
+
+    fix #10: removed MOO binaries
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Sun Oct 31 22:57:05 2010 +0100
+
+    fix #10: removed the moo/ directory and eoMO* classes, deprecated by the Paradiseo-MOEO project
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Sun Oct 31 21:57:06 2010 +0100
+
+    indicate cudacc branch in the changelog
+
+Merge: fc21827 66b4dfd
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Sun Oct 31 21:50:15 2010 +0100
+
+    Merge branch 'cudacc'
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Sun Oct 31 21:36:53 2010 +0100
+
+    remove default values for verbose parameters, so as to make deprecated wrappers unused by default
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Sun Oct 31 21:19:34 2010 +0100
+
+    alternate function prototypes without verbose parameter
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Sun Oct 31 07:47:12 2010 +0100
+
+    changelog summary for the next 1.1 release
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Sat Oct 30 23:30:40 2010 +0200
+
+    fix #13: remove the use of the verbose members, replaced by the eo::log system ; functions prototypes keep their verbose parameters, but display a warning until next version
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Tue Oct 26 13:48:47 2010 +0200
+
+    file not at the right place
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Tue Oct 26 13:37:15 2010 +0200
+
+    replace the changelog with the (cleaned) git log, more up-to-date
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Tue Oct 26 13:35:08 2010 +0200
+
+    renamed in CHANGELOG
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Tue Oct 26 13:34:19 2010 +0200
+
+    warning: not up-to-date
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Tue Oct 26 13:32:55 2010 +0200
+
+    added Johann and Caner as authors
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Tue Oct 26 13:32:43 2010 +0200
+
+    replace the changelog with the (cleaned) git log, more up-to-date
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
 Date:   Tue Oct 26 10:51:48 2010 +0200
 
     create a more generic class for monitoring to any ostream (useful for output to clog or cerr, for example), the stdout monitor now inherits from it
@@ -32,6 +238,11 @@ Author: Johann Dreo <johann.dreo@thalesgroup.com>
 Date:   Tue Sep 21 17:52:59 2010 +0200
 
     typo variable name
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Mon Sep 20 13:35:51 2010 +0200
+
+    typofix declaration types in macro
 
 Author: Johann Dreo <johann.dreo@thalesgroup.com>
 Date:   Mon Sep 20 11:32:55 2010 +0200
@@ -123,6 +334,11 @@ Author: Johann Dreo <johann.dreo@thalesgroup.com>
 Date:   Sun Sep 5 23:42:58 2010 +0200
 
     use eo::log instead of cout
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Fri Sep 3 15:55:28 2010 +0200
+
+    Patch from Karima.Boufaras@inria.fr: compilation wth CUDACC
 
 Author: nojhan <johann@dreo.fr>
 Date:   Fri Sep 3 09:19:23 2010 +0200
