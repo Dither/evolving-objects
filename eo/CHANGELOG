@@ -1,3 +1,18 @@
+Author: nojhan <johann@dreo.fr>
+Date:   Fri Nov 19 23:12:35 2010 +0100
+
+    correct version for CMake
+
+Author: Caner Candan <candan@trtp0634.fr.trt.thales>
+Date:   Wed Nov 17 11:41:43 2010 +0100
+
+    fixed unistd.h portability issue
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Tue Nov 9 15:09:20 2010 +0100
+
+    preparing the release of 1.1.0beta1
+
 Author: Johann Dreo <johann.dreo@thalesgroup.com>
 Date:   Tue Nov 9 11:44:28 2010 +0100
 
