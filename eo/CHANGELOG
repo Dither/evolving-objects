@@ -1,4 +1,14 @@
 Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Tue Dec 14 15:27:26 2010 +0100
+
+    add the parser/logger to the general header
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
+Date:   Tue Nov 9 15:09:20 2010 +0100
+
+    preparing the release of 1.1.0beta1
+
+Author: Johann Dreo <johann.dreo@thalesgroup.com>
 Date:   Tue Nov 9 11:44:28 2010 +0100
 
     fix most of the doxygen warnings
