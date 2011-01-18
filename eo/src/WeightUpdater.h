@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoWeightUpdater.h
+// WeightUpdater.h
 // (c) OPAC 2007
 /*
     This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef EOWEIGHTUPDATER_H
-#define EOWEIGHTUPDATER_H
+#ifndef WEIGHTUPDATER_H
+#define WEIGHTUPDATER_H
 
 //-----------------------------------------------------------------------------
 #include <eoFunctor.h>
@@ -33,7 +33,7 @@ namespace eo
 {
 
     /**
-     * Abstract class for (inertia) weight updater (particle swarm optimization). 
+     * Abstract class for (inertia) weight updater (particle swarm optimization).
      * Used inside classes extending eoVelocity.
      *
      * @ingroup Core
@@ -42,4 +42,4 @@ namespace eo
 
 }
 
-#endif/*EOWEIGHTUPDATER_H*/
+#endif /*WEIGHTUPDATER_H*/

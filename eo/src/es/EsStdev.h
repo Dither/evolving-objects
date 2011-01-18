@@ -20,8 +20,8 @@ Contact: http://eodev.sourceforge.net
  */
 
 
-#ifndef _eoEsStdev_h
-#define _eoEsStdev_h
+#ifndef _EsStdev_h
+#define _EsStdev_h
 
 #include <eoVector.h>
 

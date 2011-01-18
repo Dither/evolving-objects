@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoVectorParticle.h
+// VectorParticle.h
 // (c) OPAC 2007
 /*
     This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _EOVECTORPARTICLE_H
-#define _EOVECTORPARTICLE_H
+#ifndef _VECTORPARTICLE_H
+#define _VECTORPARTICLE_H
 
 #include <PO.h>
 
@@ -155,5 +155,5 @@ namespace eo
 
 }
 
-#endif /*_EOVECTORPARTICLE_H*/
+#endif /*_VECTORPARTICLE_H*/
 /** @} */

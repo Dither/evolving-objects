@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; fill-column: 80; -*-
 
 //-----------------------------------------------------------------------------
-// eoCMABreed
+// CMABreed
 // (c) Maarten Keijzer 2005
 /*
     This library is free software; you can redistribute it and/or
@@ -21,9 +21,8 @@
  */
 //-----------------------------------------------------------------------------
 
-
-#ifndef _EOCMABREED_H
-#define _EOCMABREED_H
+#ifndef _CMABREED_H
+#define _CMABREED_H
 
 #include <eoBreed.h>
 #include <eoVector.h>

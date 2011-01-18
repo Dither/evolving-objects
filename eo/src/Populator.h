@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoPopulator.h
+// Populator.h
 // (c) Maarten Keijzer and Marc Schoenauer, 2001
 /*
     This library is free software; you can redistribute it and/or
@@ -23,8 +23,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoPopulator_H
-#define _eoPopulator_H
+#ifndef _Populator_H
+#define _Populator_H
 
 #include <eoPop.h>
 #include <eoSelectOne.h>

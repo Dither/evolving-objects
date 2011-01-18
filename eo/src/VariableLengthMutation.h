@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoVariableLengthMutation.h
+// VariableLengthMutation.h
 // (c) Marc Schoenauer 1999 - Maarten Keijzer 2000
 /*
     This library is free software; you can redistribute it and/or
@@ -23,8 +23,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoVariableLengthMutation_h
-#define _eoVariableLengthMutation_h
+#ifndef _VariableLengthMutation_h
+#define _VariableLengthMutation_h
 
 #include <eoFunctor.h>
 #include <eoOp.h>

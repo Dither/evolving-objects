@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoLinearTopology.h
+// LinearTopology.h
 // (c) OPAC 2007
 /*
     This library is free software; you can redistribute it and/or
@@ -23,8 +23,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef EOLINEARTOPOLOGY_H_
-#define EOLINEARTOPOLOGY_H_
+#ifndef LINEARTOPOLOGY_H_
+#define LINEARTOPOLOGY_H_
 
 //-----------------------------------------------------------------------------
 #include <eoPop.h>
@@ -218,4 +218,4 @@ namespace eo
 
 }
 
-#endif /*EOLINEARTOPOLOGY_H_ */
+#endif /*LINEARTOPOLOGY_H_ */

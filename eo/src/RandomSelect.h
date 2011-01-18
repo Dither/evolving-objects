@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoRandomSelect.h
+// RandomSelect.h
 // (c) GeNeura Team, 1998 - EEAAX 1999, Maarten Keijzer 2000
 /*
     This library is free software; you can redistribute it and/or
@@ -23,8 +23,8 @@
              mak@dhi.dk
  */
 
-#ifndef eoRandomSelect_h
-#define eoRandomSelect_h
+#ifndef RandomSelect_h
+#define RandomSelect_h
 
 /** This file contains straightforward selectors:
  * eoRandomSelect          returns an individual uniformly selected

@@ -1,8 +1,7 @@
-// eoBitOpFactory.h
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoOpFactory.h
+// BitOpFactory.h
 // (c) GeNeura Team, 1998
 /* 
     This library is free software; you can redistribute it and/or
@@ -23,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _EOBITOPFACTORY_H
-#define _EOBITOPFACTORY_H
+#ifndef _BITOPFACTORY_H
+#define _BITOPFACTORY_H
 
 #include <eoFactory.h>
 #include <ga/eoBitOp.h>
@@ -42,16 +41,16 @@ namespace eo
 	@ingroup Variators
     */
     template< class EOT>
-    class eoBitOpFactory: public eoFactory<EOT>  
+    class eoBitOpFactory: public eoFactory<EOT>
     {
-	
+
     public:
-	
+
 	/// @name ctors and dtors
 	//{@
 	/// constructor
 	eoBitOpFactory( ) {};
-	
+
 	/// destructor
 	virtual ~eoBitOpFactory() {};
 	//@}
@@ -66,7 +65,7 @@ namespace eo
 	    @param _is an stream from where a single line will be read
 	    @throw runtime_std::exception if the object type is not known
 	*/
-	virtual eoOp<EOT>* make(std::istream& _is) 
+	virtual eoOp<EOT>* make(std::istream& _is)
 	{
 	    eoOp<EOT> * opPtr = NULL;
 	    try {
@@ -168,10 +167,8 @@ namespace eo
 	    return opPtr;
 	};
 
-
     };
 
 }
 
 #endif
-

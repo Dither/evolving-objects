@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoFitnessScalingSelect.h
+// FitnessScalingSelect.h
 // (c) GeNeura Team, 1998, Maarten Keijzer 2000, Marc Schoenauer 2001
 /* 
     This library is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef eoFitnessScalingSelect_h
-#define eoFitnessScalingSelect_h
+#ifndef FitnessScalingSelect_h
+#define FitnessScalingSelect_h
 
 //-----------------------------------------------------------------------------
 

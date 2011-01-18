@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoPBILDistrib.h
+// PBILDistrib.h
 // (c) Marc Schoenauer, 2001
 /*
     This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoPBILDistrib_H
-#define _eoPBILDistrib_H
+#ifndef _PBILDistrib_H
+#define _PBILDistrib_H
 
 #include <eoDistribution.h>
 

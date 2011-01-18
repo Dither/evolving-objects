@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoParam.h
+// Param.h
 // (c) Marc Schoenauer, Maarten Keijzer and GeNeura Team, 2000
 /*
   This library is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
 */
 //-----------------------------------------------------------------------------
 
-#ifndef eoParam_h
-#define eoParam_h
+#ifndef Param_h
+#define Param_h
 
 #include <cmath>
 #include <iterator>

@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoReduce.h
+// Reduce.h
 //   Base class for population-merging classes
 // (c) GeNeura Team, 1998
 /* 
@@ -23,8 +23,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef eoReduce_h
-#define eoReduce_h
+#ifndef Reduce_h
+#define Reduce_h
 
 //-----------------------------------------------------------------------------
 

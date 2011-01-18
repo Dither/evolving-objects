@@ -1,7 +1,7 @@
 /** -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
    -----------------------------------------------------------------------------
-   eoSelectOne.h 
+   SelectOne.h 
    (c) Maarten Keijzer, GeNeura Team, 2000
  
    This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoSelectOne_h
-#define _eoSelectOne_h
+#ifndef _SelectOne_h
+#define _SelectOne_h
 
 
 //-----------------------------------------------------------------------------

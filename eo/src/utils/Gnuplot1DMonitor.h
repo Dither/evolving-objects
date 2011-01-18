@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------
-// eoGnuplot1DMonitor.h
+// Gnuplot1DMonitor.h
 // (c) Marc Schoenauer, Maarten Keijzer and GeNeura Team, 2000
 /*
    This library is free software; you can redistribute it and/or
@@ -21,8 +21,8 @@
              mkeijzer@dhi.dk
  */
 //-----------------------------------------------------------------------------
-#ifndef EO_eoGnuplot1DMonitor_H
-#define EO_eoGnuplot1DMonitor_H
+#ifndef Gnuplot1DMonitor_H
+#define Gnuplot1DMonitor_H
 
 #include <fstream>
 #include <string>
@@ -77,7 +77,7 @@ namespace eo
 
 }
 
-#endif // EO_eoGnuplot1DMonitor_H
+#endif // Gnuplot1DMonitor_H
 
 // Local Variables:
 // c-file-style: "Stroustrup"

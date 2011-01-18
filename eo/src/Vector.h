@@ -20,8 +20,8 @@ Old contact: todos@geneura.ugr.es, http://geneura.ugr.es
              mak@dhi.dk
 */
 
-#ifndef _eoVector_h
-#define _eoVector_h
+#ifndef _Vector_h
+#define _Vector_h
 
 #include <vector>
 #include <iterator>

@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoVelocity.h
+// Velocity.h
 // (c) OPAC 2007
 /*
     This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef EOVELOCITY_H
-#define EOVELOCITY_H
+#ifndef VELOCITY_H
+#define VELOCITY_H
 
 //-----------------------------------------------------------------------------
 #include <eoFunctor.h>
@@ -81,5 +81,4 @@ namespace eo
 
 }
 
-#endif /*EOVELOCITY_H */
-
+#endif /*VELOCITY_H */

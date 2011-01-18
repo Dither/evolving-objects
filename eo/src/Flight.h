@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoFlight.h
+// Flight.h
 // (c) OPAC 2007
 /*
     This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef EOFLIGHT_H
-#define EOFLIGHT_H
+#ifndef FLIGHT_H
+#define FLIGHT_H
 
 //-----------------------------------------------------------------------------
 #include <eoFunctor.h>
@@ -57,4 +57,4 @@ namespace eo
 
 }
 
-#endif /*EOFLIGHT_H */
+#endif /*FLIGHT_H */

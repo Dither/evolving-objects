@@ -1,7 +1,7 @@
 /* -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
   -----------------------------------------------------------------------------
-  eoExternalOpFunc.h
+  ExternalOpFunc.h
         Defines eoExternalInitOpFunc, eoExternalMonOpFunc, eoExternalBinOpFunc, eoExternalQuadOpFunc
         that are used to wrap a function pointer to externally defined initialization
         and 'genetic' operators
@@ -25,8 +25,8 @@
     Contact: todos@geneura.ugr.es, http://geneura.ugr.es
  */
 
-#ifndef eoExternalOpFunc_h
-#define eoExternalOpFunc_h
+#ifndef ExternalOpFunc_h
+#define ExternalOpFunc_h
 
 #include <other/eoExternalEO.h>
 #include <eoOp.h>

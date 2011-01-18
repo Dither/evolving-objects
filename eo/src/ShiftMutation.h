@@ -1,10 +1,10 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoShiftMutation.h
+// ShiftMutation.h
 // (c) GeNeura Team, 2000 - EEAAX 2000 - Maarten Keijzer 2000
 // (c) INRIA Futurs - Dolphin Team - Thomas Legrand 2007
-/*		
+/*
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
     License as published by the Free Software Foundation; either
@@ -26,8 +26,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef eoShiftMutation_h
-#define eoShiftMutation_h
+#ifndef ShiftMutation_h
+#define ShiftMutation_h
 
 //-----------------------------------------------------------------------------
 

@@ -1,7 +1,7 @@
 /** -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
    -----------------------------------------------------------------------------
-   eoSelect.h 
+   Select.h 
    (c) Maarten Keijzer, GeNeura Team, 2000
  
    This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoSelect_h
-#define _eoSelect_h
+#ifndef _Select_h
+#define _Select_h
 
 //-----------------------------------------------------------------------------
 #include <eoPop.h>

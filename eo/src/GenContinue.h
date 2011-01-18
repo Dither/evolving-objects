@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoGenContinue.h
+// GenContinue.h
 // (c) GeNeura Team, 1999
 /* 
     This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoGenContinue_h
-#define _eoGenContinue_h
+#ifndef _GenContinue_h
+#define _GenContinue_h
 
 #include <eoContinue.h>
 #include <utils/eoParam.h>

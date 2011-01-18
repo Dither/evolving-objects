@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoVelocityInit.h
+// VelocityInit.h
 // (c) OPAC 2007
 /*
     This library is free software; you can redistribute it and/or
@@ -22,9 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef EOVELOCITYINIT_H
-#define EOVELOCITYINIT_H
-
+#ifndef VELOCITYINIT_H
+#define VELOCITYINIT_H
 
 #include <algorithm>
 
@@ -67,7 +66,7 @@ namespace eo
 	    init (p);
 	    return (p);
 	}
-    
+
     private:
 	eoVelocityInit < POT > &init;
     };
@@ -146,7 +145,6 @@ namespace eo
 
 }
 
-#endif /*EOVELOCITYINIT_H */
+#endif /*VELOCITYINIT_H */
 
 /** @} */
-

@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoSeconsElapsedContinue.h
+// SeconsElapsedContinue.h
 // (c) Maarten Keijzer, 2007
 /* 
     This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoSecondsElapsedContinue_h
-#define _eoSecondsElapsedContinue_h
+#ifndef _SecondsElapsedContinue_h
+#define _SecondsElapsedContinue_h
 
 #include <eoContinue.h>
 

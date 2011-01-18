@@ -1,7 +1,7 @@
 /** -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*- 
 
 //-----------------------------------------------------------------------------
-// eoRealAtomXover.h : helper classes for std::vector<real> crossover
+// RealAtomXover.h : helper classes for std::vector<real> crossover
 // (c) Marc Schoenauer 2001
 
     This library is free software; you can redistribute it and/or
@@ -28,8 +28,8 @@
  * and will be in more general stuff, using the generic crossovers
  */
 
-#ifndef _eoRealAtomXover_H
-#define _eoRealAtomXover_H
+#ifndef _RealAtomXover_H
+#define _RealAtomXover_H
 
 #include <utils/eoRNG.h>
 

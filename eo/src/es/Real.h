@@ -1,5 +1,5 @@
 /*
-   eoReal.h
+   Real.h
 // (c) Marc Schoenauer, Maarten Keijzer and GeNeura Team, 2000
 
     This library is free software; you can redistribute it and/or
@@ -21,8 +21,8 @@
              mkeijzer@dhi.dk
 */
 
-#ifndef eoReal_h
-#define eoReal_h
+#ifndef Real_h
+#define Real_h
 
 //-----------------------------------------------------------------------------
 

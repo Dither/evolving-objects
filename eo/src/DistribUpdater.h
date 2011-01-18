@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoDistribUpdater.h
+// DistribUpdater.h
 // (c) Marc Schoenauer, Maarten Keijzer, 2001
 /* 
     This library is free software; you can redistribute it and/or
@@ -23,8 +23,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoDistribUpdater_H
-#define _eoDistribUpdater_H
+#ifndef _DistribUpdater_H
+#define _DistribUpdater_H
 
 #include <algorithm>
 

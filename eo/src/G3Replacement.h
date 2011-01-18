@@ -1,7 +1,7 @@
 /** -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
    -----------------------------------------------------------------------------
-   eoG3Replacement.h 
+   G3Replacement.h 
    (c) Maarten Keijzer, Marc Schoenauer, 2002
  
    This library is free software; you can redistribute it and/or
@@ -23,8 +23,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoG3Replacement_h
-#define _eoG3Replacement_h
+#ifndef _G3Replacement_h
+#define _G3Replacement_h
 
 
 //-----------------------------------------------------------------------------

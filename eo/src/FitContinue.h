@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoFitContinue.h
+// FitContinue.h
 // (c) Maarten Keijzer, GeNeura Team, 1999, 2000
 /*
     This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoFitContinue_h
-#define _eoFitContinue_h
+#ifndef _FitContinue_h
+#define _FitContinue_h
 
 #include <eoContinue.h>
 #include <utils/eoLogger.h>

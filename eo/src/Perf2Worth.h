@@ -1,7 +1,7 @@
 /** -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
    -----------------------------------------------------------------------------
-   eoPerf2Worth.h
+   Perf2Worth.h
    (c) Maarten Keijzer, Marc Schoenauer, 2001
 
    This library is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef eoPerf2Worth_h
-#define eoPerf2Worth_h
+#ifndef Perf2Worth_h
+#define Perf2Worth_h
 
 #include <utils/eoParam.h>
 #include <eoPop.h>

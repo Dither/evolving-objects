@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; fill-column: 80; -*-
 
 //-----------------------------------------------------------------------------
-// eoESMute.h : ES mutation
+// ESMute.h : ES mutation
 // (c) Maarten Keijzer 2000 & GeNeura Team, 1998 for the EO part
 //     Th. Baeck 1994 and EEAAX 1999 for the ES part
 /*
@@ -26,8 +26,8 @@
 //-----------------------------------------------------------------------------
 
 
-#ifndef _EOESMUTATE_H
-#define _EOESMUTATE_H
+#ifndef _ESMUTATE_H
+#define _ESMUTATE_H
 
 #include <cmath>
 #include <eoInit.h>

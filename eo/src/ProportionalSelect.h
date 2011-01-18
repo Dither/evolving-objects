@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoProportionalSelect.h
+// ProportionalSelect.h
 // (c) GeNeura Team, 1998 - EEAAX 1999, Maarten Keijzer 2000
 /* 
     This library is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef eoProportionalSelect_h
-#define eoProportionalSelect_h
+#ifndef ProportionalSelect_h
+#define ProportionalSelect_h
 
 //-----------------------------------------------------------------------------
 

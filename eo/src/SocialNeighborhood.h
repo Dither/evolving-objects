@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoSocialNeighborhood.h
+// SocialNeighborhood.h
 // (c) OPAC 2007
 /*
     This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef EOSOCIALNEIGHBORHOOD_H_
-#define EOSOCIALNEIGHBORHOOD_H_
+#ifndef SOCIALNEIGHBORHOOD_H_
+#define SOCIALNEIGHBORHOOD_H_
 
 //-----------------------------------------------------------------------------
 #include <eoNeighborhood.h>
@@ -126,4 +126,4 @@ namespace eo
 
 }
 
-#endif /* EOSOCIALNEIGHBORHOOD_H_ */
+#endif /* SOCIALNEIGHBORHOOD_H_ */

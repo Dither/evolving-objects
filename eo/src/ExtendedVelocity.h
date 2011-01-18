@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoExtendedVelocity.h
+// ExtendedVelocity.h
 // (c) INRIA Dolphin 2008
 /*
     This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef eoExtendedVelocity_H
-#define eoExtendedVelocity_H
+#ifndef ExtendedVelocity_H
+#define ExtendedVelocity_H
 
 //-----------------------------------------------------------------------------
 #include <eoFunctor.h>
@@ -216,4 +216,4 @@ namespace eo
 
 }
 
-#endif /*eoExtendedVelocity_H */
+#endif /*ExtendedVelocity_H */

@@ -1,7 +1,7 @@
 /** -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
    -----------------------------------------------------------------------------
-   eoMGGReplacement.h 
+   MGGReplacement.h 
    (c) Maarten Keijzer, Marc Schoenauer, 2002
  
    This library is free software; you can redistribute it and/or
@@ -23,8 +23,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoMGGReplacement_h
-#define _eoMGGReplacement_h
+#ifndef _MGGReplacement_h
+#define _MGGReplacement_h
 
 
 //-----------------------------------------------------------------------------

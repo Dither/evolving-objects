@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoConstrictedVelocity.h
+// ConstrictedVelocity.h
 // (c) OPAC 2007
 /*
     This library is free software; you can redistribute it and/or
@@ -23,8 +23,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef EOCONSTRICTEDVELOCITY_H
-#define EOCONSTRICTEDVELOCITY_H
+#ifndef CONSTRICTEDVELOCITY_H
+#define CONSTRICTEDVELOCITY_H
 
 //-----------------------------------------------------------------------------
 #include <eoFunctor.h>
@@ -199,5 +199,5 @@ namespace eo
 
 }
 
-#endif /*EOCONSTRICTEDVELOCITY_H */
+#endif /*CONSTRICTEDVELOCITY_H */
 

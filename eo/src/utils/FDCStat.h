@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoFDCStat.h
+// FDCStat.h
 // (c) Marc Schoenauer, Maarten Keijzer and GeNeura Team, 2000, 2001
 /*
     This library is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoFDCStat_h
-#define _eoFDCStat_h
+#ifndef _FDCStat_h
+#define _FDCStat_h
 
 #include <utils/eoStat.h>
 #include <utils/eoDistance.h>

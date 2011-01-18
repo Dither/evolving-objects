@@ -1,6 +1,6 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 //-----------------------------------------------------------------------------
-// eoCombinedOp.h
+// CombinedOp.h
 // (c) GeNeura Team, 1998, Marc Schoenauer, 2000
 /* 
     This library is free software; you can redistribute it and/or
@@ -21,8 +21,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoCombinedOp_H
-#define _eoCombinedOp_H
+#ifndef _CombinedOp_H
+#define _CombinedOp_H
 
 #include <eoObject.h>
 #include <eoPrintable.h>

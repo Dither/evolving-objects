@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoInit.h
+// Init.h
 // (c) Maarten Keijzer 2000, GeNeura Team, 2000
 /*
     This library is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoInit_H
-#define _eoInit_H
+#ifndef _Init_H
+#define _Init_H
 
 #include <algorithm>
 

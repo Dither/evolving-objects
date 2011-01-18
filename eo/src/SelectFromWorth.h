@@ -1,7 +1,7 @@
 /** -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
    -----------------------------------------------------------------------------
-   eoSelectFromWorth.h
+   SelectFromWorth.h
    (c) Maarten Keijzer, Marc Schoenauer, 2001
 
    This library is free software; you can redistribute it and/or
@@ -23,8 +23,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoSelectFromWorth_h
-#define _eoSelectFromWorth_h
+#ifndef _SelectFromWorth_h
+#define _SelectFromWorth_h
 
 #include <iostream>
 //-----------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 /** -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
    -----------------------------------------------------------------------------
-   eoDetSelect.h 
+   DetSelect.h 
    (c) Marc Schoenauer, Maarten Keijzer, GeNeura Team, 2000
  
    This library is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoDetSelect_h
-#define _eoDetSelect_h
+#ifndef _DetSelect_h
+#define _DetSelect_h
 
 //-----------------------------------------------------------------------------
 #include <eoSelect.h>

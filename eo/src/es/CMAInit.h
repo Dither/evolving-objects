@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; fill-column: 80; -*-
 
 //-----------------------------------------------------------------------------
-// eoCMAInit 
+// CMAInit
 // (c) Maarten Keijzer 2005
 /*
     This library is free software; you can redistribute it and/or
@@ -24,9 +24,8 @@
  */
 //-----------------------------------------------------------------------------
 
-
-#ifndef _EOCMAINIT_H
-#define _EOCMAINIT_H
+#ifndef _CMAINIT_H
+#define _CMAINIT_H
 
 #include <eoInit.h>
 #include <eoVector.h>

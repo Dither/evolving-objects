@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoSequential.h
+// SequentialSelect.h
 // (c) GeNeura Team, 1998 - Maarten Keijzer 2000, Marc Schoenauer, 2002
 /*
     This library is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef eoSequential_h
-#define eoSequential_h
+#ifndef SequentialSelect_h
+#define SequentialSelect_h
 
 #include <limits>
 

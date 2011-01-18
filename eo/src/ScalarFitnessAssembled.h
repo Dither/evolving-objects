@@ -1,7 +1,7 @@
  /* -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*- */
 
 //-----------------------------------------------------------------------------
-// eoScalarFitnessAssembled.h
+// ScalarFitnessAssembled.h
 // Marc Wintermantel & Oliver Koenig
 // IMES-ST@ETHZ.CH
 // March 2003
@@ -27,8 +27,8 @@
 */
 //-----------------------------------------------------------------------------
 
-#ifndef eoScalarFitnessAssembled_h
-#define eoScalarFitnessAssembled_h
+#ifndef ScalarFitnessAssembled_h
+#define ScalarFitnessAssembled_h
 
 #include <functional>
 #include <iostream>

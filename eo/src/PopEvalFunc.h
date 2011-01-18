@@ -1,7 +1,7 @@
 /** -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 -----------------------------------------------------------------------------
-    eoPopEvalFunc.h
+    PopEvalFunc.h
     Abstract class for global evaluation of the population
 
     (c) GeNeura Team, 2000
@@ -24,8 +24,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef eoPopEvalFunc_H
-#define eoPopEvalFunc_H
+#ifndef PopEvalFunc_H
+#define PopEvalFunc_H
 
 #include <eoEvalFunc.h>
 #include <apply.h>

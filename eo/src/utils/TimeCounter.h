@@ -1,9 +1,9 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoTimeCounter.h
+// TimeCounter.h
 // (c) Marc Schoenauer, Maarten Keijzer, and GeNeura Team, 2002
-/* 
+/*
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
     License as published by the Free Software Foundation; either
@@ -24,8 +24,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoTimeCounter_h
-#define _eoTimeCounter_h
+#ifndef _TimeCounter_h
+#define _TimeCounter_h
 
 #include <time.h>
 #include <utils/eoStat.h>

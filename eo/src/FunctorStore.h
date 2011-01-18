@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoFunctorStore.h
+// FunctorStore.h
 // (c) Maarten Keijzer 2000, GeNeura Team, 2000
 /*
   This library is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
 */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoFunctorStore_h
-#define _eoFunctorStore_h
+#ifndef _FunctorStore_h
+#define _FunctorStore_h
 
 #include <vector>
 

@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoRankingSelect.h
+// RankingSelect.h
 // (c) GeNeura Team, 1998, Maarten Keijzer 2000, Marc Schoenauer 2001
 /* 
     This library is free software; you can redistribute it and/or
@@ -23,8 +23,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef eoRankingSelect_h
-#define eoRankingSelect_h
+#ifndef RankingSelect_h
+#define RankingSelect_h
 
 //-----------------------------------------------------------------------------
 

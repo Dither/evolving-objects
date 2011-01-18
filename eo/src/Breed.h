@@ -1,7 +1,7 @@
 /** -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
    -----------------------------------------------------------------------------
-   eoBreed.h
+   Breed.h
    (c) Maarten Keijzer, GeNeura Team, 2000
 
    This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoBreed_h
-#define _eoBreed_h
+#ifndef _Breed_h
+#define _Breed_h
 
 
 //-----------------------------------------------------------------------------

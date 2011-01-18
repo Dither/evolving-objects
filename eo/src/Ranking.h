@@ -1,7 +1,7 @@
 /** -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
    -----------------------------------------------------------------------------
-   eoRanking.h
+   Ranking.h
    (c) Maarten Keijzer, Marc Schoenauer, 2001
 
    This library is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef eoRanking_h
-#define eoRanking_h
+#ifndef Ranking_h
+#define Ranking_h
 
 #include <eoPerf2Worth.h>
 

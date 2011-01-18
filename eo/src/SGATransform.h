@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoSGA.h
+// SGATransform.h
 // (c) Marc.Schoenauer 2000 - Maarten Keijzer 2000
 /*
     This library is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoSGATransform_h
-#define _eoSGATransform_h
+#ifndef _SGATransform_h
+#define _SGATransform_h
 
 #include <eoInvalidateOps.h>
 #include <eoPop.h>

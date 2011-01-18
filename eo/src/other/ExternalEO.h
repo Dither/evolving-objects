@@ -1,7 +1,7 @@
 /* -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
   -----------------------------------------------------------------------------
-  eoExternalEO.h
+  ExternalEO.h
         Definition of an object that allows an external struct to be inserted in EO
 
  (c) Maarten Keijzer (mkeijzer@mad.scientist.com) and GeNeura Team, 1999, 2000
@@ -23,8 +23,8 @@
     Contact: todos@geneura.ugr.es, http://geneura.ugr.es
  */
 
-#ifndef eoExternalEO_h
-#define eoExternalEO_h
+#ifndef ExternalEO_h
+#define ExternalEO_h
 
 #include <EO.h> // EO
 

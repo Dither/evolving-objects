@@ -1,7 +1,7 @@
 /** -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoEsGlobalXover.h : ES global crossover
+// EsGlobalXover.h : ES global crossover
 // (c) Marc Schoenauer 2001
 
     This library is free software; you can redistribute it and/or
@@ -23,8 +23,8 @@
 //-----------------------------------------------------------------------------
 
 
-#ifndef _eoEsGlobalXover_H
-#define _eoEsGlobalXover_H
+#ifndef _EsGlobalXover_H
+#define _EsGlobalXover_H
 
 #include <utils/eoRNG.h>
 

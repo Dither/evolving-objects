@@ -1,7 +1,7 @@
 /** -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
    -----------------------------------------------------------------------------
-   eoReduceMerge.h 
+   ReduceMerge.h 
    (c) Maarten Keijzer, Marc Schoenauer, GeNeura Team, 2000
  
    This library is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoReduceMerge_h
-#define _eoReduceMerge_h
+#ifndef _ReduceMerge_h
+#define _ReduceMerge_h
 
 
 //-----------------------------------------------------------------------------

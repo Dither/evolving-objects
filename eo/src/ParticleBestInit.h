@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoParticleBestInit.h
+// ParticleBestInit.h
 // (c) OPAC 2007
 /*
     This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _EOPARTICLEBESTINIT_H
-#define _EOPARTICLEBESTINIT_H
+#ifndef _PARTICLEBESTINIT_H
+#define _PARTICLEBESTINIT_H
 
 //-----------------------------------------------------------------------------
 #include <eoFunctor.h>
@@ -82,7 +82,6 @@ namespace eo
 
 }
 
-#endif /*_EOPARTICLEBESTINIT_H */
+#endif /*_PARTICLEBESTINIT_H */
 
 /** @} */
-

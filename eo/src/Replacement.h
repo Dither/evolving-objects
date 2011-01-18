@@ -1,7 +1,7 @@
 /** -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
    -----------------------------------------------------------------------------
-   eoReplacement.h 
+   Replacement.h 
    (c) Maarten Keijzer, Marc Schoenauer, GeNeura Team, 2000
  
    This library is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoReplacement_h
-#define _eoReplacement_h
+#ifndef _Replacement_h
+#define _Replacement_h
 
 
 //-----------------------------------------------------------------------------

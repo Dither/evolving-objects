@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoBitOp.h
+// BitOp.h
 // (c) GeNeura Team, 2000 - EEAAX 2000 - Maarten Keijzer 2000
 /*
     This library is free software; you can redistribute it and/or
@@ -25,8 +25,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef eoBitOp_h
-#define eoBitOp_h
+#ifndef BitOp_h
+#define BitOp_h
 
 //-----------------------------------------------------------------------------
 

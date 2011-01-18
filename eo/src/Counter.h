@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoCounter.h
+// Counter.h
 // (c) Maarten Keijzer 2000
 /* 
     This library is free software; you can redistribute it and/or
@@ -23,8 +23,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoCounter_h
-#define _eoCounter_h
+#ifndef _Counter_h
+#define _Counter_h
 
 #include <eoFunctor.h>
 #include <eoFunctorStore.h>

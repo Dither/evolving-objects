@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoMerge.h
+// Merge.h
 //   Base class for elitist-merging classes
 // (c) GeNeura Team, 1998
 /* 
@@ -23,8 +23,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef eoMerge_h
-#define eoMerge_h
+#ifndef Merge_h
+#define Merge_h
 
 //-----------------------------------------------------------------------------
 

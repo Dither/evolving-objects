@@ -1,5 +1,5 @@
 /*
-   eoBit.h
+   Bit.h
    (c) GeNeura Team 1998, Marc Schoenauer 2000
 
     This library is free software; you can redistribute it and/or
@@ -30,8 +30,8 @@
    as it was ambiguous with bin...ary things
 */
 
-#ifndef eoBit_h
-#define eoBit_h
+#ifndef Bit_h
+#define Bit_h
 
 //-----------------------------------------------------------------------------
 
@@ -121,7 +121,7 @@ Based on STL's std::vector<bool> specialization.
 
 //-----------------------------------------------------------------------------
 
-#endif //eoBit_h
+#endif //Bit_h
 
 
 // Local Variables:

@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoBoolFlip.h
+// BoolFlip.h
 // (c) Marc Schoenauer, 2003
 /* 
     This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoBoolFlip_h
-#define _eoBoolFlip_h
+#ifndef _BoolFlip_h
+#define _BoolFlip_h
 
 #include <eoOp.h>
 

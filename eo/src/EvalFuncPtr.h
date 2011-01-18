@@ -1,7 +1,7 @@
 /** -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 -----------------------------------------------------------------------------
-    eoEvalFuncPtr.h
+    EvalFuncPtr.h
       Converts a classical C fitness evaluation function into a fitness
       evaluation object
 
@@ -25,8 +25,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef EOEVALFUNCPTR_H
-#define EOEVALFUNCPTR_H
+#ifndef EVALFUNCPTR_H
+#define EVALFUNCPTR_H
 
 #include <eoEvalFunc.h>
 

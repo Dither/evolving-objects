@@ -1,7 +1,6 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
-/* 
-   
+/*
 (c) Thales group, 2010
 
     This library is free software; you can redistribute it and/or
@@ -20,10 +19,9 @@
 
 Contact: http://eodev.sourceforge.net
 
-Authors: 
-Johann Dréo <johann.dreo@thalesgroup.com>
-Caner Candan <caner.candan@thalesgroup.com>
-
+Authors:
+	Johann Dréo <johann.dreo@thalesgroup.com>
+	Caner Candan <caner.candan@thalesgroup.com>
 */
 
 #ifdef _INTERIX
@@ -46,7 +44,6 @@ Caner Candan <caner.candan@thalesgroup.com>
 
 namespace eo
 {
-
     eoLogger	log;
 
     eoLogger::eoLogger()

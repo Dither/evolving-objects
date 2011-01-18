@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoGaussRealWeightUp.h
+// GaussRealWeightUp.h
 // (c) OPAC 2007
 /*
     This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef EOGAUSSREALWEIGHTUP_H
-#define EOGAUSSREALWEIGHTUP_H
+#ifndef GAUSSREALWEIGHTUP_H
+#define GAUSSREALWEIGHTUP_H
 
 //-----------------------------------------------------------------------------
 #include <eoWeightUpdater.h>
@@ -70,4 +70,4 @@ namespace eo
 
 }
 
-#endif/*EOGAUSSREALWEIGHTUP_H*/
+#endif/*GAUSSREALWEIGHTUP_H*/

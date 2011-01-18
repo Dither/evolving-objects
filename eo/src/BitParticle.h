@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoBitParticle.h
+// BitParticle.h
 // (c) OPAC 2007
 /*
     This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _EOBITPARTICLE_H
-#define _EOBITPARTICLE_H
+#ifndef _BITPARTICLE_H
+#define _BITPARTICLE_H
 
 
 #include <eoVectorParticle.h>
@@ -51,4 +51,4 @@ namespace eo
 
 }
 
-#endif /*_EOBITPARTICLE_H*/
+#endif /*_BITPARTICLE_H*/

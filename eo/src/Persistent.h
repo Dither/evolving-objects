@@ -4,7 +4,7 @@
 
 //-----------------------------------------------------------------------------
 
-// eoPersistent.h
+// Persistent.h
 // (c) GeNeura Team, 1999
 /* 
     This library is free software; you can redistribute it and/or
@@ -25,8 +25,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef EOPERSISTENT_H
-#define EOPERSISTENT_H
+#ifndef PERSISTENT_H
+#define PERSISTENT_H
 
 
 #include <iostream>  // std::istream, std::ostream

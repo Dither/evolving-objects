@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoPropGAGenOp.h
+// PropGAGenOp.h
 // (c) Marc.Schoenauer 2005
 /*
     This library is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoPropGAGenOp_h
-#define _eoPropGAGenOp_h
+#ifndef _PropGAGenOp_h
+#define _PropGAGenOp_h
 
 #include "eoGenOp.h"
 #include "eoInvalidateOps.h"

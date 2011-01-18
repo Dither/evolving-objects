@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
  
 //-----------------------------------------------------------------------------
-// eoCtrlCContinue.h
+// CtrlCContinue.h
 // (c) EEAAX 1996 - GeNeura Team, 1998 - Maarten Keijzer 2000 
 /*
     This library is free software; you can redistribute it and/or

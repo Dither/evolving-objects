@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoEsFull.h
+// EsFull.h
 // (c) GeNeura Team, 2000 - EEAAX 1999 - Maarten Keijzer 2000
 /*
     This library is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoEsFull_h
-#define _eoEsFull_h
+#ifndef _EsFull_h
+#define _EsFull_h
 
 #include <eoVector.h>
 

@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoInitializer.h
+// Initializer.h
 // (c) OPAC Team, INRIA, 2007
 /*
     This library is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoInitializer_H
-#define _eoInitializer_H
+#ifndef _Initializer_H
+#define _Initializer_H
 
 #include <utils/eoRealVectorBounds.h>
 #include <eoVelocityInit.h>

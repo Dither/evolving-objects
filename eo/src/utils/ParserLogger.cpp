@@ -1,5 +1,4 @@
 /*
-
 (c) Thales group, 2010
 
     This library is free software; you can redistribute it and/or modify it under
@@ -17,9 +16,8 @@
 Contact: http://eodev.sourceforge.net
 
 Authors:
-Johann Dreo <johann.dreo@thalesgroup.com>
-Caner Candan <caner.candan@thalesgroup.com>
-
+	Johann Dreo <johann.dreo@thalesgroup.com>
+	Caner Candan <caner.candan@thalesgroup.com>
 */
 
 #include "eoParserLogger.h"

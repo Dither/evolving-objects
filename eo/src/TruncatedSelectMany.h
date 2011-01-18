@@ -1,9 +1,9 @@
 /** -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
    -----------------------------------------------------------------------------
-   eoTruncatedSelectMany.h 
+   TruncatedSelectMany.h
    (c) Maarten Keijzer, Marc Schoenauer, GeNeura Team, 2002
- 
+
    This library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Lesser General Public
    License as published by the Free Software Foundation; either
@@ -24,8 +24,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoTruncatedSelectMany_h
-#define _eoTruncatedSelectMany_h
+#ifndef _TruncatedSelectMany_h
+#define _TruncatedSelectMany_h
 
 
 //-----------------------------------------------------------------------------

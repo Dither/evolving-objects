@@ -1,5 +1,4 @@
 /*
-
 (c) Thales group, 2010
 
     This library is free software; you can redistribute it and/or modify it under
@@ -17,12 +16,12 @@
 Contact: http://eodev.sourceforge.net
 
 Authors:
-Johann Dréo <johann.dreo@thalesgroup.com>
-Caner Candan <caner.candan@thalesgroup.com>
+	Johann Dréo <johann.dreo@thalesgroup.com>
+	Caner Candan <caner.candan@thalesgroup.com>
 */
 
-#ifndef EO_PARSER_LOGGER_H
-#define EO_PARSER_LOGGER_H
+#ifndef PARSER_LOGGER_H
+#define PARSER_LOGGER_H
 
 #include "eoParser.h"
 #include "eoLogger.h"
@@ -56,7 +55,7 @@ namespace eo
 
 }
 
-#endif // !EO_PARSER_LOGGER_H
+#endif // !PARSER_LOGGER_H
 
 // Local Variables:
 // coding: iso-8859-1

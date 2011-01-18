@@ -1,7 +1,7 @@
 /** -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 -----------------------------------------------------------------------------
-    eoData.h
+    Data.h
 
     (c) GeNeura Team & Maarten Keijzer, 1998, 1999, 2000
     This library is free software; you can redistribute it and/or
@@ -21,8 +21,8 @@
     Contact: todos@geneura.ugr.es, http://geneura.ugr.es
  */
 
-#ifndef EODATA_H
-#define EODATA_H
+#ifndef DATA_H
+#define DATA_H
 
 #ifndef _MSC_VER
 #include <math.h>

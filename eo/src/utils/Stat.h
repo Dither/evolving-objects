@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoStat.h
+// Stat.h
 // (c) Marc Schoenauer, Maarten Keijzer and GeNeura Team, 2000
 // (c) 2010 Thales group
 /*
@@ -29,8 +29,8 @@ Contact: http://eodev.sourceforge.net
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoStat_h
-#define _eoStat_h
+#ifndef _Stat_h
+#define _Stat_h
 
 #include <numeric> // accumulate
 

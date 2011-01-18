@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoDetTournament.h
+// DetTournament.h
 // (c) GeNeura Team, 1998 - EEAAX 1999
 /* 
     This library is free software; you can redistribute it and/or
@@ -23,8 +23,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef eoDetTournament_h
-#define eoDetTournament_h
+#ifndef DetTournament_h
+#define DetTournament_h
 
 //-----------------------------------------------------------------------------
 

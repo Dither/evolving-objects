@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoRealOp.h
+// RealOp.h
 // (c) Maarten Keijzer 2000 - Marc Schoenauer 2001
 /*
     This library is free software; you can redistribute it and/or
@@ -23,8 +23,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef eoRealOp_h
-#define eoRealOp_h
+#ifndef RealOp_h
+#define RealOp_h
 
 //-----------------------------------------------------------------------------
 

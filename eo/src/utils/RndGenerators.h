@@ -1,7 +1,7 @@
 /* -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
   -----------------------------------------------------------------------------
-  eoRndGenerators.h
+  RndGenerators.h
 
   mimics the rnd_generator.h by putting the generators in the EO-hierarchy
 
@@ -26,8 +26,8 @@
 
 //-----------------------------------------------------------------------------
 
-#ifndef eoRndGenerators_h
-#define eoRndGenerators_h
+#ifndef RndGenerators_h
+#define RndGenerators_h
 
 #include "eoRNG.h"
 #include <eoFunctor.h>

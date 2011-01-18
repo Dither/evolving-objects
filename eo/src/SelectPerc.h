@@ -1,7 +1,7 @@
 /** -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
    -----------------------------------------------------------------------------
-   eoSelectPerc.h 
+   SelectPerc.h 
    (c) Maarten Keijzer, GeNeura Team, 2000
  
    This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoSelectPerc_h
-#define _eoSelectPerc_h
+#ifndef _SelectPerc_h
+#define _SelectPerc_h
 
 
 //-----------------------------------------------------------------------------

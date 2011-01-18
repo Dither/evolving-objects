@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoContinue.h
+// Continue.h
 // (c) Maarten Keijzer, Geneura Team, 1999, 2000
 /* 
     This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoContinue_h
-#define _eoContinue_h
+#ifndef _Continue_h
+#define _Continue_h
 
 #include <eoFunctor.h>
 #include <eoPop.h>

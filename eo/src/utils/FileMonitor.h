@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoFileMonitor.h
+// FileMonitor.h
 // (c) Marc Schoenauer, Maarten Keijzer and GeNeura Team, 2000
 /*
     This library is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef EO_eoFileMonitor_h
-#define EO_eoFileMonitor_h
+#ifndef FileMonitor_h
+#define FileMonitor_h
 
 #include <string>
 #include <fstream>

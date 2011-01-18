@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoUpdatable.h
+// Updatable.h
 // (c) Maarten Keijzer, Marc Schoenauer and GeNeura Team, 2000
 /*
     This library is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoUpdatable_h
-#define _eoUpdatable_h
+#ifndef _Updatable_h
+#define _Updatable_h
 
 #include <utils/eoUpdater.h>
 

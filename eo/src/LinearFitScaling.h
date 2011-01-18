@@ -1,7 +1,7 @@
 /** -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
    -----------------------------------------------------------------------------
-   eoLinearFitScaling.h
+   LinearFitScaling.h
    (c) GeNeura Team, 1998, Maarten Keijzer, Marc Schoenauer, 2001
 
    This library is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef eoLinearFitScaling_h
-#define eoLinearFitScaling_h
+#ifndef LinearFitScaling_h
+#define LinearFitScaling_h
 
 #include <eoSelectFromWorth.h>
 #include <eoPerf2Worth.h>

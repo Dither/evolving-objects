@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoGnuplot1DSnapshot.h
+// Gnuplot1DSnapshot.h
 // (c) Marc Schoenauer, Maarten Keijzer and GeNeura Team, 2000
 /*
    This library is free software; you can redistribute it and/or
@@ -24,9 +24,8 @@
  */
 //-----------------------------------------------------------------------------
 
-
-#ifndef EO_eoGnuplot1DSnapshot_H
-#define EO_eoGnuplot1DSnapshot_H
+#ifndef Gnuplot1DSnapshot_H
+#define Gnuplot1DSnapshot_H
 
 #include <fstream>
 #include <sstream>

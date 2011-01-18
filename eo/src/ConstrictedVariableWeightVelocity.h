@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoConstrictedVariableWeightVelocity.h
+// ConstrictedVariableWeightVelocity.h
 // (c) OPAC 2007
 /*
     This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef EOCONSTRICTEDVARIABLEWEIGHTVELOCITY_H
-#define EOCONSTRICTEDVARIABLEWEIGHTVELOCITY_H
+#ifndef CONSTRICTEDVARIABLEWEIGHTVELOCITY_H
+#define CONSTRICTEDVARIABLEWEIGHTVELOCITY_H
 
 //-----------------------------------------------------------------------------
 #include <eoVelocity.h>
@@ -209,4 +209,4 @@ namespace eo
 
 }
 
-#endif /*EOCONSTRICTEDVARIABLEWEIGHTVELOCITY_H*/
+#endif /*CONSTRICTEDVARIABLEWEIGHTVELOCITY_H*/

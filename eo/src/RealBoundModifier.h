@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoRealBoundModifier.h
+// RealBoundModifier.h
 // (c) OPAC 2007
 /*
     This library is free software; you can redistribute it and/or
@@ -21,8 +21,8 @@
     Contact: thomas.legrand@lifl.fr
  */
 
-#ifndef EOREALBOUNDMODIFIER_H
-#define EOREALBOUNDMODIFIER_H
+#ifndef REALBOUNDMODIFIER_H
+#define REALBOUNDMODIFIER_H
 
 #include <eoFunctor.h>
 #include <utils/eoRealVectorBounds.h>
@@ -108,4 +108,4 @@ namespace eo
 
 }
 
-#endif/*EOREALBOUNDMODIFIER_H*/
+#endif/*REALBOUNDMODIFIER_H*/

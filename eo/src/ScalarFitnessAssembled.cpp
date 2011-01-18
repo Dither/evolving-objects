@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
  
 //-----------------------------------------------------------------------------
-// eoScalarFitnessAssembled.cpp
+// ScalarFitnessAssembled.cpp
 // Marc Wintermantel & Oliver Koenig
 // IMES-ST@ETHZ.CH
 // March 2003

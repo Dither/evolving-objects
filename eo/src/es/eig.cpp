@@ -1,4 +1,3 @@
-
 /*
  * C++ification of Nikolaus Hansen's original C-source code for the
  * CMA-ES. These are the eigenvector calculations
@@ -8,7 +7,7 @@
  *
  * This algorithm is held almost completely intact. Some other datatypes are used,
  * but hardly any code has changed
- * 
+ *
  */
 
 /* --------------------------------------------------------- */
@@ -31,7 +30,7 @@
  *           but WITHOUT ANY WARRANTY; without even the implied warranty of
  *           MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *           Lesser General Public License for more details.
- * 
+ *
  *                                                             */
 /* --- Changes : ---
  *   03/03/21: argument const double *rgFunVal of
@@ -52,7 +51,7 @@ namespace eo
     using namespace std;
 
     /* ========================================================= */
-    /* 
+    /*
        Householder Transformation einer symmetrischen Matrix
        auf tridiagonale Form.
        -> n             : Dimension
@@ -63,10 +62,10 @@ namespace eo
        <- neben[0..n-1] : Nebendiagonale (==1..n-1) der res. Tridiagonalmatrix
 
     */
-    static void 
+    static void
     Householder( int N, square_matrix& ma, valarray<double>& diag, double* neben)
     {
-	double epsilon; 
+	double epsilon;
 	int i, j, k;
 	double h, sum, tmp, tmp2;
 
@@ -120,7 +119,7 @@ namespace eo
 
 	diag[0] = 0.0;
 	neben[0] = 0.0;
-  
+
 	for (i = 0; i < N; ++i)
 	    {
 		if(diag[i] != 0.0)

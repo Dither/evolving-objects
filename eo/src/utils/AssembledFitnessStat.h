@@ -1,13 +1,12 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoAssembledFitnessStat.h
+// AssembledFitnessStat.h
 // Marc Wintermantel & Oliver Koenig
 // IMES-ST@ETHZ.CH
 // April 2003
 
 //-----------------------------------------------------------------------------
-// eoStat.h
 // (c) Marc Schoenauer, Maarten Keijzer and GeNeura Team, 2000
 /*
     This library is free software; you can redistribute it and/or
@@ -30,8 +29,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoAssembledFitnessStat_h
-#define _eoAssembledFitnessStat_h
+#ifndef _AssembledFitnessStat_h
+#define _AssembledFitnessStat_h
 
 #include <utils/eoStat.h>
 #include <eoScalarFitnessAssembled.h>

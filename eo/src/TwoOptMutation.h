@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------
-// eoTwoOptMutation.h
+// TwoOptMutation.h
 // (c) GeNeura Team, 2000 - EEAAX 2000 - Maarten Keijzer 2000
 // (c) INRIA Futurs - Dolphin Team - Thomas Legrand 2007
 /*
@@ -24,19 +24,19 @@ mak@dhi.dk
 */
 //-----------------------------------------------------------------------------
 
-#ifndef eoTwoOptMutation_h
-#define eoTwoOptMutation_h
+#ifndef TwoOptMutation_h
+#define TwoOptMutation_h
 
 //-----------------------------------------------------------------------------
 
 namespace eo
 {
 
-/**
-* Especially designed for combinatorial problem such as the TSP.
-*
-* @ingroup Variators
-*/
+    /**
+    * Especially designed for combinatorial problem such as the TSP.
+    *
+    * @ingroup Variators
+    */
     template<class EOT> class eoTwoOptMutation: public eoMonOp<EOT>
     {
     public:
@@ -71,14 +71,13 @@ namespace eo
 	}
 
     };
-/** @example t-eoTwoOptMutation.cpp
-*/
+    /** @example t-eoTwoOptMutation.cpp
+    */
 
 }
 
 //-----------------------------------------------------------------------------
 #endif
-
 
 // Local Variables:
 // coding: iso-8859-1

@@ -20,8 +20,8 @@ Contact: http://eodev.sourceforge.net
  */
 
 
-#ifndef _eoEsSimple_h
-#define _eoEsSimple_h
+#ifndef _EsSimple_h
+#define _EsSimple_h
 
 #include <EO.h>
 #include <vector>

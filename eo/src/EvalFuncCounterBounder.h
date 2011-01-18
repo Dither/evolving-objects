@@ -1,5 +1,5 @@
-#ifndef eoEvalFuncCounterBounder_H
-#define eoEvalFuncCounterBounder_H
+#ifndef EvalFuncCounterBounder_H
+#define EvalFuncCounterBounder_H
 
 #include <eoEvalFunc.h>
 #include <utils/eoParam.h>

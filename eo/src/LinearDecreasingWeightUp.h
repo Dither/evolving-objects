@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoLinearDecreasingWeightUp.h
+// LinearDecreasingWeightUp.h
 // (c) OPAC 2007
 /*
     This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef EOLINEARDECREASINGWEIGHTUP_H
-#define EOLINEARDECREASINGWEIGHTUP_H
+#ifndef LINEARDECREASINGWEIGHTUP_H
+#define LINEARDECREASINGWEIGHTUP_H
 
 //-----------------------------------------------------------------------------
 #include <eoWeightUpdater.h>
@@ -76,4 +76,4 @@ namespace eo
 
 }
 
-#endif/*EOLINEARDECREASINGWEIGHTUP_H*/
+#endif/*LINEARDECREASINGWEIGHTUP_H*/

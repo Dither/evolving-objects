@@ -1,10 +1,10 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 //-----------------------------------------------------------------------------
-// eoOrderXover.h
+// OrderXover.h
 //-----------------------------------------------------------------------------
 
-#ifndef eoOrderXover_h
-#define eoOrderXover_h
+#ifndef OrderXover_h
+#define OrderXover_h
 
 //-----------------------------------------------------------------------------
 

@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------
-// eoFileSnapshot.h
+// FileSnapshot.h
 // (c) Marc Schoenauer, Maarten Keijzer and GeNeura Team, 2001
 /*
     This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoFileSnapshot_h
-#define _eoFileSnapshot_h
+#ifndef _FileSnapshot_h
+#define _FileSnapshot_h
 
 #include <cstdlib>
 #include <fstream>

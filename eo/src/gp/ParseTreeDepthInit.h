@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
  
 //-----------------------------------------------------------------------------
-// eoParseTreeDepthInit.h : initializor for eoParseTree class
+// ParseTreeDepthInit.h : initializor for eoParseTree class
 // (c) Maarten Keijzer 2000  Jeroen Eggermont 2002
 /*
     This library is free software; you can redistribute it and/or
@@ -19,14 +19,14 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  
     Contact: todos@geneura.ugr.es, http://geneura.ugr.es
-    	     mak@dhi.dk 
+    	     mak@dhi.dk
 	     jeggermo@liacs.nl
-            
+
  */
 //-----------------------------------------------------------------------------
 
-#ifndef eoParseTreeDepthInit_h
-#define eoParseTreeDepthInit_h
+#ifndef ParseTreeDepthInit_h
+#define ParseTreeDepthInit_h
 
 #include <EO.h>
 #include <gp/eoParseTree.h>

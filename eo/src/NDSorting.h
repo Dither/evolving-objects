@@ -1,7 +1,7 @@
 /** -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
    -----------------------------------------------------------------------------
-   eoNDSorting.h
+   NDSorting.h
    (c) Maarten Keijzer, Marc Schoenauer, 2001
 
    This library is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef eoNDSorting_h
-#define eoNDSorting_h
+#ifndef NDSorting_h
+#define NDSorting_h
 
 #include <EO.h>
 #include <algorithm>

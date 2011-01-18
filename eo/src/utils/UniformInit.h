@@ -1,7 +1,7 @@
 /* -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
   -----------------------------------------------------------------------------
-  eoUniformInit.h
+  UniformInit.h
 
  (c) Maarten Keijzer, GeNeura Team, Marc Schoenauer, 1999 - 2002
 
@@ -24,8 +24,8 @@
  */
 
 //-----------------------------------------------------------------------------
-/** Copied from the eoRndGenerators to have objects deriving from eoInit 
- * As the whole initialization mechanism in EO is based on eoInit rather than 
+/** Copied from the eoRndGenerators to have objects deriving from eoInit
+ * As the whole initialization mechanism in EO is based on eoInit rather than
  * eoRndGenerators, we might as well have these directly written without
  * overhead
 
@@ -35,8 +35,8 @@
 @class eoNegExpInit      negative exponential distributions    "
 */
 
-#ifndef eoUniformInit_h
-#define eoUniformInit_h
+#ifndef UniformInit_h
+#define UniformInit_h
 
 #include "eoRNG.h"
 #include "eoInit.h"

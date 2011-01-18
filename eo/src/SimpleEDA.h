@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoSimpleEDA.h
+// SimpleEDA.h
 // (c) Marc Schoenauer, Maarten Keijzer, 2001
 /* 
     This library is free software; you can redistribute it and/or
@@ -23,8 +23,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoSimpleEDA_h
-#define _eoSimpleEDA_h
+#ifndef _SimpleEDA_h
+#define _SimpleEDA_h
 
 //-----------------------------------------------------------------------------
 

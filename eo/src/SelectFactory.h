@@ -2,7 +2,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// EOFactory.h
+// SelectFactory.h
 // (c) GeNeura Team, 1998
 /* 
     This library is free software; you can redistribute it and/or
@@ -23,8 +23,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _EOSELECTFACTORY_H
-#define _EOSELECTFACTORY_H
+#ifndef _SELECTFACTORY_H
+#define _SELECTFACTORY_H
 
 #include <eoFactory.h>
 #include <eoRandomSelect.h>

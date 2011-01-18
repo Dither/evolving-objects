@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoDistribution.h
+// Distribution.h
 // (c) Marc Schoenauer, Maarten Keijzer, 2001
 /* 
     This library is free software; you can redistribute it and/or
@@ -23,8 +23,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoDistribution_H
-#define _eoDistribution_H
+#ifndef _Distribution_H
+#define _Distribution_H
 
 #include <algorithm>
 

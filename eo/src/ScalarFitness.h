@@ -1,7 +1,7 @@
 /* -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
   -----------------------------------------------------------------------------
-  eoScalarFitness.h
+  ScalarFitness.h
 
  (c) Maarten Keijzer (mkeijzer@mad.scientist.com) and GeNeura Team, 1999, 2000
 
@@ -23,8 +23,8 @@
  */
 
 
-#ifndef eoScalarFitness_h
-#define eoScalarFitness_h
+#ifndef ScalarFitness_h
+#define ScalarFitness_h
 
 #include <functional>
 #include <iostream>

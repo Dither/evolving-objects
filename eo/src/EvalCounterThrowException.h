@@ -23,8 +23,8 @@ Caner Candan <caner.candan@thalesgroup.com>
 
 */
 
-#ifndef __eoEvalCounterThrowException_h__
-#define __eoEvalCounterThrowException_h__
+#ifndef __EvalCounterThrowException_h__
+#define __EvalCounterThrowException_h__
 
 #include <eoEvalFuncCounter.h>
 #include <utils/eoParam.h>
@@ -88,5 +88,5 @@ namespace eo
 
 }
 
-#endif // __eoEvalCounterThrowException_h__
+#endif // __EvalCounterThrowException_h__
 

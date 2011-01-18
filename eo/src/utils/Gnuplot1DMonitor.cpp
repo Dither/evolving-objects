@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------
-// eoGnuplot1DMonitor.h
+// Gnuplot1DMonitor.h
 // (c) Marc Schoenauer, Maarten Keijzer and GeNeura Team, 2000
 /*
    This library is free software; you can redistribute it and/or
@@ -21,7 +21,6 @@
              mkeijzer@dhi.dk
  */
 //-----------------------------------------------------------------------------
-
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

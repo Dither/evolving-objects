@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoOpSelMason.h
+// OpSelMason.h
 // (c) GeNeura Team, 1999
 /* 
     This library is free software; you can redistribute it and/or
@@ -21,8 +21,8 @@
     Contact: todos@geneura.ugr.es, http://geneura.ugr.es
  */
 
-#ifndef _EOOPSELMASON_H
-#define _EOOPSELMASON_H
+#ifndef _OPSELMASON_H
+#define _OPSELMASON_H
 
 #include <eoOpFactory.h>	// for eoFactory and eoOpFactory
 

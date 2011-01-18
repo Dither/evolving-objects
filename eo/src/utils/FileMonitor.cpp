@@ -1,7 +1,7 @@
 #ifdef _MSC_VER
 // to avoid long name warnings
 #pragma warning(disable:4786)
-#endif 
+#endif
 
 #include <iostream>
 #include <fstream>
@@ -13,7 +13,6 @@
 
 namespace eo
 {
-
     using namespace std;
 
     void eoFileMonitor::printHeader(std::ostream& os)
@@ -35,21 +34,21 @@ namespace eo
     void eoFileMonitor::printHeader()
     {
 	// create file
-	ofstream os(filename.c_str()); 
+	ofstream os(filename.c_str());
 
 	if (!os)
 	    {
 		string str = "eoFileMonitor could not open: " + filename;
 		throw runtime_error(str);
 	    }
-    
+
 	printHeader(os);
     }
 
     eoMonitor& eoFileMonitor::operator()(void)
     {
-	ofstream os(filename.c_str(), 
-		    overwrite ? 
+	ofstream os(filename.c_str(),
+		    overwrite ?
 		    ios_base::out|ios_base::trunc // truncate
 		    :
 		    ios_base::out|ios_base::app   // append
@@ -61,7 +60,7 @@ namespace eo
 		throw runtime_error(str);
 	    }
 
-	if (   
+	if (
             header      // we want to write headers
 	    &&  firstcall   // we do not want to write headers twice
 	    && !keep        // if we append to an existing file, headers are useless
@@ -70,17 +69,16 @@ namespace eo
 	    printHeader();
 	    firstcall = false;
 	}
-    
+
 	return operator()(os);
     }
 
     eoMonitor& eoFileMonitor::operator()(std::ostream& os)
     {
-    
 	iterator it = vec.begin();
-    
+
 	os << (*it)->getValue();
-    
+
 	for(++it; it != vec.end(); ++it)
 	    {
 		os << delim.c_str() << (*it)->getValue();

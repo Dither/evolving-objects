@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoRealInitBounded.h
+// RealInitBounded.h
 // (c) EEAAX 2000 - Maarten Keijzer 2000
 /* 
     This library is free software; you can redistribute it and/or
@@ -23,8 +23,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef eoRealInitBounded_h
-#define eoRealInitBounded_h
+#ifndef RealInitBounded_h
+#define RealInitBounded_h
 
 //-----------------------------------------------------------------------------
 

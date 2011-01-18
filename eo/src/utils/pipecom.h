@@ -10,8 +10,8 @@
 // This file cannot be used from C any more due to some const additions.
 // However, if you remove the const, it should work in C as well.
 
-#ifndef EO_PIPECOM_H
-#define EO_PIPECOM_H
+#ifndef PIPECOM_H
+#define PIPECOM_H
 
 #include <stdio.h>
 
@@ -38,7 +38,7 @@ namespace eo
 
 }
 
-#endif // EO_PIPECOM_H
+#endif // PIPECOM_H
 
 // Local Variables:
 // coding: iso-8859-1

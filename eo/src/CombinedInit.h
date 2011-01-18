@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoCombinedInit.h
+// CombinedInit.h
 // (c) Maarten Keijzer, GeNeura Team, Marc Schoenauer 2004
 /* 
     This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoCombinedInit_h
-#define _eoCombinedInit_h
+#ifndef _CombinedInit_h
+#define _CombinedInit_h
 
 namespace eo
 {

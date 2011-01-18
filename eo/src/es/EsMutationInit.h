@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; fill-column: 80 -*-
 
 //-----------------------------------------------------------------------------
-// eoEsMutationInit.h
+// EsMutationInit.h
 // (c) GeNeura Team, 1998 - EEAAX 1999 - Maarten Keijzer 2000
 /*
     This library is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoEsMutationInit_h
-#define _eoEsMutationInit_h
+#ifndef _EsMutationInit_h
+#define _EsMutationInit_h
 
 #include <utils/eoParser.h>
 

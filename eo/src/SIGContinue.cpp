@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
  
 //-----------------------------------------------------------------------------
-// eoSIGContinue.cpp
+// SIGContinue.cpp
 // (c) EEAAX 1996 - GeNeura Team, 1998 - Maarten Keijzer 2000 
 /*
     This library is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
 #ifdef _MSC_VER
 // to avoid long name warnings
 #pragma warning(disable:4786)
-#endif 
+#endif
 
 #include <signal.h>
 #include <iostream>

@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoStarTopology.h
+// StarTopology.h
 // (c) OPAC 2007
 /*
     This library is free software; you can redistribute it and/or
@@ -23,8 +23,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef EOSTARTOPOLOGY_H_
-#define EOSTARTOPOLOGY_H_
+#ifndef STARTOPOLOGY_H_
+#define STARTOPOLOGY_H_
 
 //-----------------------------------------------------------------------------
 #include <eoTopology.h>
@@ -138,4 +138,4 @@ namespace eo
 
 }
 
-#endif /*EOSTARTOPOLOGY_H_ */
+#endif /*STARTOPOLOGY_H_ */

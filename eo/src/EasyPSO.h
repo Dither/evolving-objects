@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoEasyPSO.h
+// EasyPSO.h
 // (c) OPAC 2007
 /*
     This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _EOEASYPSO_H
-#define _EOEASYPSO_H
+#ifndef _EASYPSO_H
+#define _EASYPSO_H
 
 //-----------------------------------------------------------------------------
 #include <eoContinue.h>
@@ -198,4 +198,4 @@ namespace eo
 
 }
 
-#endif /*_EOEASYPSO_H*/
+#endif /*_EASYPSO_H*/

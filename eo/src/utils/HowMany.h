@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoHowMany_h.h
+// HowMany.h
 //   Base class for choosing a number of guys to apply something from a popsize
 // (c) Marc Schoenauer, 2000
 // (c) Thales group, 2010 (Johann Dréo <johann.dreo@thalesgroup.com>)
@@ -26,8 +26,8 @@ Contact: http://eodev.sourceforge.net
 */
 //-----------------------------------------------------------------------------
 
-#ifndef eoHowMany_h
-#define eoHowMany_h
+#ifndef HowMany_h
+#define HowMany_h
 
 #include <sstream>
 

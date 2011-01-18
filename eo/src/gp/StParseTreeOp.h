@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
  
 //-----------------------------------------------------------------------------
-// eoStParseTreeOp.h : crossover and mutation operators for  the strongly typed GP
+// StParseTreeOp.h : crossover and mutation operators for  the strongly typed GP
 // (c) Jeroen Eggermont 2001 for other mutation operators
 
 /*
@@ -25,8 +25,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef eoStParseTreeOp_h
-#define eoStParseTreeOp_h
+#ifndef StParseTreeOp_h
+#define StParseTreeOp_h
 
 #include <EO.h>
 #include <eoOp.h>

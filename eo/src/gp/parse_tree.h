@@ -1,5 +1,5 @@
-#ifndef PARSE_TREE_HH
-#define PARSE_TREE_HH
+#ifndef PARSE_TREE_H
+#define PARSE_TREE_H
 
 /**
 

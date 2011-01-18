@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoPopStat.h
+// PopStat.h
 // (c) Maarten Keijzer, Marc Schoenauer and GeNeura Team, 2001
 /*
     This library is free software; you can redistribute it and/or
@@ -32,8 +32,8 @@ that transform the population into a std::string
 that can be used to dump to the screen
 */
 
-#ifndef _eoPopStat_h
-#define _eoPopStat_h
+#ifndef _PopStat_h
+#define _PopStat_h
 
 #include <utils/eoStat.h>
 

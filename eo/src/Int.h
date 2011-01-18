@@ -1,5 +1,5 @@
 /*
-   eoInt.h
+   Int.h
 // (c) Marc Schoenauer, Maarten Keijzer and GeNeura Team, 2000
 
     This library is free software; you can redistribute it and/or
@@ -21,8 +21,8 @@
              mkeijzer@dhi.dk
 */
 
-#ifndef eoInt_h
-#define eoInt_h
+#ifndef Int_h
+#define Int_h
 
 //-----------------------------------------------------------------------------
 

@@ -19,8 +19,8 @@
    Contact: cahon@lifl.fr  
 */
 
-#ifndef __eoPeriodicContinue_h
-#define __eoPeriodicContinue_h
+#ifndef __PeriodicContinue_h
+#define __PeriodicContinue_h
 
 #include <eoContinue.h>
 #include <eoPop.h>

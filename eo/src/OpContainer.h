@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoOpContainer.h
+// OpContainer.h
 // (c) Maarten Keijzer and Marc Schoenauer, 2001
 /*
     This library is free software; you can redistribute it and/or
@@ -23,8 +23,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoOpContainer_H
-#define _eoOpContainer_H
+#ifndef _OpContainer_H
+#define _OpContainer_H
 
 #include <eoGenOp.h>
 

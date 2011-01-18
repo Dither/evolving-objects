@@ -1,9 +1,9 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoRealBounds.h
+// RealBounds.h
 // (c) Marc Schoenauer 2001, Maarten Keijzer 2000, GeNeura Team, 1998
-/* 
+/*
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
     License as published by the Free Software Foundation; either
@@ -24,8 +24,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoRealBounds_h
-#define _eoRealBounds_h
+#ifndef _RealBounds_h
+#define _RealBounds_h
 
 #include <stdexcept>		   // std::exceptions!
 #include <utils/eoRNG.h>

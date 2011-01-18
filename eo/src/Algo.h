@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoAlgo.h
+// Algo.h
 // (c) GeNeura Team, 1998
 /*
     This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _EOALGO_H
-#define _EOALGO_H
+#ifndef _ALGO_H
+#define _ALGO_H
 
 #include <eoPop.h>                   // for population
 #include <eoFunctor.h>

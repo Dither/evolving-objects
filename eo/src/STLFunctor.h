@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoSTLFunctor.h
+// STLFunctor.h
 // (c) Maarten Keijzer 2001
 /*
     This library is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoSTLFunctor_H
-#define _eoSTLFunctor_H
+#ifndef _STLFunctor_H
+#define _STLFunctor_H
 
 #include "eoFunctor.h"
 

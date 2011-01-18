@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoRingTopology.h
+// RingTopology.h
 // (c) INRIA Futurs DOLPHIN 2007
 /* 
     Clive Canape
@@ -25,8 +25,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef EORINGTOPOLOGY_H_
-#define EORINGTOPOLOGY_H_
+#ifndef RINGTOPOLOGY_H_
+#define RINGTOPOLOGY_H_
 
 //-----------------------------------------------------------------------------
 #include <eoTopology.h>
@@ -194,4 +194,4 @@ namespace eo
 
 }
 
-#endif /*EORINGTOPOLOGY_H_*/
+#endif /*RINGTOPOLOGY_H_*/

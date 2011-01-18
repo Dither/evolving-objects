@@ -21,8 +21,8 @@ Contact: http://eodev.sourceforge.net
  */
 
 
-#ifndef _eoEsChromInit_H
-#define _eoEsChromInit_H
+#ifndef _EsChromInit_H
+#define _EsChromInit_H
 
 #include <algorithm>
 #include <cassert>

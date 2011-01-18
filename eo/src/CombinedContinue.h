@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoCombinedContinue.h
+// CombinedContinue.h
 // (c) Maarten Keijzer, GeNeura Team, 1999, 2000
 /* 
     This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoCombinedContinue_h
-#define _eoCombinedContinue_h
+#ifndef _CombinedContinue_h
+#define _CombinedContinue_h
 
 #include <eoContinue.h>
 

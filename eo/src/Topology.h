@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoTopology.h
+// Topology.h
 // (c) OPAC 2007
 /*
     This library is free software; you can redistribute it and/or
@@ -23,8 +23,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef EOTOPOLOGY_H_
-#define EOTOPOLOGY_H_
+#ifndef TOPOLOGY_H_
+#define TOPOLOGY_H_
 
 //-----------------------------------------------------------------------------
 #include <eoNeighborhood.h>
@@ -86,4 +86,4 @@ namespace eo
 
 }
 
-#endif /*EOTOPOLOGY_H_ */
+#endif /*TOPOLOGY_H_ */

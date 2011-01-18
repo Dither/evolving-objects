@@ -1,6 +1,6 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 //-----------------------------------------------------------------------------
-// eoOp.h
+// Op.h
 // (c) GeNeura Team, 1998
 /* 
     This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoOp_H
-#define _eoOp_H
+#ifndef _Op_H
+#define _Op_H
 
 #include <eoObject.h>
 #include <eoPrintable.h>

@@ -21,8 +21,8 @@ Authors:
 Johann Dréo <johann.dreo@thalesgroup.com>
 */
 
-#ifndef __eoExceptions_h__
-#define __eoExceptions_h__
+#ifndef __Exceptions_h__
+#define __Exceptions_h__
 
 #include <ctime>
 #include <stdexcept>
@@ -83,4 +83,4 @@ namespace eo
 
 }
 
-#endif // __eoExceptions_h__
+#endif // __Exceptions_h__

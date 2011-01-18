@@ -1,6 +1,6 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
-// "eoCellularEasyEA.h"
+// "CellularEasyEA.h"
 
 // (c) OPAC Team, LIFL, 2002
 
@@ -21,8 +21,8 @@
    Contact: cahon@lifl.fr
 */
 
-#ifndef eoCellularEasyEA_h
-#define eoCellularEasyEA_h
+#ifndef CellularEasyEA_h
+#define CellularEasyEA_h
 
 #include <eoContinue.h>
 #include <eoEvalFunc.h>

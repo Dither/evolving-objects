@@ -1,6 +1,6 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
-/* 
+/*
 (c) Marc Schoenauer, Maarten Keijzer and GeNeura Team, 2000
 (c) Thales group, 2010
     This library is free software; you can redistribute it and/or
@@ -21,14 +21,14 @@
 Contact: http://eodev.sourceforge.net
 
 Authors:
-todos@geneura.ugr.es
-Marc.Schoenauer@polytechnique.fr
-mkeijzer@dhi.dk
-Johann Dréo <johann.dreo@thalesgroup.com>
+	todos@geneura.ugr.es
+	Marc.Schoenauer@polytechnique.fr
+	mkeijzer@dhi.dk
+	Johann Dréo <johann.dreo@thalesgroup.com>
 */
 
-#ifndef _eoStdoutMonitor_h
-#define _eoStdoutMonitor_h
+#ifndef _StdoutMonitor_h
+#define _StdoutMonitor_h
 
 #include <string>
 

@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoSGAGenOp.h
+// SGAGenOp.h
 // (c) Marc.Schoenauer 2002
 /*
     This library is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoSGAGenOp_h
-#define _eoSGAGenOp_h
+#ifndef _SGAGenOp_h
+#define _SGAGenOp_h
 
 #include "eoGenOp.h"
 #include "eoInvalidateOps.h"

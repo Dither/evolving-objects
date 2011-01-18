@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoNormalMutation.h
+// NormalMutation.h
 // (c) EEAAX 2001 - Maarten Keijzer 2000
 /*
     This library is free software; you can redistribute it and/or
@@ -23,8 +23,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef eoNormalMutation_h
-#define eoNormalMutation_h
+#ifndef NormalMutation_h
+#define NormalMutation_h
 
 //-----------------------------------------------------------------------------
 

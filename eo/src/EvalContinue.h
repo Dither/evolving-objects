@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoEvalContinue.h
+// EvalContinue.h
 // (c) GeNeura Team, 1999, Marc Schoenauer 2001
 /* 
     This library is free software; you can redistribute it and/or
@@ -23,8 +23,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoEvalContinue_h
-#define _eoEvalContinue_h
+#ifndef _EvalContinue_h
+#define _EvalContinue_h
 
 #include <eoContinue.h>
 #include <eoEvalFuncCounter.h>

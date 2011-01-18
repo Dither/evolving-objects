@@ -28,8 +28,8 @@
 
 //-----------------------------------------------------------------------------
 
-#ifndef eoRND_GENERATORS_H
-#define eoRND_GENERATORS_H
+#ifndef RND_GENERATORS_H
+#define RND_GENERATORS_H
 
 #include "eoRNG.h"
 #include <stdexcept>

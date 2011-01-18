@@ -19,9 +19,8 @@ Contact: http://eodev.sourceforge.net
          mkeijzer@dhi.dk
 */
 
-
-#ifndef EO_PARSER_H
-#define EO_PARSER_H
+#ifndef PARSER_H
+#define PARSER_H
 
 #include <map>
 #include <sstream>
@@ -292,9 +291,7 @@ namespace eo
 
 }
 
-#endif //  EO_PARSER_H
-
-
+#endif // PARSER_H
 
 // Local Variables:
 // coding: iso-8859-1

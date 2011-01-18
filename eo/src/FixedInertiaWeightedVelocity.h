@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoFixedInertiaWeightedVelocity.h
+// FixedInertiaWeightedVelocity.h
 // (c) OPAC 2007
 /*
     This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef EOFIXEDINERTIAWEIGHTEDVELOCITY_H
-#define EOFIXEDINERTIAWEIGHTEDVELOCITY_H
+#ifndef FIXEDINERTIAWEIGHTEDVELOCITY_H
+#define FIXEDINERTIAWEIGHTEDVELOCITY_H
 
 //-----------------------------------------------------------------------------
 #include <eoFunctor.h>
@@ -191,5 +191,4 @@ namespace eo
 
 }
 
-#endif /*EOFIXEDINERTIAWEIGHTEDVELOCITY_H */
-
+#endif /*FIXEDINERTIAWEIGHTEDVELOCITY_H */

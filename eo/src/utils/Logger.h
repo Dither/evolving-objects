@@ -1,6 +1,6 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
-/* 
+/*
 (c) Thales group, 2010
 
     This library is free software; you can redistribute it and/or
@@ -19,10 +19,9 @@
 
 Contact: http://eodev.sourceforge.net
 
-Authors: 
-Johann Dréo <johann.dreo@thalesgroup.com>
-Caner Candan <caner.candan@thalesgroup.com>
-
+Authors:
+	Johann Dréo <johann.dreo@thalesgroup.com>
+	Caner Candan <caner.candan@thalesgroup.com>
 */
 
 /** @defgroup Logging Logging
@@ -87,15 +86,15 @@ Caner Candan <caner.candan@thalesgroup.com>
  @{
 */
 
-#ifndef eoLogger_h
-# define eoLogger_h
+#ifndef Logger_h
+#define Logger_h
 
-# include <map>
-# include <vector>
-# include <string>
-# include <iosfwd>
+#include <map>
+#include <vector>
+#include <string>
+#include <iosfwd>
 
-# include "eoObject.h"
+#include "eoObject.h"
 
 namespace eo
 {
@@ -157,7 +156,7 @@ namespace eo
 	 * if( eo::log.getLevelSelected() >= eo::progress ) {...}
 	 */
 	eo::Levels getLevelSelected() const { return _selectedLevel; }
-    
+
 	/*! Returns the current level of the context
 	 * the one given when you output message with the logger
 	 */
@@ -257,4 +256,4 @@ namespace eo
 
 /** @} */
 
-#endif // !eoLogger_h
+#endif // !Logger_h

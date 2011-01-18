@@ -1,9 +1,9 @@
 /** -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
    -----------------------------------------------------------------------------
-   eoTruncatedSelectOne.h 
+   TruncatedSelectOne.h
    (c) Maarten Keijzer, Marc Schoenauer, GeNeura Team, 2002
- 
+
    This library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Lesser General Public
    License as published by the Free Software Foundation; either
@@ -24,8 +24,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoTruncatedSelectOne_h
-#define _eoTruncatedSelectOne_h
+#ifndef _TruncatedSelectOne_h
+#define _TruncatedSelectOne_h
 
 
 //-----------------------------------------------------------------------------

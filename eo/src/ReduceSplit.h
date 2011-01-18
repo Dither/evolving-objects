@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoReduceSplit.h
+// ReduceSplit.h
 //   Base class for population-reducing classes - retaining the poor losers
 // (c) GeNeura Team, 1998, Marc Schoenauer, 2002
 /* 
@@ -23,8 +23,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef eoReduceSplit_h
-#define eoReduceSplit_h
+#ifndef ReduceSplit_h
+#define ReduceSplit_h
 
 //-----------------------------------------------------------------------------
 

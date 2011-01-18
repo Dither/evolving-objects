@@ -23,8 +23,8 @@ Johann Dréo <johann.dreo@thalesgroup.com>
 
 */
 
-#ifndef _eoDualFitness_h_
-#define _eoDualFitness_h_
+#ifndef _DualFitness_h_
+#define _DualFitness_h_
 
 #include <functional>
 #include <iostream>
@@ -317,5 +317,5 @@ namespace eo
 }
 
 /** @} */
-#endif // _eoDualFitness_h_
+#endif // _DualFitness_h_
 

@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoFlOrMonOp.h
+// FlOrMonOp.h
 // (c) Marc Schoenauer - Maarten Keijzer 2000-2003
 /*
     This library is free software; you can redistribute it and/or
@@ -23,8 +23,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoFlOrMonOp_h
-#define _eoFlOrMonOp_h
+#ifndef _FlOrMonOp_h
+#define _FlOrMonOp_h
 
 #include <eoFunctor.h>
 #include <eoOp.h>

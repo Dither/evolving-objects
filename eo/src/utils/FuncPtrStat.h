@@ -1,6 +1,5 @@
-
-#ifndef eoFuncPtrStat_h
-#define eoFuncPtrStat_h
+#ifndef FuncPtrStat_h
+#define FuncPtrStat_h
 
 #include <eoFunctorStore.h>
 #include <utils/eoStat.h>
@@ -24,10 +23,11 @@ namespace eo
 	eoFuncPtrStat(func_t f, std::string _description = "func_ptr")
 	    : eoStat<EOT, T>(T(), _description), func(f)
         {}
-   
+
 	using eoStat<EOT, T>::value;
-     
-	void operator()(const eoPop<EOT>& pop) {
+
+	void operator()(const eoPop<EOT>& pop)
+	{
 	    value() = func(pop);
 	}
 
@@ -35,7 +35,7 @@ namespace eo
 	func_t func;
     };
 
-    /** 
+    /**
      * @ingroup Stats
      */
     template <class EOT, class T>

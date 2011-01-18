@@ -1,7 +1,7 @@
 /** -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
    -----------------------------------------------------------------------------
-   eoSharing.h
+   Sharing.h
    (c) Maarten Keijzer, Marc Schoenauer, 2001
 
    This library is free software; you can redistribute it and/or
@@ -23,8 +23,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef eoSharing_h
-#define eoSharing_h
+#ifndef Sharing_h
+#define Sharing_h
 
 #include <eoPerf2Worth.h>
 #include <utils/eoDistance.h>

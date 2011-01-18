@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoRandomRealWeightUp.h
+// RandomRealWeightUp.h
 // (c) OPAC 2007
 /*
     This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef EORANDOMREALWEIGHTUP_H
-#define EORANDOMREALWEIGHTUP_H
+#ifndef RANDOMREALWEIGHTUP_H
+#define RANDOMREALWEIGHTUP_H
 
 //-----------------------------------------------------------------------------
 #include <eoWeightUpdater.h>
@@ -80,4 +80,4 @@ namespace eo
 
 }
 
-#endif/*EORANDOMREALWEIGHTUP_H*/
+#endif/*RANDOMREALWEIGHTUP_H*/

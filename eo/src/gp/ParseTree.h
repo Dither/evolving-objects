@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoParseTree.h : eoParseTree class (for Tree-based Genetic Programming)
+// ParseTree.h : eoParseTree class (for Tree-based Genetic Programming)
 // (c) Maarten Keijzer 2000
 /*
     This library is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef eoParseTree_h
-#define eoParseTree_h
+#ifndef ParseTree_h
+#define ParseTree_h
 
 #include <iterator>
 #include <list>

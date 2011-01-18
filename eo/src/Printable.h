@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoPrintable.h
+// Printable.h
 // (c) GeNeura Team, 1998
 /* 
     This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef EOPRINTABLE_H
-#define EOPRINTABLE_H
+#ifndef PRINTABLE_H
+#define PRINTABLE_H
 
 //-----------------------------------------------------------------------------
 

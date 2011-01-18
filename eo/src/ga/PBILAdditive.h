@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoPBILAdditive.h
+// PBILAdditive.h
 // (c) Marc Schoenauer, Maarten Keijzer, 2001
 /*
     This library is free software; you can redistribute it and/or
@@ -23,8 +23,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoPBILAdditive_H
-#define _eoPBILAdditive_H
+#ifndef _PBILAdditive_H
+#define _PBILAdditive_H
 
 #include <eoDistribUpdater.h>
 #include <ga/eoPBILDistrib.h>

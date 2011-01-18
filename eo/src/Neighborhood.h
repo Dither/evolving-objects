@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoNeighborhood.h
+// Neighborhood.h
 // (c) OPAC 2007
 /*
     This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef EONEIGHBORHOOD_H_
-#define EONEIGHBORHOOD_H_
+#ifndef NEIGHBORHOOD_H_
+#define NEIGHBORHOOD_H_
 
 namespace eo
 {
@@ -57,4 +57,4 @@ namespace eo
 
 }
 
-#endif /* EONEIGHBORHOOD_H_ */
+#endif /* NEIGHBORHOOD_H_ */

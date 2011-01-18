@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoScalarFitnessStat.h
+// ScalarFitnessStat.h
 // (c) Marc Schoenauer, Maarten Keijzer and GeNeura Team, 2000, 2001
 /*
     This library is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoScalarFitnessStat_h
-#define _eoScalarFitnessStat_h
+#ifndef _ScalarFitnessStat_h
+#define _ScalarFitnessStat_h
 
 #include <utils/eoRealVectorBounds.h>
 #include <utils/eoStat.h>

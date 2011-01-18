@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
  
 //-----------------------------------------------------------------------------
-// eoParseTreeOp.h : crossover and mutation operator for  the eoParseTree class
+// ParseTreeOp.h : crossover and mutation operator for  the eoParseTree class
 // (c) Maarten Keijzer 2000  for eoSubtreeXOver, eoBranchMutation
 // (c) Jeroen Eggermont 2001 for other mutation operators
 
@@ -26,8 +26,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef eoParseTreeOp_h
-#define eoParseTreeOp_h
+#ifndef ParseTreeOp_h
+#define ParseTreeOp_h
 
 #include <EO.h>
 #include <eoOp.h>

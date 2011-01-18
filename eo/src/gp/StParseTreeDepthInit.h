@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
  
 //-----------------------------------------------------------------------------
-// eoStParseTreeDepthInit.h : initializor strongly type GP
+// StParseTreeDepthInit.h : initializor strongly type GP
 // (c) Jeroen Eggermont 2001
 /*
     This library is free software; you can redistribute it and/or
@@ -20,12 +20,12 @@
  
     Contact: todos@geneura.ugr.es, http://geneura.ugr.es
     	     jeggermo@liacs.nl
-            
+
  */
 //-----------------------------------------------------------------------------
 
-#ifndef eoStParseTreeDepthInit_h
-#define eoStParseTreeDepthInit_h
+#ifndef StParseTreeDepthInit_h
+#define StParseTreeDepthInit_h
 
 #include <EO.h>
 #include <gp/eoParseTree.h>

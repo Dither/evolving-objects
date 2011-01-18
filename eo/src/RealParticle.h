@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoRealParticle.h
+// RealParticle.h
 // (c) OPAC 2007
 /*
     This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _EOREALPARTICLE_H
-#define _EOREALPARTICLE_H
+#ifndef _REALPARTICLE_H
+#define _REALPARTICLE_H
 
 #include <eoVectorParticle.h>
 
@@ -50,4 +50,4 @@ namespace eo
 
 }
 
-#endif /*_EOREALPARTICLE_H*/
+#endif /*_REALPARTICLE_H*/

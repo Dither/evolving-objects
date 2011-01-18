@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoVariableInertiaWeightedVelocity.h
+// VariableInertiaWeightedVelocity.h
 // (c) OPAC 2007
 /*
     This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef EOVARIABLEINERTIAWEIGHTEDVELOCITY_H
-#define EOVARIABLEINERTIAWEIGHTEDVELOCITY_H
+#ifndef VARIABLEINERTIAWEIGHTEDVELOCITY_H
+#define VARIABLEINERTIAWEIGHTEDVELOCITY_H
 
 //-----------------------------------------------------------------------------
 #include <eoVelocity.h>
@@ -198,4 +198,4 @@ namespace eo
 
 }
 
-#endif /*EOVARIABLEINERTIAWEIGHTEDVELOCITY_H*/
+#endif /*VARIABLEINERTIAWEIGHTEDVELOCITY_H*/

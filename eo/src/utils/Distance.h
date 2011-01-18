@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoDistance.h
+// Distance.h
 // (c) GeNeura Team, 1998, Marc Schoenauer 2001
 /* 
     This library is free software; you can redistribute it and/or
@@ -23,8 +23,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoDistance_H
-#define _eoDistance_H
+#ifndef _Distance_H
+#define _Distance_H
 
 #include <eoFunctor.h>
 

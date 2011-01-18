@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoIntBounds.h
+// IntBounds.h
 // (c) Marc Schoenauer 2001, Maarten Keijzer 2000, GeNeura Team, 1998
 /* 
     This library is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoIntBounds_h
-#define _eoIntBounds_h
+#ifndef _IntBounds_h
+#define _IntBounds_h
 
 #include <stdexcept>		   // std::exceptions!
 #include <utils/eoRNG.h>

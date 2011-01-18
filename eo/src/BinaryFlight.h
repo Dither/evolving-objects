@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoBinaryFlight.h
+// BinaryFlight.h
 // (c) OPAC Team, 2007
 /*
     This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef EOBINARYFLIGHT_H
-#define EOBINARYFLIGHT_H
+#ifndef BINARYFLIGHT_H
+#define BINARYFLIGHT_H
 
 //-----------------------------------------------------------------------------
 #include <eoFlight.h>
@@ -42,4 +42,4 @@ namespace eo
 
 }
 
-#endif /*EOBINARYFLIGHT_H */
+#endif /*BINARYFLIGHT_H */

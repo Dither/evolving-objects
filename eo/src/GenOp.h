@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoGenOp.h
+// GenOp.h
 // (c) Maarten Keijzer and Marc Schoenauer, 2001
 /*
     This library is free software; you can redistribute it and/or
@@ -23,8 +23,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoGenOp_H
-#define _eoGenOp_H
+#ifndef _GenOp_H
+#define _GenOp_H
 
 #include <eoOp.h>
 #include <eoPopulator.h>

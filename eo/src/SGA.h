@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoSGA.h
+// SGA.h
 // (c) GeNeura Team, 2000 - EEAAX 1999 - Maarten Keijzer 2000
 /*
     This library is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoSGA_h
-#define _eoSGA_h
+#ifndef _SGA_h
+#define _SGA_h
 
 #include <eoInvalidateOps.h>
 #include <eoContinue.h>

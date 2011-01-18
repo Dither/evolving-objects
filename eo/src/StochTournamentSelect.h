@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoStochTournamentSelect.h
+// StochTournamentSelect.h
 // (c) GeNeura Team, 1998 - EEAAX 1999
 /* 
     This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
              Marc.Schoenauer@polytechnique.fr
  */
 
-#ifndef eoStochTournamentSelect_h
-#define eoStochTournamentSelect_h
+#ifndef StochTournamentSelect_h
+#define StochTournamentSelect_h
 
 #include <functional>
 #include <numeric>           // accumulate

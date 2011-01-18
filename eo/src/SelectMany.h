@@ -1,7 +1,7 @@
 /** -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
    -----------------------------------------------------------------------------
-   eoSelectMany.h 
+   SelectMany.h 
    (c) Maarten Keijzer, Marc Schoenauer, GeNeura Team, 2000
  
    This library is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoSelectMany_h
-#define _eoSelectMany_h
+#ifndef _SelectMany_h
+#define _SelectMany_h
 
 
 //-----------------------------------------------------------------------------

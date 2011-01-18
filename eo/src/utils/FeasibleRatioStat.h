@@ -1,11 +1,9 @@
-
 /*
-
 (c) 2010 Thales group
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
-    License as published by the Free Software Foundation; version 2 
+    License as published by the Free Software Foundation; version 2
     of the License.
 
     This library is distributed in the hope that it will be useful,
@@ -21,11 +19,10 @@ Contact: http://eodev.sourceforge.net
 
 Authors:
 Johann Dréo <johann.dreo@thalesgroup.com>
-
 */
 
-#ifndef _eoFeasibleRatioStat_h_
-#define _eoFeasibleRatioStat_h_
+#ifndef _FeasibleRatioStat_h_
+#define _FeasibleRatioStat_h_
 
 #include <algorithm>
 
@@ -49,11 +46,11 @@ namespace eo
 
 	eoFeasibleRatioStat( std::string description = "FeasibleRatio" ) : eoStat<EOT,double>( 0.0, description ) {}
 
-	virtual void operator()( const eoPop<EOT> & pop ) 
+	virtual void operator()( const eoPop<EOT> & pop )
 	{
 #ifndef NDEBUG
 	    assert( pop.size() > 0 );
-        
+
 	    double count = static_cast<double>( std::count_if( pop.begin(), pop.end(), eoIsFeasible<EOT> ) );
 	    double size = static_cast<double>( pop.size() );
 	    double ratio = count/size;
@@ -63,10 +60,10 @@ namespace eo
 	    value() = static_cast<double>( std::count_if( pop.begin(), pop.end(), eoIsFeasible<EOT> ) ) / static_cast<double>( pop.size() );
 #endif
 	}
-  
+
 	virtual std::string className(void) const { return "eoFeasibleRatioStat"; }
     };
 
 }
 
-#endif // _eoFeasibleRatioStat_h_
+#endif // _FeasibleRatioStat_h_

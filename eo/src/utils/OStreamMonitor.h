@@ -1,6 +1,4 @@
-
 /*
-
 (c) Marc Schoenauer, Maarten Keijzer and GeNeura Team, 2000
 (c) Thales group, 2010
 
@@ -19,14 +17,14 @@
 Contact: http://eodev.sourceforge.net
 
 Authors:
-todos@geneura.ugr.es
-Marc.Schoenauer@polytechnique.fr
-mkeijzer@dhi.dk
-Johann Dréo <johann.dreo@thalesgroup.com>
+	todos@geneura.ugr.es
+	Marc.Schoenauer@polytechnique.fr
+	mkeijzer@dhi.dk
+	Johann Dréo <johann.dreo@thalesgroup.com>
 */
 
-#ifndef _eoOStreamMonitor_h_
-#define _eoOStreamMonitor_h_
+#ifndef _OStreamMonitor_h_
+#define _OStreamMonitor_h_
 
 #include <string>
 #include <iostream>
@@ -72,4 +70,4 @@ namespace eo
 
 }
 
-#endif // _eoOStreamMonitor_h_
+#endif // _OStreamMonitor_h_

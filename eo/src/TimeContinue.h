@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoTimeContinue.h
+// TimeContinue.h
 // (c) OPAC Team (LIFL), Dolphin Project (INRIA), 2007
 /*
     This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _EOTIMECONTINUE_H
-#define _EOTIMECONTINUE_H
+#ifndef _TIMECONTINUE_H
+#define _TIMECONTINUE_H
 
 #include <ctime>
 

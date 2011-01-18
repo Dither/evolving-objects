@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoEvalFunc.h
+// EvalFunc.h
 // (c) GeNeura Team, 1998
 /* 
     This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef eoEvalFunc_H
-#define eoEvalFunc_H
+#ifndef EvalFunc_H
+#define EvalFunc_H
 
 #include <eoFunctor.h>
 

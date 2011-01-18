@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoParticleFullInitializer.h
+// ParticleFullInitializer.h
 // (c) OPAC Team, INRIA, 2007
 /*
     This library is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoParticleFullInitializer_H
-#define _eoParticleFullInitializer_H
+#ifndef _ParticleFullInitializer_H
+#define _ParticleFullInitializer_H
 
 #include <utils/eoRealVectorBounds.h>
 #include <eoVelocityInit.h>
@@ -151,7 +151,7 @@ namespace eo
 
 }
 
-#endif /*_eoParticleFullInitializer_H*/
+#endif /*_ParticleFullInitializer_H*/
 
 /** @} */
 

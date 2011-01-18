@@ -1,7 +1,7 @@
 /** -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
    -----------------------------------------------------------------------------
-   eoSelectNumber.h 
+   SelectNumber.h 
    (c) Maarten Keijzer, Marc Schoenauer, GeNeura Team, 2000
  
    This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoSelectNumber_h
-#define _eoSelectNumber_h
+#ifndef _SelectNumber_h
+#define _SelectNumber_h
 
 
 //-----------------------------------------------------------------------------

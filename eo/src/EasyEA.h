@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoEasyEA.h
+// EasyEA.h
 // (c) GeNeura Team, 1998
 /*
     This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoEasyEA_h
-#define _eoEasyEA_h
+#ifndef _EasyEA_h
+#define _EasyEA_h
 
 //-----------------------------------------------------------------------------
 

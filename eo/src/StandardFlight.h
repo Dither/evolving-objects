@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoStandardFlight.h
+// StandardFlight.h
 // (c) OPAC 2007
 /*
     This library is free software; you can redistribute it and/or
@@ -22,8 +22,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef EOSTANDARDFLIGHT_H
-#define EOSTANDARDFLIGHT_H
+#ifndef STANDARDFLIGHT_H
+#define STANDARDFLIGHT_H
 
 //-----------------------------------------------------------------------------
 #include <eoFlight.h>
@@ -106,4 +106,4 @@ namespace eo
 
 }
 
-#endif /*EOSTANDARDFLIGHT_H */
+#endif /*STANDARDFLIGHT_H */

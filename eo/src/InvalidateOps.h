@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoInvalidateOps.h
+// InvalidateOps.h
 // (c) Maarten Keijzer 2001
 /*
     This library is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef _eoInvalidateOps_h
-#define _eoInvalidateOps_h
+#ifndef _InvalidateOps_h
+#define _InvalidateOps_h
 
 #include <eoOp.h>
 

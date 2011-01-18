@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoStochasticUniversalSelect.h
+// StochasticUniversalSelect.h
 // (c) Maarten Keijzer 2003
 /*
     This library is free software; you can redistribute it and/or
@@ -24,8 +24,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef eoStochasticUniversalSelect_h
-#define eoStochasticUniversalSelect_h
+#ifndef StochasticUniversalSelect_h
+#define StochasticUniversalSelect_h
 
 //-----------------------------------------------------------------------------
 

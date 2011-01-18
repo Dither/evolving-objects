@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoGeneralBreeder.h 
+// GeneralBreeder.h 
 // (c) Maarten Keijzer and Marc Schoenauer, 2001
 /* 
     This library is free software; you can redistribute it and/or
@@ -23,8 +23,8 @@
  */
 //-----------------------------------------------------------------------------
 
-#ifndef eoGeneralBreeder_h
-#define eoGeneralBreeder_h
+#ifndef GeneralBreeder_h
+#define GeneralBreeder_h
 
 //-----------------------------------------------------------------------------
 
