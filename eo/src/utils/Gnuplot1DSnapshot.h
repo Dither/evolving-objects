@@ -38,84 +38,88 @@
 #include <utils/eoFileSnapshot.h>
 #include <utils/eoGnuplot.h>
 
-/** Plot stats through gnuplot
-
-@author Marc Schoenauer 2000
-@version 0.0
-
-This class plots through gnuplot the eoStat given as argument
-
-Assumes that the same file is re-written every so and so, and plots it
-from scratch everytime it's called
-
-@ingroup Monitors
- */
-class eoGnuplot1DSnapshot: public eoFileSnapshot, public eoGnuplot
+namespace eo
 {
- public:
-    // Ctor
-  eoGnuplot1DSnapshot(std::string _dirname, unsigned _frequency = 1,
-                      std::string _filename = "gen", std::string _delim = " ",
-                      unsigned _counter = 0, bool _rmFiles = true) :
-      eoFileSnapshot(_dirname, _frequency, _filename, _delim, _counter, _rmFiles),
-      eoGnuplot(_filename,"set data style points"),
-      pointSize(5)
-  {}
 
-    // Ctor
-  eoGnuplot1DSnapshot(std::string _dirname,  eoRealVectorBounds & _bounds,
-		       unsigned _frequency = 1, std::string _filename = "gen",
-		       std::string _delim = " ", unsigned _counter = 0, bool _rmFiles = true ) :
-      eoFileSnapshot(_dirname, _frequency, _filename, _delim, _counter, _rmFiles),
-      eoGnuplot(_filename,"set data style points"),
-      pointSize(5)
-  {
-    handleBounds(_bounds);
-  }
-    // Ctor
-  eoGnuplot1DSnapshot(eoFileSnapshot & _fSnapshot) :
-      eoFileSnapshot(_fSnapshot),
-      eoGnuplot(_fSnapshot.baseFileName(),"set data style points"),
-      pointSize(5)
-  {}
+    /** Plot stats through gnuplot
 
-    // Ctor with range
-  eoGnuplot1DSnapshot(eoFileSnapshot & _fSnapshot, eoRealVectorBounds & _bounds) :
-      eoFileSnapshot(_fSnapshot),
-      eoGnuplot(_fSnapshot.baseFileName(),"set data style points"),
-      pointSize(5)
-  {
-    handleBounds(_bounds);
-  }
+	@author Marc Schoenauer 2000
+	@version 0.0
 
-  // Dtor
-  virtual ~eoGnuplot1DSnapshot(){}
+	This class plots through gnuplot the eoStat given as argument
 
-  virtual eoMonitor& operator()();
+	Assumes that the same file is re-written every so and so, and plots it
+	from scratch everytime it's called
 
-  /// Class name.
-  virtual std::string className() const { return "eoGnuplot1DSnapshot"; }
+	@ingroup Monitors
+    */
+    class eoGnuplot1DSnapshot: public eoFileSnapshot, public eoGnuplot
+    {
+    public:
+	// Ctor
+	eoGnuplot1DSnapshot(std::string _dirname, unsigned _frequency = 1,
+			    std::string _filename = "gen", std::string _delim = " ",
+			    unsigned _counter = 0, bool _rmFiles = true) :
+	    eoFileSnapshot(_dirname, _frequency, _filename, _delim, _counter, _rmFiles),
+	    eoGnuplot(_filename,"set data style points"),
+	    pointSize(5)
+	{}
 
-  virtual void handleBounds(eoRealVectorBounds & _bounds)
-  {
-      std::ostringstream os;
-      os << "set autoscale\nset yrange [" ;
-      if (_bounds.isMinBounded(0))
-          os << _bounds.minimum(0);
-      os << ":" ;
-      if (_bounds.isMaxBounded(0))
-          os << _bounds.maximum(0);
-      os << "]\n";
-      gnuplotCommand(os.str());
-  }
+	// Ctor
+	eoGnuplot1DSnapshot(std::string _dirname,  eoRealVectorBounds & _bounds,
+			    unsigned _frequency = 1, std::string _filename = "gen",
+			    std::string _delim = " ", unsigned _counter = 0, bool _rmFiles = true ) :
+	    eoFileSnapshot(_dirname, _frequency, _filename, _delim, _counter, _rmFiles),
+	    eoGnuplot(_filename,"set data style points"),
+	    pointSize(5)
+	{
+	    handleBounds(_bounds);
+	}
+	// Ctor
+	eoGnuplot1DSnapshot(eoFileSnapshot & _fSnapshot) :
+	    eoFileSnapshot(_fSnapshot),
+	    eoGnuplot(_fSnapshot.baseFileName(),"set data style points"),
+	    pointSize(5)
+	{}
 
-  void setPointSize(unsigned  _pointSize)
-  { pointSize = _pointSize; }
+	// Ctor with range
+	eoGnuplot1DSnapshot(eoFileSnapshot & _fSnapshot, eoRealVectorBounds & _bounds) :
+	    eoFileSnapshot(_fSnapshot),
+	    eoGnuplot(_fSnapshot.baseFileName(),"set data style points"),
+	    pointSize(5)
+	{
+	    handleBounds(_bounds);
+	}
 
-protected:
+	// Dtor
+	virtual ~eoGnuplot1DSnapshot(){}
 
-    unsigned pointSize;
-};
+	virtual eoMonitor& operator()();
 
+	/// Class name.
+	virtual std::string className() const { return "eoGnuplot1DSnapshot"; }
+
+	virtual void handleBounds(eoRealVectorBounds & _bounds)
+	{
+	    std::ostringstream os;
+	    os << "set autoscale\nset yrange [" ;
+	    if (_bounds.isMinBounded(0))
+		os << _bounds.minimum(0);
+	    os << ":" ;
+	    if (_bounds.isMaxBounded(0))
+		os << _bounds.maximum(0);
+	    os << "]\n";
+	    gnuplotCommand(os.str());
+	}
+
+	void setPointSize(unsigned  _pointSize)
+	{ pointSize = _pointSize; }
+
+    protected:
+
+	unsigned pointSize;
+    };
+
+}
 
 #endif

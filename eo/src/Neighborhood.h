@@ -25,44 +25,36 @@
 #ifndef EONEIGHBORHOOD_H_
 #define EONEIGHBORHOOD_H_
 
-
-/**
- * Abstract class for neighborboods. Used for particle swarm optimization
- * topology strategies. Can be social or physical.
- *
- * @ingroup Selectors
- */
-template < class POT > class eoNeighborhood
+namespace eo
 {
-public:
 
-    virtual void put(unsigned _oneIndice)=0;
+    /**
+     * Abstract class for neighborboods. Used for particle swarm optimization
+     * topology strategies. Can be social or physical.
+     *
+     * @ingroup Selectors
+     */
+    template < class POT > class eoNeighborhood
+    {
+    public:
 
-    virtual bool contains(unsigned _oneIndice)=0;
+	virtual void put(unsigned _oneIndice)=0;
 
-    virtual unsigned size()=0;
+	virtual bool contains(unsigned _oneIndice)=0;
 
-    virtual unsigned get(unsigned _index)=0;
+	virtual unsigned size()=0;
 
-    virtual POT & best()=0;
+	virtual unsigned get(unsigned _index)=0;
 
-    virtual void best(POT _particle)=0;
+	virtual POT & best()=0;
+
+	virtual void best(POT _particle)=0;
     
-    /// Virtual dtor
+	/// Virtual dtor
   	virtual ~eoNeighborhood() {};
 
-};
+    };
 
+}
 
 #endif /* EONEIGHBORHOOD_H_ */
-
-
-
-
-
-
-
-
-
-
-

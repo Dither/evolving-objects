@@ -15,29 +15,30 @@
 
 #include <stdio.h>
 
+namespace eo
+{
 
-typedef struct PipeCommunication {
-    FILE	*fWrit;
-    FILE	*fRead;
-    int		pid;
-} PCom;
+    typedef struct PipeCommunication {
+	FILE	*fWrit;
+	FILE	*fRead;
+	int		pid;
+    } PCom;
 
 
-extern PCom *PipeComOpen( char *prog );
-extern PCom *PipeComOpenArgv( char *prog, char *argv[] );
+    extern PCom *PipeComOpen( char *prog );
+    extern PCom *PipeComOpenArgv( char *prog, char *argv[] );
 
-extern int PipeComSend( PCom *to, const char *line );
-extern int PipeComSendn( PCom *to, const char *data, int n );
+    extern int PipeComSend( PCom *to, const char *line );
+    extern int PipeComSendn( PCom *to, const char *data, int n );
 
-extern int PipeComReceive( PCom *from, char *data, int max );
+    extern int PipeComReceive( PCom *from, char *data, int max );
 
-extern int PipeComClose( PCom *to );
-extern int PipeComWaitFor( PCom *from, char *what );
+    extern int PipeComClose( PCom *to );
+    extern int PipeComWaitFor( PCom *from, char *what );
 
+}
 
 #endif // EO_PIPECOM_H
-
-
 
 // Local Variables:
 // coding: iso-8859-1

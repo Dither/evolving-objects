@@ -43,6 +43,8 @@ Contact: http://eodev.sourceforge.net
 #include <utils/eoParser.h>
 #include <utils/eoState.h>
 
+namespace eo
+{
 
 /** @addtogroup Builders
  * @{
@@ -65,131 +67,133 @@ Contact: http://eodev.sourceforge.net
  *        EOT myEO;
  *        _init(myEO);
  *        and myEO is then an ACTUAL object
-*/
+ */
 
-template <class EOT>
-eoGenOp<EOT> & do_make_op(eoParser& _parser, eoState& _state, eoRealInitBounded<EOT>& _init)
-{
-  // get std::vector size
-  unsigned vecSize = _init.size();
+    template <class EOT>
+    eoGenOp<EOT> & do_make_op(eoParser& _parser, eoState& _state, eoRealInitBounded<EOT>& _init)
+    {
+	// get std::vector size
+	unsigned vecSize = _init.size();
 
-  // First, decide whether the objective variables are bounded
-  eoValueParam<eoRealVectorBounds>& boundsParam
-      = _parser.getORcreateParam(eoRealVectorBounds(vecSize,eoDummyRealNoBounds),
-                                 "objectBounds", "Bounds for variables",
-                                 'B', "Variation Operators");
+	// First, decide whether the objective variables are bounded
+	eoValueParam<eoRealVectorBounds>& boundsParam
+	    = _parser.getORcreateParam(eoRealVectorBounds(vecSize,eoDummyRealNoBounds),
+				       "objectBounds", "Bounds for variables",
+				       'B', "Variation Operators");
 
-  std::cerr << boundsParam.value() << std::endl;
+	std::cerr << boundsParam.value() << std::endl;
 
-    // now we read Pcross and Pmut,
-  eoValueParam<std::string>& operatorParam
-      = _parser.getORcreateParam(std::string("SGA"), "operator",
-                                 "Description of the operator (SGA only now)",
-                                 'o', "Variation Operators");
+	// now we read Pcross and Pmut,
+	eoValueParam<std::string>& operatorParam
+	    = _parser.getORcreateParam(std::string("SGA"), "operator",
+				       "Description of the operator (SGA only now)",
+				       'o', "Variation Operators");
 
-  if (operatorParam.value() != std::string("SGA"))
-    throw std::runtime_error("Sorry, only SGA-like operator available right now\n");
+	if (operatorParam.value() != std::string("SGA"))
+	    throw std::runtime_error("Sorry, only SGA-like operator available right now\n");
 
-    // now we read Pcross and Pmut,
-    // and create the eoGenOp that is exactly
-    // crossover with pcross + mutation with pmut
+	// now we read Pcross and Pmut,
+	// and create the eoGenOp that is exactly
+	// crossover with pcross + mutation with pmut
 
-  eoValueParam<double>& pCrossParam
-      = _parser.getORcreateParam(1.0, "pCross", "Probability of Crossover",
-                                 'C', "Variation Operators" );
-  // minimum check
-  if ( (pCrossParam.value() < 0) || (pCrossParam.value() > 1) )
-    throw std::runtime_error("Invalid pCross");
+	eoValueParam<double>& pCrossParam
+	    = _parser.getORcreateParam(1.0, "pCross", "Probability of Crossover",
+				       'C', "Variation Operators" );
+	// minimum check
+	if ( (pCrossParam.value() < 0) || (pCrossParam.value() > 1) )
+	    throw std::runtime_error("Invalid pCross");
 
-  eoValueParam<double>& pMutParam
-      = _parser.getORcreateParam(1.0, "pMut", "Probability of Mutation",
-                                 'M', "Variation Operators" );
-  // minimum check
-  if ( (pMutParam.value() < 0) || (pMutParam.value() > 1) )
-    throw std::runtime_error("Invalid pMut");
+	eoValueParam<double>& pMutParam
+	    = _parser.getORcreateParam(1.0, "pMut", "Probability of Mutation",
+				       'M', "Variation Operators" );
+	// minimum check
+	if ( (pMutParam.value() < 0) || (pMutParam.value() > 1) )
+	    throw std::runtime_error("Invalid pMut");
 
 
-  // crossover
-  /////////////
-  // ES crossover
-  eoValueParam<std::string>& crossTypeParam
-      = _parser.getORcreateParam(std::string("global"), "crossType",
-                                 "Type of ES recombination (global or standard)",
-                                 'C', "Variation Operators");
+	// crossover
+	/////////////
+	// ES crossover
+	eoValueParam<std::string>& crossTypeParam
+	    = _parser.getORcreateParam(std::string("global"), "crossType",
+				       "Type of ES recombination (global or standard)",
+				       'C', "Variation Operators");
 
-  eoValueParam<std::string>& crossObjParam
-      = _parser.getORcreateParam(std::string("discrete"), "crossObj",
-                                 "Recombination of object variables (discrete, intermediate or none)",
-                                 'O', "Variation Operators");
-  eoValueParam<std::string>& crossStdevParam
-      = _parser.getORcreateParam(std::string("intermediate"), "crossStdev",
-                                 "Recombination of mutation strategy parameters "
-                                 "(intermediate, discrete or none)",
-                                 'S', "Variation Operators");
+	eoValueParam<std::string>& crossObjParam
+	    = _parser.getORcreateParam(std::string("discrete"), "crossObj",
+				       "Recombination of object variables (discrete, intermediate or none)",
+				       'O', "Variation Operators");
+	eoValueParam<std::string>& crossStdevParam
+	    = _parser.getORcreateParam(std::string("intermediate"), "crossStdev",
+				       "Recombination of mutation strategy parameters "
+				       "(intermediate, discrete or none)",
+				       'S', "Variation Operators");
 
-  // The pointers: first the atom Xover
-  eoBinOp<double> *ptObjAtomCross = NULL;
-  eoBinOp<double> *ptStdevAtomCross = NULL;
-  // then the EOT-level one (need to be an eoGenOp as global Xover is
-  eoGenOp<EOT> *ptCross;
+	// The pointers: first the atom Xover
+	eoBinOp<double> *ptObjAtomCross = NULL;
+	eoBinOp<double> *ptStdevAtomCross = NULL;
+	// then the EOT-level one (need to be an eoGenOp as global Xover is
+	eoGenOp<EOT> *ptCross;
 
-  // check for the atom Xovers
-  if (crossObjParam.value() == std::string("discrete"))
-    ptObjAtomCross = new eoDoubleExchange;
-  else if (crossObjParam.value() == std::string("intermediate"))
-    ptObjAtomCross = new eoDoubleIntermediate;
-  else if (crossObjParam.value() == std::string("none"))
-    ptObjAtomCross = new eoBinCloneOp<double>;
-  else throw std::runtime_error("Invalid Object variable crossover type");
+	// check for the atom Xovers
+	if (crossObjParam.value() == std::string("discrete"))
+	    ptObjAtomCross = new eoDoubleExchange;
+	else if (crossObjParam.value() == std::string("intermediate"))
+	    ptObjAtomCross = new eoDoubleIntermediate;
+	else if (crossObjParam.value() == std::string("none"))
+	    ptObjAtomCross = new eoBinCloneOp<double>;
+	else throw std::runtime_error("Invalid Object variable crossover type");
 
-  if (crossStdevParam.value() == std::string("discrete"))
-    ptStdevAtomCross = new eoDoubleExchange;
-  else if (crossStdevParam.value() == std::string("intermediate"))
-    ptStdevAtomCross = new eoDoubleIntermediate;
-  else if (crossStdevParam.value() == std::string("none"))
-    ptStdevAtomCross = new eoBinCloneOp<double>;
-  else throw std::runtime_error("Invalid mutation strategy parameter crossover type");
+	if (crossStdevParam.value() == std::string("discrete"))
+	    ptStdevAtomCross = new eoDoubleExchange;
+	else if (crossStdevParam.value() == std::string("intermediate"))
+	    ptStdevAtomCross = new eoDoubleIntermediate;
+	else if (crossStdevParam.value() == std::string("none"))
+	    ptStdevAtomCross = new eoBinCloneOp<double>;
+	else throw std::runtime_error("Invalid mutation strategy parameter crossover type");
 
-  // and build the indi Xover
-  if (crossTypeParam.value() == std::string("global"))
-    ptCross = new eoEsGlobalXover<EOT>(*ptObjAtomCross, *ptStdevAtomCross);
-  else if (crossTypeParam.value() == std::string("standard"))
-    {	   // using a standard eoBinOp, but wrap it into an eoGenOp
-      eoBinOp<EOT> & crossTmp = _state.storeFunctor(
-	     new eoEsStandardXover<EOT>(*ptObjAtomCross, *ptStdevAtomCross)
-	     );
-      ptCross = new eoBinGenOp<EOT>(crossTmp);
+	// and build the indi Xover
+	if (crossTypeParam.value() == std::string("global"))
+	    ptCross = new eoEsGlobalXover<EOT>(*ptObjAtomCross, *ptStdevAtomCross);
+	else if (crossTypeParam.value() == std::string("standard"))
+	{	   // using a standard eoBinOp, but wrap it into an eoGenOp
+	    eoBinOp<EOT> & crossTmp = _state.storeFunctor(
+		new eoEsStandardXover<EOT>(*ptObjAtomCross, *ptStdevAtomCross)
+		);
+	    ptCross = new eoBinGenOp<EOT>(crossTmp);
+	}
+	else throw std::runtime_error("Invalide Object variable crossover type");
+
+	// now that everything is OK, DON'T FORGET TO STORE MEMORY
+	_state.storeFunctor(ptObjAtomCross);
+	_state.storeFunctor(ptStdevAtomCross);
+	_state.storeFunctor(ptCross);
+
+	//  mutation
+	/////////////
+
+	// Ok, time to set up the self-adaptive mutation
+	// Proxy for the mutation parameters
+	eoEsMutationInit mutateInit(_parser, "Variation Operators");
+
+	eoEsMutate<EOT> & mut =  _state.storeFunctor(
+	    new eoEsMutate<EOT>(mutateInit, boundsParam.value()));
+
+	// now the general op - a sequential application of crossover and mutatation
+	// no need to first have crossover combined with a clone as it is an
+	// eoBinOp and not an eoQuadOp as in SGA paradigm
+
+	eoSequentialOp<EOT> & op = _state.storeFunctor(new eoSequentialOp<EOT>);
+	op.add(*ptCross, pCrossParam.value());
+	op.add(mut, pMutParam.value());
+
+	// that's it!
+	return op;
     }
-  else throw std::runtime_error("Invalide Object variable crossover type");
 
-  // now that everything is OK, DON'T FORGET TO STORE MEMORY
-  _state.storeFunctor(ptObjAtomCross);
-  _state.storeFunctor(ptStdevAtomCross);
-  _state.storeFunctor(ptCross);
-
-  //  mutation
-  /////////////
-
-  // Ok, time to set up the self-adaptive mutation
-  // Proxy for the mutation parameters
-  eoEsMutationInit mutateInit(_parser, "Variation Operators");
-
-  eoEsMutate<EOT> & mut =  _state.storeFunctor(
-      new eoEsMutate<EOT>(mutateInit, boundsParam.value()));
-
-  // now the general op - a sequential application of crossover and mutatation
-  // no need to first have crossover combined with a clone as it is an
-  // eoBinOp and not an eoQuadOp as in SGA paradigm
-
-  eoSequentialOp<EOT> & op = _state.storeFunctor(new eoSequentialOp<EOT>);
-  op.add(*ptCross, pCrossParam.value());
-  op.add(mut, pMutParam.value());
-
-  // that's it!
-  return op;
 }
-#endif // EO_make_op_h
 
+#endif // EO_make_op_h
 
 /** @} */
 

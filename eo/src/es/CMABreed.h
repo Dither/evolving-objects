@@ -31,48 +31,52 @@
 
 #include <algorithm>
 
-/// @todo handle bounds
-template <class FitT>
-class eoCMABreed : public eoBreed< eoVector<FitT, double> > {
+namespace eo
+{
+
+    /// @todo handle bounds
+    template <class FitT>
+    class eoCMABreed : public eoBreed< eoVector<FitT, double> > {
     
-    eo::CMAState& state;
-    unsigned lambda;
+	eo::CMAState& state;
+	unsigned lambda;
     
-    typedef eoVector<FitT, double> EOT;
+	typedef eoVector<FitT, double> EOT;
     
     public:
-    eoCMABreed(eo::CMAState& state_, unsigned lambda_) : state(state_), lambda(lambda_) {}
+	eoCMABreed(eo::CMAState& state_, unsigned lambda_) : state(state_), lambda(lambda_) {}
     
-    void operator()(const eoPop<EOT>& parents, eoPop<EOT>& offspring) {
+	void operator()(const eoPop<EOT>& parents, eoPop<EOT>& offspring) {
 	
-	// two temporary arrays of pointers to store the sorted population
-	std::vector<const EOT*> sorted(parents.size());
+	    // two temporary arrays of pointers to store the sorted population
+	    std::vector<const EOT*> sorted(parents.size());
 	
-        // mu stores population as vector (instead of eoPop)
-        std::vector<const std::vector<double>* > mu(parents.size());
+	    // mu stores population as vector (instead of eoPop)
+	    std::vector<const std::vector<double>* > mu(parents.size());
 	
-	parents.sort(sorted);
-	for (unsigned i = 0; i < sorted.size(); ++i) {
-	    mu[i] = static_cast< const std::vector<double>* >( sorted[i] );
-	}
+	    parents.sort(sorted);
+	    for (unsigned i = 0; i < sorted.size(); ++i) {
+		mu[i] = static_cast< const std::vector<double>* >( sorted[i] );
+	    }
 	
-	// learn
-	state.reestimate(mu, sorted[0]->fitness(), sorted.back()->fitness());
+	    // learn
+	    state.reestimate(mu, sorted[0]->fitness(), sorted.back()->fitness());
 	
-	if (!state.updateEigenSystem(10)) {
-	    std::cerr << "No good eigensystem found" << std::endl;
-	}
+	    if (!state.updateEigenSystem(10)) {
+		std::cerr << "No good eigensystem found" << std::endl;
+	    }
 	
-	// generate
-	offspring.resize(lambda);
+	    // generate
+	    offspring.resize(lambda);
 
-	for (unsigned i = 0; i < lambda; ++i) {
-	    state.sample( static_cast< std::vector<double>& >( offspring[i] ));
-	    offspring[i].invalidate();
-	}
+	    for (unsigned i = 0; i < lambda; ++i) {
+		state.sample( static_cast< std::vector<double>& >( offspring[i] ));
+		offspring[i].invalidate();
+	    }
 	
-    }
-};
+	}
+    };
 
+}
 
 #endif

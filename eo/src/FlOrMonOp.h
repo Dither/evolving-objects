@@ -30,93 +30,98 @@
 #include <eoOp.h>
 #include <eoInit.h>
 
-/** @addtogroup Variators
- * @{
- */
-
-/** Base classes for generic mutations on fixed length chromosomes.
- *  Contains 2 classes that both use an atomic mutation
- *      eoFlOrAllMutation applies the atom mutation to all components with given rate
- *      eoFlOrKMutation applies the atom mutation to a fixed nb of components
- *
- * Remark: the standard bit-flip mutation is an eoFlOrAllMutation 
- *                      with atom mutation == bitflipping
- */
-
-/** applies an atomic mutation to all the components with a given rate
- */
-template <class EOT>
-class eoFlOrAllMutation : public eoMonOp<EOT>
+namespace eo
 {
-public :
 
-  typedef typename EOT::AtomType AtomType;
+    /** @addtogroup Variators
+     * @{
+     */
 
-  /** default ctor: requires an Atom mutation and a rate */
-  eoFlOrAllMutation(eoMonOp<AtomType> & _atomMutation, double _rate=1.0) :
-    atomMutation(_atomMutation), rate(_rate) {}
+    /** Base classes for generic mutations on fixed length chromosomes.
+     *  Contains 2 classes that both use an atomic mutation
+     *      eoFlOrAllMutation applies the atom mutation to all components with given rate
+     *      eoFlOrKMutation applies the atom mutation to a fixed nb of components
+     *
+     * Remark: the standard bit-flip mutation is an eoFlOrAllMutation 
+     *                      with atom mutation == bitflipping
+     */
 
-  /** applies the atom mutation to all components with given rate */
-  bool operator()(EOT & _eo)
-  {
-    bool modified=false;
-    for (unsigned i=0; i<_eo.size(); i++)
-      if (eo::rng.flip(rate))
-	if (atomMutation(_eo[i]))
-	  modified = true;
+    /** applies an atomic mutation to all the components with a given rate
+     */
+    template <class EOT>
+    class eoFlOrAllMutation : public eoMonOp<EOT>
+    {
+    public :
 
-    return modified;
-  }
+	typedef typename EOT::AtomType AtomType;
 
-  /** inherited className() */
-  virtual std::string className() const 
-  { 
-    return "eoFlOrAllMutation(" + atomMutation.className() + ")";
-  }
+	/** default ctor: requires an Atom mutation and a rate */
+	eoFlOrAllMutation(eoMonOp<AtomType> & _atomMutation, double _rate=1.0) :
+	    atomMutation(_atomMutation), rate(_rate) {}
 
-private:
-  eoMonOp<AtomType> & atomMutation; // the atom mutation
-  double rate;			   // the mutation rate PER ATOM
-};
+	/** applies the atom mutation to all components with given rate */
+	bool operator()(EOT & _eo)
+	{
+	    bool modified=false;
+	    for (unsigned i=0; i<_eo.size(); i++)
+		if (eo::rng.flip(rate))
+		    if (atomMutation(_eo[i]))
+			modified = true;
 
-/** Applies an atomic mutation to a fixed
-    number of components (1 by default)
- */
-template <class EOT>
-class eoFlOrKMutation : public eoMonOp<EOT>
-{
-public :
+	    return modified;
+	}
 
-  typedef typename EOT::AtomType AtomType;
+	/** inherited className() */
+	virtual std::string className() const 
+	{ 
+	    return "eoFlOrAllMutation(" + atomMutation.className() + ")";
+	}
 
-  /** default ctor: requires an Atom mutation */
-  eoFlOrKMutation(eoMonOp<AtomType> & _atomMutation, unsigned _nb=1) :
-    nb(_nb), atomMutation(_atomMutation) {}
+    private:
+	eoMonOp<AtomType> & atomMutation; // the atom mutation
+	double rate;			   // the mutation rate PER ATOM
+    };
+
+    /** Applies an atomic mutation to a fixed
+	number of components (1 by default)
+    */
+    template <class EOT>
+    class eoFlOrKMutation : public eoMonOp<EOT>
+    {
+    public :
+
+	typedef typename EOT::AtomType AtomType;
+
+	/** default ctor: requires an Atom mutation */
+	eoFlOrKMutation(eoMonOp<AtomType> & _atomMutation, unsigned _nb=1) :
+	    nb(_nb), atomMutation(_atomMutation) {}
 
 
-  /** applies the atom mutation to K randomly selected components */
-  bool operator()(EOT & _eo)
-  {
-    bool modified=false;
-    for (unsigned k=0; k<nb; k++)
-      {
-	unsigned i = rng.random(_eo.size()); // we don't test for duplicates...
-	if (atomMutation(_eo[i]))
-	  modified = true;
-      }
-    return modified;
-  }
+	/** applies the atom mutation to K randomly selected components */
+	bool operator()(EOT & _eo)
+	{
+	    bool modified=false;
+	    for (unsigned k=0; k<nb; k++)
+		{
+		    unsigned i = rng.random(_eo.size()); // we don't test for duplicates...
+		    if (atomMutation(_eo[i]))
+			modified = true;
+		}
+	    return modified;
+	}
 
-  /** inherited className() */
-  virtual std::string className() const
-  { 
-    return "eoFlOrKMutation(" + atomMutation.className() + ")";
-  }
+	/** inherited className() */
+	virtual std::string className() const
+	{ 
+	    return "eoFlOrKMutation(" + atomMutation.className() + ")";
+	}
 
-private:
-  unsigned nb;			   // the number of atoms to mutate
-  eoMonOp<AtomType> & atomMutation; // the atom mutation
-};
+    private:
+	unsigned nb;			   // the number of atoms to mutate
+	eoMonOp<AtomType> & atomMutation; // the atom mutation
+    };
+
+}
 
 /** @} */
 

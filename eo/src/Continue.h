@@ -29,43 +29,48 @@
 #include <eoPop.h>
 #include <eoPersistent.h>
 
-/** @defgroup Continuators Stopping criteria
- *
- * A stopping criterion is called a "continue". This is a functor that is called at each generation end 
- * and that return true if one should stop the search.
- *
- *  @ingroup Utilities
- */
-
-/** Termination condition for the genetic algorithm
- * Takes the population as input, returns true for continue,
- * false for termination 
- *
- * @ingroup Continuators
- * @ingroup Core
- */
-template< class EOT>
-class eoContinue : public eoUF<const eoPop<EOT>&, bool>, public eoPersistent 
+namespace eo
 {
-public:
-  virtual std::string className(void) const { return "eoContinue"; }
 
-  /** Read from a stream
-   * @param __is istream to read from
-   */
-  void readFrom (std :: istream & __is) {
-      (void)__is;
-    /* It should be implemented by subclasses ! */
-  }
+    /** @defgroup Continuators Stopping criteria
+     *
+     * A stopping criterion is called a "continue". This is a functor that is called at each generation end 
+     * and that return true if one should stop the search.
+     *
+     *  @ingroup Utilities
+     */
+
+    /** Termination condition for the genetic algorithm
+     * Takes the population as input, returns true for continue,
+     * false for termination 
+     *
+     * @ingroup Continuators
+     * @ingroup Core
+     */
+    template< class EOT>
+    class eoContinue : public eoUF<const eoPop<EOT>&, bool>, public eoPersistent 
+    {
+    public:
+	virtual std::string className(void) const { return "eoContinue"; }
+
+	/** Read from a stream
+	 * @param __is istream to read from
+	 */
+	void readFrom (std :: istream & __is) {
+	    (void)__is;
+	    /* It should be implemented by subclasses ! */
+	}
   
-  /** Print on a stream
-   * @param __os ostream to print on
-   */
-  void printOn (std :: ostream & __os) const {
-      (void)__os;
-    /* It should be implemented by subclasses ! */
-  }
-};
+	/** Print on a stream
+	 * @param __os ostream to print on
+	 */
+	void printOn (std :: ostream & __os) const {
+	    (void)__os;
+	    /* It should be implemented by subclasses ! */
+	}
+    };
+
+}
 
 #endif
 

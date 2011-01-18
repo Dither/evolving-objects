@@ -30,65 +30,60 @@
 #include <eoNeighborhood.h>
 //-----------------------------------------------------------------------------
 
-
-/**
- * Defines the interface of a swarm topology. Can be static (usually the case for the social topologies)
- * or dynamic. It's the same interface for both social and physical topologies. ("social" topology means
- * social-neighborhood-based toplogy and so on ...)
- *
- * @ingroup Selectors
- * @ingroup Core
- */
-template < class POT > class eoTopology:public eoPop < POT >
+namespace eo
 {
-public:
 
     /**
-     * Builds the neighborhoods contained in the topology.
+     * Defines the interface of a swarm topology. Can be static (usually the case for the social topologies)
+     * or dynamic. It's the same interface for both social and physical topologies. ("social" topology means
+     * social-neighborhood-based toplogy and so on ...)
+     *
+     * @ingroup Selectors
+     * @ingroup Core
      */
-    virtual void setup(const eoPop<POT> &)=0;
-
-    /**
-     * Updates the neighborhood of the given particle and its indice in the population
-     */
-    virtual void updateNeighborhood(POT & ,unsigned)=0;
-
-
-    /**
-      * Updates the neighborhood of the given particle thanks to a whole population (used for distributed or synchronous PSO)
-      */
-    virtual void updateNeighborhood(eoPop < POT > &_pop)
+    template < class POT > class eoTopology:public eoPop < POT >
     {
-        for (unsigned i = 0; i < _pop.size (); i++)
-            updateNeighborhood(_pop[i],i);
-    }
+    public:
+
+	/**
+	 * Builds the neighborhoods contained in the topology.
+	 */
+	virtual void setup(const eoPop<POT> &)=0;
+
+	/**
+	 * Updates the neighborhood of the given particle and its indice in the population
+	 */
+	virtual void updateNeighborhood(POT & ,unsigned)=0;
 
 
-    /**
-     * Builds the neighborhoods contained in the topology.
-     */
-    virtual POT & best (unsigned ) = 0;
+	/**
+	 * Updates the neighborhood of the given particle thanks to a whole population (used for distributed or synchronous PSO)
+	 */
+	virtual void updateNeighborhood(eoPop < POT > &_pop)
+	{
+	    for (unsigned i = 0; i < _pop.size (); i++)
+		updateNeighborhood(_pop[i],i);
+	}
+
+
+	/**
+	 * Builds the neighborhoods contained in the topology.
+	 */
+	virtual POT & best (unsigned ) = 0;
 
 
   	/*
 	 * Return the global best of the topology
 	 */
-    virtual POT & globalBest() = 0;
+	virtual POT & globalBest() = 0;
 
 
-    /**
-     * Prints the neighborhoods contained in the topology.
-     */
-    virtual void printOn() = 0;
-};
+	/**
+	 * Prints the neighborhoods contained in the topology.
+	 */
+	virtual void printOn() = 0;
+    };
 
+}
 
 #endif /*EOTOPOLOGY_H_ */
-
-
-
-
-
-
-
-

@@ -33,30 +33,35 @@
 #include <signal.h>
 #include <iostream>
 
-/**
- * @addtogroup Continuators
- * @{
- */
-
-// --- Global variables - but don't know what else to do - MS ---
-bool     ask_for_stop = false;
-bool     existCtrlCContinue = false;
-
-//
-// The signal handler - installed in the eoCtrlCContinue Ctor
-//
-void signal_handler( int sig )
-// ---------------------------
+namespace eo
 {
-    // --- On veut la paix, jusqu'a la fin ---
+
+    /**
+     * @addtogroup Continuators
+     * @{
+     */
+
+    // --- Global variables - but don't know what else to do - MS ---
+    bool     ask_for_stop = false;
+    bool     existCtrlCContinue = false;
+
+    //
+    // The signal handler - installed in the eoCtrlCContinue Ctor
+    //
+    void signal_handler( int sig )
+    // ---------------------------
+    {
+	// --- On veut la paix, jusqu'a la fin ---
 #ifndef _WINDOWS
-  #ifdef SIGQUIT
-      signal( SIGINT, SIG_IGN );
-      signal( SIGQUIT, SIG_IGN );
-      eo::log << eo::logging << "Ctrl C entered ... closing down" << std::endl ;
-      ask_for_stop = true;
-  #endif
+#ifdef SIGQUIT
+	signal( SIGINT, SIG_IGN );
+	signal( SIGQUIT, SIG_IGN );
+	eo::log << eo::logging << "Ctrl C entered ... closing down" << std::endl ;
+	ask_for_stop = true;
 #endif
+#endif
+    }
+
 }
 
 /** @} */

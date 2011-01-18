@@ -27,57 +27,60 @@ Johann Dréo <johann.dreo@thalesgroup.com>
 #include <ctime>
 #include <stdexcept>
 
-class eoMaxException : public std::exception {};
-
-
-
-/*!
-An error that signals that a maximum elapsed time has been reached.
-
-Thrown by @see eoEvalTimeThrowException
-
-@ingroup Evaluation
-*/
-class eoMaxTimeException : public eoMaxException
+namespace eo
 {
-public:
-    eoMaxTimeException( time_t elapsed) : _elapsed(elapsed) {}
 
-    virtual const char* what() const throw()
+    class eoMaxException : public std::exception {};
+
+
+    /*!
+      An error that signals that a maximum elapsed time has been reached.
+
+      Thrown by @see eoEvalTimeThrowException
+
+      @ingroup Evaluation
+    */
+    class eoMaxTimeException : public eoMaxException
     {
-        std::ostringstream ss;
-        ss << "STOP in eoMaxTimeException: the maximum number of wallclock seconds has been reached (" << _elapsed << ").";
-        return ss.str().c_str();
-    }
+    public:
+	eoMaxTimeException( time_t elapsed) : _elapsed(elapsed) {}
 
-private:
-    time_t _elapsed;
-};
+	virtual const char* what() const throw()
+	{
+	    std::ostringstream ss;
+	    ss << "STOP in eoMaxTimeException: the maximum number of wallclock seconds has been reached (" << _elapsed << ").";
+	    return ss.str().c_str();
+	}
+
+    private:
+	time_t _elapsed;
+    };
 
 
 
-/*!
-An error that signals that a maximum number of evaluations has been reached.
+    /*!
+      An error that signals that a maximum number of evaluations has been reached.
 
-Thrown by @see eoEvalEvalThrowException
+      Thrown by @see eoEvalEvalThrowException
 
-@ingroup Evaluation
-*/
-class eoMaxEvalException : public eoMaxException
-{
-public:
-    eoMaxEvalException(unsigned long threshold) : _threshold(threshold){}
-
-    virtual const char* what() const throw()
+      @ingroup Evaluation
+    */
+    class eoMaxEvalException : public eoMaxException
     {
-        std::ostringstream ss;
-        ss << "STOP in eoMaxEvalException: the maximum number of evaluation has been reached (" << _threshold << ").";
-        return ss.str().c_str();
-    }
+    public:
+	eoMaxEvalException(unsigned long threshold) : _threshold(threshold){}
 
-private:
-    unsigned long _threshold;
-};
+	virtual const char* what() const throw()
+	{
+	    std::ostringstream ss;
+	    ss << "STOP in eoMaxEvalException: the maximum number of evaluation has been reached (" << _threshold << ").";
+	    return ss.str().c_str();
+	}
 
+    private:
+	unsigned long _threshold;
+    };
+
+}
 
 #endif // __eoExceptions_h__

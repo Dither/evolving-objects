@@ -34,25 +34,29 @@
 #include <eoReplacement.h>
 #include <utils/eoHowMany.h>
 //-----------------------------------------------------------------------------
-/** 
-Replacement strategies that combine en eoMerge and an eoReduce.
 
-@class eoMergeReduce, the base (pure abstract) class
-@class eoPlusReplacement the ES plus strategy
-@class eoCommaReplacement the ES comma strategy
-*/
-
-/**
-eoMergeReduce: abstract replacement strategy that is just an application of 
-an embedded merge, followed by an embedded reduce
-@ingroup Replacors
-*/
-template <class EOT>
-class eoMergeReduce : public eoReplacement<EOT>
+namespace eo
 {
+
+    /** 
+	Replacement strategies that combine en eoMerge and an eoReduce.
+
+	@class eoMergeReduce, the base (pure abstract) class
+	@class eoPlusReplacement the ES plus strategy
+	@class eoCommaReplacement the ES comma strategy
+    */
+
+    /**
+       eoMergeReduce: abstract replacement strategy that is just an application of 
+       an embedded merge, followed by an embedded reduce
+       @ingroup Replacors
+    */
+    template <class EOT>
+    class eoMergeReduce : public eoReplacement<EOT>
+    {
     public:
         eoMergeReduce(eoMerge<EOT>& _merge, eoReduce<EOT>& _reduce) :
-        merge(_merge), reduce(_reduce)
+	    merge(_merge), reduce(_reduce)
         {}
 
         void operator()(eoPop<EOT>& _parents, eoPop<EOT>& _offspring)
@@ -65,55 +69,55 @@ class eoMergeReduce : public eoReplacement<EOT>
     private :
         eoMerge<EOT>& merge;
         eoReduce<EOT>& reduce;
-};
+    };
 
-/**
-ES type of replacement strategy: first add parents to population, then truncate
-@ingroup Replacors
-*/
-template <class EOT>
-class eoPlusReplacement : public eoMergeReduce<EOT>
-{
+    /**
+       ES type of replacement strategy: first add parents to population, then truncate
+       @ingroup Replacors
+    */
+    template <class EOT>
+    class eoPlusReplacement : public eoMergeReduce<EOT>
+    {
     public :
         eoPlusReplacement() : eoMergeReduce<EOT>(plus, truncate) {}
 
     private :
         eoPlus<EOT> plus;
         eoTruncate<EOT> truncate;
-};
+    };
 
-/**
-ES type of replacement strategy: ignore parents, truncate offspring
-@ingroup Replacors
-*/
-template <class EOT>
-class eoCommaReplacement : public eoMergeReduce<EOT>
-{
+    /**
+       ES type of replacement strategy: ignore parents, truncate offspring
+       @ingroup Replacors
+    */
+    template <class EOT>
+    class eoCommaReplacement : public eoMergeReduce<EOT>
+    {
     public :
         eoCommaReplacement() : eoMergeReduce<EOT>(no_elite, truncate) {}
 
     private :
         eoNoElitism<EOT> no_elite;
         eoTruncate<EOT> truncate;
-};
+    };
 
-/**
-EP type of replacement strategy: first add parents to population, 
-   then truncate using EP tournament
-@ingroup Replacors
-*/
-template <class EOT>
-class eoEPReplacement : public eoMergeReduce<EOT>
-{
-public :
-  eoEPReplacement(int _tSize) : eoMergeReduce<EOT>(plus, truncate), truncate(_tSize)
-    //  {truncate.setSize(_tSize);}
-  {}
-private :
-  eoPlus<EOT> plus;
-  eoEPReduce<EOT> truncate;
-};
+    /**
+       EP type of replacement strategy: first add parents to population, 
+       then truncate using EP tournament
+       @ingroup Replacors
+    */
+    template <class EOT>
+    class eoEPReplacement : public eoMergeReduce<EOT>
+    {
+    public :
+	eoEPReplacement(int _tSize) : eoMergeReduce<EOT>(plus, truncate), truncate(_tSize)
+				      //  {truncate.setSize(_tSize);}
+	{}
+    private :
+	eoPlus<EOT> plus;
+	eoEPReduce<EOT> truncate;
+    };
 
-
+}
 
 #endif

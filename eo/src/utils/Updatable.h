@@ -29,91 +29,96 @@
 
 #include <utils/eoUpdater.h>
 
-/**
-    eoUpdatable is a generic class for adding updatation to an existing class
-    Just says it has an update() method
-
-    @ingroup Utilities
-*/
-class eoUpdatable
+namespace eo
 {
-public:
 
-    /** @brief Virtual destructor */
-    virtual ~eoUpdatable() {};
+    /**
+       eoUpdatable is a generic class for adding updatation to an existing class
+       Just says it has an update() method
 
-    virtual void update() = 0;
-};
-
-
-
-/**
-   A base class to actually update an eoUpdatable object
-
-    @ingroup Utilities
-*/
-class eoDynUpdater : public eoUpdater
-{public :
-    eoDynUpdater(eoUpdatable & _toUpdate) : toUpdate(_toUpdate) {};
-
-    virtual void operator()()
+       @ingroup Utilities
+    */
+    class eoUpdatable
     {
-        toUpdate.update();
-    }
+    public:
 
-private:
-    eoUpdatable& toUpdate;
-};
+	/** @brief Virtual destructor */
+	virtual ~eoUpdatable() {};
 
-/**
-   An eoUpdater to update an eoUpdatable object every given time interval
+	virtual void update() = 0;
+    };
 
-    @ingroup Utilities
-*/
-class eoTimedDynUpdate : public eoDynUpdater
-{
-public :
-    eoTimedDynUpdate(eoUpdatable & _toUpdate, time_t _interval) :
-    eoDynUpdater(_toUpdate),
-        interval(_interval), last_time(time(0)), first_time(time(0)) {}
 
-    void operator()(void)
-      {
-	time_t now = time(0);
 
-	if (now >= last_time + interval)
-	  {
-	    last_time = now;
-	    eoDynUpdater::operator() ();
-	  }
-      }
-private :
-    const time_t interval;
-    time_t last_time;
-    const time_t first_time;
-};
+    /**
+       A base class to actually update an eoUpdatable object
 
-/**
-   An eoUpdater to update an eoUpdatable object every given tic
+       @ingroup Utilities
+    */
+    class eoDynUpdater : public eoUpdater
+    {public :
+	eoDynUpdater(eoUpdatable & _toUpdate) : toUpdate(_toUpdate) {};
 
-    @ingroup Utilities
-*/
-class eoCountedDynUpdate : public eoDynUpdater
-{
-public :
-    eoCountedDynUpdate(eoUpdatable & _toUpdate, unsigned _interval)
-        : eoDynUpdater(_toUpdate), interval(_interval), counter(0) {}
+	virtual void operator()()
+	{
+	    toUpdate.update();
+	}
 
-    void operator()(void)
-      {
-	if (++counter % interval == 0)
-	  {
-	    eoDynUpdater::operator() ();
-	  }
-      }
-private :
-    const unsigned interval;
-    unsigned counter;
-};
+    private:
+	eoUpdatable& toUpdate;
+    };
+
+    /**
+       An eoUpdater to update an eoUpdatable object every given time interval
+
+       @ingroup Utilities
+    */
+    class eoTimedDynUpdate : public eoDynUpdater
+    {
+    public :
+	eoTimedDynUpdate(eoUpdatable & _toUpdate, time_t _interval) :
+	    eoDynUpdater(_toUpdate),
+	    interval(_interval), last_time(time(0)), first_time(time(0)) {}
+
+	void operator()(void)
+	{
+	    time_t now = time(0);
+
+	    if (now >= last_time + interval)
+		{
+		    last_time = now;
+		    eoDynUpdater::operator() ();
+		}
+	}
+    private :
+	const time_t interval;
+	time_t last_time;
+	const time_t first_time;
+    };
+
+    /**
+       An eoUpdater to update an eoUpdatable object every given tic
+
+       @ingroup Utilities
+    */
+    class eoCountedDynUpdate : public eoDynUpdater
+    {
+    public :
+	eoCountedDynUpdate(eoUpdatable & _toUpdate, unsigned _interval)
+	    : eoDynUpdater(_toUpdate), interval(_interval), counter(0) {}
+
+	void operator()(void)
+	{
+	    if (++counter % interval == 0)
+		{
+		    eoDynUpdater::operator() ();
+		}
+	}
+    private :
+	const unsigned interval;
+	unsigned counter;
+    };
+
+}
 
 #endif

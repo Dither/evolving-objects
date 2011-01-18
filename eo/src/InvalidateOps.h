@@ -29,107 +29,112 @@
 
 #include <eoOp.h>
 
-/** @addtogroup Utilities
-
-One of the invalidator operators. Use this one as a 'hat' on an operator
-that is defined to work on a generic datatype. This functor will then check
-the return type of the operator and invalidate the fitness of the individual.
-
-This functor is used in algorithms that work with straight eoMonOp, eoBinOp
-or eoQuadOp operators, for instance eoSGA. Note that eoGenOp derived operators
-generally do invalidate the fitness of the objects they have changed.
-
-Return value means "Has_Changed" and not "Needs_To_Be_Invalidated"
-as successive invalidation are not really a problem
-*/
-
-template <class EOT>
-class eoInvalidateMonOp : public eoMonOp<EOT>
+namespace eo
 {
-  public:
-    eoInvalidateMonOp(eoMonOp<EOT>& _op) : op(_op) {}
 
-    bool operator()(EOT& _eo)
+    /** @addtogroup Utilities
+
+	One of the invalidator operators. Use this one as a 'hat' on an operator
+	that is defined to work on a generic datatype. This functor will then check
+	the return type of the operator and invalidate the fitness of the individual.
+
+	This functor is used in algorithms that work with straight eoMonOp, eoBinOp
+	or eoQuadOp operators, for instance eoSGA. Note that eoGenOp derived operators
+	generally do invalidate the fitness of the objects they have changed.
+
+	Return value means "Has_Changed" and not "Needs_To_Be_Invalidated"
+	as successive invalidation are not really a problem
+    */
+
+    template <class EOT>
+    class eoInvalidateMonOp : public eoMonOp<EOT>
     {
-      if (op(_eo))
-      {
-        _eo.invalidate();
-        return true;
-      }
+    public:
+	eoInvalidateMonOp(eoMonOp<EOT>& _op) : op(_op) {}
 
-      return false; 
-    }
+	bool operator()(EOT& _eo)
+	{
+	    if (op(_eo))
+		{
+		    _eo.invalidate();
+		    return true;
+		}
 
-  private:
-    eoMonOp<EOT>& op;
-};
+	    return false; 
+	}
 
-/**
-One of the invalidator operators. Use this one as a 'hat' on an operator
-that is defined to work on a generic datatype. This functor will then check
-the return type of the operator and invalidate the fitness of the individual.
+    private:
+	eoMonOp<EOT>& op;
+    };
 
-This functor is used in algorithms that work with straight eoMonOp, eoBinOp
-or eoQuadOp operators, for instance eoSGA. Note that eoGenOp derived operators
-generally do invalidate the fitness of the objects they have changed.
+    /**
+       One of the invalidator operators. Use this one as a 'hat' on an operator
+       that is defined to work on a generic datatype. This functor will then check
+       the return type of the operator and invalidate the fitness of the individual.
 
-Return value means "Has_Changed" and not "Needs_To_Be_Invalidated"
-as successive invalidation are not really a problem
-*/
+       This functor is used in algorithms that work with straight eoMonOp, eoBinOp
+       or eoQuadOp operators, for instance eoSGA. Note that eoGenOp derived operators
+       generally do invalidate the fitness of the objects they have changed.
 
-template <class EOT>
-class eoInvalidateBinOp : public eoBinOp<EOT>
-{
-  public:
-    eoInvalidateBinOp(eoBinOp<EOT>& _op) : op(_op) {}
+       Return value means "Has_Changed" and not "Needs_To_Be_Invalidated"
+       as successive invalidation are not really a problem
+    */
 
-    bool operator()(EOT& _eo, const EOT& _eo2)
+    template <class EOT>
+    class eoInvalidateBinOp : public eoBinOp<EOT>
     {
-      if (op(_eo, _eo2))
-      {
-        _eo.invalidate();
-        return true;
-      }
+    public:
+	eoInvalidateBinOp(eoBinOp<EOT>& _op) : op(_op) {}
 
-      return false;
-    }
+	bool operator()(EOT& _eo, const EOT& _eo2)
+	{
+	    if (op(_eo, _eo2))
+		{
+		    _eo.invalidate();
+		    return true;
+		}
 
-  private:
-    eoBinOp<EOT>& op;
-};
+	    return false;
+	}
 
-/**
-One of the invalidator operators. Use this one as a 'hat' on an operator
-that is defined to work on a generic datatype. This functor will then check
-the return type of the operator and invalidate the fitness of the individual.
+    private:
+	eoBinOp<EOT>& op;
+    };
 
-This functor is used in algorithms that work with straight eoMonOp, eoBinOp
-or eoQuadOp operators, for instance eoSGA. Note that eoGenOp derived operators
-generally do invalidate the fitness of the objects they have changed.
+    /**
+       One of the invalidator operators. Use this one as a 'hat' on an operator
+       that is defined to work on a generic datatype. This functor will then check
+       the return type of the operator and invalidate the fitness of the individual.
 
-Return value means "Has_Changed" and not "Needs_To_Be_Invalidated"
-as successive invalidation are not really a problem
-*/
+       This functor is used in algorithms that work with straight eoMonOp, eoBinOp
+       or eoQuadOp operators, for instance eoSGA. Note that eoGenOp derived operators
+       generally do invalidate the fitness of the objects they have changed.
 
-template <class EOT>
-class eoInvalidateQuadOp : public eoQuadOp<EOT>
-{
-  public:
-    eoInvalidateQuadOp(eoQuadOp<EOT>& _op) : op(_op) {}
+       Return value means "Has_Changed" and not "Needs_To_Be_Invalidated"
+       as successive invalidation are not really a problem
+    */
 
-    bool operator()(EOT& _eo1, EOT& _eo2)
+    template <class EOT>
+    class eoInvalidateQuadOp : public eoQuadOp<EOT>
     {
-      if (op(_eo1, _eo2))
-      {
-        _eo1.invalidate();
-        _eo2.invalidate();
-        return true;
-      }
-      return false;
-    }
+    public:
+	eoInvalidateQuadOp(eoQuadOp<EOT>& _op) : op(_op) {}
 
-  private:
-    eoQuadOp<EOT>& op;
-};
+	bool operator()(EOT& _eo1, EOT& _eo2)
+	{
+	    if (op(_eo1, _eo2))
+		{
+		    _eo1.invalidate();
+		    _eo2.invalidate();
+		    return true;
+		}
+	    return false;
+	}
+
+    private:
+	eoQuadOp<EOT>& op;
+    };
+
+}
 
 #endif

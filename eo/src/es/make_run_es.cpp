@@ -49,39 +49,43 @@
 // the instanciating fitnesses
 #include <eoScalarFitness.h>
 
-/// The following function merely call the templatized do_* functions above
-
-// run
-/////////
-void run_ea(eoAlgo<eoEsSimple<double> >& _ga, eoPop<eoEsSimple<double> >& _pop)
+namespace eo
 {
-  do_run(_ga, _pop);
-}
 
-void run_ea(eoAlgo<eoEsSimple<eoMinimizingFitness> >& _ga, eoPop<eoEsSimple<eoMinimizingFitness> >& _pop)
-{
-  do_run(_ga, _pop);
-}
+    /// The following function merely call the templatized do_* functions above
 
-/////////
-void run_ea(eoAlgo<eoEsStdev<double> >& _ga, eoPop<eoEsStdev<double> >& _pop)
-{
-  do_run(_ga, _pop);
-}
+    // run
+    /////////
+    void run_ea(eoAlgo<eoEsSimple<double> >& _ga, eoPop<eoEsSimple<double> >& _pop)
+    {
+	do_run(_ga, _pop);
+    }
 
-void run_ea(eoAlgo<eoEsStdev<eoMinimizingFitness> >& _ga, eoPop<eoEsStdev<eoMinimizingFitness> >& _pop)
-{
-  do_run(_ga, _pop);
-}
+    void run_ea(eoAlgo<eoEsSimple<eoMinimizingFitness> >& _ga, eoPop<eoEsSimple<eoMinimizingFitness> >& _pop)
+    {
+	do_run(_ga, _pop);
+    }
 
-/////////
-void run_ea(eoAlgo<eoEsFull<double> >& _ga, eoPop<eoEsFull<double> >& _pop)
-{
-  do_run(_ga, _pop);
-}
+    /////////
+    void run_ea(eoAlgo<eoEsStdev<double> >& _ga, eoPop<eoEsStdev<double> >& _pop)
+    {
+	do_run(_ga, _pop);
+    }
 
-void run_ea(eoAlgo<eoEsFull<eoMinimizingFitness> >& _ga, eoPop<eoEsFull<eoMinimizingFitness> >& _pop)
-{
-  do_run(_ga, _pop);
-}
+    void run_ea(eoAlgo<eoEsStdev<eoMinimizingFitness> >& _ga, eoPop<eoEsStdev<eoMinimizingFitness> >& _pop)
+    {
+	do_run(_ga, _pop);
+    }
 
+    /////////
+    void run_ea(eoAlgo<eoEsFull<double> >& _ga, eoPop<eoEsFull<double> >& _pop)
+    {
+	do_run(_ga, _pop);
+    }
+
+    void run_ea(eoAlgo<eoEsFull<eoMinimizingFitness> >& _ga, eoPop<eoEsFull<eoMinimizingFitness> >& _pop)
+    {
+	do_run(_ga, _pop);
+    }
+
+}

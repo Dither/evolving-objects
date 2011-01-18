@@ -29,49 +29,52 @@ mak@dhi.dk
 
 //-----------------------------------------------------------------------------
 
+namespace eo
+{
 
 /**
 * Especially designed for combinatorial problem such as the TSP.
 *
 * @ingroup Variators
 */
-template<class EOT> class eoTwoOptMutation: public eoMonOp<EOT>
-{
-public:
+    template<class EOT> class eoTwoOptMutation: public eoMonOp<EOT>
+    {
+    public:
 
-    typedef typename EOT::AtomType GeneType;
+	typedef typename EOT::AtomType GeneType;
 
-    /// CTor
-    eoTwoOptMutation(){}
+	/// CTor
+	eoTwoOptMutation(){}
 
-    /// The class name.
-    virtual std::string className() const { return "eoTwoOptMutation"; }
+	/// The class name.
+	virtual std::string className() const { return "eoTwoOptMutation"; }
 
-    /**
-    *
-    * @param _eo The cromosome which is going to be changed.
-    */
-    bool operator()(EOT& _eo) {
-        // generate two different indices
-        unsigned i(eo::rng.random(_eo.size()));
-        unsigned j;
-        do {
-            j = eo::rng.random(_eo.size());
-        } while(i == j);
-        unsigned from(std::min(i,j));
-        unsigned to(std::max(i,j));
-        unsigned idx((to - from)/2);
+	/**
+	*
+	* @param _eo The cromosome which is going to be changed.
+	*/
+	bool operator()(EOT& _eo) {
+	    // generate two different indices
+	    unsigned i(eo::rng.random(_eo.size()));
+	    unsigned j;
+	    do {
+		j = eo::rng.random(_eo.size());
+	    } while(i == j);
+	    unsigned from(std::min(i,j));
+	    unsigned to(std::max(i,j));
+	    unsigned idx((to - from)/2);
 
-        // inverse between from and to
-        for(unsigned k = 0; k <= idx; ++k)
-            std::swap(_eo[from+k],_eo[to-k]);
-        return true;
-    }
+	    // inverse between from and to
+	    for(unsigned k = 0; k <= idx; ++k)
+		std::swap(_eo[from+k],_eo[to-k]);
+	    return true;
+	}
 
-};
+    };
 /** @example t-eoTwoOptMutation.cpp
- */
+*/
 
+}
 
 //-----------------------------------------------------------------------------
 #endif

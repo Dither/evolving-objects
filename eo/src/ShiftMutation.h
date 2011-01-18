@@ -31,61 +31,64 @@
 
 //-----------------------------------------------------------------------------
 
-
-/**
- * Shift two components of a chromosome.
- *
- * @ingroup Variators
- */
-template<class EOT> class eoShiftMutation: public eoMonOp<EOT>
+namespace eo
 {
- public:
- 
-  typedef typename EOT::AtomType GeneType;
- 
-  /// CTor
-  eoShiftMutation(){}
-  
-  
-  /// The class name.
-  virtual std::string className() const { return "eoShiftMutation"; }
 
-
-  /**
-   * Shift two components of the given eoosome.
-   * @param _eo The cromosome which is going to be changed.
-   */
-  bool operator()(EOT& _eo)
+    /**
+     * Shift two components of a chromosome.
+     *
+     * @ingroup Variators
+     */
+    template<class EOT> class eoShiftMutation: public eoMonOp<EOT>
     {
-    	
-      unsigned i, j, from, to; 
-      GeneType tmp;
-      
-      // generate two different indices
-      i=eo::rng.random(_eo.size());
-      do j = eo::rng.random(_eo.size()); while (i == j);	
-      
-      // indexes
-      from=std::min(i,j);
-      to=std::max(i,j);
+    public:
+ 
+	typedef typename EOT::AtomType GeneType;
+ 
+	/// CTor
+	eoShiftMutation(){}
+  
+  
+	/// The class name.
+	virtual std::string className() const { return "eoShiftMutation"; }
 
-      // keep the first component to change
-      tmp=_eo[to];      
+
+	/**
+	 * Shift two components of the given eoosome.
+	 * @param _eo The cromosome which is going to be changed.
+	 */
+	bool operator()(EOT& _eo)
+	{
+    	
+	    unsigned i, j, from, to; 
+	    GeneType tmp;
       
-      // shift
-      for(unsigned int k=to ; k > from ; k--)
+	    // generate two different indices
+	    i=eo::rng.random(_eo.size());
+	    do j = eo::rng.random(_eo.size()); while (i == j);	
+      
+	    // indexes
+	    from=std::min(i,j);
+	    to=std::max(i,j);
+
+	    // keep the first component to change
+	    tmp=_eo[to];      
+      
+	    // shift
+	    for(unsigned int k=to ; k > from ; k--)
 	  	_eo[k]=_eo[k-1];	  	
 	  	
-      // shift the first component
-      _eo[from]=tmp;
+	    // shift the first component
+	    _eo[from]=tmp;
 
-      return true;
-    }
+	    return true;
+	}
     
-};
-/** @example t-eoShiftMutation.cpp
- */ 
+    };
+    /** @example t-eoShiftMutation.cpp
+     */ 
 
+}
 
 //-----------------------------------------------------------------------------
 #endif

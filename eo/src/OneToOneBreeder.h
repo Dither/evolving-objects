@@ -38,85 +38,89 @@
 #include <eoPopulator.h>
 #include <utils/eoHowMany.h>
 
-/** eoOneToOneBreeder: transforms a population using 
- *   - an operator that MODIFIES only one parent from the populator
- *     (though it can use any number aside) and thus generates ONE offspring)
- *   - a local replacement between the parent and its offspring
- *
- * Typically, Differential Evolution (Storn and Price 94) and Deb et al's 
- *   G3 can be built on this
- *
- *  @ingroup Combination
- */
-template<class EOT>
-class eoOneToOneBreeder: public eoBreed<EOT>
+namespace eo
 {
- public:
-  /** Ctor:
-   * @param _op       a general operator (must MODIFY only ONE parent)
-   * @param _eval     an eoEvalFunc to evaluate the offspring 
-   * @param _pReplace probability that the best of parent/offspring wins [1]
-   * @param _howMany  eoHowMany offpsring to generate [100%]
-   */
-  eoOneToOneBreeder(
-          eoGenOp<EOT>& _op,
-	  eoEvalFunc<EOT> & _eval, 
-	  double _pReplace = 1.0,
-	  eoHowMany _howMany = eoHowMany(1.0) ) :
-      op(_op), eval(_eval), select( false ), 
-      pReplace(_pReplace), howMany(_howMany) {}
 
-
-  /** The breeder: iteratively calls the genOp ONCE on a selective populator
-   *   after having recorded the parent
-   *   Then does the replacement
-   *
-   * @param _parents the initial population
-   * @param _offspring the resulting population (content -if any- is lost)
-   */
-  void operator()(const eoPop<EOT>& _parents, eoPop<EOT>& _offspring)
+    /** eoOneToOneBreeder: transforms a population using 
+     *   - an operator that MODIFIES only one parent from the populator
+     *     (though it can use any number aside) and thus generates ONE offspring)
+     *   - a local replacement between the parent and its offspring
+     *
+     * Typically, Differential Evolution (Storn and Price 94) and Deb et al's 
+     *   G3 can be built on this
+     *
+     *  @ingroup Combination
+     */
+    template<class EOT>
+    class eoOneToOneBreeder: public eoBreed<EOT>
     {
-      unsigned target = howMany(_parents.size());
-      
-      _offspring.clear();
-      eoSelectivePopulator<EOT> popit(_parents, _offspring, select);
-      
-      for (unsigned iParent=0; iParent<target; iParent++)
+    public:
+	/** Ctor:
+	 * @param _op       a general operator (must MODIFY only ONE parent)
+	 * @param _eval     an eoEvalFunc to evaluate the offspring 
+	 * @param _pReplace probability that the best of parent/offspring wins [1]
+	 * @param _howMany  eoHowMany offpsring to generate [100%]
+	 */
+	eoOneToOneBreeder(
+			  eoGenOp<EOT>& _op,
+			  eoEvalFunc<EOT> & _eval, 
+			  double _pReplace = 1.0,
+			  eoHowMany _howMany = eoHowMany(1.0) ) :
+	    op(_op), eval(_eval), select( false ), 
+	    pReplace(_pReplace), howMany(_howMany) {}
+
+
+	/** The breeder: iteratively calls the genOp ONCE on a selective populator
+	 *   after having recorded the parent
+	 *   Then does the replacement
+	 *
+	 * @param _parents the initial population
+	 * @param _offspring the resulting population (content -if any- is lost)
+	 */
+	void operator()(const eoPop<EOT>& _parents, eoPop<EOT>& _offspring)
 	{
-	  unsigned pos = popit.tellp(); // remember current position
-	  EOT theParent = *popit;  // remember the parent itself
+	    unsigned target = howMany(_parents.size());
+      
+	    _offspring.clear();
+	    eoSelectivePopulator<EOT> popit(_parents, _offspring, select);
+      
+	    for (unsigned iParent=0; iParent<target; iParent++)
+		{
+		    unsigned pos = popit.tellp(); // remember current position
+		    EOT theParent = *popit;  // remember the parent itself
 
-	  // now apply operator - will modify the parent
-	  op(popit);
+		    // now apply operator - will modify the parent
+		    op(popit);
 
-	  // replacement
-	  EOT & leOffspring = *popit;
+		    // replacement
+		    EOT & leOffspring = *popit;
 
-	  // check: only one offspring?
-	  unsigned posEnd = popit.tellp();
-	  if (posEnd != pos)
-	    throw std::runtime_error("Operator can only generate a SINGLE offspring in eoOneToOneBreeder");
+		    // check: only one offspring?
+		    unsigned posEnd = popit.tellp();
+		    if (posEnd != pos)
+			throw std::runtime_error("Operator can only generate a SINGLE offspring in eoOneToOneBreeder");
 
-	  // do the tournament between parent and offspring
-	  eval(leOffspring);  // first need to evaluate the offspring
-	  if (theParent > leOffspring) // old parent better than offspring
-	    if (rng.uniform() < pReplace) // if probability
-	      leOffspring = theParent; // replace
-	  // finally, go to next guy to handle
-	  ++popit;
+		    // do the tournament between parent and offspring
+		    eval(leOffspring);  // first need to evaluate the offspring
+		    if (theParent > leOffspring) // old parent better than offspring
+			if (rng.uniform() < pReplace) // if probability
+			    leOffspring = theParent; // replace
+		    // finally, go to next guy to handle
+		    ++popit;
+		}
 	}
-    }
 
-  /// The class name.
-  virtual std::string className() const { return "eoOneToOneBreeder"; }
+	/// The class name.
+	virtual std::string className() const { return "eoOneToOneBreeder"; }
 
- private:
-  eoGenOp<EOT>& op;
-  eoEvalFunc<EOT> & eval;
-  eoSequentialSelect<EOT> select;
-  double pReplace;
-  eoHowMany howMany;
-};
+    private:
+	eoGenOp<EOT>& op;
+	eoEvalFunc<EOT> & eval;
+	eoSequentialSelect<EOT> select;
+	double pReplace;
+	eoHowMany howMany;
+    };
+
+}
 
 #endif
-

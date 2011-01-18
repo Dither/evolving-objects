@@ -34,42 +34,47 @@
 #include <math.h>
 //-----------------------------------------------------------------------------
 
-/** eoTruncSelect selects individuals after truncating the population
- * using eoSelectOne as it's mechanism. 
- * Therefore eoSelectMany needs an eoSelectOne in its ctor
- * It will use an eoHowMnay to determine the number of guys to keep,
- *
- * @ingroup Selectors
-*/
-template<class EOT>
-class eoTruncSelect : public eoSelect<EOT>
+namespace eo
 {
- public:
-  /** Ctor: from an eoSelect (and an eoMany to tell how many are kept for selectino */
-  eoTruncSelect(eoSelectOne<EOT>& _select, eoHowMany _howMany) 
-    : select(_select), howMany(_howMany) {}
-  
-     /**
-     The implementation repeatidly selects an individual
 
-     @param _source the source population
-     @param _dest  the resulting population (size of this population is the number of times eoSelectOne is called. It empties the destination and adds the selection into it)
+    /** eoTruncSelect selects individuals after truncating the population
+     * using eoSelectOne as it's mechanism. 
+     * Therefore eoSelectMany needs an eoSelectOne in its ctor
+     * It will use an eoHowMnay to determine the number of guys to keep,
+     *
+     * @ingroup Selectors
      */
-  virtual void operator()(const eoPop<EOT>& _source, eoPop<EOT>& _dest)
-  {
-    unsigned target = howMany(_source.size());
-    
-    _dest.resize(target);
-    
-    select.setup(_source);
-    
-    for (size_t i = 0; i < _dest.size(); ++i)
-      _dest[i] = select(_source);
-  }
+    template<class EOT>
+    class eoTruncSelect : public eoSelect<EOT>
+    {
+    public:
+	/** Ctor: from an eoSelect (and an eoMany to tell how many are kept for selectino */
+	eoTruncSelect(eoSelectOne<EOT>& _select, eoHowMany _howMany) 
+	    : select(_select), howMany(_howMany) {}
   
-private :
-  eoSelectOne<EOT>& select;
-  eoHowMany howMany;
-};
+	/**
+	   The implementation repeatidly selects an individual
+
+	   @param _source the source population
+	   @param _dest  the resulting population (size of this population is the number of times eoSelectOne is called. It empties the destination and adds the selection into it)
+	*/
+	virtual void operator()(const eoPop<EOT>& _source, eoPop<EOT>& _dest)
+	{
+	    unsigned target = howMany(_source.size());
+    
+	    _dest.resize(target);
+    
+	    select.setup(_source);
+    
+	    for (size_t i = 0; i < _dest.size(); ++i)
+		_dest[i] = select(_source);
+	}
+  
+    private :
+	eoSelectOne<EOT>& select;
+	eoHowMany howMany;
+    };
+
+}
 
 #endif

@@ -35,60 +35,64 @@
 #include <utils/eoRNG.h>
 #include <eoSelectOne.h>
 
-/** eoRandomSelect: a selection method that selects ONE individual randomly 
- *
- * @ingroup Selectors
- */
-template <class EOT> class eoRandomSelect: public eoSelectOne<EOT>
+namespace eo
 {
- public:
 
-  /// not a big deal!!!
-  virtual const EOT& operator()(const eoPop<EOT>& _pop)
-  {
-    return _pop[eo::rng.random(_pop.size())] ;
-  }
-};
+    /** eoRandomSelect: a selection method that selects ONE individual randomly 
+     *
+     * @ingroup Selectors
+     */
+    template <class EOT> class eoRandomSelect: public eoSelectOne<EOT>
+    {
+    public:
 
-/** eoBestSelect: a selection method that always return the best
- *                (mainly for testing purposes)
- *
- * @ingroup Selectors
- */
-template <class EOT> class eoBestSelect: public eoSelectOne<EOT>
-{
- public:
+	/// not a big deal!!!
+	virtual const EOT& operator()(const eoPop<EOT>& _pop)
+	{
+	    return _pop[eo::rng.random(_pop.size())] ;
+	}
+    };
 
-  /// not a big deal!!!
-  virtual const EOT& operator()(const eoPop<EOT>& _pop)
-  {
-    return _pop.best_element() ;
-  }
-};
+    /** eoBestSelect: a selection method that always return the best
+     *                (mainly for testing purposes)
+     *
+     * @ingroup Selectors
+     */
+    template <class EOT> class eoBestSelect: public eoSelectOne<EOT>
+    {
+    public:
 
-/** eoNoSelect: returns all individual in order WITHOUT USING FITNESS!!!
- *       looping back to the beginning when exhasuted
- *
- * @ingroup Selectors
- */
-template <class EOT> class eoNoSelect: public eoSelectOne<EOT>
-{
- public:
-  /** Ctor
-  */
-  eoNoSelect(): current(0) {}
+	/// not a big deal!!!
+	virtual const EOT& operator()(const eoPop<EOT>& _pop)
+	{
+	    return _pop.best_element() ;
+	}
+    };
 
-  virtual const EOT& operator()(const eoPop<EOT>& _pop)
-  {
-    if (current >= _pop.size())
-      current=0;
+    /** eoNoSelect: returns all individual in order WITHOUT USING FITNESS!!!
+     *       looping back to the beginning when exhasuted
+     *
+     * @ingroup Selectors
+     */
+    template <class EOT> class eoNoSelect: public eoSelectOne<EOT>
+    {
+    public:
+	/** Ctor
+	 */
+	eoNoSelect(): current(0) {}
 
-    current++;
-    return _pop[current-1] ;
-  }
-private:
-  unsigned current;
-};
+	virtual const EOT& operator()(const eoPop<EOT>& _pop)
+	{
+	    if (current >= _pop.size())
+		current=0;
+
+	    current++;
+	    return _pop[current-1] ;
+	}
+    private:
+	unsigned current;
+    };
+
+}
 
 #endif
-

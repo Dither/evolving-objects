@@ -31,24 +31,29 @@
 #include <eoInit.h>
 #include <eoPop.h>
 
-/**
- * Abstract class for Distribution Evolution Algorithms within EO:
- *    the distribution itself
- *
- * It basically IS AN eoInit -  operator()(EOT &) generates new indis
- *
- * The instances will probably be eoValueParam of some kind
- *    see eoPBILDistrib.h
- *
- *  @ingroup Core
-*/
-
-template <class EOT>
-class eoDistribution :  public eoInit<EOT>, 
-			public eoPersistent, public eoObject
+namespace eo
 {
-public:
-  virtual void operator()(EOT &) = 0; // DO NOT FORGET TO INVALIDATE the EOT
-};
+
+    /**
+     * Abstract class for Distribution Evolution Algorithms within EO:
+     *    the distribution itself
+     *
+     * It basically IS AN eoInit -  operator()(EOT &) generates new indis
+     *
+     * The instances will probably be eoValueParam of some kind
+     *    see eoPBILDistrib.h
+     *
+     *  @ingroup Core
+     */
+
+    template <class EOT>
+    class eoDistribution :  public eoInit<EOT>, 
+			    public eoPersistent, public eoObject
+    {
+    public:
+	virtual void operator()(EOT &) = 0; // DO NOT FORGET TO INVALIDATE the EOT
+    };
+
+}
 
 #endif

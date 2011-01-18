@@ -45,18 +45,21 @@
 // the instanciating EOType
 #include <es/eoReal.h>
 
-/// The following function merely call the templatized do_* functions above
-
-// Init POP
-///////////
-eoPop<eoReal<double> >&  make_pop(eoParser& _parser, eoState& _state, eoInit<eoReal<double> > & _init)
+namespace eo
 {
-  return do_make_pop(_parser, _state, _init);
+
+    /// The following function merely call the templatized do_* functions above
+
+    // Init POP
+    ///////////
+    eoPop<eoReal<double> >&  make_pop(eoParser& _parser, eoState& _state, eoInit<eoReal<double> > & _init)
+    {
+	return do_make_pop(_parser, _state, _init);
+    }
+
+    eoPop<eoReal<eoMinimizingFitness> >&  make_pop(eoParser& _parser, eoState& _state, eoInit<eoReal<eoMinimizingFitness> > & _init)
+    {
+	return do_make_pop(_parser, _state, _init);
+    }
+
 }
-
-eoPop<eoReal<eoMinimizingFitness> >&  make_pop(eoParser& _parser, eoState& _state, eoInit<eoReal<eoMinimizingFitness> > & _init)
-{
-  return do_make_pop(_parser, _state, _init);
-}
-
-

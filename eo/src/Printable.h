@@ -30,34 +30,38 @@
 #include <iostream>  // std::istream, std::ostream
 #include <string> // para std::string
 
-/*
-This functionality was separated from eoObject, since it makes no sense to print
-some objects (for instance, a #eoFactory# or a random number generator.
-*/
-
-/**
-Base class for objects that can print themselves
-(#printOn#). Besides, this file defines the standard output for all the objects; 
-if the objects define printOn there's no need to define "operator<<".
-
-  @ingroup Core
- */
-class eoPrintable
+namespace eo
 {
- public:
-  /// Virtual dtor. They are needed in virtual class hierarchies.
-  virtual ~eoPrintable() {}
-  
-  /**
-   * Write object. It's called printOn since it prints the object on a stream.
-   * @param _os A std::ostream.
-   */
-  virtual void printOn(std::ostream& _os) const = 0;
-};
 
-//-----------------------------------------------------------------------------
-///Standard output for all objects in the EO hierarchy
-std::ostream & operator << ( std::ostream& _os, const eoPrintable& _o );
+    /*
+      This functionality was separated from eoObject, since it makes no sense to print
+      some objects (for instance, a #eoFactory# or a random number generator.
+    */
+
+    /**
+       Base class for objects that can print themselves
+       (#printOn#). Besides, this file defines the standard output for all the objects; 
+       if the objects define printOn there's no need to define "operator<<".
+
+       @ingroup Core
+    */
+    class eoPrintable
+    {
+    public:
+	/// Virtual dtor. They are needed in virtual class hierarchies.
+	virtual ~eoPrintable() {}
+  
+	/**
+	 * Write object. It's called printOn since it prints the object on a stream.
+	 * @param _os A std::ostream.
+	 */
+	virtual void printOn(std::ostream& _os) const = 0;
+    };
+
+    //-----------------------------------------------------------------------------
+    ///Standard output for all objects in the EO hierarchy
+    std::ostream & operator << ( std::ostream& _os, const eoPrintable& _o );
+
+}
 
 #endif
-

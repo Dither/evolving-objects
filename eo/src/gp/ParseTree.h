@@ -35,157 +35,162 @@
 #include <eoOp.h>
 #include <gp/parse_tree.h>
 
-using namespace gp_parse_tree;
-
-/** @defgroup ParseTree
-
-Various functions for tree-based Genetic Programming
-
-Example:
-@include t-eoSymreg.cpp
-
-@ingroup Representations
-*/
-
-
-/** Implementation of parse-tree for genetic programming
-
-@class eoParseTree eoParseTree.h gp/eoParseTree.h
-
-@ingroup ParseTree
-*/
-template <class FType, class Node>
-class eoParseTree : public EO<FType>, public parse_tree<Node>
+namespace eo
 {
-public:
 
-    using parse_tree<Node>::back;
-    using parse_tree<Node>::ebegin;
-    using parse_tree<Node>::eend;
-    using parse_tree<Node>::size;
+    using namespace gp_parse_tree;
+
+    /** @defgroup ParseTree
+
+	Various functions for tree-based Genetic Programming
+
+	Example:
+	@include t-eoSymreg.cpp
+
+	@ingroup Representations
+    */
 
 
-    typedef typename parse_tree<Node>::subtree Subtree;
+    /** Implementation of parse-tree for genetic programming
 
-    /* For Compatibility with the intel C++ compiler for Linux 5.x */
-    typedef Node reference;
-    typedef const reference const_reference;
+	@class eoParseTree eoParseTree.h gp/eoParseTree.h
 
-    /**
-     * Default Constructor
-     */
-    eoParseTree(void)  {}
-
-    /**
-     * Copy Constructor
-     * @param tree The tree to copy
-     */
-    eoParseTree(const parse_tree<Node>& tree)  : parse_tree<Node>(tree) {}
-
-//    eoParseTree(const eoParseTree<FType, Node>& tree) :  parse_tree<Node>(tree) {}
-    /**
-     * To prune me to a certain size
-     * @param _size My maximum size
-     */
-    virtual void pruneTree(unsigned _size)
+	@ingroup ParseTree
+    */
+    template <class FType, class Node>
+    class eoParseTree : public EO<FType>, public parse_tree<Node>
     {
-        if (_size < 1)
-            return;
+    public:
 
-        while (size() > _size)
-        {
-            back() = operator[](size()-2);
-        }
+	using parse_tree<Node>::back;
+	using parse_tree<Node>::ebegin;
+	using parse_tree<Node>::eend;
+	using parse_tree<Node>::size;
+
+
+	typedef typename parse_tree<Node>::subtree Subtree;
+
+	/* For Compatibility with the intel C++ compiler for Linux 5.x */
+	typedef Node reference;
+	typedef const reference const_reference;
+
+	/**
+	 * Default Constructor
+	 */
+	eoParseTree(void)  {}
+
+	/**
+	 * Copy Constructor
+	 * @param tree The tree to copy
+	 */
+	eoParseTree(const parse_tree<Node>& tree)  : parse_tree<Node>(tree) {}
+
+	//    eoParseTree(const eoParseTree<FType, Node>& tree) :  parse_tree<Node>(tree) {}
+	/**
+	 * To prune me to a certain size
+	 * @param _size My maximum size
+	 */
+	virtual void pruneTree(unsigned _size)
+	{
+	    if (_size < 1)
+		return;
+
+	    while (size() > _size)
+		{
+		    back() = operator[](size()-2);
+		}
+	}
+
+	/**
+	 * To read me from a stream
+	 * @param is The std::istream
+	 */
+
+	eoParseTree(std::istream& is) : EO<FType>(), parse_tree<Node>()
+	{
+	    readFrom(is);
+	}
+
+	/// My class name
+	std::string className(void) const { return "eoParseTree"; }
+
+	/**
+	 * To print me on a stream
+	 * @param os The std::ostream
+	 */
+	void printOn(std::ostream& os) const
+	{
+	    EO<FType>::printOn(os);
+	    os << ' ';
+
+	    os << size() << ' ';
+
+	    std::copy(ebegin(), eend(), std::ostream_iterator<Node>(os, " "));
+	}
+
+	/**
+	 * To read me from a stream
+	 * @param is The std::istream
+	 */
+	void readFrom(std::istream& is)
+	{
+
+
+	    EO<FType>::readFrom(is);
+
+	    unsigned sz;
+	    is >> sz;
+
+
+	    std::vector<Node> v(sz);
+
+	    unsigned i;
+
+	    for (i = 0; i < sz; ++i)
+		{
+		    Node node;
+		    is >> node;
+		    v[i] = node;
+		}
+	    parse_tree<Node> tmp(v.begin(), v.end());
+	    swap(tmp);
+
+	    /*
+	     * old code which caused problems for paradisEO
+	     *
+	     * this can be removed once it has proved itself
+	     EO<FType>::readFrom(is);
+
+	     // even older code
+	     FType fit;
+	     is >> fit;
+
+	     fitness(fit);
+
+
+	     std::copy(std::istream_iterator<Node>(is), std::istream_iterator<Node>(), back_inserter(*this));
+	    */
+	}
+    };
+    /** @example t-eoSymreg.cpp
+     */
+
+    // friend function to print eoParseTree
+    template <class FType, class Node>
+    std::ostream& operator<<(std::ostream& os, const eoParseTree<FType, Node>& eot)
+    {
+	eot.printOn(os);
+	return os;
     }
 
-    /**
-     * To read me from a stream
-     * @param is The std::istream
-     */
-
-    eoParseTree(std::istream& is) : EO<FType>(), parse_tree<Node>()
+    // friend function to read eoParseTree
+    template <class FType, class Node>
+    std::istream& operator>>(std::istream& is, eoParseTree<FType, Node>& eot)
     {
-        readFrom(is);
+	eot.readFrom(is);
+	return is;
     }
 
-    /// My class name
-    std::string className(void) const { return "eoParseTree"; }
-
-    /**
-     * To print me on a stream
-     * @param os The std::ostream
-     */
-    void printOn(std::ostream& os) const
-    {
-	EO<FType>::printOn(os);
-        os << ' ';
-
-        os << size() << ' ';
-
-        std::copy(ebegin(), eend(), std::ostream_iterator<Node>(os, " "));
-    }
-
-    /**
-     * To read me from a stream
-     * @param is The std::istream
-     */
-    void readFrom(std::istream& is)
-    {
-
-
-    	EO<FType>::readFrom(is);
-
-        unsigned sz;
-        is >> sz;
-
-
-	std::vector<Node> v(sz);
-
-        unsigned i;
-
-        for (i = 0; i < sz; ++i)
-        {
-            Node node;
-            is >> node;
-            v[i] = node;
-        }
-	parse_tree<Node> tmp(v.begin(), v.end());
-	swap(tmp);
-
-	/*
-	 * old code which caused problems for paradisEO
-	 *
-	 * this can be removed once it has proved itself
-	EO<FType>::readFrom(is);
-
-	// even older code
-	FType fit;
-        is >> fit;
-
-        fitness(fit);
-
-
-        std::copy(std::istream_iterator<Node>(is), std::istream_iterator<Node>(), back_inserter(*this));
-	*/
-    }
-};
-/** @example t-eoSymreg.cpp
- */
-
-// friend function to print eoParseTree
-template <class FType, class Node>
-std::ostream& operator<<(std::ostream& os, const eoParseTree<FType, Node>& eot)
-{
-    eot.printOn(os);
-    return os;
-}
-
-// friend function to read eoParseTree
-template <class FType, class Node>
-std::istream& operator>>(std::istream& is, eoParseTree<FType, Node>& eot)
-{
-    eot.readFrom(is);
-    return is;
 }
 
 // for backward compatibility

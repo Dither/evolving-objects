@@ -29,18 +29,23 @@
 #include <eoFunctor.h>
 #include <vector>
 
-/**
-  Applies a unary function to a std::vector of things.
-
-  @ingroup Utilities
-*/
-template <class EOT>
-void apply(eoUF<EOT&, void>& _proc, std::vector<EOT>& _pop)
+namespace eo
 {
-    for (unsigned i = 0; i < _pop.size(); ++i)
+
+    /**
+       Applies a unary function to a std::vector of things.
+
+       @ingroup Utilities
+    */
+    template <class EOT>
+    void apply(eoUF<EOT&, void>& _proc, std::vector<EOT>& _pop)
     {
-        _proc(_pop[i]);
+	for (unsigned i = 0; i < _pop.size(); ++i)
+	    {
+		_proc(_pop[i]);
+	    }
     }
+
 }
 
 #endif

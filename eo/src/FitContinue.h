@@ -28,42 +28,47 @@
 #include <eoContinue.h>
 #include <utils/eoLogger.h>
 
-/**
-Continues until the optimum fitness level is reached.
+namespace eo
+{
 
-All types which derive from eoScalarFitness is able to compare well via the operator override ( <, >, <=, ...)
+    /**
+       Continues until the optimum fitness level is reached.
 
- @ingroup Continuators
-*/
-template< class EOT>
-class eoFitContinue: public eoContinue<EOT> {
-public:
+       All types which derive from eoScalarFitness is able to compare well via the operator override ( <, >, <=, ...)
 
-    /// Define Fitness
-    typedef typename EOT::Fitness FitnessType;
+       @ingroup Continuators
+    */
+    template< class EOT>
+    class eoFitContinue: public eoContinue<EOT> {
+    public:
 
-    /// Ctor
-    eoFitContinue( const FitnessType _optimum)
-        : eoContinue<EOT> (), optimum( _optimum ) {};
+	/// Define Fitness
+	typedef typename EOT::Fitness FitnessType;
 
-    /** Returns false when a fitness criterium is reached. Assumes pop is not sorted! */
-    virtual bool operator() ( const eoPop<EOT>& _pop )
-    {
-	//FitnessType bestCurrentFitness = _pop.nth_element_fitness(0);
-	FitnessType bestCurrentFitness = _pop.best_element().fitness();
-	if (bestCurrentFitness >= optimum)
-	    {
-		eo::log << eo::logging << "STOP in eoFitContinue: Best fitness has reached " <<
-		    bestCurrentFitness << "\n";
-		return false;
-	    }
-	return true;
-    }
+	/// Ctor
+	eoFitContinue( const FitnessType _optimum)
+	    : eoContinue<EOT> (), optimum( _optimum ) {};
 
-    virtual std::string className(void) const { return "eoFitContinue"; }
+	/** Returns false when a fitness criterium is reached. Assumes pop is not sorted! */
+	virtual bool operator() ( const eoPop<EOT>& _pop )
+	{
+	    //FitnessType bestCurrentFitness = _pop.nth_element_fitness(0);
+	    FitnessType bestCurrentFitness = _pop.best_element().fitness();
+	    if (bestCurrentFitness >= optimum)
+		{
+		    eo::log << eo::logging << "STOP in eoFitContinue: Best fitness has reached " <<
+			bestCurrentFitness << "\n";
+		    return false;
+		}
+	    return true;
+	}
 
-private:
-    FitnessType optimum;
-};
+	virtual std::string className(void) const { return "eoFitContinue"; }
+
+    private:
+	FitnessType optimum;
+    };
+
+}
 
 #endif

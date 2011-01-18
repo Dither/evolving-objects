@@ -27,67 +27,72 @@
 
 #include <eoContinue.h>
 
-/** 
-    Combined continuators - logical AND:
-  Continues until one of the embedded continuators says halt!
+namespace eo
+{
 
-20/11/00 MS: Changed the 2-continuator construct to a std::vector<eoContinue<EOT> >
-             to be consistent with other Combined constructs
-             and allow to easily handle more than 2 continuators
+    /** 
+	Combined continuators - logical AND:
+	Continues until one of the embedded continuators says halt!
 
-02/2003 Ramón Casero Cañas - added the removeLast() method 
+	20/11/00 MS: Changed the 2-continuator construct to a std::vector<eoContinue<EOT> >
+	to be consistent with other Combined constructs
+	and allow to easily handle more than 2 continuators
 
-@ingroup Combination
-*/
-template< class EOT>
-class eoCombinedContinue: public eoContinue<EOT> {
-public:
+	02/2003 Ramón Casero Cañas - added the removeLast() method 
 
-  /// Define Fitness
-  typedef typename EOT::Fitness FitnessType;
+	@ingroup Combination
+    */
+    template< class EOT>
+    class eoCombinedContinue: public eoContinue<EOT> {
+    public:
 
-  /// Ctor, make sure that at least on continuator is present
-  eoCombinedContinue( eoContinue<EOT>& _cont)
-    : eoContinue<EOT> ()
-  {
-    continuators.push_back(&_cont);
-  }
+	/// Define Fitness
+	typedef typename EOT::Fitness FitnessType;
 
-  /// Ctor - for historical reasons ... should disspear some day
-  eoCombinedContinue( eoContinue<EOT>& _cont1, eoContinue<EOT>& _cont2)
-    : eoContinue<EOT> ()
-  {
-    continuators.push_back(&_cont1);
-    continuators.push_back(&_cont2);
-  }
+	/// Ctor, make sure that at least on continuator is present
+	eoCombinedContinue( eoContinue<EOT>& _cont)
+	    : eoContinue<EOT> ()
+	{
+	    continuators.push_back(&_cont);
+	}
 
-  void add(eoContinue<EOT> & _cont)
-  {
-    continuators.push_back(&_cont);
-  }
+	/// Ctor - for historical reasons ... should disspear some day
+	eoCombinedContinue( eoContinue<EOT>& _cont1, eoContinue<EOT>& _cont2)
+	    : eoContinue<EOT> ()
+	{
+	    continuators.push_back(&_cont1);
+	    continuators.push_back(&_cont2);
+	}
 
-  ///////////// RAMON'S CODE ///////////////
-  void removeLast(void)
-  {
-    continuators.pop_back();
-  }
-  ///////////// RAMON'S CODE (end) ///////////////
+	void add(eoContinue<EOT> & _cont)
+	{
+	    continuators.push_back(&_cont);
+	}
+
+	///////////// RAMON'S CODE ///////////////
+	void removeLast(void)
+	{
+	    continuators.pop_back();
+	}
+	///////////// RAMON'S CODE (end) ///////////////
 
 
-  /** Returns false when one of the embedded continuators say so (logical and)
-   */
-  virtual bool operator() ( const eoPop<EOT>& _pop )
-  {
-    for (unsigned i = 0; i < continuators.size(); ++i)
-      if ( !(*continuators[i])(_pop) ) return false;
-    return true;
-  }
+	/** Returns false when one of the embedded continuators say so (logical and)
+	 */
+	virtual bool operator() ( const eoPop<EOT>& _pop )
+	{
+	    for (unsigned i = 0; i < continuators.size(); ++i)
+		if ( !(*continuators[i])(_pop) ) return false;
+	    return true;
+	}
 
-  virtual std::string className(void) const { return "eoCombinedContinue"; }
+	virtual std::string className(void) const { return "eoCombinedContinue"; }
 
-private:
-  std::vector<eoContinue<EOT>*>    continuators;
-};
+    private:
+	std::vector<eoContinue<EOT>*>    continuators;
+    };
+
+}
 
 #endif
 

@@ -32,43 +32,48 @@
 #include <math.h>
 //-----------------------------------------------------------------------------
 
-/** eoSelectNumber selects many individuals using eoSelectOne as it's 
-    mechanism. Therefore eoSelectNumber needs an eoSelectOne in its ctor
-
-    It will select a fixed number of individuals and pushes them to
-    the back of the destination population.
-
-@ingroup Selectors
-*/
-template<class EOT>
-class eoSelectNumber : public eoSelect<EOT>
+namespace eo
 {
- public:
-     /// init
-     eoSelectNumber(eoSelectOne<EOT>& _select, unsigned _nb_to_select = 1) 
-         : select(_select), nb_to_select(_nb_to_select) {}
 
-     /**
-     The implementation repeatidly selects an individual
+    /** eoSelectNumber selects many individuals using eoSelectOne as it's 
+	mechanism. Therefore eoSelectNumber needs an eoSelectOne in its ctor
 
-     @param _source the source population
-     @param _dest  the resulting population (size of this population is the number of times eoSelectOne is called. It empties the destination and adds the selection into it)
-     */
-  virtual void operator()(const eoPop<EOT>& _source, eoPop<EOT>& _dest)
-  {
-    size_t target = static_cast<size_t>(nb_to_select);
+	It will select a fixed number of individuals and pushes them to
+	the back of the destination population.
+
+	@ingroup Selectors
+    */
+    template<class EOT>
+    class eoSelectNumber : public eoSelect<EOT>
+    {
+    public:
+	/// init
+	eoSelectNumber(eoSelectOne<EOT>& _select, unsigned _nb_to_select = 1) 
+	    : select(_select), nb_to_select(_nb_to_select) {}
+
+	/**
+	   The implementation repeatidly selects an individual
+
+	   @param _source the source population
+	   @param _dest  the resulting population (size of this population is the number of times eoSelectOne is called. It empties the destination and adds the selection into it)
+	*/
+	virtual void operator()(const eoPop<EOT>& _source, eoPop<EOT>& _dest)
+	{
+	    size_t target = static_cast<size_t>(nb_to_select);
     
-    _dest.resize(target);
+	    _dest.resize(target);
     
-    select.setup(_source);
+	    select.setup(_source);
     
-    for (size_t i = 0; i < _dest.size(); ++i)
-      _dest[i] = select(_source);
-  }
+	    for (size_t i = 0; i < _dest.size(); ++i)
+		_dest[i] = select(_source);
+	}
   
-private :
-  eoSelectOne<EOT>& select;
-  unsigned nb_to_select;
-};
+    private :
+	eoSelectOne<EOT>& select;
+	unsigned nb_to_select;
+    };
+
+}
 
 #endif

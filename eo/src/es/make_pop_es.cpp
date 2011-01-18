@@ -47,40 +47,43 @@
 #include <es/eoEsStdev.h>	   // one sigmal per object variable
 #include <es/eoEsFull.h>	   // full correlation matrix per indi
 
-/// The following function merely call the templatized do_* functions above
-
-// Init POP
-///////////
-eoPop<eoEsSimple<double> >&  make_pop(eoParser& _parser, eoState& _state, eoInit<eoEsSimple<double> > & _init)
+namespace eo
 {
-  return do_make_pop(_parser, _state, _init);
+
+    /// The following function merely call the templatized do_* functions above
+
+    // Init POP
+    ///////////
+    eoPop<eoEsSimple<double> >&  make_pop(eoParser& _parser, eoState& _state, eoInit<eoEsSimple<double> > & _init)
+    {
+	return do_make_pop(_parser, _state, _init);
+    }
+
+    eoPop<eoEsSimple<eoMinimizingFitness> >&  make_pop(eoParser& _parser, eoState& _state, eoInit<eoEsSimple<eoMinimizingFitness> > & _init)
+    {
+	return do_make_pop(_parser, _state, _init);
+    }
+
+    ///////////
+    eoPop<eoEsStdev<double> >&  make_pop(eoParser& _parser, eoState& _state, eoInit<eoEsStdev<double> > & _init)
+    {
+	return do_make_pop(_parser, _state, _init);
+    }
+
+    eoPop<eoEsStdev<eoMinimizingFitness> >&  make_pop(eoParser& _parser, eoState& _state, eoInit<eoEsStdev<eoMinimizingFitness> > & _init)
+    {
+	return do_make_pop(_parser, _state, _init);
+    }
+
+    ///////////
+    eoPop<eoEsFull<double> >&  make_pop(eoParser& _parser, eoState& _state, eoInit<eoEsFull<double> > & _init)
+    {
+	return do_make_pop(_parser, _state, _init);
+    }
+
+    eoPop<eoEsFull<eoMinimizingFitness> >&  make_pop(eoParser& _parser, eoState& _state, eoInit<eoEsFull<eoMinimizingFitness> > & _init)
+    {
+	return do_make_pop(_parser, _state, _init);
+    }
+
 }
-
-eoPop<eoEsSimple<eoMinimizingFitness> >&  make_pop(eoParser& _parser, eoState& _state, eoInit<eoEsSimple<eoMinimizingFitness> > & _init)
-{
-  return do_make_pop(_parser, _state, _init);
-}
-
-///////////
-eoPop<eoEsStdev<double> >&  make_pop(eoParser& _parser, eoState& _state, eoInit<eoEsStdev<double> > & _init)
-{
-  return do_make_pop(_parser, _state, _init);
-}
-
-eoPop<eoEsStdev<eoMinimizingFitness> >&  make_pop(eoParser& _parser, eoState& _state, eoInit<eoEsStdev<eoMinimizingFitness> > & _init)
-{
-  return do_make_pop(_parser, _state, _init);
-}
-
-///////////
-eoPop<eoEsFull<double> >&  make_pop(eoParser& _parser, eoState& _state, eoInit<eoEsFull<double> > & _init)
-{
-  return do_make_pop(_parser, _state, _init);
-}
-
-eoPop<eoEsFull<eoMinimizingFitness> >&  make_pop(eoParser& _parser, eoState& _state, eoInit<eoEsFull<eoMinimizingFitness> > & _init)
-{
-  return do_make_pop(_parser, _state, _init);
-}
-
-

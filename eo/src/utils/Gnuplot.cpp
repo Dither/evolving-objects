@@ -30,68 +30,70 @@
 
 #include "eoGnuplot.h"
 
-
-unsigned eoGnuplot::numWindow=0;
-
-
-
-eoGnuplot::eoGnuplot(std::string _title, std::string _extra)
-    : firstTime(true)
+namespace eo
 {
-    initGnuPlot(_title, _extra);
-}
+
+    unsigned eoGnuplot::numWindow=0;
 
 
 
-eoGnuplot::~eoGnuplot()
-{
-#ifdef HAVE_GNUPLOT
-    if( gpCom ) {
-        PipeComSend( gpCom, "quit\n" );
-        PipeComClose( gpCom );
-        gpCom =NULL;
+    eoGnuplot::eoGnuplot(std::string _title, std::string _extra)
+	: firstTime(true)
+    {
+	initGnuPlot(_title, _extra);
     }
-#endif
-}
 
 
 
-void eoGnuplot::gnuplotCommand(const char *_command)
-{
+    eoGnuplot::~eoGnuplot()
+    {
 #ifdef HAVE_GNUPLOT
-    if(gpCom) {
-        PipeComSend( gpCom, _command );
-        PipeComSend( gpCom, "\n" );
-    }
+	if( gpCom ) {
+	    PipeComSend( gpCom, "quit\n" );
+	    PipeComClose( gpCom );
+	    gpCom =NULL;
+	}
 #endif
-}
+    }
 
 
 
-void eoGnuplot::initGnuPlot(std::string _title, std::string _extra)
-{
+    void eoGnuplot::gnuplotCommand(const char *_command)
+    {
 #ifdef HAVE_GNUPLOT
-    std::ostringstream os;
-    os << "250x150-0+" << 170 * numWindow++;
-    char *args[6];
-    args[0] = strdup( GNUPLOT_PROGRAM );
-    args[1] = strdup( "-geometry" );
-    args[2] = strdup( os.str().c_str());
-    args[3] = strdup( "-title" );
-    args[4] = strdup( _title.c_str() );
-    args[5] = 0;
-    gpCom = PipeComOpenArgv( GNUPLOT_PROGRAM, args );
-    if(! gpCom )
-        throw std::runtime_error("Cannot spawn gnuplot\n");
-    else {
-        PipeComSend( gpCom, "set grid\n" );
-        PipeComSend( gpCom, _extra.c_str() );
-        PipeComSend( gpCom, "\n" );
-    }
+	if(gpCom) {
+	    PipeComSend( gpCom, _command );
+	    PipeComSend( gpCom, "\n" );
+	}
 #endif
+    }
+
+
+
+    void eoGnuplot::initGnuPlot(std::string _title, std::string _extra)
+    {
+#ifdef HAVE_GNUPLOT
+	std::ostringstream os;
+	os << "250x150-0+" << 170 * numWindow++;
+	char *args[6];
+	args[0] = strdup( GNUPLOT_PROGRAM );
+	args[1] = strdup( "-geometry" );
+	args[2] = strdup( os.str().c_str());
+	args[3] = strdup( "-title" );
+	args[4] = strdup( _title.c_str() );
+	args[5] = 0;
+	gpCom = PipeComOpenArgv( GNUPLOT_PROGRAM, args );
+	if(! gpCom )
+	    throw std::runtime_error("Cannot spawn gnuplot\n");
+	else {
+	    PipeComSend( gpCom, "set grid\n" );
+	    PipeComSend( gpCom, _extra.c_str() );
+	    PipeComSend( gpCom, "\n" );
+	}
+#endif
+    }
+
 }
-
-
 
 // Local Variables:
 // c-file-style: "Stroustrup"

@@ -32,70 +32,74 @@
 #include <utils/eoParser.h>
 #include <utils/eoState.h>
 
-
-//////////////////////////DISTRIB CONSTRUCTION ///////////////////////////////
-/**
- * Templatized version of parser-based construct of the distribution
- * for PBIL distribution evolution algorithm
- *
- * It must then be instantiated, and compiled on its own for a given EOType
- * (see test/t-eoPBIL.cpp
- *
- * Last argument is template-disambiguating
-*/
-
-
-template <class EOT>
-eoPBILDistrib<EOT> &  do_make_PBILdistrib(eoParser & _parser, eoState& _state, EOT)
+namespace eo
 {
-  // First the random seed
-    eoValueParam<uint32_t>& seedParam = _parser.createParam(uint32_t(0), "seed", "Random number seed", 'S');
-    if (seedParam.value() == 0)
-	seedParam.value() = time(0);
 
-    // chromosome size:
-    unsigned theSize;
-    // but it might have been already read in the definition fo the performance
-    eoParam* ptParam = _parser.getParamWithLongName(std::string("chromSize"));
+    //////////////////////////DISTRIB CONSTRUCTION ///////////////////////////////
+    /**
+     * Templatized version of parser-based construct of the distribution
+     * for PBIL distribution evolution algorithm
+     *
+     * It must then be instantiated, and compiled on its own for a given EOType
+     * (see test/t-eoPBIL.cpp
+     *
+     * Last argument is template-disambiguating
+     */
 
-    if (!ptParam)			   // not already defined: read it here
-      {
-	theSize = _parser.createParam(unsigned(10), "chromSize", "The length of the bitstrings", 'n',"Problem").value();
-      }
-    else				   // it was read before, get its value
-      {
-	eoValueParam<unsigned>* ptChromSize = dynamic_cast<eoValueParam<unsigned>*>(ptParam);
-	theSize = ptChromSize->value();
-      }
 
-    eoPBILDistrib<EOT> * ptDistrib = new eoPBILDistrib<EOT>(theSize);
-    _state.storeFunctor(ptDistrib);
-
-    // now the initialization: read a previously saved distribution, or random
-  eoValueParam<std::string>& loadNameParam = _parser.createParam(std::string(""), "Load","A save file to restart from",'L', "Persistence" );
-  if (loadNameParam.value() != "") // something to load
+    template <class EOT>
+    eoPBILDistrib<EOT> &  do_make_PBILdistrib(eoParser & _parser, eoState& _state, EOT)
     {
-      // create another state for reading
-      eoState inState;		// a state for loading - WITHOUT the parser
-      // register the rng and the distribution in the state,
-      // so they can be loaded,
-      // and the present run will be the exact continuation of the saved run
-      // eventually with different parameters
-      inState.registerObject(*ptDistrib);
-      inState.registerObject(rng);
-      inState.load(loadNameParam.value()); //  load the distrib and the rng
-    }
-  else				// nothing loaded from a file
-    {
-      rng.reseed(seedParam.value());
+	// First the random seed
+	eoValueParam<uint32_t>& seedParam = _parser.createParam(uint32_t(0), "seed", "Random number seed", 'S');
+	if (seedParam.value() == 0)
+	    seedParam.value() = time(0);
+
+	// chromosome size:
+	unsigned theSize;
+	// but it might have been already read in the definition fo the performance
+	eoParam* ptParam = _parser.getParamWithLongName(std::string("chromSize"));
+
+	if (!ptParam)			   // not already defined: read it here
+	    {
+		theSize = _parser.createParam(unsigned(10), "chromSize", "The length of the bitstrings", 'n',"Problem").value();
+	    }
+	else				   // it was read before, get its value
+	    {
+		eoValueParam<unsigned>* ptChromSize = dynamic_cast<eoValueParam<unsigned>*>(ptParam);
+		theSize = ptChromSize->value();
+	    }
+
+	eoPBILDistrib<EOT> * ptDistrib = new eoPBILDistrib<EOT>(theSize);
+	_state.storeFunctor(ptDistrib);
+
+	// now the initialization: read a previously saved distribution, or random
+	eoValueParam<std::string>& loadNameParam = _parser.createParam(std::string(""), "Load","A save file to restart from",'L', "Persistence" );
+	if (loadNameParam.value() != "") // something to load
+	    {
+		// create another state for reading
+		eoState inState;		// a state for loading - WITHOUT the parser
+		// register the rng and the distribution in the state,
+		// so they can be loaded,
+		// and the present run will be the exact continuation of the saved run
+		// eventually with different parameters
+		inState.registerObject(*ptDistrib);
+		inState.registerObject(rng);
+		inState.load(loadNameParam.value()); //  load the distrib and the rng
+	    }
+	else				// nothing loaded from a file
+	    {
+		rng.reseed(seedParam.value());
+	    }
+
+	// for future stateSave, register the algorithm into the state
+	_state.registerObject(_parser);
+	_state.registerObject(*ptDistrib);
+	_state.registerObject(rng);
+
+	return *ptDistrib;
     }
 
-  // for future stateSave, register the algorithm into the state
-   _state.registerObject(_parser);
-   _state.registerObject(*ptDistrib);
-   _state.registerObject(rng);
-
-  return *ptDistrib;
 }
 
 #endif

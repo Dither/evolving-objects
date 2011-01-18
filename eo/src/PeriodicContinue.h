@@ -25,32 +25,35 @@
 #include <eoContinue.h>
 #include <eoPop.h>
 
-/** A continue that becomes true periodically.
- */
-template <class EOT> class eoPeriodicContinue: public eoContinue <EOT> {
+namespace eo
+{
 
-public:
+    /** A continue that becomes true periodically.
+     */
+    template <class EOT> class eoPeriodicContinue: public eoContinue <EOT> {
+
+    public:
   
-  /** Constructor. The period is given in parameter. */  
-  eoPeriodicContinue (unsigned __period, unsigned __init_counter = 0) : 
-      period (__period), counter (__init_counter) 
-    {}
+	/** Constructor. The period is given in parameter. */  
+	eoPeriodicContinue (unsigned __period, unsigned __init_counter = 0) : 
+	    period (__period), counter (__init_counter) 
+	{}
 
 
-  /** It returns 'true' only if the current number of generations modulo
-      the period doen't equal to zero. */  
-  bool operator () (const eoPop <EOT> & pop)
-  {
-    return ((++ counter) % period) != 0 ;
-  }
+	/** It returns 'true' only if the current number of generations modulo
+	    the period doen't equal to zero. */  
+	bool operator () (const eoPop <EOT> & pop)
+	{
+	    return ((++ counter) % period) != 0 ;
+	}
 
-    
-private:
 
-  unsigned period;
-  
-  unsigned counter;
+    private:
+	unsigned period;
+	unsigned counter;
 
-};
+    };
+
+}
+
 #endif
-

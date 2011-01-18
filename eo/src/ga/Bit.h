@@ -42,6 +42,9 @@
 
 #include "eoVector.h"
 
+namespace eo
+{
+
 /** @defgroup bitstring Bit strings
 
 Various functions for a bitstring representation.
@@ -59,60 +62,62 @@ Example of a complete test program that use various bitstrings operators:
 
 Based on STL's std::vector<bool> specialization.
 */
-template <class FitT> class eoBit: public eoVector<FitT, bool>
-{
-public:
-
-    using eoVector< FitT, bool >::begin;
-    using eoVector< FitT, bool >::end;
-    using eoVector< FitT, bool >::resize;
-    using eoVector< FitT, bool >::size;
-
-  /**
-   * (Default) Constructor.
-   * @param size Size of the binary std::string.
-   * @param value Default value.
-   */
-  eoBit(unsigned size = 0, bool value = false):
-    eoVector<FitT, bool>(size, value) {}
-
-  /// My class name.
-  virtual std::string className() const
+    template <class FitT> class eoBit: public eoVector<FitT, bool>
     {
-      return "eoBit";
-    }
+    public:
 
-  /**
-   * To print me on a stream.
-   * @param os The std::ostream.
-   */
-  virtual void printOn(std::ostream& os) const
-    {
-      EO<FitT>::printOn(os);
-      os << ' ';
-      os << size() << ' ';
-      std::copy(begin(), end(), std::ostream_iterator<bool>(os));
-    }
+	using eoVector< FitT, bool >::begin;
+	using eoVector< FitT, bool >::end;
+	using eoVector< FitT, bool >::resize;
+	using eoVector< FitT, bool >::size;
 
-  /**
-   * To read me from a stream.
-   * @param is The std::istream.
-   */
-  virtual void readFrom(std::istream& is)
-    {
-      EO<FitT>::readFrom(is);
-      unsigned s;
-      is >> s;
-      std::string bits;
-      is >> bits;
-      if (is)
-	{
-	  resize(bits.size());
-	  std::transform(bits.begin(), bits.end(), begin(),
-                         std::bind2nd(std::equal_to<char>(), '1'));
-	}
-    }
-};
+	/**
+	* (Default) Constructor.
+	* @param size Size of the binary std::string.
+	* @param value Default value.
+	*/
+	eoBit(unsigned size = 0, bool value = false):
+	    eoVector<FitT, bool>(size, value) {}
+
+	/// My class name.
+	virtual std::string className() const
+	    {
+		return "eoBit";
+	    }
+
+	/**
+	* To print me on a stream.
+	* @param os The std::ostream.
+	*/
+	virtual void printOn(std::ostream& os) const
+	    {
+		EO<FitT>::printOn(os);
+		os << ' ';
+		os << size() << ' ';
+		std::copy(begin(), end(), std::ostream_iterator<bool>(os));
+	    }
+
+	/**
+	* To read me from a stream.
+	* @param is The std::istream.
+	*/
+	virtual void readFrom(std::istream& is)
+	    {
+		EO<FitT>::readFrom(is);
+		unsigned s;
+		is >> s;
+		std::string bits;
+		is >> bits;
+		if (is)
+		{
+		    resize(bits.size());
+		    std::transform(bits.begin(), bits.end(), begin(),
+				   std::bind2nd(std::equal_to<char>(), '1'));
+		}
+	    }
+    };
+
+}
 
 //-----------------------------------------------------------------------------
 

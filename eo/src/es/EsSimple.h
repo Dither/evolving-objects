@@ -28,45 +28,48 @@ Contact: http://eodev.sourceforge.net
 
 #include <eoVector.h>
 
+namespace eo
+{
+
 /** Simple Evolution Strategy
 
-@ingroup Real
+    @ingroup Real
 
-One of the more simple evolution strategies, sporting just a single stdeviation
-for the entire chromosome. For more advanced versions see also eoEsStdev
-eoEsFull
+    One of the more simple evolution strategies, sporting just a single stdeviation
+    for the entire chromosome. For more advanced versions see also eoEsStdev
+    eoEsFull
 
-@see eoEsStdev eoEsFull
+    @see eoEsStdev eoEsFull
 */
-template <class Fit>
-class eoEsSimple : public eoVector<Fit, double>
-{
-public :
-
-    typedef double Type;
-
-    eoEsSimple() : eoVector<Fit, double>() {}
-
-    virtual std::string className() const { return "eoEsSimple"; }
-
-    void printOn(std::ostream& os) const
+    template <class Fit>
+    class eoEsSimple : public eoVector<Fit, double>
     {
-        eoVector<Fit,double>::printOn(os);
-        os << ' ' << stdev << ' ';
-    }
+    public :
 
-    void readFrom(std::istream& is)
-    {
-        eoVector<Fit,double>::readFrom(is);
-        is >> stdev;
-    }
+	typedef double Type;
 
-    double stdev;
-};
+	eoEsSimple() : eoVector<Fit, double>() {}
+
+	virtual std::string className() const { return "eoEsSimple"; }
+
+	void printOn(std::ostream& os) const
+	    {
+		eoVector<Fit,double>::printOn(os);
+		os << ' ' << stdev << ' ';
+	    }
+
+	void readFrom(std::istream& is)
+	    {
+		eoVector<Fit,double>::readFrom(is);
+		is >> stdev;
+	    }
+
+	double stdev;
+    };
+
+}
 
 #endif
-
-
 
 // Local Variables:
 // coding: iso-8859-1

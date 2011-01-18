@@ -32,114 +32,119 @@
 #include <eoSTLFunctor.h>
 #include <utils/eoRndGenerators.h>
 
-/**
- @addtogroup Initializators
- @{
- */
-
-/** Abstract class for velocities initilization of particle swarm optimization.*/
-template < class POT > class eoVelocityInit:public eoInit < POT >
+namespace eo
 {
-public:
-    virtual std::string className (void) const
+
+    /**
+       @addtogroup Initializators
+       @{
+    */
+
+    /** Abstract class for velocities initilization of particle swarm optimization.*/
+    template < class POT > class eoVelocityInit:public eoInit < POT >
     {
-        return "eoVelocityInit";
-    }
-};
+    public:
+	virtual std::string className (void) const
+	{
+	    return "eoVelocityInit";
+	}
+    };
 
 
-/**
-*  Provides a particle initialized thanks to the eoVelocityInit object given.
-*/
-template < class POT > class eoVelocityInitGenerator:public eoF < POT >
-{
-public:
-
-    /** Ctor from a plain eoVelocityInit */
-    eoVelocityInitGenerator (eoVelocityInit < POT > &_init):init (_init){}
-
-    virtual POT operator  () ()
+    /**
+     *  Provides a particle initialized thanks to the eoVelocityInit object given.
+     */
+    template < class POT > class eoVelocityInitGenerator:public eoF < POT >
     {
-        POT p;
-        init (p);
-        return (p);
-    }
+    public:
+
+	/** Ctor from a plain eoVelocityInit */
+	eoVelocityInitGenerator (eoVelocityInit < POT > &_init):init (_init){}
+
+	virtual POT operator  () ()
+	{
+	    POT p;
+	    init (p);
+	    return (p);
+	}
     
-private:
-    eoVelocityInit < POT > &init;
-};
+    private:
+	eoVelocityInit < POT > &init;
+    };
 
-/**
-    Initializer for fixed length velocities with a single type
-*/
-template < class POT > class eoVelocityInitFixedLength:public eoVelocityInit <
-            POT >
-{
-public:
-
-    typedef typename POT::ParticleVelocityType VelocityType;
-
-    eoVelocityInitFixedLength (unsigned _combien,
-                               eoRndGenerator < VelocityType >
-                               &_generator):combien (_combien),
-            generator (_generator)
+    /**
+       Initializer for fixed length velocities with a single type
+    */
+    template < class POT > class eoVelocityInitFixedLength:public eoVelocityInit <
+	POT >
     {
-    }
+    public:
 
-    virtual void operator  () (POT & chrom)
+	typedef typename POT::ParticleVelocityType VelocityType;
+
+	eoVelocityInitFixedLength (unsigned _combien,
+				   eoRndGenerator < VelocityType >
+				   &_generator):combien (_combien),
+						generator (_generator)
+	{
+	}
+
+	virtual void operator  () (POT & chrom)
+	{
+	    chrom.resize (combien);
+	    std::generate (chrom.velocities.begin (), chrom.velocities.end (),
+			   generator);
+	}
+
+    private:
+	unsigned combien;
+	/// generic wrapper for eoFunctor (s), to make them have the function-pointer style copy semantics
+	eoSTLF < VelocityType > generator;
+    };
+
+    /**
+       Initializer for variable length velocitys with a single type
+    */
+    template < class POT > class eoVelocityInitVariableLength:public eoVelocityInit <
+	POT >
     {
-        chrom.resize (combien);
-        std::generate (chrom.velocities.begin (), chrom.velocities.end (),
-                       generator);
-    }
+    public:
+	typedef typename POT::ParticleVelocityType VelocityType;
 
-private:
-    unsigned combien;
-    /// generic wrapper for eoFunctor (s), to make them have the function-pointer style copy semantics
-    eoSTLF < VelocityType > generator;
-};
-
-/**
-    Initializer for variable length velocitys with a single type
-*/
-template < class POT > class eoVelocityInitVariableLength:public eoVelocityInit <
-            POT >
-{
-public:
-    typedef typename POT::ParticleVelocityType VelocityType;
-
-    /** Ctor from an eoVelocityInit */
-    eoVelocityInitVariableLength (unsigned _minSize, unsigned _maxSize,
-                                  eoVelocityInit < VelocityType >
-                                  &_init):offset (_minSize),
-            extent (_maxSize - _minSize), init (_init)
-    {
-        if (_minSize >= _maxSize)
-            throw std::
-            logic_error
-            ("eoVelocityInitVariableLength: minSize larger or equal to maxSize");
-    }
+	/** Ctor from an eoVelocityInit */
+	eoVelocityInitVariableLength (unsigned _minSize, unsigned _maxSize,
+				      eoVelocityInit < VelocityType >
+				      &_init):offset (_minSize),
+					      extent (_maxSize - _minSize), init (_init)
+	{
+	    if (_minSize >= _maxSize)
+		throw std::
+		    logic_error
+		    ("eoVelocityInitVariableLength: minSize larger or equal to maxSize");
+	}
 
 
-    virtual void operator  () (POT & _chrom)
-    {
-        _chrom.resizeVelocities (offset + rng.random (extent));
-        typename std::vector < VelocityType >::iterator it;
-        for (it = _chrom.velocities.begin (); it < _chrom.velocities.end (); it++)
-            init (*it);
-    }
+	virtual void operator  () (POT & _chrom)
+	{
+	    _chrom.resizeVelocities (offset + rng.random (extent));
+	    typename std::vector < VelocityType >::iterator it;
+	    for (it = _chrom.velocities.begin (); it < _chrom.velocities.end (); it++)
+		init (*it);
+	}
 
-    // accessor to the atom initializer (needed by operator constructs sometimes)
-    eoInit < VelocityType > &atomInit ()
-    {
-        return init;
-    }
+	// accessor to the atom initializer (needed by operator constructs sometimes)
+	eoInit < VelocityType > &atomInit ()
+	{
+	    return init;
+	}
 
-private:
-    unsigned offset;
-    unsigned extent;
-    eoVelocityInit < VelocityType > &init;
-};
+    private:
+	unsigned offset;
+	unsigned extent;
+	eoVelocityInit < VelocityType > &init;
+    };
+
+}
 
 #endif /*EOVELOCITYINIT_H */
 

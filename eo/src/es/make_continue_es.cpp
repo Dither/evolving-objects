@@ -47,37 +47,40 @@
 #include <es/eoEsStdev.h>	   // one sigmal per object variable
 #include <es/eoEsFull.h>	   // full correlation matrix per indi
 
-/// The following function merely call the templatized do_* functions
+namespace eo
+{
 
-// continue
-///////////
-eoContinue<eoEsSimple<double> >& make_continue(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoEsSimple<double> > & _eval)
-{
-  return do_make_continue(_parser, _state, _eval);
-}
-eoContinue<eoEsSimple<eoMinimizingFitness> >& make_continue(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoEsSimple<eoMinimizingFitness> > & _eval)
-{
-  return do_make_continue(_parser, _state, _eval);
-}
+    /// The following function merely call the templatized do_* functions
 
-///////////
-eoContinue<eoEsStdev<double> >& make_continue(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoEsStdev<double> > & _eval)
-{
-  return do_make_continue(_parser, _state, _eval);
-}
-eoContinue<eoEsStdev<eoMinimizingFitness> >& make_continue(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoEsStdev<eoMinimizingFitness> > & _eval)
-{
-  return do_make_continue(_parser, _state, _eval);
-}
+    // continue
+    ///////////
+    eoContinue<eoEsSimple<double> >& make_continue(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoEsSimple<double> > & _eval)
+    {
+	return do_make_continue(_parser, _state, _eval);
+    }
+    eoContinue<eoEsSimple<eoMinimizingFitness> >& make_continue(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoEsSimple<eoMinimizingFitness> > & _eval)
+    {
+	return do_make_continue(_parser, _state, _eval);
+    }
 
-///////////
-eoContinue<eoEsFull<double> >& make_continue(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoEsFull<double> > & _eval)
-{
-  return do_make_continue(_parser, _state, _eval);
-}
-eoContinue<eoEsFull<eoMinimizingFitness> >& make_continue(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoEsFull<eoMinimizingFitness> > & _eval)
-{
-  return do_make_continue(_parser, _state, _eval);
-}
+    ///////////
+    eoContinue<eoEsStdev<double> >& make_continue(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoEsStdev<double> > & _eval)
+    {
+	return do_make_continue(_parser, _state, _eval);
+    }
+    eoContinue<eoEsStdev<eoMinimizingFitness> >& make_continue(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoEsStdev<eoMinimizingFitness> > & _eval)
+    {
+	return do_make_continue(_parser, _state, _eval);
+    }
 
+    ///////////
+    eoContinue<eoEsFull<double> >& make_continue(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoEsFull<double> > & _eval)
+    {
+	return do_make_continue(_parser, _state, _eval);
+    }
+    eoContinue<eoEsFull<eoMinimizingFitness> >& make_continue(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoEsFull<eoMinimizingFitness> > & _eval)
+    {
+	return do_make_continue(_parser, _state, _eval);
+    }
 
+}

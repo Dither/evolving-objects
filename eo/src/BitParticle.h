@@ -28,23 +28,27 @@
 
 #include <eoVectorParticle.h>
 
-
-/** eoBitParticle: Implementation of a bit-coded particle (swarm optimization).
- *  Positions and best positions are 0 or 1 but the velocity is a vector of double.
- *
- *  @ingroup Bitstring
-*/
-template < class FitT> class eoBitParticle: public eoVectorParticle<FitT,bool,double>
-
+namespace eo
 {
-public:
 
-    eoBitParticle(unsigned size = 0, bool positions = 0,double velocities = 0.0,bool bestPositions = 0): eoVectorParticle<FitT, bool,double> (size, positions,velocities,bestPositions) {}
+    /** eoBitParticle: Implementation of a bit-coded particle (swarm optimization).
+     *  Positions and best positions are 0 or 1 but the velocity is a vector of double.
+     *
+     *  @ingroup Bitstring
+     */
+    template < class FitT> class eoBitParticle: public eoVectorParticle<FitT,bool,double>
 
-    virtual std::string className() const
     {
-        return "eoBitParticle";
-    }
-};
+    public:
+
+	eoBitParticle(unsigned size = 0, bool positions = 0,double velocities = 0.0,bool bestPositions = 0): eoVectorParticle<FitT, bool,double> (size, positions,velocities,bestPositions) {}
+
+	virtual std::string className() const
+	{
+	    return "eoBitParticle";
+	}
+    };
+
+}
 
 #endif /*_EOBITPARTICLE_H*/

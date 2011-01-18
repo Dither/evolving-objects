@@ -25,22 +25,26 @@
 #ifndef _eoSelect_h
 #define _eoSelect_h
 
-
 //-----------------------------------------------------------------------------
 #include <eoPop.h>
 //-----------------------------------------------------------------------------
 
-/** 
-eoSelect selects a number of individuals from the first argument and
-puts it in the second. To emphasize that it should not try to enlarge
-the population, the second argument is an eoPopRange, a simple struct
-that holds a begin and end iterator to the population
+namespace eo
+{
 
-@ingroup Core
-@ingroup Selectors
-*/
-template<class EOT>
-class eoSelect : public eoBF<const eoPop<EOT>&, eoPop<EOT>&, void>
-{};
+    /** 
+	eoSelect selects a number of individuals from the first argument and
+	puts it in the second. To emphasize that it should not try to enlarge
+	the population, the second argument is an eoPopRange, a simple struct
+	that holds a begin and end iterator to the population
+
+	@ingroup Core
+	@ingroup Selectors
+    */
+    template<class EOT>
+    class eoSelect : public eoBF<const eoPop<EOT>&, eoPop<EOT>&, void>
+    {};
+
+}
 
 #endif

@@ -35,78 +35,83 @@
 #include <math.h>
 //-----------------------------------------------------------------------------
 
-/** eoTruncatedSelectOne selects one individual using eoSelectOne as it's 
-    mechanism. Therefore eoTruncatedSelectOne needs an eoSelectOne in its ctor
-
-    It will perform selection only from the top guys in the population.
-
-    @ingroup Selectors
-*/
-template<class EOT>
-class eoTruncatedSelectOne : public eoSelectOne<EOT>
+namespace eo
 {
-public:
-  /** Ctor from rate and bool */
-  eoTruncatedSelectOne(eoSelectOne<EOT>& _select, 
-		       double  _rateFertile, 
-		       bool _interpret_as_rateF = true)
-    : select(_select), 
-      howManyFertile(_rateFertile, _interpret_as_rateF),
-      tmpPop(), actualPop(tmpPop)
-  {}
 
-  /** Ctor with eoHowMany */
-  eoTruncatedSelectOne(eoSelectOne<EOT>& _select, 
-			eoHowMany _howManyFertile) 
-    : select(_select), howManyFertile(_howManyFertile),
-    tmpPop(), actualPop(tmpPop)
-  {}
+    /** eoTruncatedSelectOne selects one individual using eoSelectOne as it's 
+	mechanism. Therefore eoTruncatedSelectOne needs an eoSelectOne in its ctor
+
+	It will perform selection only from the top guys in the population.
+
+	@ingroup Selectors
+    */
+    template<class EOT>
+    class eoTruncatedSelectOne : public eoSelectOne<EOT>
+    {
+    public:
+	/** Ctor from rate and bool */
+	eoTruncatedSelectOne(eoSelectOne<EOT>& _select, 
+			     double  _rateFertile, 
+			     bool _interpret_as_rateF = true)
+	    : select(_select), 
+	      howManyFertile(_rateFertile, _interpret_as_rateF),
+	      tmpPop(), actualPop(tmpPop)
+	{}
+
+	/** Ctor with eoHowMany */
+	eoTruncatedSelectOne(eoSelectOne<EOT>& _select, 
+			     eoHowMany _howManyFertile) 
+	    : select(_select), howManyFertile(_howManyFertile),
+	      tmpPop(), actualPop(tmpPop)
+	{}
 
 
-  /** setup procedures: fills the temporary population with the fertile guys */
-  void setup(const eoPop<EOT>& _source)
-  {
-    unsigned fertile = howManyFertile(_source.size());
-    if (fertile == _source.size())  // noting to do, all are fertile
-      {
-	actualPop = _source;
-      }
-    else
-      {
-	// copy only best ferile to actualPop
-	tmpPop.resize(fertile);
-	std::vector<const EOT *> result;
-	_source.nth_element(fertile, result);
-	for (unsigned i=0; i<fertile; i++)
-	  tmpPop[i] = *result[i];
+	/** setup procedures: fills the temporary population with the fertile guys */
+	void setup(const eoPop<EOT>& _source)
+	{
+	    unsigned fertile = howManyFertile(_source.size());
+	    if (fertile == _source.size())  // noting to do, all are fertile
+		{
+		    actualPop = _source;
+		}
+	    else
+		{
+		    // copy only best ferile to actualPop
+		    tmpPop.resize(fertile);
+		    std::vector<const EOT *> result;
+		    _source.nth_element(fertile, result);
+		    for (unsigned i=0; i<fertile; i++)
+			tmpPop[i] = *result[i];
 
-	// and just in case
-	actualPop = tmpPop;
-      }
+		    // and just in case
+		    actualPop = tmpPop;
+		}
 
-    // AND DON'T FORGET to call the embedded select setup method on actualPop
-    select.setup(actualPop);
+	    // AND DON'T FORGET to call the embedded select setup method on actualPop
+	    select.setup(actualPop);
 
-    return;
-  }
+	    return;
+	}
   
-  /**
-     The implementation selects an individual from the fertile pop
+	/**
+	   The implementation selects an individual from the fertile pop
 
-     @param _pop the source population
-     @return the selected guy
-  */
-  const EOT& operator()(const eoPop<EOT>& _pop) 
-  {
-    return select(actualPop);
-  }
+	   @param _pop the source population
+	   @return the selected guy
+	*/
+	const EOT& operator()(const eoPop<EOT>& _pop) 
+	{
+	    return select(actualPop);
+	}
 
 
-private :
-  eoSelectOne<EOT>& select;	   // selector for one guy
-  eoHowMany howManyFertile;	   // number of fertile guys
-  eoPop<EOT> tmpPop;		   // intermediate population - fertile guys
-  eoPop<EOT> & actualPop;	   // to avoid copies when 100% fertility
-};
+    private :
+	eoSelectOne<EOT>& select;	   // selector for one guy
+	eoHowMany howManyFertile;	   // number of fertile guys
+	eoPop<EOT> tmpPop;		   // intermediate population - fertile guys
+	eoPop<EOT> & actualPop;	   // to avoid copies when 100% fertility
+    };
+
+}
 
 #endif

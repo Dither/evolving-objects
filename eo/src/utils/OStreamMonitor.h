@@ -19,10 +19,10 @@
 Contact: http://eodev.sourceforge.net
 
 Authors:
-     todos@geneura.ugr.es
-     Marc.Schoenauer@polytechnique.fr
-     mkeijzer@dhi.dk
-	 Johann Dréo <johann.dreo@thalesgroup.com>
+todos@geneura.ugr.es
+Marc.Schoenauer@polytechnique.fr
+mkeijzer@dhi.dk
+Johann Dréo <johann.dreo@thalesgroup.com>
 */
 
 #ifndef _eoOStreamMonitor_h_
@@ -35,37 +35,41 @@ Authors:
 #include <utils/eoLogger.h>
 #include <eoObject.h>
 
-/**
-    Prints statistics to a given ostream.
-
-    You can pass any instance of an ostream to the constructor, like, for example, std::clog.
-
-    @ingroup Monitors
-*/
-class eoOStreamMonitor : public eoMonitor
+namespace eo
 {
-public :
-    eoOStreamMonitor( std::ostream & _out, bool _verbose=true, std::string _delim = "\t", unsigned int _width=20, char _fill=' ' ) : 
-        out(_out), delim(_delim), width(_width), fill(_fill), firsttime(true) 
+
+    /**
+       Prints statistics to a given ostream.
+
+       You can pass any instance of an ostream to the constructor, like, for example, std::clog.
+
+       @ingroup Monitors
+    */
+    class eoOStreamMonitor : public eoMonitor
     {
-        eo::log << eo::warnings << "WARNING: the use of the verbose parameter in eoOStreamMonitor constructor is deprecated and will be removed in the next release" << std::endl;
-    }
+    public :
+	eoOStreamMonitor( std::ostream & _out, bool _verbose=true, std::string _delim = "\t", unsigned int _width=20, char _fill=' ' ) : 
+	    out(_out), delim(_delim), width(_width), fill(_fill), firsttime(true) 
+	{
+	    eo::log << eo::warnings << "WARNING: the use of the verbose parameter in eoOStreamMonitor constructor is deprecated and will be removed in the next release" << std::endl;
+	}
 
-    eoOStreamMonitor( std::ostream & _out, std::string _delim = "\t", unsigned int _width=20, char _fill=' ' ) : 
-        out(_out), delim(_delim), width(_width), fill(_fill), firsttime(true) 
-    {}
+	eoOStreamMonitor( std::ostream & _out, std::string _delim = "\t", unsigned int _width=20, char _fill=' ' ) : 
+	    out(_out), delim(_delim), width(_width), fill(_fill), firsttime(true) 
+	{}
 
-    eoMonitor& operator()(void);
+	eoMonitor& operator()(void);
 
-    virtual std::string className(void) const { return "eoOStreamMonitor"; }
+	virtual std::string className(void) const { return "eoOStreamMonitor"; }
 
-private :
-    std::ostream & out;
-    std::string delim;
-    unsigned int width;
-    char fill;
-    bool firsttime;
-};
+    private :
+	std::ostream & out;
+	std::string delim;
+	unsigned int width;
+	char fill;
+	bool firsttime;
+    };
+
+}
 
 #endif // _eoOStreamMonitor_h_
-

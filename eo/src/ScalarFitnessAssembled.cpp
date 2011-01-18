@@ -33,9 +33,10 @@
 
 #include "eoScalarFitnessAssembled.h"
 
+namespace eo
+{
 
-// need to allocate the static variables of class eoScalarFitnessAssembledTraits
-std::vector<std::string> eoScalarFitnessAssembledTraits::TermDescriptions;
+    // need to allocate the static variables of class eoScalarFitnessAssembledTraits
+    std::vector<std::string> eoScalarFitnessAssembledTraits::TermDescriptions;
 
-
-
+}

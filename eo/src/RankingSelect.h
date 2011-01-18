@@ -31,26 +31,31 @@
 #include <eoSelectFromWorth.h>
 #include <eoRanking.h>
 
-/** eoRankingSelect: select an individual by roulette wheel on its rank
- *  is an eoRouletteWorthSelect, i.e. a selector using a std::vector of worthes
- *  rather than the raw fitness (see eoSelectFromWorth.h)
- *  uses an internal eoRanking object which is an eoPerf2Worth<EOT, double>
- *
- * @ingroup Selectors
-*/
-template <class EOT> 
-class eoRankingSelect: public eoRouletteWorthSelect<EOT, double> 
+namespace eo
 {
-public:
-  /** Ctor:
-   *  @param _p the selective pressure, should be in [1,2] (2 is the default)
-   *  @param _e exponent (1 == linear)
-   */
-  eoRankingSelect(double _p = 2.0, double _e=1.0): 
-    eoRouletteWorthSelect<EOT, double>(ranking), ranking(_p, _e) {}
 
-private :
-  eoRanking<EOT> ranking;	   // derived from eoPerf2Worth
-};
+    /** eoRankingSelect: select an individual by roulette wheel on its rank
+     *  is an eoRouletteWorthSelect, i.e. a selector using a std::vector of worthes
+     *  rather than the raw fitness (see eoSelectFromWorth.h)
+     *  uses an internal eoRanking object which is an eoPerf2Worth<EOT, double>
+     *
+     * @ingroup Selectors
+     */
+    template <class EOT> 
+    class eoRankingSelect: public eoRouletteWorthSelect<EOT, double> 
+    {
+    public:
+	/** Ctor:
+	 *  @param _p the selective pressure, should be in [1,2] (2 is the default)
+	 *  @param _e exponent (1 == linear)
+	 */
+	eoRankingSelect(double _p = 2.0, double _e=1.0): 
+	    eoRouletteWorthSelect<EOT, double>(ranking), ranking(_p, _e) {}
+
+    private :
+	eoRanking<EOT> ranking;	   // derived from eoPerf2Worth
+    };
+
+}
 
 #endif

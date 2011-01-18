@@ -30,65 +30,66 @@
 #include <eoBinaryFlight.h>
 //-----------------------------------------------------------------------------
 
-
-
-/**
- * 	Binary flight for particle swarm optimization based on the sigmoid function. Velocities are expected to be "double"
- *  Consider Pi to be the i-th position of a particle and Vi to be the i-th velocity of the same particle :
- * 		if rand[0;1] < sig(Vi) (Vi <=> double)
- * 			Pi=1
- * 	    else
- * 			Pi=0
- *
- * 	@ingroup Variators
- */
-template < class POT > class eoSigBinaryFlight:public eoBinaryFlight < POT >
+namespace eo
 {
 
-public:
-
     /**
-     * Constructor.
+     * 	Binary flight for particle swarm optimization based on the sigmoid function. Velocities are expected to be "double"
+     *  Consider Pi to be the i-th position of a particle and Vi to be the i-th velocity of the same particle :
+     * 		if rand[0;1] < sig(Vi) (Vi <=> double)
+     * 			Pi=1
+     * 	    else
+     * 			Pi=0
+     *
+     * 	@ingroup Variators
      */
-    eoSigBinaryFlight (){slope = 1;}
-    eoSigBinaryFlight (unsigned _slope){slope = _slope;}
-
-
-    /**
-     * Sigmoid function
-     */
-    double sigmoid( double _value)
-    {
-        return(1/(1+ exp(- _value/slope)));
-
-    }
-
-    /**
-     * Apply the sigmoid binary flight to a particle.
-     * 
-     */
-    void operator  () (POT & _po)
+    template < class POT > class eoSigBinaryFlight:public eoBinaryFlight < POT >
     {
 
-        for (unsigned j = 0; j < _po.size (); j++)
-        {
-            double sigma=rng.uniform(1);
+    public:
 
-            if (sigma < sigmoid(_po.velocities[j]))
-                _po[j]=1;
-            else
-                _po[j]=0;
-        }
+	/**
+	 * Constructor.
+	 */
+	eoSigBinaryFlight (){slope = 1;}
+	eoSigBinaryFlight (unsigned _slope){slope = _slope;}
 
-        // invalidate the fitness because the positions have changed
-        _po.invalidate();
-    }
 
-private :
+	/**
+	 * Sigmoid function
+	 */
+	double sigmoid( double _value)
+	{
+	    return(1/(1+ exp(- _value/slope)));
+
+	}
+
+	/**
+	 * Apply the sigmoid binary flight to a particle.
+	 * 
+	 */
+	void operator  () (POT & _po)
+	{
+
+	    for (unsigned j = 0; j < _po.size (); j++)
+		{
+		    double sigma=rng.uniform(1);
+
+		    if (sigma < sigmoid(_po.velocities[j]))
+			_po[j]=1;
+		    else
+			_po[j]=0;
+		}
+
+	    // invalidate the fitness because the positions have changed
+	    _po.invalidate();
+	}
+
+    private :
 	unsigned slope; 
    
-};
+    };
 
-
+}
 
 #endif /*EOSIGBINARYFLIGHT_H */

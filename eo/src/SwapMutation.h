@@ -31,53 +31,56 @@
 
 //-----------------------------------------------------------------------------
 
-
-/**
- * Swap two components of a chromosome.
- *
- * @ingroup Variators
- */
-template<class Chrom> class eoSwapMutation: public eoMonOp<Chrom>
+namespace eo
 {
- public:
- 
-  /// CTor
-  eoSwapMutation(const unsigned _howManySwaps=1): howManySwaps(_howManySwaps) 
-  {
-  	// consistency check
-  	if(howManySwaps < 1)
-  		throw std::runtime_error("Invalid number of swaps in eoSwapMutation");	
-  }
-  
-  /// The class name.
-  virtual std::string className() const { return "eoSwapMutation"; }
 
-  /**
-   * Swap two components of the given chromosome.
-   * @param chrom The cromosome which is going to be changed.
-   */
-  bool operator()(Chrom& chrom)
+    /**
+     * Swap two components of a chromosome.
+     *
+     * @ingroup Variators
+     */
+    template<class Chrom> class eoSwapMutation: public eoMonOp<Chrom>
     {
-      unsigned i, j; 
+    public:
+ 
+	/// CTor
+	eoSwapMutation(const unsigned _howManySwaps=1): howManySwaps(_howManySwaps) 
+	{
+	    // consistency check
+	    if(howManySwaps < 1)
+  		throw std::runtime_error("Invalid number of swaps in eoSwapMutation");	
+	}
+  
+	/// The class name.
+	virtual std::string className() const { return "eoSwapMutation"; }
+
+	/**
+	 * Swap two components of the given chromosome.
+	 * @param chrom The cromosome which is going to be changed.
+	 */
+	bool operator()(Chrom& chrom)
+	{
+	    unsigned i, j; 
       
-      for(unsigned int swap = 0; swap < howManySwaps; swap++) 
-      {
-	    // generate two different indices
-      	i=eo::rng.random(chrom.size());
-      	do j = eo::rng.random(chrom.size()); while (i == j);  
+	    for(unsigned int swap = 0; swap < howManySwaps; swap++) 
+		{
+		    // generate two different indices
+		    i=eo::rng.random(chrom.size());
+		    do j = eo::rng.random(chrom.size()); while (i == j);  
       	
-	    // swap
-	    std::swap(chrom[i],chrom[j]);   
-      }   
-      return true;
-    }
+		    // swap
+		    std::swap(chrom[i],chrom[j]);   
+		}   
+	    return true;
+	}
     
-   private:
+    private:
    	unsigned int howManySwaps;
-};
-/** @example t-eoSwapMutation.cpp
- */
+    };
+    /** @example t-eoSwapMutation.cpp
+     */
+
+}
 
 //-----------------------------------------------------------------------------
 #endif
-

@@ -45,17 +45,21 @@
 // the instanciating EOType
 #include <es/eoReal.h>
 
-/// The following function merely call the templatized do_* functions above
-
-// Algo
-///////
-eoAlgo<eoReal<double> >&  make_algo_scalar(eoParser& _parser, eoState& _state, eoEvalFunc<eoReal<double> >& _eval, eoContinue<eoReal<double> >& _continue, eoGenOp<eoReal<double> >& _op, eoDistance<eoReal<double> >* _dist)
+namespace eo
 {
-  return do_make_algo_scalar(_parser, _state, _eval, _continue, _op, _dist);
-}
 
-eoAlgo<eoReal<eoMinimizingFitness> >&  make_algo_scalar(eoParser& _parser, eoState& _state, eoEvalFunc<eoReal<eoMinimizingFitness> >& _eval, eoContinue<eoReal<eoMinimizingFitness> >& _continue, eoGenOp<eoReal<eoMinimizingFitness> >& _op, eoDistance<eoReal<eoMinimizingFitness> >* _dist)
-{
-  return do_make_algo_scalar(_parser, _state, _eval, _continue, _op, _dist);
-}
+    /// The following function merely call the templatized do_* functions above
 
+    // Algo
+    ///////
+    eoAlgo<eoReal<double> >&  make_algo_scalar(eoParser& _parser, eoState& _state, eoEvalFunc<eoReal<double> >& _eval, eoContinue<eoReal<double> >& _continue, eoGenOp<eoReal<double> >& _op, eoDistance<eoReal<double> >* _dist)
+    {
+	return do_make_algo_scalar(_parser, _state, _eval, _continue, _op, _dist);
+    }
+
+    eoAlgo<eoReal<eoMinimizingFitness> >&  make_algo_scalar(eoParser& _parser, eoState& _state, eoEvalFunc<eoReal<eoMinimizingFitness> >& _eval, eoContinue<eoReal<eoMinimizingFitness> >& _continue, eoGenOp<eoReal<eoMinimizingFitness> >& _op, eoDistance<eoReal<eoMinimizingFitness> >* _dist)
+    {
+	return do_make_algo_scalar(_parser, _state, _eval, _continue, _op, _dist);
+    }
+
+}

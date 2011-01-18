@@ -21,10 +21,10 @@
 Contact: http://eodev.sourceforge.net
 
 Authors:
-     todos@geneura.ugr.es
-     Marc.Schoenauer@polytechnique.fr
-     mkeijzer@dhi.dk
-	 Johann Dréo <johann.dreo@thalesgroup.com>
+todos@geneura.ugr.es
+Marc.Schoenauer@polytechnique.fr
+mkeijzer@dhi.dk
+Johann Dréo <johann.dreo@thalesgroup.com>
 */
 
 #ifndef _eoStdoutMonitor_h
@@ -35,26 +35,30 @@ Authors:
 #include <utils/eoOStreamMonitor.h>
 #include <eoObject.h>
 
-/**
-    Prints statistics to stdout
-
-    @ingroup Monitors
-*/
-class eoStdoutMonitor : public eoOStreamMonitor
+namespace eo
 {
-public :
-    eoStdoutMonitor(bool _verbose, std::string _delim = "\t", unsigned int _width=20, char _fill=' ' ) : 
-       eoOStreamMonitor( std::cout, _verbose, _delim, _width, _fill) 
-    { 
-        eo::log << eo::warnings << "WARNING: the use of the verbose parameter in eoStdutMonitor constructor is deprecated and will be removed in the next release" << std::endl;
-    }
 
-    eoStdoutMonitor(std::string _delim = "\t", unsigned int _width=20, char _fill=' ' ) : 
-       eoOStreamMonitor( std::cout, _delim, _width, _fill) 
-    {}
+    /**
+       Prints statistics to stdout
 
-    virtual std::string className(void) const { return "eoStdoutMonitor"; }
-};
+       @ingroup Monitors
+    */
+    class eoStdoutMonitor : public eoOStreamMonitor
+    {
+    public :
+	eoStdoutMonitor(bool _verbose, std::string _delim = "\t", unsigned int _width=20, char _fill=' ' ) : 
+	    eoOStreamMonitor( std::cout, _verbose, _delim, _width, _fill) 
+	{ 
+	    eo::log << eo::warnings << "WARNING: the use of the verbose parameter in eoStdutMonitor constructor is deprecated and will be removed in the next release" << std::endl;
+	}
+
+	eoStdoutMonitor(std::string _delim = "\t", unsigned int _width=20, char _fill=' ' ) : 
+	    eoOStreamMonitor( std::cout, _delim, _width, _fill) 
+	{}
+
+	virtual std::string className(void) const { return "eoStdoutMonitor"; }
+    };
+
+}
 
 #endif
-

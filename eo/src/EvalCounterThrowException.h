@@ -30,58 +30,63 @@ Caner Candan <caner.candan@thalesgroup.com>
 #include <utils/eoParam.h>
 #include <eoExceptions.h>
 
-/*!
-Wrap an evaluation function so that an exception may be thrown when the
-algorithm have reached a maximum number of evaluations.
-
-This may be useful if you want to check this kind of stopping criterion
-at each _evaluation_, instead of using continuators at each _iteration_.
-
-The class first call the evaluation function, then check the number of
-times it has been called. If the maximum number of evaluation has been
-reached, it throw an eoMaxEvalException. You can catch this exception
-from your main function, so as to stop everything properly.
-
-@ingroup Evaluation
-*/
-template < typename EOT >
-class eoEvalCounterThrowException : public eoEvalFuncCounter< EOT >
+namespace eo
 {
-public :
-    eoEvalCounterThrowException( eoEvalFunc<EOT>& func, unsigned long max_evals, std::string name = "Eval. ")
-	: eoEvalFuncCounter< EOT >( func, name ), _threshold( max_evals )
-    {}
 
-    using eoEvalFuncCounter< EOT >::value;
+    /*!
+      Wrap an evaluation function so that an exception may be thrown when the
+      algorithm have reached a maximum number of evaluations.
 
-    //! Evaluate the individual, then throw an exception if it exceed the max number of evals.
-    virtual void operator()(EOT& eo)
+      This may be useful if you want to check this kind of stopping criterion
+      at each _evaluation_, instead of using continuators at each _iteration_.
+
+      The class first call the evaluation function, then check the number of
+      times it has been called. If the maximum number of evaluation has been
+      reached, it throw an eoMaxEvalException. You can catch this exception
+      from your main function, so as to stop everything properly.
+
+      @ingroup Evaluation
+    */
+    template < typename EOT >
+    class eoEvalCounterThrowException : public eoEvalFuncCounter< EOT >
     {
-        // bypass already evaluated individuals
-        if (eo.invalid()) {
+    public :
+	eoEvalCounterThrowException( eoEvalFunc<EOT>& func, unsigned long max_evals, std::string name = "Eval. ")
+	    : eoEvalFuncCounter< EOT >( func, name ), _threshold( max_evals )
+	{}
 
-            // increment the value of the self parameter 
-            // (eoEvalFuncCounter inherits from @see eoValueParam) 
-            value()++;
+	using eoEvalFuncCounter< EOT >::value;
 
-            // if we have reached the maximum
-            if ( value() >= _threshold ) {
+	//! Evaluate the individual, then throw an exception if it exceed the max number of evals.
+	virtual void operator()(EOT& eo)
+	{
+	    // bypass already evaluated individuals
+	    if (eo.invalid()) {
 
-                // go back through the stack until catched
-                throw eoMaxEvalException(_threshold);
-            }
+		// increment the value of the self parameter 
+		// (eoEvalFuncCounter inherits from @see eoValueParam) 
+		value()++;
 
-            // evaluate
-            func(eo);
+		// if we have reached the maximum
+		if ( value() >= _threshold ) {
 
-        } // if invalid
-    }
+		    // go back through the stack until catched
+		    throw eoMaxEvalException(_threshold);
+		}
 
-    virtual std::string className() const {return "eoEvalCounterThrowException";}
+		// evaluate
+		func(eo);
 
-private :
-    unsigned long _threshold;
-};
+	    } // if invalid
+	}
+
+	virtual std::string className() const {return "eoEvalCounterThrowException";}
+
+    private :
+	unsigned long _threshold;
+    };
+
+}
 
 #endif // __eoEvalCounterThrowException_h__
 

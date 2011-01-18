@@ -29,53 +29,58 @@
 #include <eoFunctor.h>
 //-----------------------------------------------------------------------------
 
-/**
- @addtogroup Initializators
- @{
- */
-
-/**
- * Abstract class for particle best position initialization.
- */
-template < class POT > class eoParticleBestInit:public eoUF < POT &, void >
-{
-public:
-
-    /** Apply the initialization to a whole given population */
-    virtual void apply (eoPop < POT > &_pop)
-    {
-        for (unsigned i = 0; i < _pop.size (); i++)
-        {
-            operator  ()(_pop[i]);
-        }
-
-    }
-
-};
-
-/**
- * Initializes the best positions of a particle as its current positions and set the
- * particle best fitness.
- */
-template < class POT > class eoFirstIsBestInit:public eoParticleBestInit <POT>
+namespace eo
 {
 
-public:
+    /**
+       @addtogroup Initializators
+       @{
+    */
 
-    /** Default CTor */
-    eoFirstIsBestInit (){}
-
-    void operator  () (POT & _po1)
+    /**
+     * Abstract class for particle best position initialization.
+     */
+    template < class POT > class eoParticleBestInit:public eoUF < POT &, void >
     {
-       	//Set the bestPositions
-          	_po1.bestPositions = _po1 ;
+    public:
+
+	/** Apply the initialization to a whole given population */
+	virtual void apply (eoPop < POT > &_pop)
+	{
+	    for (unsigned i = 0; i < _pop.size (); i++)
+		{
+		    operator  ()(_pop[i]);
+		}
+
+	}
+
+    };
+
+    /**
+     * Initializes the best positions of a particle as its current positions and set the
+     * particle best fitness.
+     */
+    template < class POT > class eoFirstIsBestInit:public eoParticleBestInit <POT>
+    {
+
+    public:
+
+	/** Default CTor */
+	eoFirstIsBestInit (){}
+
+	void operator  () (POT & _po1)
+	{
+	    //Set the bestPositions
+	    _po1.bestPositions = _po1 ;
 
 
-        // set the fitness
-        _po1.best(_po1.fitness());
-    }
+	    // set the fitness
+	    _po1.best(_po1.fitness());
+	}
 
-};
+    };
+
+}
 
 #endif /*_EOPARTICLEBESTINIT_H */
 

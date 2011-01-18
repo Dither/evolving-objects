@@ -32,52 +32,54 @@
 #include "utils/eoGnuplot1DMonitor.h"
 #include "utils/eoParam.h"
 
-
-eoMonitor& eoGnuplot1DMonitor::operator() (void)
+namespace eo
 {
-    // update file using the eoFileMonitor
-    eoFileMonitor::operator()();
+
+    eoMonitor& eoGnuplot1DMonitor::operator() (void)
+    {
+	// update file using the eoFileMonitor
+	eoFileMonitor::operator()();
 #ifdef HAVE_GNUPLOT
-    // sends plot order to gnuplot
-    // assumes successive plots will have same nb of columns!!!
-    if (firstTime)
-    {
-        FirstPlot();
-        firstTime = false;
-    }
-    else
-    {
-        if( gpCom ) {
-            PipeComSend( gpCom, "replot\n" );
-        }
-    }
+	// sends plot order to gnuplot
+	// assumes successive plots will have same nb of columns!!!
+	if (firstTime)
+	{
+	    FirstPlot();
+	    firstTime = false;
+	}
+	else
+	{
+	    if( gpCom ) {
+		PipeComSend( gpCom, "replot\n" );
+	    }
+	}
 #endif
-    return *this;
-}
-
-
-
-void eoGnuplot1DMonitor::FirstPlot()
-{
-    if (this->vec.size() < 2)
-    {
-        throw std::runtime_error("Must have some stats to plot!\n");
+	return *this;
     }
+
+
+
+    void eoGnuplot1DMonitor::FirstPlot()
+    {
+	if (this->vec.size() < 2)
+	{
+	    throw std::runtime_error("Must have some stats to plot!\n");
+	}
 #ifdef HAVE_GNUPLOT
-    std::ostringstream os;
-    os << "plot";
-    for (unsigned i=1; i<this->vec.size(); i++) {
-        os << " '" << getFileName().c_str() <<
-            "' using 1:" << i+1 << " title '" << (this->vec[i])->longName() << "' with lines" ;
-        if (i<this->vec.size()-1)
-            os << ", ";
-    }
-    os << '\n';
-    PipeComSend( gpCom, os.str().c_str());
+	std::ostringstream os;
+	os << "plot";
+	for (unsigned i=1; i<this->vec.size(); i++) {
+	    os << " '" << getFileName().c_str() <<
+		"' using 1:" << i+1 << " title '" << (this->vec[i])->longName() << "' with lines" ;
+	    if (i<this->vec.size()-1)
+		os << ", ";
+	}
+	os << '\n';
+	PipeComSend( gpCom, os.str().c_str());
 #endif
+    }
+
 }
-
-
 
 // Local Variables:
 // c-file-style: "Stroustrup"

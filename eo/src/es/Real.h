@@ -31,32 +31,37 @@
 
 #include <eoVector.h>
 
-/** eoReal: implementation of simple real-valued chromosome.
-  * based on eoVector class
- *
- * @ingroup Real
-*/
-template <class FitT> class eoReal: public eoVector<FitT, double>
+namespace eo
 {
- public:
 
-  /**
-   * (Default) Constructor.
-   * @param size Size of the std::vector
-   * @param value fill the vector with this value
-   */
-  eoReal(unsigned size = 0, double value = 0.0):
-    eoVector<FitT, double>(size, value) {}
-
-  /// My class name.
-  virtual std::string className() const
+    /** eoReal: implementation of simple real-valued chromosome.
+     * based on eoVector class
+     *
+     * @ingroup Real
+     */
+    template <class FitT> class eoReal: public eoVector<FitT, double>
     {
-      return "eoReal";
-    }
+    public:
 
-};
-/** @example t-eoReal.cpp
- */
+	/**
+	 * (Default) Constructor.
+	 * @param size Size of the std::vector
+	 * @param value fill the vector with this value
+	 */
+	eoReal(unsigned size = 0, double value = 0.0):
+	    eoVector<FitT, double>(size, value) {}
+
+	/// My class name.
+	virtual std::string className() const
+	{
+	    return "eoReal";
+	}
+
+    };
+    /** @example t-eoReal.cpp
+     */
+
+}
 
 //-----------------------------------------------------------------------------
 

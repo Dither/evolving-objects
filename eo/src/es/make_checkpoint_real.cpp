@@ -45,17 +45,20 @@
 // the instanciating EOType
 #include <es/eoReal.h>
 
-/// The following function merely call the templatized do_* functions 
-
-// checkpoint
-/////////////
-eoCheckPoint<eoReal<double> >& make_checkpoint(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoReal<double> >& _eval, eoContinue<eoReal<double> >& _continue)
+namespace eo
 {
-  return do_make_checkpoint(_parser, _state, _eval, _continue);
-}
-eoCheckPoint<eoReal<eoMinimizingFitness> >& make_checkpoint(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoReal<eoMinimizingFitness> >& _eval, eoContinue<eoReal<eoMinimizingFitness> >& _continue) 
-{
-  return do_make_checkpoint(_parser, _state, _eval, _continue);
-}
 
+    /// The following function merely call the templatized do_* functions 
 
+    // checkpoint
+    /////////////
+    eoCheckPoint<eoReal<double> >& make_checkpoint(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoReal<double> >& _eval, eoContinue<eoReal<double> >& _continue)
+    {
+	return do_make_checkpoint(_parser, _state, _eval, _continue);
+    }
+    eoCheckPoint<eoReal<eoMinimizingFitness> >& make_checkpoint(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoReal<eoMinimizingFitness> >& _eval, eoContinue<eoReal<eoMinimizingFitness> >& _continue) 
+    {
+	return do_make_checkpoint(_parser, _state, _eval, _continue);
+    }
+
+}

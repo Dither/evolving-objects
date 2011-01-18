@@ -30,78 +30,83 @@
 #include <eoEvalFunc.h>
 #include <apply.h>
 
-/** eoPopEvalFunc: This abstract class is for GLOBAL evaluators 
- *    of a population after variation.
- *    It takes 2 populations (typically the parents and the offspring)
- *    and is suppposed to evaluate them alltogether
- *
- *  Basic use: apply an embedded eoEvalFunc to the offspring 
- *
- *  Time-varying fitness: apply the embedded eoEvalFunc to both 
- *     offspring and parents
- *
- *  Advanced uses: Co-evolution or "parisian" approach, or ...
- *
- *  Basic parallelization (synchronous standard evolution engine): 
- *    call the slaves and wait for the results
- *
- *    @ingroup Evaluation
- */
-template<class EOT>
-class eoPopEvalFunc : public eoBF<eoPop<EOT> & , eoPop<EOT> &, void> 
-{};
+namespace eo
+{
 
-/////////////////////////////////////////////////////////////
-//           eoPopLoopEval
-/////////////////////////////////////////////////////////////
+    /** eoPopEvalFunc: This abstract class is for GLOBAL evaluators 
+     *    of a population after variation.
+     *    It takes 2 populations (typically the parents and the offspring)
+     *    and is suppposed to evaluate them alltogether
+     *
+     *  Basic use: apply an embedded eoEvalFunc to the offspring 
+     *
+     *  Time-varying fitness: apply the embedded eoEvalFunc to both 
+     *     offspring and parents
+     *
+     *  Advanced uses: Co-evolution or "parisian" approach, or ...
+     *
+     *  Basic parallelization (synchronous standard evolution engine): 
+     *    call the slaves and wait for the results
+     *
+     *    @ingroup Evaluation
+     */
+    template<class EOT>
+    class eoPopEvalFunc : public eoBF<eoPop<EOT> & , eoPop<EOT> &, void> 
+    {};
 
-/** eoPopLoopEval: an instance of eoPopEvalFunc that simply applies 
- *     a private eoEvalFunc to all offspring
- *
- *    @ingroup Evaluation
- */
-template<class EOT>
-class eoPopLoopEval : public eoPopEvalFunc<EOT> {
-public:
-  /** Ctor: set value of embedded eoEvalFunc */
-  eoPopLoopEval(eoEvalFunc<EOT> & _eval) : eval(_eval) {}
+    /////////////////////////////////////////////////////////////
+    //           eoPopLoopEval
+    /////////////////////////////////////////////////////////////
 
-  /** Do the job: simple loop over the offspring */
-  void operator()(eoPop<EOT> & _parents, eoPop<EOT> & _offspring)
-  {
-    apply<EOT>(eval, _offspring);
-  }
+    /** eoPopLoopEval: an instance of eoPopEvalFunc that simply applies 
+     *     a private eoEvalFunc to all offspring
+     *
+     *    @ingroup Evaluation
+     */
+    template<class EOT>
+    class eoPopLoopEval : public eoPopEvalFunc<EOT> {
+    public:
+	/** Ctor: set value of embedded eoEvalFunc */
+	eoPopLoopEval(eoEvalFunc<EOT> & _eval) : eval(_eval) {}
 
-private:
-  eoEvalFunc<EOT> & eval;
-};
+	/** Do the job: simple loop over the offspring */
+	void operator()(eoPop<EOT> & _parents, eoPop<EOT> & _offspring)
+	{
+	    apply<EOT>(eval, _offspring);
+	}
 
-/////////////////////////////////////////////////////////////
-//           eoTimeVaryingLoopEval
-/////////////////////////////////////////////////////////////
+    private:
+	eoEvalFunc<EOT> & eval;
+    };
 
-/** eoPopLoopEval: an instance of eoPopEvalFunc that simply applies 
- *     a private eoEvalFunc to all offspring AND ALL PARENTS
- *     as the fitness is supposed here to vary 
- *
- *    @ingroup Evaluation
- */
-template<class EOT>
-class eoTimeVaryingLoopEval : public eoPopEvalFunc<EOT> {
-public:
-  /** Ctor: set value of embedded eoEvalFunc */
-  eoTimeVaryingLoopEval(eoEvalFunc<EOT> & _eval) : eval(_eval) {}
+    /////////////////////////////////////////////////////////////
+    //           eoTimeVaryingLoopEval
+    /////////////////////////////////////////////////////////////
 
-  /** Do the job: simple loop over the offspring */
-  void operator()(eoPop<EOT> & _parents, eoPop<EOT> & _offspring)
-  {
-    apply<EOT>(eval, _parents);
-    apply<EOT>(eval, _offspring);
-  }
+    /** eoPopLoopEval: an instance of eoPopEvalFunc that simply applies 
+     *     a private eoEvalFunc to all offspring AND ALL PARENTS
+     *     as the fitness is supposed here to vary 
+     *
+     *    @ingroup Evaluation
+     */
+    template<class EOT>
+    class eoTimeVaryingLoopEval : public eoPopEvalFunc<EOT> {
+    public:
+	/** Ctor: set value of embedded eoEvalFunc */
+	eoTimeVaryingLoopEval(eoEvalFunc<EOT> & _eval) : eval(_eval) {}
 
-private:
-  eoEvalFunc<EOT> & eval;
-};
+	/** Do the job: simple loop over the offspring */
+	void operator()(eoPop<EOT> & _parents, eoPop<EOT> & _offspring)
+	{
+	    apply<EOT>(eval, _parents);
+	    apply<EOT>(eval, _offspring);
+	}
+
+    private:
+	eoEvalFunc<EOT> & eval;
+    };
+
+}
 
 #endif
 

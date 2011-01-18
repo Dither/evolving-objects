@@ -30,39 +30,44 @@
 
 #include <eoEvalFunc.h>
 
-/** EOEvalFuncPtr: This class
- * takes an existing function pointer and converts it into a evaluation
- * function class. That way, old style C or C++ functions can be adapted to EO
- * function classes.
- *
- * @ingroup Evaluation
- */
-#ifdef _MSC_VER
-template< class EOT, class FitT = EOT::Fitness, class FunctionArg = const EOT& >
-#else
-template< class EOT, class FitT = typename EOT::Fitness, class FunctionArg = const EOT& >
-#endif
-struct eoEvalFuncPtr: public eoEvalFunc<EOT> {
+namespace eo
+{
 
-  /** Applies the function to the chromosome and sets the fitness of the
-      Chrom. Thus, the evaluation function need not be worried about that.
-      @param _eval pointer to the evaluation function, takes a EOT as an
-                   argument and returns the fitness
-      @return the evaluated fitness for that object.
-  */
-  eoEvalFuncPtr( FitT (* _eval)( FunctionArg ) )
-    : eoEvalFunc<EOT>(), evalFunc( _eval ) {};
+    /** EOEvalFuncPtr: This class
+     * takes an existing function pointer and converts it into a evaluation
+     * function class. That way, old style C or C++ functions can be adapted to EO
+     * function classes.
+     *
+     * @ingroup Evaluation
+     */
+#ifdef _MSC_VER
+    template< class EOT, class FitT = EOT::Fitness, class FunctionArg = const EOT& >
+#else
+    template< class EOT, class FitT = typename EOT::Fitness, class FunctionArg = const EOT& >
+#endif
+    struct eoEvalFuncPtr: public eoEvalFunc<EOT> {
+
+	/** Applies the function to the chromosome and sets the fitness of the
+	    Chrom. Thus, the evaluation function need not be worried about that.
+	    @param _eval pointer to the evaluation function, takes a EOT as an
+	    argument and returns the fitness
+	    @return the evaluated fitness for that object.
+	*/
+	eoEvalFuncPtr( FitT (* _eval)( FunctionArg ) )
+	: eoEvalFunc<EOT>(), evalFunc( _eval ) {};
   
-  /// Effectively applies the evaluation function to an EO 
-  virtual void operator() ( EOT & _eo ) 
-  {
-    if (_eo.invalid())
-        _eo.fitness((*evalFunc)( _eo ));
-  };
+	/// Effectively applies the evaluation function to an EO 
+	virtual void operator() ( EOT & _eo ) 
+	{
+	    if (_eo.invalid())
+		_eo.fitness((*evalFunc)( _eo ));
+	};
     
-  private:
-    FitT (* evalFunc )( FunctionArg );
-};
+    private:
+	FitT (* evalFunc )( FunctionArg );
+    };
+
+}
 
 #endif
 

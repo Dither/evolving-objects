@@ -33,44 +33,48 @@
 
 #include <utils/compatibility.h>
 
-/*
-eoObject used to be the base class for the whole hierarchy, but this has 
-changed. eoObject is used to define a name (#className#) 
-that is used when loading or saving the state. 
-
-Previously, this object also defined a print and read
-interface, but it´s been moved to eoPrintable and eoPersistent.
-*/
-
-/** Defines a name (#className#), used when loading or saving a state.
-
-It is recommended that you only derive from eoObject in concrete classes.
-Some parts of EO do not implement this yet, but that will change in the future.
-eoObject, together with eoPersistent and eoPrintable provide a simple persistence
-framework that is only needed when the classes have state that changes at runtime.
-
-  @see eoPersistent eoPrintable, eoState
-
-  @ingroup Core
- */
-class eoObject
+namespace eo
 {
- public:
-  /// Virtual dtor. They are needed in virtual class hierarchies.
-  virtual ~eoObject() {}
+
+    /*
+      eoObject used to be the base class for the whole hierarchy, but this has 
+      changed. eoObject is used to define a name (#className#) 
+      that is used when loading or saving the state. 
+
+      Previously, this object also defined a print and read
+      interface, but it´s been moved to eoPrintable and eoPersistent.
+    */
+
+    /** Defines a name (#className#), used when loading or saving a state.
+
+	It is recommended that you only derive from eoObject in concrete classes.
+	Some parts of EO do not implement this yet, but that will change in the future.
+	eoObject, together with eoPersistent and eoPrintable provide a simple persistence
+	framework that is only needed when the classes have state that changes at runtime.
+
+	@see eoPersistent eoPrintable, eoState
+
+	@ingroup Core
+    */
+    class eoObject
+    {
+    public:
+	/// Virtual dtor. They are needed in virtual class hierarchies.
+	virtual ~eoObject() {}
   
-  /** Return the class id. This should be redefined in each class. 
-  Only "leaf" classes can be non-virtual.
+	/** Return the class id. This should be redefined in each class. 
+	    Only "leaf" classes can be non-virtual.
 
-  Maarten: removed the default implementation as this proved to 
-  be too error-prone: I found several classes that had a typo in 
-  className (like classname), which would print eoObject instead of
-  their own. Having it pure will force the implementor to provide a 
-  name.
-  */
-  virtual std::string className() const = 0; 
+	    Maarten: removed the default implementation as this proved to 
+	    be too error-prone: I found several classes that had a typo in 
+	    className (like classname), which would print eoObject instead of
+	    their own. Having it pure will force the implementor to provide a 
+	    name.
+	*/
+	virtual std::string className() const = 0; 
 
-};
+    };
+
+}
 
 #endif
-

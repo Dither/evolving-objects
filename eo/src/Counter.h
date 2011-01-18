@@ -30,18 +30,21 @@
 #include <eoFunctorStore.h>
 #include <utils/eoParam.h>
 
-/**
-	Generic counter class that counts the number of times
-	a procedure is used. Add a procedure through its ctor and
-	use this class instead of it.
-
-    It is derived from eoValueParam so you can add it to a monitor.
-
-    @ingroup Utilities
-*/
-template <class Procedure>
-class eoProcedureCounter : public Procedure, public eoValueParam<unsigned long>
+namespace eo
 {
+
+    /**
+       Generic counter class that counts the number of times
+       a procedure is used. Add a procedure through its ctor and
+       use this class instead of it.
+
+       It is derived from eoValueParam so you can add it to a monitor.
+
+       @ingroup Utilities
+    */
+    template <class Procedure>
+    class eoProcedureCounter : public Procedure, public eoValueParam<unsigned long>
+    {
     public:
 
         eoProcedureCounter(Procedure& _proc, std::string _name = "proc_counter") 
@@ -49,19 +52,19 @@ class eoProcedureCounter : public Procedure, public eoValueParam<unsigned long>
 
         /** Calls the embedded function and increments the counter
         
-          Note for MSVC users, if this code does not compile, you are quite
-          likely trying to count a function that has a non-void return type.
-          Don't look at us, look at the MSVC builders. Code like "return void;"
-          is perfectly legal according to the ANSI standard, but the guys at
-          Microsoft didn't get to implementing it yet. 
+	    Note for MSVC users, if this code does not compile, you are quite
+	    likely trying to count a function that has a non-void return type.
+	    Don't look at us, look at the MSVC builders. Code like "return void;"
+	    is perfectly legal according to the ANSI standard, but the guys at
+	    Microsoft didn't get to implementing it yet. 
           
-          We had two choices: assuming (and compiling ) code that returns void or code that returns non-void.
-          Given that in EO most functors return void, it was chosen to support void.
+	    We had two choices: assuming (and compiling ) code that returns void or code that returns non-void.
+	    Given that in EO most functors return void, it was chosen to support void.
 
-          But also please let me know if you have a compiler that defines _MSC_VER (lot's of windows compilers do), but is quite 
-          capable of compiling return void; type of code. We'll try to change the signature then.
+	    But also please let me know if you have a compiler that defines _MSC_VER (lot's of windows compilers do), but is quite 
+	    capable of compiling return void; type of code. We'll try to change the signature then.
 
-          You happy GNU (and other compiler) users will not have a problem with this..
+	    You happy GNU (and other compiler) users will not have a problem with this..
         */
         typename Procedure::result_type operator()(void)
         {
@@ -76,48 +79,48 @@ class eoProcedureCounter : public Procedure, public eoValueParam<unsigned long>
     private :
 
         Procedure& proc;
-};
+    };
 
-/**
-	Generic counter class that counts the number of times
-	a unary function is used. Add a unary function through its ctor and
-	use this class instead of it.
+    /**
+       Generic counter class that counts the number of times
+       a unary function is used. Add a unary function through its ctor and
+       use this class instead of it.
     
-    It is derived from eoValueParam so you can add it to a monitor.
+       It is derived from eoValueParam so you can add it to a monitor.
 
-    Example: suppose you have an eoEvalFunc called myeval, to count the 
-    number of evaluations, just define:
+       Example: suppose you have an eoEvalFunc called myeval, to count the 
+       number of evaluations, just define:
 
-  eoUnaryFunctorCounter<void, EoType> evalCounter(myeval);
+       eoUnaryFunctorCounter<void, EoType> evalCounter(myeval);
 
-  and use evalCounter now instead of myeval. 
-*/
+       and use evalCounter now instead of myeval. 
+    */
 
-template <class UnaryFunctor>
-class eoUnaryFunctorCounter : public UnaryFunctor, public eoValueParam<unsigned long>
-{
+    template <class UnaryFunctor>
+    class eoUnaryFunctorCounter : public UnaryFunctor, public eoValueParam<unsigned long>
+    {
     public:
         eoUnaryFunctorCounter(UnaryFunctor& _func, std::string _name = "uf_counter") 
             : eoValueParam<unsigned long>(0, _name), func(_func) {}
         
         /** Calls the embedded function and increments the counter
         
-          Note for MSVC users, if this code does not compile, you are quite
-          likely trying to count a function that has a non-void return type.
-          Don't look at us, look at the MSVC builders. Code like "return void;"
-          is perfectly legal according to the ANSI standard, but the guys at
-          Microsoft didn't get to implementing it yet. 
+	    Note for MSVC users, if this code does not compile, you are quite
+	    likely trying to count a function that has a non-void return type.
+	    Don't look at us, look at the MSVC builders. Code like "return void;"
+	    is perfectly legal according to the ANSI standard, but the guys at
+	    Microsoft didn't get to implementing it yet. 
           
-          We had two choices: assuming (and compiling ) code that returns void or code that returns non-void.
-          Given that in EO most functors return void, it was chosen to support void.
+	    We had two choices: assuming (and compiling ) code that returns void or code that returns non-void.
+	    Given that in EO most functors return void, it was chosen to support void.
 
-          But also please let me know if you have a compiler that defines _MSC_VER (lot's of windows compilers do), but is quite 
-          capable of compiling return void; type of code. We'll try to change the signature then.
+	    But also please let me know if you have a compiler that defines _MSC_VER (lot's of windows compilers do), but is quite 
+	    capable of compiling return void; type of code. We'll try to change the signature then.
 
-          You happy GNU (and other compiler) users will not have a problem with this.
+	    You happy GNU (and other compiler) users will not have a problem with this.
         */
         typename UnaryFunctor::result_type operator()
-            (typename UnaryFunctor::first_argument_type _arg1)
+	(typename UnaryFunctor::first_argument_type _arg1)
         {
             value()++;
 #ifdef _MSC_VER
@@ -130,43 +133,43 @@ class eoUnaryFunctorCounter : public UnaryFunctor, public eoValueParam<unsigned 
     private :
 
         UnaryFunctor& func;
-};
+    };
 
-/**
-	Generic counter class that counts the number of times
-	a binary function is used. Add a binary function through its ctor and
-	use this class instead of it.
+    /**
+       Generic counter class that counts the number of times
+       a binary function is used. Add a binary function through its ctor and
+       use this class instead of it.
     
-    It is derived from eoValueParam so you can add it to a monitor.
+       It is derived from eoValueParam so you can add it to a monitor.
 
-*/
-template <class BinaryFunctor>
-class eoBinaryFunctorCounter : public BinaryFunctor, public eoValueParam<unsigned long>
-{
+    */
+    template <class BinaryFunctor>
+    class eoBinaryFunctorCounter : public BinaryFunctor, public eoValueParam<unsigned long>
+    {
     public:
         eoBinaryFunctorCounter(BinaryFunctor& _func, std::string _name = "proc_counter") 
             : eoValueParam<unsigned long>(0, _name), func(_func) {}
 
         /** Calls the embedded function and increments the counter
         
-          Note for MSVC users, if this code does not compile, you are quite
-          likely trying to count a function that has a non-void return type.
-          Don't look at us, look at the MSVC builders. Code like "return void;"
-          is perfectly legal according to the ANSI standard, but the guys at
-          Microsoft didn't get to implementing it yet. 
+	    Note for MSVC users, if this code does not compile, you are quite
+	    likely trying to count a function that has a non-void return type.
+	    Don't look at us, look at the MSVC builders. Code like "return void;"
+	    is perfectly legal according to the ANSI standard, but the guys at
+	    Microsoft didn't get to implementing it yet. 
           
-          We had two choices: assuming (and compiling ) code that returns void or code that returns non-void.
-          Given that in EO most functors return void, it was chosen to support void.
+	    We had two choices: assuming (and compiling ) code that returns void or code that returns non-void.
+	    Given that in EO most functors return void, it was chosen to support void.
 
 
-          But also please let me know if you have a compiler that defines _MSC_VER (lot's of windows compilers do), but is quite 
-          capable of compiling return void; type of code. We'll try to change the signature then.
+	    But also please let me know if you have a compiler that defines _MSC_VER (lot's of windows compilers do), but is quite 
+	    capable of compiling return void; type of code. We'll try to change the signature then.
           
-          You happy GNU (and other compiler) users will not have a problem with this.
+	    You happy GNU (and other compiler) users will not have a problem with this.
         */
         typename BinaryFunctor::result_type operator()
-            (typename BinaryFunctor::first_argument_type _arg1, 
-             typename BinaryFunctor::second_argument_type _arg2)
+	(typename BinaryFunctor::first_argument_type _arg1, 
+	 typename BinaryFunctor::second_argument_type _arg2)
         {
             value()++;
 #ifdef _MSC_VER
@@ -174,48 +177,50 @@ class eoBinaryFunctorCounter : public BinaryFunctor, public eoValueParam<unsigne
 #else
             return func(_arg1, _arg2);
 #endif
-  }
+	}
 
     private :
 
         BinaryFunctor& func;
-};
+    };
 
-/** make_counter: overloaded function to make a counter out of a function
+    /** make_counter: overloaded function to make a counter out of a function
 
-    how it works...
+	how it works...
 
-    by using the xxx_function_tag structure defined in eoFunctionBase, you 
-    can easily create a counter from a general class (say eoEval<EOT>), by
-    simply stating:
+	by using the xxx_function_tag structure defined in eoFunctionBase, you 
+	can easily create a counter from a general class (say eoEval<EOT>), by
+	simply stating:
 
-    eoEval<EOT>& myCounted = make_counter(functor_category(myEval), myEval, store)
+	eoEval<EOT>& myCounted = make_counter(functor_category(myEval), myEval, store)
 
-    @see eoFunctorBase, functor_category, eoFunctorStore
+	@see eoFunctorBase, functor_category, eoFunctorStore
 
-*/
-template <class Procedure>
-eoProcedureCounter<Procedure>& make_counter(eoFunctorBase::procedure_tag, Procedure& _proc, eoFunctorStore& store, std::string _name = "proc_counter")
-{
-    eoProcedureCounter<Procedure>* result = new eoProcedureCounter<Procedure>(_proc, _name);
-    store.storeFunctor(result);
-    return *result;
-}
+    */
+    template <class Procedure>
+    eoProcedureCounter<Procedure>& make_counter(eoFunctorBase::procedure_tag, Procedure& _proc, eoFunctorStore& store, std::string _name = "proc_counter")
+    {
+	eoProcedureCounter<Procedure>* result = new eoProcedureCounter<Procedure>(_proc, _name);
+	store.storeFunctor(result);
+	return *result;
+    }
 
-template <class UnaryFunctor>
-eoUnaryFunctorCounter<UnaryFunctor>& make_counter(eoFunctorBase::unary_function_tag, UnaryFunctor& _proc, eoFunctorStore& store, std::string _name = "uf_counter")
-{
-    eoUnaryFunctorCounter<UnaryFunctor>* result = new eoUnaryFunctorCounter<UnaryFunctor>(_proc, _name);
-    store.storeFunctor(result);
-    return *result;
-}
+    template <class UnaryFunctor>
+    eoUnaryFunctorCounter<UnaryFunctor>& make_counter(eoFunctorBase::unary_function_tag, UnaryFunctor& _proc, eoFunctorStore& store, std::string _name = "uf_counter")
+    {
+	eoUnaryFunctorCounter<UnaryFunctor>* result = new eoUnaryFunctorCounter<UnaryFunctor>(_proc, _name);
+	store.storeFunctor(result);
+	return *result;
+    }
 
-template <class BinaryFunctor>
-eoBinaryFunctorCounter<BinaryFunctor>& make_counter(eoFunctorBase::binary_function_tag, BinaryFunctor& _proc, eoFunctorStore& store, std::string _name = "uf_counter")
-{
-    eoBinaryFunctorCounter<BinaryFunctor>* result = new eoBinaryFunctorCounter<BinaryFunctor>(_proc, _name);
-    store.storeFunctor(result);
-    return *result;
+    template <class BinaryFunctor>
+    eoBinaryFunctorCounter<BinaryFunctor>& make_counter(eoFunctorBase::binary_function_tag, BinaryFunctor& _proc, eoFunctorStore& store, std::string _name = "uf_counter")
+    {
+	eoBinaryFunctorCounter<BinaryFunctor>* result = new eoBinaryFunctorCounter<BinaryFunctor>(_proc, _name);
+	store.storeFunctor(result);
+	return *result;
+    }
+
 }
 
 #endif

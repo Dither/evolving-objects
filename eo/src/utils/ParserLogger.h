@@ -17,8 +17,8 @@
 Contact: http://eodev.sourceforge.net
 
 Authors:
-	 Johann DrÃ©o <johann.dreo@thalesgroup.com>
-	 Caner Candan <caner.candan@thalesgroup.com>
+Johann Dréo <johann.dreo@thalesgroup.com>
+Caner Candan <caner.candan@thalesgroup.com>
 */
 
 #ifndef EO_PARSER_LOGGER_H
@@ -27,29 +27,34 @@ Authors:
 #include "eoParser.h"
 #include "eoLogger.h"
 
-/**
- * A parser that use the advanced logging system (@see eoLogger)
- *
- * @ingroup Parameters
- * @ingroup Logging
- */
-class	eoParserLogger : public eoParser
+namespace eo
 {
-public:
-    eoParserLogger(unsigned _argc, char** _argv,
-		   std::string _programDescription = "",
-		   std::string _lFileParamName = "param-file",
-		   char _shortHand = 'p');
-    ~eoParserLogger();
 
-private:
-    friend void	make_verbose(eoParserLogger&);
-    eoValueParam<std::string>	_verbose;
-    eoValueParam<bool>		_printVerboseLevels;
-    eoValueParam<std::string>	_output;
-};
+/**
+* A parser that use the advanced logging system (@see eoLogger)
+*
+* @ingroup Parameters
+* @ingroup Logging
+*/
+    class	eoParserLogger : public eoParser
+    {
+    public:
+	eoParserLogger(unsigned _argc, char** _argv,
+		       std::string _programDescription = "",
+		       std::string _lFileParamName = "param-file",
+		       char _shortHand = 'p');
+	~eoParserLogger();
 
-void	make_verbose(eoParserLogger&);
+    private:
+	friend void	make_verbose(eoParserLogger&);
+	eoValueParam<std::string>	_verbose;
+	eoValueParam<bool>		_printVerboseLevels;
+	eoValueParam<std::string>	_output;
+    };
+
+    void	make_verbose(eoParserLogger&);
+
+}
 
 #endif // !EO_PARSER_LOGGER_H
 

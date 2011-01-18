@@ -30,42 +30,44 @@
 #include <utils/eoRNG.h>
 //-----------------------------------------------------------------------------
 
-
-/**
- * Update an inertia weight by assigning it a Gaussian randomized value 
- * (used for the velocity in particle swarm optimization).
- *
- * @ingroup Variators
- */
-class eoGaussRealWeightUp:public eoWeightUpdater<double>
+namespace eo
 {
-public:
 
     /**
-     * Default constructor
-     * @param _mean - Mean for Gaussian distribution
-     * @param _stdev - Standard deviation for Gaussian distribution
+     * Update an inertia weight by assigning it a Gaussian randomized value 
+     * (used for the velocity in particle swarm optimization).
+     *
+     * @ingroup Variators
      */
-    eoGaussRealWeightUp(
-        double  _mean=0,
-        double  _stdev=1.0
-    ):mean(_mean),stdev(_stdev){}
-
-    /**
-     * Assign Gaussian deviation  to _weight
-     * @param _weight - The modified weight as a double
-     */
-    void operator() (double & _weight)
+    class eoGaussRealWeightUp:public eoWeightUpdater<double>
     {
-        _weight=rng.normal(mean,stdev);
-    }
+    public:
+
+	/**
+	 * Default constructor
+	 * @param _mean - Mean for Gaussian distribution
+	 * @param _stdev - Standard deviation for Gaussian distribution
+	 */
+	eoGaussRealWeightUp(
+			    double  _mean=0,
+			    double  _stdev=1.0
+			    ):mean(_mean),stdev(_stdev){}
+
+	/**
+	 * Assign Gaussian deviation  to _weight
+	 * @param _weight - The modified weight as a double
+	 */
+	void operator() (double & _weight)
+	{
+	    _weight=rng.normal(mean,stdev);
+	}
 
 
-protected:
-    double mean,stdev;
+    protected:
+	double mean,stdev;
 
-};
+    };
 
-
+}
 
 #endif/*EOGAUSSREALWEIGHTUP_H*/

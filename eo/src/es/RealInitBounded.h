@@ -33,39 +33,43 @@
 #include <es/eoReal.h>
 #include <utils/eoRealVectorBounds.h>
 
-/** Simple initialization for any EOT that derives from std::vector<double> 
- *    uniformly in some bounds 
- *
- * @ingroup Real
- * @ingroup Variators
- */
-template <class EOT>
-class eoRealInitBounded : public eoInit<EOT>
+namespace eo
 {
- public:
-  /** Ctor - from eoRealVectorBounds */
-  eoRealInitBounded(eoRealVectorBounds & _bounds):bounds(_bounds) 
-  {
-        if (!bounds.isBounded())
-      throw std::runtime_error("Needs bounded bounds to initialize a std::vector<double>");
-  }
 
-  /** simply passes the argument to the uniform method of the bounds */
-  virtual void operator()(EOT & _eo)
+    /** Simple initialization for any EOT that derives from std::vector<double> 
+     *    uniformly in some bounds 
+     *
+     * @ingroup Real
+     * @ingroup Variators
+     */
+    template <class EOT>
+    class eoRealInitBounded : public eoInit<EOT>
     {
-      bounds.uniform(_eo);  // resizes, and fills uniformly in bounds
-      _eo.invalidate();		   // was MISSING!!!!
-    }
+    public:
+	/** Ctor - from eoRealVectorBounds */
+	eoRealInitBounded(eoRealVectorBounds & _bounds):bounds(_bounds) 
+	{
+	    if (!bounds.isBounded())
+		throw std::runtime_error("Needs bounded bounds to initialize a std::vector<double>");
+	}
 
-  /** accessor to the bounds */
-  virtual eoRealVectorBounds & theBounds() {return bounds;}
-  virtual unsigned size(){return bounds.size();}
+	/** simply passes the argument to the uniform method of the bounds */
+	virtual void operator()(EOT & _eo)
+	{
+	    bounds.uniform(_eo);  // resizes, and fills uniformly in bounds
+	    _eo.invalidate();		   // was MISSING!!!!
+	}
 
- private:
-  eoRealVectorBounds & bounds;
-};
+	/** accessor to the bounds */
+	virtual eoRealVectorBounds & theBounds() {return bounds;}
+	virtual unsigned size(){return bounds.size();}
+
+    private:
+	eoRealVectorBounds & bounds;
+    };
+
+}
 
 //-----------------------------------------------------------------------------
 //@}
 #endif 
-

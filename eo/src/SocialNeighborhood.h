@@ -29,98 +29,101 @@
 #include <eoNeighborhood.h>
 //-----------------------------------------------------------------------------
 
-/**
- *  Derivated from eoNeighborhood. Just takes relationships into account.
- * The neighborhood is defined as a list of indices corresponding to particles.
- * Also contains ONE particle considered as the best of the neighborhood.
- *
- * @ingroup Selectors
- */
-template < class POT > class eoSocialNeighborhood : public eoNeighborhood<POT>
+namespace eo
 {
-public:
-
-    eoSocialNeighborhood(){}
 
     /**
-     * Put a particle (identified by its indice in its population) in the neighborhood.
-     * @param _oneIndice - The indice of the particle in its population.
+     *  Derivated from eoNeighborhood. Just takes relationships into account.
+     * The neighborhood is defined as a list of indices corresponding to particles.
+     * Also contains ONE particle considered as the best of the neighborhood.
+     *
+     * @ingroup Selectors
      */
-    void put(unsigned _oneIndice)
+    template < class POT > class eoSocialNeighborhood : public eoNeighborhood<POT>
     {
-        indicesList.push_back(_oneIndice);
-    }
+    public:
 
-    /**
-     * Return true if the neighborhood contains the indice (= that means "contains the 
-     * particle whose indice is _oneIndice")
-     * @param _oneIndice - The indice of the particle in its population.
-     */
-    bool contains(unsigned _oneIndice)
-    {
-        for (unsigned i=0;i< indicesList.size();i++)
-        {
-            if (indicesList[i]==_oneIndice)
-                return true;
-        }
-        return false;
-    }
+	eoSocialNeighborhood(){}
 
-    /**
-     * Return the list of particle indices as a vector.
-     */
-    std::vector<unsigned> getInformatives()
-    {
-        return indicesList;
-    }
+	/**
+	 * Put a particle (identified by its indice in its population) in the neighborhood.
+	 * @param _oneIndice - The indice of the particle in its population.
+	 */
+	void put(unsigned _oneIndice)
+	{
+	    indicesList.push_back(_oneIndice);
+	}
 
-    /**
-     * Return the size of the neighborhood.
-     */
-    unsigned size()
-    {
-        return indicesList.size();
+	/**
+	 * Return true if the neighborhood contains the indice (= that means "contains the 
+	 * particle whose indice is _oneIndice")
+	 * @param _oneIndice - The indice of the particle in its population.
+	 */
+	bool contains(unsigned _oneIndice)
+	{
+	    for (unsigned i=0;i< indicesList.size();i++)
+		{
+		    if (indicesList[i]==_oneIndice)
+			return true;
+		}
+	    return false;
+	}
 
-    }
+	/**
+	 * Return the list of particle indices as a vector.
+	 */
+	std::vector<unsigned> getInformatives()
+	{
+	    return indicesList;
+	}
 
-    /**
-     * Return the "_index-th" particle of the neighborhood.
-     * Throw an exception if its not contained in the neighborhood.
-     */
-    unsigned get(unsigned _index)
-    {
-        if (_index < size())
-            return indicesList[_index];
-        else{
-            std::string s;
-            s.append (" Invalid indice in eoSocialNeighborhood ");
-            throw std::runtime_error (s);
-        }
-    }
+	/**
+	 * Return the size of the neighborhood.
+	 */
+	unsigned size()
+	{
+	    return indicesList.size();
 
-    /**
-     * Return the best particle of the neighborhood.
-     * The topology is expected to get it.
-     */
-    POT & best()
-    {
-        return lBest;
-    }
+	}
 
-    /**
-     * Set the best particle of the neighborhood.
-     * The topology is expected to set it.
-     */
-    void best(POT _particle)
-    {
-        lBest=_particle;
-    }
+	/**
+	 * Return the "_index-th" particle of the neighborhood.
+	 * Throw an exception if its not contained in the neighborhood.
+	 */
+	unsigned get(unsigned _index)
+	{
+	    if (_index < size())
+		return indicesList[_index];
+	    else{
+		std::string s;
+		s.append (" Invalid indice in eoSocialNeighborhood ");
+		throw std::runtime_error (s);
+	    }
+	}
 
-protected:
-    std::vector<unsigned> indicesList; // The list of particles as a vector of indices
-    POT lBest; // the best particle of the neighborhood
-};
+	/**
+	 * Return the best particle of the neighborhood.
+	 * The topology is expected to get it.
+	 */
+	POT & best()
+	{
+	    return lBest;
+	}
 
+	/**
+	 * Set the best particle of the neighborhood.
+	 * The topology is expected to set it.
+	 */
+	void best(POT _particle)
+	{
+	    lBest=_particle;
+	}
+
+    protected:
+	std::vector<unsigned> indicesList; // The list of particles as a vector of indices
+	POT lBest; // the best particle of the neighborhood
+    };
+
+}
 
 #endif /* EOSOCIALNEIGHBORHOOD_H_ */
-

@@ -30,18 +30,23 @@
 
 #include <eoDistribution.h>
 
-/** The abstract class for estimation of disribution algorithms. 
- * This design evolve a probability distribution 
- *  on the spaces of populations rather than a population
- *
- * It IS NOT an eoAlgo, as it evolves a distribution, not a population.
- *
- * @ingroup Algorithms
-*/
-
-template<class EOT> class eoEDA: public eoUF<eoDistribution<EOT>&, void>
+namespace eo
 {
-};
+
+    /** The abstract class for estimation of disribution algorithms. 
+     * This design evolve a probability distribution 
+     *  on the spaces of populations rather than a population
+     *
+     * It IS NOT an eoAlgo, as it evolves a distribution, not a population.
+     *
+     * @ingroup Algorithms
+     */
+
+    template<class EOT> class eoEDA: public eoUF<eoDistribution<EOT>&, void>
+    {
+    };
+
+}
 
 #endif
 

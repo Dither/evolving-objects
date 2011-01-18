@@ -33,10 +33,13 @@
 
 #ifdef __GNUC__
 #if __GNUC__ < 3
-	// check for stdlibc++v3 which does have ios_base
-	#ifndef _CPP_BITS_IOSBASE_H 
-	typedef ios ios_base; // not currently defined in GCC
-	#endif
+// check for stdlibc++v3 which does have ios_base
+#ifndef _CPP_BITS_IOSBASE_H 
+namespace eo
+{
+    typedef ios ios_base; // not currently defined in GCC
+}
+#endif
 #endif
 #endif
 
@@ -57,24 +60,29 @@ Olivier: this has been removed in .NET :) One step more standard...
 #undef max // as they come in std::pairs
 #endif
 
-// add min and max to std...
-namespace std
+namespace eo
 {
-    template <class T> const T& min(const T& a, const T& b)
+
+    // add min and max to std...
+    namespace std
     {
-        if(a < b)
-            return a;
-        // else
-        return b;
-    }
+	template <class T> const T& min(const T& a, const T& b)
+	{
+	    if(a < b)
+		return a;
+	    // else
+	    return b;
+	}
     
-    template <class T> const T& max(const T& a, const T& b)
-    {
-        if(a > b)
-            return a;
-        // else
-        return b;
+	template <class T> const T& max(const T& a, const T& b)
+	{
+	    if(a > b)
+		return a;
+	    // else
+	    return b;
+	}
     }
+
 }
 
 #endif

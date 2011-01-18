@@ -48,17 +48,20 @@
 // the instanciating EOType
 #include <ga/eoBit.h>
 
-/// The following function merely call the templatized do_* functions above
-
-// continue
-///////////
-eoContinue<eoBit<double> >& make_continue(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoBit<double> > & _eval)
+namespace eo
 {
-  return do_make_continue(_parser, _state, _eval);
-}
-eoContinue<eoBit<eoMinimizingFitness> >& make_continue(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoBit<eoMinimizingFitness> > & _eval)
-{
-  return do_make_continue(_parser, _state, _eval);
-}
 
+    /// The following function merely call the templatized do_* functions above
 
+    // continue
+    ///////////
+    eoContinue<eoBit<double> >& make_continue(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoBit<double> > & _eval)
+    {
+	return do_make_continue(_parser, _state, _eval);
+    }
+    eoContinue<eoBit<eoMinimizingFitness> >& make_continue(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoBit<eoMinimizingFitness> > & _eval)
+    {
+	return do_make_continue(_parser, _state, _eval);
+    }
+
+}

@@ -29,61 +29,66 @@
 
 #include "eoGenOp.h"
 #include "eoInvalidateOps.h"
-///////////////////////////////////////////////////////////////////////////////
-// class eoSGAGenOp
-///////////////////////////////////////////////////////////////////////////////
 
-/** 
- * eoPropGAGenOp (for Simple GA, but Proportional) 
- * choice between Crossover, mutation or cloining 
- * with respect to given relatve weights
- *
- * @ingroup Combination
- */
-template<class EOT> 
-class eoPropGAGenOp : public eoGenOp<EOT>
+namespace eo
 {
- public:
+
+    ///////////////////////////////////////////////////////////////////////////////
+    // class eoSGAGenOp
+    ///////////////////////////////////////////////////////////////////////////////
+
+    /** 
+     * eoPropGAGenOp (for Simple GA, but Proportional) 
+     * choice between Crossover, mutation or cloining 
+     * with respect to given relatve weights
+     *
+     * @ingroup Combination
+     */
+    template<class EOT> 
+    class eoPropGAGenOp : public eoGenOp<EOT>
+    {
+    public:
     
-  /** Ctor from 
-   *   * weight of clone
-   *   * crossover (with weight)
-   *   * mutation (with weight)
-   */
-  eoPropGAGenOp(double _wClone, eoQuadOp<EOT>& _cross, double _wCross, 
-		 eoMonOp<EOT>& _mut, double _wMut)
-    : wClone(_wClone),
-      cross(_cross),
-      wCross(_wCross),
-      mut(_mut), 
-      wMut(_wMut) 
-  {
-    propOp.add(cross, wCross); // the crossover - with weight wCross
-    propOp.add(mut, wMut); // mutation with weight wMut
-    propOp.add(monClone, wClone);
-  }
+	/** Ctor from 
+	 *   * weight of clone
+	 *   * crossover (with weight)
+	 *   * mutation (with weight)
+	 */
+	eoPropGAGenOp(double _wClone, eoQuadOp<EOT>& _cross, double _wCross, 
+		      eoMonOp<EOT>& _mut, double _wMut)
+	    : wClone(_wClone),
+	      cross(_cross),
+	      wCross(_wCross),
+	      mut(_mut), 
+	      wMut(_wMut) 
+	{
+	    propOp.add(cross, wCross); // the crossover - with weight wCross
+	    propOp.add(mut, wMut); // mutation with weight wMut
+	    propOp.add(monClone, wClone);
+	}
   
-  /** do the job: delegate to op */
-  virtual void apply(eoPopulator<EOT>& _pop)
-  {
-    propOp.apply(_pop);
-  }
+	/** do the job: delegate to op */
+	virtual void apply(eoPopulator<EOT>& _pop)
+	{
+	    propOp.apply(_pop);
+	}
 
-  /** inherited from eoGenOp */
-  virtual unsigned max_production(void) {return 2;}
+	/** inherited from eoGenOp */
+	virtual unsigned max_production(void) {return 2;}
 
-  virtual std::string className() const {return "eoPropGAGenOp";}
+	virtual std::string className() const {return "eoPropGAGenOp";}
 
 
- private:
-  double wClone;
-  eoQuadOp<EOT> &cross;   // eoInvalidateXXX take the boolean output
-  double wCross;
-  eoMonOp<EOT> & mut;      // of the XXX op and invalidate the EOT
-  double wMut;
-  eoProportionalOp<EOT> propOp;
-  eoMonCloneOp<EOT> monClone;
-};
+    private:
+	double wClone;
+	eoQuadOp<EOT> &cross;   // eoInvalidateXXX take the boolean output
+	double wCross;
+	eoMonOp<EOT> & mut;      // of the XXX op and invalidate the EOT
+	double wMut;
+	eoProportionalOp<EOT> propOp;
+	eoMonCloneOp<EOT> monClone;
+    };
 
+}
 
 #endif

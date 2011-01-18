@@ -30,13 +30,16 @@
 #include <eoEvalFunc.h>
 #include <utils/eoParam.h>
 
-/** 
-Counts the number of evaluations actually performed.
-
-@ingroup Evaluation
-*/
-template<class EOT> class eoEvalFuncCounter : public eoEvalFunc<EOT>, public eoValueParam<unsigned long>
+namespace eo
 {
+
+    /** 
+	Counts the number of evaluations actually performed.
+
+	@ingroup Evaluation
+    */
+    template<class EOT> class eoEvalFuncCounter : public eoEvalFunc<EOT>, public eoValueParam<unsigned long>
+    {
     public :
         eoEvalFuncCounter(eoEvalFunc<EOT>& _func, std::string _name = "Eval. ") 
             : eoValueParam<unsigned long>(0, _name), func(_func) {}
@@ -44,14 +47,16 @@ template<class EOT> class eoEvalFuncCounter : public eoEvalFunc<EOT>, public eoV
         virtual void operator()(EOT& _eo)
         {
             if (_eo.invalid())
-            {
-                value()++;
-                func(_eo);
-            }
+		{
+		    value()++;
+		    func(_eo);
+		}
         }
 
     protected :
         eoEvalFunc<EOT>& func;
-};
+    };
+
+}
 
 #endif

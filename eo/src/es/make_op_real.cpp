@@ -44,16 +44,21 @@
 // Templatized code
 #include <es/make_op_real.h>
 
-/// The following function merely call the templatized do_* functions above
-
-// oeprators
-////////////
-eoGenOp<eoReal<double> >&  make_op(eoParser& _parser, eoState& _state, eoRealInitBounded<eoReal<double> >& _init)
+namespace eo
 {
-  return do_make_op(_parser, _state, _init);
-}
 
-eoGenOp<eoReal<eoMinimizingFitness> >&  make_op(eoParser& _parser, eoState& _state, eoRealInitBounded<eoReal<eoMinimizingFitness> >& _init)
-{
-  return do_make_op(_parser, _state, _init);
+    /// The following function merely call the templatized do_* functions above
+
+    // oeprators
+    ////////////
+    eoGenOp<eoReal<double> >&  make_op(eoParser& _parser, eoState& _state, eoRealInitBounded<eoReal<double> >& _init)
+    {
+	return do_make_op(_parser, _state, _init);
+    }
+
+    eoGenOp<eoReal<eoMinimizingFitness> >&  make_op(eoParser& _parser, eoState& _state, eoRealInitBounded<eoReal<eoMinimizingFitness> >& _init)
+    {
+	return do_make_op(_parser, _state, _init);
+    }
+
 }

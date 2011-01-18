@@ -29,95 +29,100 @@
 
 #include "eoFunctor.h"
 
-/** @addtogroup Utilities 
- * @{
- */
-
-/**
-  Generic set of classes that wrap an eoF, eoUF or eoBF so that they have the
-  copy semantics the STL functions usually require (i.e. they can be passed
-  by value, rather than the EO standard pass by reference).
-
-  The family consists of eoSTLF, eoSTLUF, eoSTLBF that modify eoF, eoUF and eoBF
-  respectively
-*/
-template <class R>
-class eoSTLF
+namespace eo
 {
-  public:
 
-    typedef R result_type;
+    /** @addtogroup Utilities 
+     * @{
+     */
 
-    eoSTLF(eoF<R>& _f) : f(_f) {}
+    /**
+       Generic set of classes that wrap an eoF, eoUF or eoBF so that they have the
+       copy semantics the STL functions usually require (i.e. they can be passed
+       by value, rather than the EO standard pass by reference).
 
-    R operator()(void)
+       The family consists of eoSTLF, eoSTLUF, eoSTLBF that modify eoF, eoUF and eoBF
+       respectively
+    */
+    template <class R>
+    class eoSTLF
     {
-      return f();
-    }
+    public:
 
-  private :
+	typedef R result_type;
 
-  eoF<R>& f;
-};
+	eoSTLF(eoF<R>& _f) : f(_f) {}
+
+	R operator()(void)
+	{
+	    return f();
+	}
+
+    private :
+
+	eoF<R>& f;
+    };
 
 #ifdef _MSVC
-/// specialization of void for MSVC users, unfortunately only works for eoF,
-/// as MSVC does not support partial specialization either
-template <>
-void eoSTLF<void>::operator()(void)
-{
-  f();
-}
+    /// specialization of void for MSVC users, unfortunately only works for eoF,
+    /// as MSVC does not support partial specialization either
+    template <>
+    void eoSTLF<void>::operator()(void)
+    {
+	f();
+    }
 #endif
 
-/**
-  Generic set of classes that wrap an eoF, eoUF or eoBF so that they have the
-  copy semantics the STL functions usually require (i.e. they can be passed
-  by value, rather than the EO standard pass by reference).
+    /**
+       Generic set of classes that wrap an eoF, eoUF or eoBF so that they have the
+       copy semantics the STL functions usually require (i.e. they can be passed
+       by value, rather than the EO standard pass by reference).
 
-  The family consists of eoSTLF, eoSTLUF, eoSTLBF that modify eoF, eoUF and eoBF
-  respectively
-*/
-template <class A1, class R>
-class eoSTLUF : public std::unary_function<A1, R>
-{
-  public:
-    eoSTLUF(eoUF<A1,R>& _f) : f(_f) {}
-
-    R operator()(A1 a)
+       The family consists of eoSTLF, eoSTLUF, eoSTLBF that modify eoF, eoUF and eoBF
+       respectively
+    */
+    template <class A1, class R>
+    class eoSTLUF : public std::unary_function<A1, R>
     {
-      return f(a);
-    }
+    public:
+	eoSTLUF(eoUF<A1,R>& _f) : f(_f) {}
 
-  private:
-    eoUF<A1, R>& f;
-};
+	R operator()(A1 a)
+	{
+	    return f(a);
+	}
 
-/**
-  Generic set of classes that wrap an eoF, eoUF or eoBF so that they have the
-  copy semantics the STL functions usually require (i.e. they can be passed
-  by value, rather than the EO standard pass by reference).
+    private:
+	eoUF<A1, R>& f;
+    };
 
-  The family consists of eoSTLF, eoSTLUF, eoSTLBF that modify eoF, eoUF and eoBF
-  respectively
-*/
-template <class A1, class A2, class R>
-class eoSTLBF : public std::binary_function<A1, A2, R>
-{
-  public:
-    eoSTLBF(eoUF<A1,R>& _f) : f(_f) {}
+    /**
+       Generic set of classes that wrap an eoF, eoUF or eoBF so that they have the
+       copy semantics the STL functions usually require (i.e. they can be passed
+       by value, rather than the EO standard pass by reference).
 
-    R operator()(A1 a1, A2 a2)
+       The family consists of eoSTLF, eoSTLUF, eoSTLBF that modify eoF, eoUF and eoBF
+       respectively
+    */
+    template <class A1, class A2, class R>
+    class eoSTLBF : public std::binary_function<A1, A2, R>
     {
-      return f(a1, a2);
-    }
+    public:
+	eoSTLBF(eoUF<A1,R>& _f) : f(_f) {}
 
-  private:
+	R operator()(A1 a1, A2 a2)
+	{
+	    return f(a1, a2);
+	}
 
-    eoBF<A1, A2, R>& f;
-};
+    private:
 
-//! @todo: put automated wrappers here...
+	eoBF<A1, A2, R>& f;
+    };
+
+    //! @todo: put automated wrappers here...
+
+}
 
 /** @} */
 #endif

@@ -29,154 +29,159 @@
 
 #include <functional>
 
-/** @addtogroup Core
- * @{
- */
-
-/** Base class for functors to get a nice hierarchy diagram
-
-    That's actually quite an understatement as it does quite a bit more than
-    just that. By having all functors derive from the same base class, we can
-    do some memory management that would otherwise be very hard.
-
-    The memory management base class is called eoFunctorStore, and it supports
-    a member add() to add a pointer to a functor. When the functorStore is
-    destroyed, it will delete all those pointers. So beware: do not delete
-    the functorStore before you are done with anything that might have been allocated.
-
-    @see eoFunctorStore
-
-*/
-class eoFunctorBase
+namespace eo
 {
-public :
-    /// virtual dtor here so there is no need to define it in derived classes
-    virtual ~eoFunctorBase() {}
 
-    /// tag to identify a procedure in compile time function selection @see functor_category
-    struct procedure_tag {};
-    /// tag to identify a unary function in compile time function selection @see functor_category
-    struct unary_function_tag {};
-    /// tag to identify a binary function in compile time function selection @see functor_category
-    struct binary_function_tag {};
-};
-/** @example t-eoFunctor.cpp
- */
+    /** @addtogroup Core
+     * @{
+     */
 
-/**
-    Basic Function. Derive from this class when defining
-    any procedure. It defines a result_type that can be used
-    to determine the return type
-    Argument and result types can be any type including void for
-    result_type
-**/
-template <class R>
-class eoF : public eoFunctorBase
-{
-public :
+    /** Base class for functors to get a nice hierarchy diagram
 
-    /// virtual dtor here so there is no need to define it in derived classes
-    virtual ~eoF() {}
+	That's actually quite an understatement as it does quite a bit more than
+	just that. By having all functors derive from the same base class, we can
+	do some memory management that would otherwise be very hard.
 
-  /// the return type - probably useless ....
-    typedef R result_type;
+	The memory management base class is called eoFunctorStore, and it supports
+	a member add() to add a pointer to a functor. When the functorStore is
+	destroyed, it will delete all those pointers. So beware: do not delete
+	the functorStore before you are done with anything that might have been allocated.
 
-    /// The pure virtual function that needs to be implemented by the subclass
-    virtual R operator()() = 0;
+	@see eoFunctorStore
 
-    /// tag to identify a procedure in compile time function selection @see functor_category
-    static eoFunctorBase::procedure_tag functor_category()
+    */
+    class eoFunctorBase
+    {
+    public :
+	/// virtual dtor here so there is no need to define it in derived classes
+	virtual ~eoFunctorBase() {}
+
+	/// tag to identify a procedure in compile time function selection @see functor_category
+	struct procedure_tag {};
+	/// tag to identify a unary function in compile time function selection @see functor_category
+	struct unary_function_tag {};
+	/// tag to identify a binary function in compile time function selection @see functor_category
+	struct binary_function_tag {};
+    };
+    /** @example t-eoFunctor.cpp
+     */
+
+    /**
+       Basic Function. Derive from this class when defining
+       any procedure. It defines a result_type that can be used
+       to determine the return type
+       Argument and result types can be any type including void for
+       result_type
+    **/
+    template <class R>
+    class eoF : public eoFunctorBase
+    {
+    public :
+
+	/// virtual dtor here so there is no need to define it in derived classes
+	virtual ~eoF() {}
+
+	/// the return type - probably useless ....
+	typedef R result_type;
+
+	/// The pure virtual function that needs to be implemented by the subclass
+	virtual R operator()() = 0;
+
+	/// tag to identify a procedure in compile time function selection @see functor_category
+	static eoFunctorBase::procedure_tag functor_category()
+	{
+	    return eoFunctorBase::procedure_tag();
+	}
+    };
+
+    /**
+       Overloaded function that can help in the compile time detection 
+       of the type of functor we are dealing with
+
+       @see eoCounter, make_counter
+    */
+    template<class R>
+    eoFunctorBase::procedure_tag functor_category(const eoF<R>&)
     {
 	return eoFunctorBase::procedure_tag();
     }
-};
 
-/**
-    Overloaded function that can help in the compile time detection 
-    of the type of functor we are dealing with
+    /** 
+	Basic Unary Functor. Derive from this class when defining 
+	any unary function. First template argument is the first_argument_type,
+	second result_type.
+	Argument and result types can be any type including void for
+	result_type
+    **/
+    template <class A1, class R>
+    class eoUF : public eoFunctorBase, public std::unary_function<A1, R>
+    {
+    public :
 
-    @see eoCounter, make_counter
-*/
-template<class R>
-eoFunctorBase::procedure_tag functor_category(const eoF<R>&)
-{
-    return eoFunctorBase::procedure_tag();
-}
+	/// virtual dtor here so there is no need to define it in derived classes
+	virtual ~eoUF() {}
 
-/** 
-    Basic Unary Functor. Derive from this class when defining 
-    any unary function. First template argument is the first_argument_type,
-    second result_type.
-    Argument and result types can be any type including void for
-    result_type
-**/
-template <class A1, class R>
-class eoUF : public eoFunctorBase, public std::unary_function<A1, R>
-{
-public :
+	/// The pure virtual function that needs to be implemented by the subclass
+	virtual R operator()(A1) = 0;
 
-    /// virtual dtor here so there is no need to define it in derived classes
-    virtual ~eoUF() {}
+	/// tag to identify a procedure in compile time function selection @see functor_category
+	static eoFunctorBase::unary_function_tag functor_category()
+	{
+	    return eoFunctorBase::unary_function_tag();
+	}
+    };
 
-    /// The pure virtual function that needs to be implemented by the subclass
-    virtual R operator()(A1) = 0;
-
-    /// tag to identify a procedure in compile time function selection @see functor_category
-    static eoFunctorBase::unary_function_tag functor_category()
+    /**
+       Overloaded function that can help in the compile time detection 
+       of the type of functor we are dealing with
+       @see eoCounter, make_counter
+    */
+    template<class R, class A1>
+    eoFunctorBase::unary_function_tag functor_category(const eoUF<A1, R>&)
     {
 	return eoFunctorBase::unary_function_tag();
     }
-};
-
-/**
-    Overloaded function that can help in the compile time detection 
-    of the type of functor we are dealing with
-    @see eoCounter, make_counter
-*/
-template<class R, class A1>
-eoFunctorBase::unary_function_tag functor_category(const eoUF<A1, R>&)
-{
-    return eoFunctorBase::unary_function_tag();
-}
 
 
-/** 
-    Basic Binary Functor. Derive from this class when defining 
-    any binary function. First template argument is result_type, second
-    is first_argument_type, third is second_argument_type.
-    Argument and result types can be any type including void for
-    result_type
-**/
-template <class A1, class A2, class R>
-class eoBF : public eoFunctorBase, public std::binary_function<A1, A2, R>
-{
-public :
+    /** 
+	Basic Binary Functor. Derive from this class when defining 
+	any binary function. First template argument is result_type, second
+	is first_argument_type, third is second_argument_type.
+	Argument and result types can be any type including void for
+	result_type
+    **/
+    template <class A1, class A2, class R>
+    class eoBF : public eoFunctorBase, public std::binary_function<A1, A2, R>
+    {
+    public :
         /// virtual dtor here so there is no need to define it in derived classes
-    virtual ~eoBF() {}
+	virtual ~eoBF() {}
     
-    //typedef R result_type;
-    //typedef A1 first_argument_type;
-    //typedef A2 second_argument_type;
+	//typedef R result_type;
+	//typedef A1 first_argument_type;
+	//typedef A2 second_argument_type;
 
-    /// The pure virtual function that needs to be implemented by the subclass
-    virtual R operator()(A1, A2) = 0;
+	/// The pure virtual function that needs to be implemented by the subclass
+	virtual R operator()(A1, A2) = 0;
 
-    /// tag to identify a procedure in compile time function selection @see functor_category
-    static eoFunctorBase::binary_function_tag functor_category()
+	/// tag to identify a procedure in compile time function selection @see functor_category
+	static eoFunctorBase::binary_function_tag functor_category()
+	{
+	    return eoFunctorBase::binary_function_tag();
+	}
+    };
+
+    /**
+       Overloaded function that can help in the compile time detection 
+       of the type of functor we are dealing with
+       @see eoCounter, make_counter
+    */
+    template<class R, class A1, class A2>
+    eoFunctorBase::binary_function_tag functor_category(const eoBF<A1, A2, R>&)
     {
 	return eoFunctorBase::binary_function_tag();
     }
-};
 
-/**
-    Overloaded function that can help in the compile time detection 
-    of the type of functor we are dealing with
-    @see eoCounter, make_counter
-*/
-template<class R, class A1, class A2>
-eoFunctorBase::binary_function_tag functor_category(const eoBF<A1, A2, R>&)
-{
-    return eoFunctorBase::binary_function_tag();
 }
 
 /** @} */

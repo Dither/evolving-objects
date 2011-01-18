@@ -29,65 +29,70 @@
 
 #include "eoGenOp.h"
 #include "eoInvalidateOps.h"
-///////////////////////////////////////////////////////////////////////////////
-// class eoSGAGenOp
-///////////////////////////////////////////////////////////////////////////////
 
-/** 
- * eoSGAGenOp (for Simple GA) mimicks the usual crossover with proba pCross + 
- * mutation with proba pMut inside an eoGeneralOp
- * It does it exactly as class eoSGATransform, i.e. only accepts 
- *    quadratic crossover and unary mutation
- * It was introduced for didactic reasons, but seems to be popular :-)
- *
- * @ingroup Combination
- */
- template<class EOT> 
-class eoSGAGenOp : public eoGenOp<EOT>
+namespace eo
 {
- public:
+
+    ///////////////////////////////////////////////////////////////////////////////
+    // class eoSGAGenOp
+    ///////////////////////////////////////////////////////////////////////////////
+
+    /** 
+     * eoSGAGenOp (for Simple GA) mimicks the usual crossover with proba pCross + 
+     * mutation with proba pMut inside an eoGeneralOp
+     * It does it exactly as class eoSGATransform, i.e. only accepts 
+     *    quadratic crossover and unary mutation
+     * It was introduced for didactic reasons, but seems to be popular :-)
+     *
+     * @ingroup Combination
+     */
+    template<class EOT> 
+    class eoSGAGenOp : public eoGenOp<EOT>
+    {
+    public:
     
-  /** Ctor from crossover (with proba) and mutation (with proba)
-   * Builds the sequential op that first applies a proportional choice
-   * between the crossover and nothing (cloning), then the mutation
-   */
-  eoSGAGenOp(eoQuadOp<EOT>& _cross, double _pCross, 
-		 eoMonOp<EOT>& _mut, double _pMut)
-    : cross(_cross),
-      pCross(_pCross),
-      mut(_mut), 
-      pMut(_pMut) 
-  {
-    // the crossover - with probability pCross
-    propOp.add(cross, pCross); // crossover, with proba pcross
-    propOp.add(quadClone, 1-pCross); // nothing, with proba 1-pcross
+	/** Ctor from crossover (with proba) and mutation (with proba)
+	 * Builds the sequential op that first applies a proportional choice
+	 * between the crossover and nothing (cloning), then the mutation
+	 */
+	eoSGAGenOp(eoQuadOp<EOT>& _cross, double _pCross, 
+		   eoMonOp<EOT>& _mut, double _pMut)
+	    : cross(_cross),
+	      pCross(_pCross),
+	      mut(_mut), 
+	      pMut(_pMut) 
+	{
+	    // the crossover - with probability pCross
+	    propOp.add(cross, pCross); // crossover, with proba pcross
+	    propOp.add(quadClone, 1-pCross); // nothing, with proba 1-pcross
     
-    // now the sequential
-    op.add(propOp, 1.0);	 // always do combined crossover
-    op.add(mut, pMut);     // then mutation, with proba pmut
-  }
+	    // now the sequential
+	    op.add(propOp, 1.0);	 // always do combined crossover
+	    op.add(mut, pMut);     // then mutation, with proba pmut
+	}
   
-  /** do the job: delegate to op */
-  virtual void apply(eoPopulator<EOT>& _pop)
-  {
-    op.apply(_pop);
-  }
+	/** do the job: delegate to op */
+	virtual void apply(eoPopulator<EOT>& _pop)
+	{
+	    op.apply(_pop);
+	}
 
-  /** inherited from eoGenOp */
-  virtual unsigned max_production(void) {return 2;}
+	/** inherited from eoGenOp */
+	virtual unsigned max_production(void) {return 2;}
 
-  virtual std::string className() const {return "eoSGAGenOp";}
+	virtual std::string className() const {return "eoSGAGenOp";}
 
 
- private:
-  eoQuadOp<EOT> &cross;   // eoInvalidateXXX take the boolean output
-  double pCross;
-  eoMonOp<EOT> & mut;      // of the XXX op and invalidate the EOT
-  double pMut;
-  eoProportionalOp<EOT> propOp;
-  eoQuadCloneOp<EOT> quadClone;
-  eoSequentialOp<EOT> op;
-};
+    private:
+	eoQuadOp<EOT> &cross;   // eoInvalidateXXX take the boolean output
+	double pCross;
+	eoMonOp<EOT> & mut;      // of the XXX op and invalidate the EOT
+	double pMut;
+	eoProportionalOp<EOT> propOp;
+	eoQuadCloneOp<EOT> quadClone;
+	eoSequentialOp<EOT> op;
+    };
 
+}
 
 #endif

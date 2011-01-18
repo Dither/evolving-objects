@@ -29,14 +29,19 @@
 #include <eoAlgo.h>
 //-----------------------------------------------------------------------------
 
-/**
-    This is a generic class for particle swarm algorithms. There
-    is only one operator defined, which takes a population and does stuff to
-    it. It needn't be a complete algorithm, can be also a step of an
-    algorithm. Only used for mono-objective cases.
+namespace eo
+{
 
-    @ingroup Algorithms
-*/
-template < class POT > class eoPSO:public eoAlgo < POT >{};
+    /**
+       This is a generic class for particle swarm algorithms. There
+       is only one operator defined, which takes a population and does stuff to
+       it. It needn't be a complete algorithm, can be also a step of an
+       algorithm. Only used for mono-objective cases.
+
+       @ingroup Algorithms
+    */
+    template < class POT > class eoPSO:public eoAlgo < POT >{};
+
+}
 
 #endif /*_EOPSO_H*/

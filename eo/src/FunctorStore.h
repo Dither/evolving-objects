@@ -29,28 +29,31 @@
 
 #include <vector>
 
-class eoFunctorBase;
-
-/**
-   eoFunctorStore is a class that stores functors that are allocated on the
-   heap. This class can be used in factories to store allocated memory for
-   dynamically created functors.
-
-   @ingroup Utilities
-*/
-class eoFunctorStore
+namespace eo
 {
-public:
 
-    /// Default Ctor
-    eoFunctorStore() {}
+    class eoFunctorBase;
 
-    // virtual destructor so we don't need to define it in derived classes
-    virtual ~eoFunctorStore();
+    /**
+       eoFunctorStore is a class that stores functors that are allocated on the
+       heap. This class can be used in factories to store allocated memory for
+       dynamically created functors.
 
-    /// Add an eoFunctorBase to the store
-    template <class Functor>
-    Functor& storeFunctor(Functor* r)
+       @ingroup Utilities
+    */
+    class eoFunctorStore
+    {
+    public:
+
+	/// Default Ctor
+	eoFunctorStore() {}
+
+	// virtual destructor so we don't need to define it in derived classes
+	virtual ~eoFunctorStore();
+
+	/// Add an eoFunctorBase to the store
+	template <class Functor>
+	Functor& storeFunctor(Functor* r)
         {
             // If the compiler complains about the following line,
             // check if you really are giving it a pointer to an
@@ -59,15 +62,17 @@ public:
             return *r;
         }
 
-private :
+    private :
 
-    /** no copying allowed */
-    eoFunctorStore(const eoFunctorStore&);
+	/** no copying allowed */
+	eoFunctorStore(const eoFunctorStore&);
 
-    /** no assignment allowed */
-    eoFunctorStore operator=(const eoFunctorStore&);
+	/** no assignment allowed */
+	eoFunctorStore operator=(const eoFunctorStore&);
 
-    std::vector<eoFunctorBase*> vec;
-};
+	std::vector<eoFunctorBase*> vec;
+    };
+
+}
 
 #endif

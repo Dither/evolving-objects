@@ -21,39 +21,49 @@ Authors:
 Johann Dréo <johann.dreo@thalesgroup.com>
 */
 
+#ifndef _EvalTimeThrowExeception_h
+#define _EvalTimeThrowExeception_h
+
 #include <ctime>
 
 #include <eoExceptions.h>
 
-/** Check at each evaluation if a given tie contract has been reached.
- *
- * Throw an eoMaxTimeException if the given max time has been reached.
- * Usefull if you want to end the search independently of generations.
- *
- * @ingroup Evaluation
- */
-template< class EOT >
-class eoEvalTimeThrowException : public eoEvalFuncCounter< EOT >
+namespace eo
 {
-public:
-    eoEvalTimeThrowException( eoEvalFunc<EOT> & func, time_t max ) : _max(max), _start( std::time(NULL) ), eoEvalFuncCounter<EOT>( func, "Eval.") {}
 
-    virtual void operator() ( EOT & eo )
+    /** Check at each evaluation if a given tie contract has been reached.
+     *
+     * Throw an eoMaxTimeException if the given max time has been reached.
+     * Usefull if you want to end the search independently of generations.
+     *
+     * @ingroup Evaluation
+     */
+    template< class EOT >
+    class eoEvalTimeThrowException : public eoEvalFuncCounter< EOT >
     {
-        if( eo.invalid() ) {
+    public:
+	eoEvalTimeThrowException( eoEvalFunc<EOT> & func, time_t max ) : _max(max), _start( std::time(NULL) ), eoEvalFuncCounter<EOT>( func, "Eval.") {}
 
-            time_t elapsed = static_cast<time_t>( std::difftime( std::time(NULL) , _start ) );
+	virtual void operator() ( EOT & eo )
+	{
+	    if( eo.invalid() ) {
 
-            if( elapsed >= _max ) {
-                throw eoMaxTimeException(elapsed);
-            } else {
-                func(eo);
-            }
-        }
-    }
+		time_t elapsed = static_cast<time_t>( std::difftime( std::time(NULL) , _start ) );
 
-protected:
-    time_t _max;
+		if( elapsed >= _max ) {
+		    throw eoMaxTimeException(elapsed);
+		} else {
+		    func(eo);
+		}
+	    }
+	}
 
-    time_t _start;
-};
+    protected:
+	time_t _max;
+
+	time_t _start;
+    };
+
+}
+
+#endif // !_EvalTimeThrowExeception_h

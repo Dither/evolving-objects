@@ -30,17 +30,22 @@
 // Algorithm (only this one needed)
 #include <eoAlgo.h>
 
-/*
- * A trivial function - only here to allow instanciation with a give EOType
- *      and separate compilation - see in ga dir, make_run_ga
- *
- *
- * @ingroup Builders
-*/
-template <class EOT>
-void do_run(eoAlgo<EOT>& _algo, eoPop<EOT>& _pop)
+namespace eo
 {
-  _algo(_pop);
+
+    /*
+     * A trivial function - only here to allow instanciation with a give EOType
+     *      and separate compilation - see in ga dir, make_run_ga
+     *
+     *
+     * @ingroup Builders
+     */
+    template <class EOT>
+    void do_run(eoAlgo<EOT>& _algo, eoPop<EOT>& _pop)
+    {
+	_algo(_pop);
+    }
+
 }
 
 #endif

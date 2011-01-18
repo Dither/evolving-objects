@@ -35,61 +35,66 @@
 #include <signal.h>
 #include <eoContinue.h>
 
-/** @addtogroup Continuators
- * @{
- */
-
-extern bool existSIGContinue;
-extern bool call_func;
-
-void	set_bool(int)
+namespace eo
 {
-  call_func = true;
+
+    /** @addtogroup Continuators
+     * @{
+     */
+
+    extern bool existSIGContinue;
+    extern bool call_func;
+
+    void	set_bool(int)
+    {
+	call_func = true;
+    }
+
+    /**
+       Ctrl C handling: this eoContinue tells whether the user pressed Ctrl C
+    */
+    template< class EOT>
+    class eoSIGContinue: public eoContinue<EOT>
+    {
+    public:
+	/// Ctor : installs the signal handler
+	eoSIGContinue(int sig, sighandler_t fct)
+	    : _sig(sig), _fct(fct)
+	{
+	    // First checks that no other eoSIGContinue does exist
+	    if (existSIGContinue)
+		throw std::runtime_error("A signal handler is already defined!\n");
+
+#ifndef _WINDOWS
+#ifdef SIGQUIT
+	    ::signal( sig, set_bool );
+	    existSIGContinue = true;
+#endif
+#endif
+	}
+
+	/** Returns false when the signal has been typed in reached */
+	virtual bool operator() ( const eoPop<EOT>& _vEO )
+	{
+	    if (call_func)
+		{
+		    _fct(_sig);
+		    call_func = false;
+		}
+
+	    return true;
+	}
+
+	virtual std::string className(void) const { return "eoSIGContinue"; }
+    private:
+	int		_sig;
+	sighandler_t	_fct;
+    };
+
+    /** @} */
+
 }
-
-/**
-    Ctrl C handling: this eoContinue tells whether the user pressed Ctrl C
-*/
-template< class EOT>
-class eoSIGContinue: public eoContinue<EOT>
-{
-public:
-  /// Ctor : installs the signal handler
-  eoSIGContinue(int sig, sighandler_t fct)
-    : _sig(sig), _fct(fct)
-  {
-    // First checks that no other eoSIGContinue does exist
-    if (existSIGContinue)
-      throw std::runtime_error("A signal handler is already defined!\n");
-
-    #ifndef _WINDOWS
-      #ifdef SIGQUIT
-        ::signal( sig, set_bool );
-        existSIGContinue = true;
-      #endif
-    #endif
-  }
-
-  /** Returns false when the signal has been typed in reached */
-  virtual bool operator() ( const eoPop<EOT>& _vEO )
-  {
-    if (call_func)
-      {
-	_fct(_sig);
-	call_func = false;
-      }
-
-    return true;
-  }
-
-  virtual std::string className(void) const { return "eoSIGContinue"; }
-private:
-  int		_sig;
-  sighandler_t	_fct;
-};
-
-/** @} */
 
 #endif
 
- // of MSVC comment-out
+// of MSVC comment-out

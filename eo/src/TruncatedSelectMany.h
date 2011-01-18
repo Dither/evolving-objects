@@ -35,85 +35,90 @@
 #include <math.h>
 //-----------------------------------------------------------------------------
 
-/** eoTruncatedSelectMany selects many individuals using eoSelectOne as it's 
-    mechanism. Therefore eoSelectMany needs an eoSelectOne in its ctor
-
-    It will use an eoHowMnay to determine the number of guys to select,
-     and push them to the back of the destination population.
-
-     And it will only perform selection from the top guys in the population.
-
-     It is NOT a special case of eoSelectMany because it needs to SORT 
-     the population to discard the worst guys before doing the selection
-
-     However, the same result can be obtained by embedding an 
-     eoTruncatedSelectOne into an eoSelectMany ...
-
-     @ingroup Selectors
-*/
-template<class EOT>
-class eoTruncatedSelectMany : public eoSelect<EOT>
+namespace eo
 {
- public:
-     /// Ctor
-     eoTruncatedSelectMany(eoSelectOne<EOT>& _select, 
-		  double  _rateGenitors, double  _rateFertile, 
-		  bool _interpret_as_rateG = true, 
-		  bool _interpret_as_rateF = true)
-         : select(_select), 
-	   howManyGenitors(_rateGenitors, _interpret_as_rateG),
-	   howManyFertile(_rateFertile, _interpret_as_rateF) {}
 
-     // Ctor with eoHowManys
-     eoTruncatedSelectMany(eoSelectOne<EOT>& _select, 
-		  eoHowMany _howManyGenitors, eoHowMany _howManyFertile) 
-         : select(_select), howManyGenitors(_howManyGenitors),
-	   howManyFertile(_howManyFertile) {}
+    /** eoTruncatedSelectMany selects many individuals using eoSelectOne as it's 
+	mechanism. Therefore eoSelectMany needs an eoSelectOne in its ctor
 
-     /**
-     The implementation repeatidly selects an individual
+	It will use an eoHowMnay to determine the number of guys to select,
+	and push them to the back of the destination population.
 
-     @param _source the source population
-     @param _dest  the resulting population (size of this population is the number of times eoSelectOne is called. It empties the destination and adds the selection into it)
-     */
-  virtual void operator()(const eoPop<EOT>& _source, eoPop<EOT>& _dest)
-  {
-    unsigned target = howManyGenitors(_source.size());
+	And it will only perform selection from the top guys in the population.
 
-    _dest.resize(target);
+	It is NOT a special case of eoSelectMany because it needs to SORT 
+	the population to discard the worst guys before doing the selection
 
-    unsigned nbFertile = howManyFertile(_source.size());
+	However, the same result can be obtained by embedding an 
+	eoTruncatedSelectOne into an eoSelectMany ...
 
-    //revert to standard selection (see eoSelectMany) if no truncation
-    if (nbFertile == _source.size())
-      {
-	select.setup(_source);
+	@ingroup Selectors
+    */
+    template<class EOT>
+    class eoTruncatedSelectMany : public eoSelect<EOT>
+    {
+    public:
+	/// Ctor
+	eoTruncatedSelectMany(eoSelectOne<EOT>& _select, 
+			      double  _rateGenitors, double  _rateFertile, 
+			      bool _interpret_as_rateG = true, 
+			      bool _interpret_as_rateF = true)
+	    : select(_select), 
+	      howManyGenitors(_rateGenitors, _interpret_as_rateG),
+	      howManyFertile(_rateFertile, _interpret_as_rateF) {}
+
+	// Ctor with eoHowManys
+	eoTruncatedSelectMany(eoSelectOne<EOT>& _select, 
+			      eoHowMany _howManyGenitors, eoHowMany _howManyFertile) 
+	    : select(_select), howManyGenitors(_howManyGenitors),
+	      howManyFertile(_howManyFertile) {}
+
+	/**
+	   The implementation repeatidly selects an individual
+
+	   @param _source the source population
+	   @param _dest  the resulting population (size of this population is the number of times eoSelectOne is called. It empties the destination and adds the selection into it)
+	*/
+	virtual void operator()(const eoPop<EOT>& _source, eoPop<EOT>& _dest)
+	{
+	    unsigned target = howManyGenitors(_source.size());
+
+	    _dest.resize(target);
+
+	    unsigned nbFertile = howManyFertile(_source.size());
+
+	    //revert to standard selection (see eoSelectMany) if no truncation
+	    if (nbFertile == _source.size())
+		{
+		    select.setup(_source);
 	
-	for (size_t i = 0; i < _dest.size(); ++i)
-	  _dest[i] = select(_source);
-      }
-    else
-      {
-    // at the moment, brute force (rush rush, no good)
-    // what we would need otherwise is a std::vector<EOT &> class
-    // and selectors that act on such a thing
-	eoPop<EOT> tmpPop = _source; // hum hum, could be a pain in the ass
+		    for (size_t i = 0; i < _dest.size(); ++i)
+			_dest[i] = select(_source);
+		}
+	    else
+		{
+		    // at the moment, brute force (rush rush, no good)
+		    // what we would need otherwise is a std::vector<EOT &> class
+		    // and selectors that act on such a thing
+		    eoPop<EOT> tmpPop = _source; // hum hum, could be a pain in the ass
 
-	tmpPop.sort();		   // maybe we could only do partial sort?
-	tmpPop.resize(nbFertile);  // only the best guys here now
-	tmpPop.shuffle();	   // as some selectors are order-sensitive
+		    tmpPop.sort();		   // maybe we could only do partial sort?
+		    tmpPop.resize(nbFertile);  // only the best guys here now
+		    tmpPop.shuffle();	   // as some selectors are order-sensitive
 
-	select.setup(tmpPop);
+		    select.setup(tmpPop);
 	
-	for (size_t i = 0; i < _dest.size(); ++i)
-	  _dest[i] = select(tmpPop);
-      }
-  }
+		    for (size_t i = 0; i < _dest.size(); ++i)
+			_dest[i] = select(tmpPop);
+		}
+	}
   
-private :
-  eoSelectOne<EOT>& select;	   // selector for one guy
-  eoHowMany howManyGenitors;	   // number of guys to select
-  eoHowMany howManyFertile;	   // number of fertile guys
-};
+    private :
+	eoSelectOne<EOT>& select;	   // selector for one guy
+	eoHowMany howManyGenitors;	   // number of guys to select
+	eoHowMany howManyFertile;	   // number of fertile guys
+    };
+
+}
 
 #endif

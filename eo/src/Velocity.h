@@ -32,50 +32,54 @@
 #include <eoTopology.h>
 //-----------------------------------------------------------------------------
 
-/**
- * Abstract class for velocities calculation (particle swarm optimization).
- * All the velocities must derivated from eoVelocity.
- *
- * @ingroup Variators
- */
-template < class POT > class eoVelocity:public eoBF < POT &,unsigned , void >
+namespace eo
 {
-public:
+
     /**
-     * Apply the velocity computation to a whole given population.
-     * Used for synchronous PSO.
+     * Abstract class for velocities calculation (particle swarm optimization).
+     * All the velocities must derivated from eoVelocity.
+     *
+     * @ingroup Variators
      */
-    virtual void apply (eoPop < POT > &_pop)
+    template < class POT > class eoVelocity:public eoBF < POT &,unsigned , void >
     {
-        for (unsigned i = 0; i < _pop.size (); i++)
-        {
-            operator  ()(_pop[i],i);
-        }
+    public:
+	/**
+	 * Apply the velocity computation to a whole given population.
+	 * Used for synchronous PSO.
+	 */
+	virtual void apply (eoPop < POT > &_pop)
+	{
+	    for (unsigned i = 0; i < _pop.size (); i++)
+		{
+		    operator  ()(_pop[i],i);
+		}
 
-    }
+	}
 
-    /**
-     * Update the neighborhood of the given particle.
-     */
-    virtual void updateNeighborhood(POT & ,unsigned _indice){}
+	/**
+	 * Update the neighborhood of the given particle.
+	 */
+	virtual void updateNeighborhood(POT & ,unsigned _indice){}
 
 
-    /**
-    * Apply the neighborhood with a whole population (used for distributed or synchronous PSO).
-    */
-    virtual void updateNeighborhood (eoPop < POT > &_pop)
-    {
-        for (unsigned i = 0; i < _pop.size (); i++)
-        {
-            updateNeighborhood(_pop[i],i);
-        }
+	/**
+	 * Apply the neighborhood with a whole population (used for distributed or synchronous PSO).
+	 */
+	virtual void updateNeighborhood (eoPop < POT > &_pop)
+	{
+	    for (unsigned i = 0; i < _pop.size (); i++)
+		{
+		    updateNeighborhood(_pop[i],i);
+		}
 
-    }
-    
-   
-   virtual eoTopology<POT> & getTopology () = 0;
+	}
 
-};
+	virtual eoTopology<POT> & getTopology () = 0;
 
-#endif /*EOVELOCITY_H_H */
+    };
+
+}
+
+#endif /*EOVELOCITY_H */
 

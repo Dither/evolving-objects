@@ -33,55 +33,58 @@
 #include <signal.h>
 #include <eoContinue.h>
 
-/**
- * @addtogroup Continuators
- * @{
- */
-
-extern bool ask_for_stop, existCtrlCContinue;
-
-extern void signal_handler( int sig );
-
-
-/**
-    Ctrl C handling: this eoContinue tells whether the user pressed Ctrl C
-*/
-template< class EOT>
-class eoCtrlCContinue: public eoContinue<EOT>
+namespace eo
 {
-public:
+
+    /**
+     * @addtogroup Continuators
+     * @{
+     */
+
+    extern bool ask_for_stop, existCtrlCContinue;
+
+    extern void signal_handler( int sig );
+
+
+    /**
+       Ctrl C handling: this eoContinue tells whether the user pressed Ctrl C
+    */
+    template< class EOT>
+    class eoCtrlCContinue: public eoContinue<EOT>
+    {
+    public:
  
-  /// Ctor : installs the signal handler
-  eoCtrlCContinue()
-  {
-    // First checks that no other eoCtrlCContinue does exist
-    if (existCtrlCContinue)
-      throw std::runtime_error("A signal handler for Ctrl C is already defined!\n");
+	/// Ctor : installs the signal handler
+	eoCtrlCContinue()
+	{
+	    // First checks that no other eoCtrlCContinue does exist
+	    if (existCtrlCContinue)
+		throw std::runtime_error("A signal handler for Ctrl C is already defined!\n");
       
-    #ifndef _WINDOWS
-      #ifdef SIGQUIT
-        signal( SIGINT, signal_handler );
-        signal( SIGQUIT, signal_handler );
-        existCtrlCContinue = true;
-      #endif
-    #endif
+#ifndef _WINDOWS
+#ifdef SIGQUIT
+	    signal( SIGINT, signal_handler );
+	    signal( SIGQUIT, signal_handler );
+	    existCtrlCContinue = true;
+#endif
+#endif
     
-  }
+	}
  
-  /** Returns false when Ctrl C has been typed in
+	/** Returns false when Ctrl C has been typed in
          * reached */
-  virtual bool operator() ( const eoPop<EOT>& _vEO )
-  {
-      (void)_vEO;
-    if (ask_for_stop)
-      return false;
-    return true;
-  }
+	virtual bool operator() ( const eoPop<EOT>& _vEO )
+	{
+	    (void)_vEO;
+	    if (ask_for_stop)
+		return false;
+	    return true;
+	}
 
-  virtual std::string className(void) const { return "eoCtrlCContinue"; }
-};
+	virtual std::string className(void) const { return "eoCtrlCContinue"; }
+    };
 
+}
 
 #endif
 /** @} */
-

@@ -33,56 +33,61 @@
 #include <utils/eoMonitor.h>
 #include <eoObject.h>
 
-/**
-    Holds a collection of monitors and only fires them when a time limit
-    has been reached
-
-    @ingroup Monitors
-*/
-class eoTimedMonitor : public eoMonitor
+namespace eo
 {
-public:
 
-    /** Constructor
+    /**
+       Holds a collection of monitors and only fires them when a time limit
+       has been reached
 
-    No negative time can be specified, use 0 if you want it to fire "always".
-    @param seconds_ Specify time limit (s).
+       @ingroup Monitors
     */
-    eoTimedMonitor(unsigned seconds_) : last_tick(0), seconds(seconds_) {}
+    class eoTimedMonitor : public eoMonitor
+    {
+    public:
 
-    eoMonitor& operator()(void) {
-	bool monitor = false;
-	if (last_tick == 0) {
-	    monitor = true;
-	    last_tick = clock();
-	}
+	/** Constructor
 
-	clock_t tick = clock();
+	    No negative time can be specified, use 0 if you want it to fire "always".
+	    @param seconds_ Specify time limit (s).
+	*/
+	eoTimedMonitor(unsigned seconds_) : last_tick(0), seconds(seconds_) {}
 
-	if ( (unsigned)(tick-last_tick) >= seconds * CLOCKS_PER_SEC) {
-	    monitor = true;
-	}
-
-	if (monitor) {
-	    for (unsigned i = 0; i < monitors.size(); ++i) {
-		(*monitors[i])();
+	eoMonitor& operator()(void) {
+	    bool monitor = false;
+	    if (last_tick == 0) {
+		monitor = true;
+		last_tick = clock();
 	    }
-	    last_tick = clock();
+
+	    clock_t tick = clock();
+
+	    if ( (unsigned)(tick-last_tick) >= seconds * CLOCKS_PER_SEC) {
+		monitor = true;
+	    }
+
+	    if (monitor) {
+		for (unsigned i = 0; i < monitors.size(); ++i) {
+		    (*monitors[i])();
+		}
+		last_tick = clock();
+	    }
+	    return *this;
 	}
-	return *this;
-    }
 
-    void add(eoMonitor& mon) { monitors.push_back(&mon); }
+	void add(eoMonitor& mon) { monitors.push_back(&mon); }
 
-  virtual std::string className(void) const { return "eoTimedMonitor"; }
+	virtual std::string className(void) const { return "eoTimedMonitor"; }
 
-private:
+    private:
 
-    clock_t last_tick;
+	clock_t last_tick;
 
-    unsigned seconds;
+	unsigned seconds;
 
-    std::vector<eoMonitor*> monitors;
-};
+	std::vector<eoMonitor*> monitors;
+    };
+
+}
 
 #endif

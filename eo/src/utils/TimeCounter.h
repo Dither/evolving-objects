@@ -30,45 +30,49 @@
 #include <time.h>
 #include <utils/eoStat.h>
 
-
-/**
-    An eoStat that simply gives the user time since first generation
-    It has to be tempatized by EOT because it must be an eoStat
-
-    @ingroup Stats
-*/
-class eoTimeCounter : public eoUpdater, public eoValueParam<double>
+namespace eo
 {
-public:
-  eoTimeCounter() : eoValueParam<double>(0.0, "Time") // : firstTime(true)  
-  {
-    start = time(NULL);
-  }
+
+    /**
+       An eoStat that simply gives the user time since first generation
+       It has to be tempatized by EOT because it must be an eoStat
+
+       @ingroup Stats
+    */
+    class eoTimeCounter : public eoUpdater, public eoValueParam<double>
+    {
+    public:
+	eoTimeCounter() : eoValueParam<double>(0.0, "Time") // : firstTime(true)  
+	{
+	    start = time(NULL);
+	}
   
-  /** simply stores the time spent in process in its value() */    
-  virtual void operator()()
-  {
-    // ask for system time
-    utime = clock();
+	/** simply stores the time spent in process in its value() */    
+	virtual void operator()()
+	{
+	    // ask for system time
+	    utime = clock();
     
-    //     if (firstTime)	/* first generation */
-    //       {
-    // 	firstTime=false;
-    // 	firstUtime = tmsStruct.tms_utime;
-    //       }
-    // store elapsed user time
-    //     value(tmsStruct.tms_utime - firstUtime);
-    // value()=double(utime)/CLOCKS_PER_SEC;
-    double seconds_elapsed = time(NULL) - start;
+	    //     if (firstTime)	/* first generation */
+	    //       {
+	    // 	firstTime=false;
+	    // 	firstUtime = tmsStruct.tms_utime;
+	    //       }
+	    // store elapsed user time
+	    //     value(tmsStruct.tms_utime - firstUtime);
+	    // value()=double(utime)/CLOCKS_PER_SEC;
+	    double seconds_elapsed = time(NULL) - start;
     
-    value() = (seconds_elapsed > 2140) ? seconds_elapsed : double(utime)/CLOCKS_PER_SEC;
-  }
+	    value() = (seconds_elapsed > 2140) ? seconds_elapsed : double(utime)/CLOCKS_PER_SEC;
+	}
   
-private:
-//   bool firstTime;
-//   clock_t firstUtime;
-  clock_t utime;
-  time_t start;
-};
+    private:
+	//   bool firstTime;
+	//   clock_t firstUtime;
+	clock_t utime;
+	time_t start;
+    };
+
+}
 
 #endif

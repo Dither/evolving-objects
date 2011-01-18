@@ -5,10 +5,14 @@
 
 #include <eoPersistent.h>
 
-//Implementation of these objects
+namespace eo
+{
 
+    //Implementation of these objects
 
-std::istream & operator >> ( std::istream& _is, eoPersistent& _o ) {
-  _o.readFrom(_is);
-  return _is;
+    std::istream & operator >> ( std::istream& _is, eoPersistent& _o ) {
+	_o.readFrom(_is);
+	return _is;
+    }
+
 }

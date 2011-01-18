@@ -14,37 +14,39 @@
 
 #include <valarray>
 
-class eoParser;
-namespace eo {
+namespace eo
+{
 
-class CMAParams {
+    class eoParser;
+
+    class CMAParams {
    
     public:
     
-    CMAParams() { /* Call this and all values need to be set by hand */ }
-    CMAParams(eoParser& parser, unsigned dimensionality = 0); // 0 dimensionality -> user needs to set it
+	CMAParams() { /* Call this and all values need to be set by hand */ }
+	CMAParams(eoParser& parser, unsigned dimensionality = 0); // 0 dimensionality -> user needs to set it
  
-    void defaults(unsigned n_, unsigned maxgen_); /* apply all defaults using n and maxgen */
+	void defaults(unsigned n_, unsigned maxgen_); /* apply all defaults using n and maxgen */
     
-    unsigned n;
-    unsigned maxgen;
+	unsigned n;
+	unsigned maxgen;
    
-    unsigned lambda;          /* -> mu */
-    unsigned mu;              /* -> weights, lambda */
+	unsigned lambda;          /* -> mu */
+	unsigned mu;              /* -> weights, lambda */
     
-    std::valarray<double> weights;     /* <- mu, -> mueff -> mucov -> ccov */
-    double mueff;	/* <- weights */
+	std::valarray<double> weights;     /* <- mu, -> mueff -> mucov -> ccov */
+	double mueff;	/* <- weights */
     
-    double mucov;
+	double mucov;
     
-    double damp;         /* <- ccumsig, maxeval, lambda */
-    double ccumsig;      /* -> damp, <- N */
-    double ccumcov;
-    double ccov;         /* <- mucov, N */
+	double damp;         /* <- ccumsig, maxeval, lambda */
+	double ccumsig;      /* -> damp, <- N */
+	double ccumcov;
+	double ccov;         /* <- mucov, N */
 
-    std::valarray<double> minStdevs;     /* Minimum standard deviations per coordinate (default = 0.0) */
-    std::valarray<double> initialStdevs; /* Initial standard deviations per coordinate (default = 0.3) */
-};
+	std::valarray<double> minStdevs;     /* Minimum standard deviations per coordinate (default = 0.0) */
+	std::valarray<double> initialStdevs; /* Initial standard deviations per coordinate (default = 0.3) */
+    };
 
 } // namespace eo
 

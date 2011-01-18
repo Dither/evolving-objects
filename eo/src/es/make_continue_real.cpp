@@ -45,17 +45,20 @@
 // the instanciating EOType
 #include <es/eoReal.h>
 
-/// The following function merely call the templatized do_* functions
-
-// continue
-///////////
-eoContinue<eoReal<double> >& make_continue(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoReal<double> > & _eval)
+namespace eo
 {
-  return do_make_continue(_parser, _state, _eval);
-}
-eoContinue<eoReal<eoMinimizingFitness> >& make_continue(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoReal<eoMinimizingFitness> > & _eval)
-{
-  return do_make_continue(_parser, _state, _eval);
-}
 
+    /// The following function merely call the templatized do_* functions
 
+    // continue
+    ///////////
+    eoContinue<eoReal<double> >& make_continue(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoReal<double> > & _eval)
+    {
+	return do_make_continue(_parser, _state, _eval);
+    }
+    eoContinue<eoReal<eoMinimizingFitness> >& make_continue(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoReal<eoMinimizingFitness> > & _eval)
+    {
+	return do_make_continue(_parser, _state, _eval);
+    }
+
+}

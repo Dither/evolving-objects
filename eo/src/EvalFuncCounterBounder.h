@@ -4,64 +4,69 @@
 #include <eoEvalFunc.h>
 #include <utils/eoParam.h>
 
-/** @addtogroup Evaluation
- * @{
- */
-
-/** The exception raised by eoEvalFuncCounterBounder 
- * when the maximum number of allowed evaluations is reached.
- */
-class eoEvalFuncCounterBounderException : public std::exception
+namespace eo
 {
-public:
-    eoEvalFuncCounterBounderException(unsigned long threshold) : _threshold(threshold){}
 
-    const char* what() const throw()
+    /** @addtogroup Evaluation
+     * @{
+     */
+
+    /** The exception raised by eoEvalFuncCounterBounder 
+     * when the maximum number of allowed evaluations is reached.
+     */
+    class eoEvalFuncCounterBounderException : public std::exception
     {
-	std::ostringstream ss;
-	ss << "STOP in eoEvalFuncCounterBounderException: the maximum number of evaluation has been reached (" << _threshold << ").";
-	return ss.str().c_str();
-    }
+    public:
+	eoEvalFuncCounterBounderException(unsigned long threshold) : _threshold(threshold){}
 
-private:
-    unsigned long _threshold;
-};
+	const char* what() const throw()
+	{
+	    std::ostringstream ss;
+	    ss << "STOP in eoEvalFuncCounterBounderException: the maximum number of evaluation has been reached (" << _threshold << ").";
+	    return ss.str().c_str();
+	}
 
-/** Counts the number of evaluations actually performed and throw an eoEvalFuncCounterBounderException
- * when the maximum number of allowed evaluations is reached.
- *
- * This eval counter permits to stop a search during a generation, without waiting for a continue to be
- * checked at the end of the loop. Useful if you have 10 individuals and 10 generations, 
- * but want to stop after 95 evaluations.
-*/
-template < typename EOT >
-class eoEvalFuncCounterBounder : public eoEvalFuncCounter< EOT >
-{
-public :
-    eoEvalFuncCounterBounder(eoEvalFunc<EOT>& func, unsigned long threshold, std::string name = "Eval. ")
-	: eoEvalFuncCounter< EOT >( func, name ), _threshold( threshold )
-    {}
+    private:
+	unsigned long _threshold;
+    };
 
-    using eoEvalFuncCounter< EOT >::value;
-
-    virtual void operator()(EOT& eo)
+    /** Counts the number of evaluations actually performed and throw an eoEvalFuncCounterBounderException
+     * when the maximum number of allowed evaluations is reached.
+     *
+     * This eval counter permits to stop a search during a generation, without waiting for a continue to be
+     * checked at the end of the loop. Useful if you have 10 individuals and 10 generations, 
+     * but want to stop after 95 evaluations.
+     */
+    template < typename EOT >
+    class eoEvalFuncCounterBounder : public eoEvalFuncCounter< EOT >
     {
-	if (eo.invalid())
-            {
-                value()++;
+    public :
+	eoEvalFuncCounterBounder(eoEvalFunc<EOT>& func, unsigned long threshold, std::string name = "Eval. ")
+	    : eoEvalFuncCounter< EOT >( func, name ), _threshold( threshold )
+	{}
 
-		if (_threshold > 0 && value() >= _threshold)
-		    {
-			throw eoEvalFuncCounterBounderException(_threshold);
-		    }
+	using eoEvalFuncCounter< EOT >::value;
 
-                func(eo);
-            }
-    }
+	virtual void operator()(EOT& eo)
+	{
+	    if (eo.invalid())
+		{
+		    value()++;
 
-private :
-    unsigned long _threshold;
-};
+		    if (_threshold > 0 && value() >= _threshold)
+			{
+			    throw eoEvalFuncCounterBounderException(_threshold);
+			}
+
+		    func(eo);
+		}
+	}
+
+    private :
+	unsigned long _threshold;
+    };
+
+}
 
 /** @} */
 #endif

@@ -26,71 +26,73 @@
 
 #include "pipecom.h"
 
+namespace eo
+{
 
 /** Base class for calls to gnuplot
 
-This class is the abstract class that will be used by further gnuplot
-calls to plots what is already written by some eoMonitor into a file
+    This class is the abstract class that will be used by further gnuplot
+    calls to plots what is already written by some eoMonitor into a file
 
-@author Marc Schoenauer
-@version 0.0 (2001)
+    @author Marc Schoenauer
+    @version 0.0 (2001)
 
-@ingroup Monitors
+    @ingroup Monitors
 */
-class eoGnuplot
-{
-public:
+    class eoGnuplot
+    {
+    public:
 
-    /** Open pipe to Gnuplot.
+	/** Open pipe to Gnuplot.
 
-    @param _title Title for gnuplot window.
-    @param _extra Extra parameters to gnuplot (default to none: "").
-    */
-    eoGnuplot(std::string _title, std::string _extra = std::string(""));
+	    @param _title Title for gnuplot window.
+	    @param _extra Extra parameters to gnuplot (default to none: "").
+	*/
+	eoGnuplot(std::string _title, std::string _extra = std::string(""));
 
-    /** Destructor
+	/** Destructor
 
-    Close the gnuplot windows if pipe was correctly opened
-    */
-    virtual ~eoGnuplot();
+	    Close the gnuplot windows if pipe was correctly opened
+	*/
+	virtual ~eoGnuplot();
 
-    /** Class name */
-    virtual std::string className() const
-        { return "eoGnuplot"; }
+	/** Class name */
+	virtual std::string className() const
+	    { return "eoGnuplot"; }
 
-    /** Send command to gnuplot */
-    void gnuplotCommand(const char * _command);
+	/** Send command to gnuplot */
+	void gnuplotCommand(const char * _command);
 
-    /** Send command to gnuplot
+	/** Send command to gnuplot
 
-    @overload
-    */
-    void gnuplotCommand(std::string _command)
-        { gnuplotCommand(_command.c_str()); }
+	    @overload
+	*/
+	void gnuplotCommand(std::string _command)
+	    { gnuplotCommand(_command.c_str()); }
 
 
-protected:
+    protected:
 
-    /** Initialize gnuplot
+	/** Initialize gnuplot
 
-    @param _title Title for gnuplot window.
-    @param _extra Extra parameters to gnuplot.
-    */
-    void initGnuPlot(std::string _title, std::string _extra);
+	    @param _title Title for gnuplot window.
+	    @param _extra Extra parameters to gnuplot.
+	*/
+	void initGnuPlot(std::string _title, std::string _extra);
 
-    /** The stats might be unknown in Ctor */
-    bool firstTime;
+	/** The stats might be unknown in Ctor */
+	bool firstTime;
 
-    /** Communication with gnuplot OK */
-    PCom *gpCom;
+	/** Communication with gnuplot OK */
+	PCom *gpCom;
 
-    /** Internal counter for gnuplot windows */
-    static unsigned numWindow;
-};
+	/** Internal counter for gnuplot windows */
+	static unsigned numWindow;
+    };
 
+}
 
 #endif // EO_eoGnuplot_H
-
 
 
 // Local Variables:

@@ -34,32 +34,37 @@
 
 #include "eoPrintable.h"
 
-/**
- @addtogroup Core
- @{
-*/
-
-/**
-An persistent object that knows how to write (through functions inherited from
-#eoPrintable#) and read itself
- */
-class eoPersistent: public eoPrintable
+namespace eo
 {
- public:
-  /// Virtual dtor. They are needed in virtual class hierarchies.
-  virtual ~eoPersistent() {}
-  
-  /**
-   * Read object.
-   * @param _is A std::istream.
-   * @throw runtime_std::exception If a valid object can't be read.
-   */
-  virtual void readFrom(std::istream& _is) = 0;
-  
-};
 
-///Standard input for all objects in the EO hierarchy
-std::istream & operator >> ( std::istream& _is, eoPersistent& _o );
+    /**
+       @addtogroup Core
+       @{
+    */
+
+    /**
+       An persistent object that knows how to write (through functions inherited from
+       #eoPrintable#) and read itself
+    */
+    class eoPersistent: public eoPrintable
+    {
+    public:
+	/// Virtual dtor. They are needed in virtual class hierarchies.
+	virtual ~eoPersistent() {}
+  
+	/**
+	 * Read object.
+	 * @param _is A std::istream.
+	 * @throw runtime_std::exception If a valid object can't be read.
+	 */
+	virtual void readFrom(std::istream& _is) = 0;
+  
+    };
+
+    ///Standard input for all objects in the EO hierarchy
+    std::istream & operator >> ( std::istream& _is, eoPersistent& _o );
+
+}
 
 #endif
 

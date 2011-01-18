@@ -30,36 +30,41 @@
 #include <utils/eoRealVectorBounds.h>
 #include <utils/eoStat.h>
 
-/**
-    The fitnesses of a whole population, as a std::vector
-
-    @ingroup Stats
-*/
-template <class EOT, class FitT = typename EOT::Fitness>
-class eoScalarFitnessStat : public eoSortedStat<EOT, std::vector<double> >
+namespace eo
 {
-public:
 
-    using eoSortedStat<EOT, std::vector<double> >::value;
+    /**
+       The fitnesses of a whole population, as a std::vector
 
-    eoScalarFitnessStat(std::string _description = "FitnessES",
-                        eoRealVectorBounds & _bounds = eoDummyVectorNoBounds)
-        : eoSortedStat<EOT,  std::vector<double> >(std::vector<double>(0), _description),
-          range(*_bounds[0])
+       @ingroup Stats
+    */
+    template <class EOT, class FitT = typename EOT::Fitness>
+    class eoScalarFitnessStat : public eoSortedStat<EOT, std::vector<double> >
+    {
+    public:
+
+	using eoSortedStat<EOT, std::vector<double> >::value;
+
+	eoScalarFitnessStat(std::string _description = "FitnessES",
+			    eoRealVectorBounds & _bounds = eoDummyVectorNoBounds)
+	    : eoSortedStat<EOT,  std::vector<double> >(std::vector<double>(0), _description),
+	      range(*_bounds[0])
         {}
 
-  virtual void operator()(const std::vector<const EOT*>& _popPters)
-    {
-      value().resize(_popPters.size());
-      for (unsigned i=0; i<_popPters.size(); i++)
+	virtual void operator()(const std::vector<const EOT*>& _popPters)
 	{
-	  value()[i] = _popPters[i]->fitness();
-	  range.truncate(value()[i]);
+	    value().resize(_popPters.size());
+	    for (unsigned i=0; i<_popPters.size(); i++)
+		{
+		    value()[i] = _popPters[i]->fitness();
+		    range.truncate(value()[i]);
+		}
 	}
-    }
 
-private :
-  eoRealBounds & range;
-};
+    private :
+	eoRealBounds & range;
+    };
+
+}
 
 #endif

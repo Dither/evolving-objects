@@ -30,65 +30,68 @@
 #include <eoSelectFromWorth.h>
 #include <eoPerf2Worth.h>
 
-/** An instance of eoPerf2Worth
- *  COmputes the linearly scaled fitnesses
- *  with given selective pressure
- *  Pselect(Best) == pressure/sizePop
- *  Pselect(average) == 1.0/sizePop
- *  truncate negative values to 0 -
- *
- * to be used within an eoSelectFromWorth object
- *
- * @ingroup Selectors
- */
-template <class EOT>
-class eoLinearFitScaling : public eoPerf2Worth<EOT> // false: do not cache fitness
+namespace eo
 {
-public:
 
-    using eoPerf2Worth<EOT>::value;
+    /** An instance of eoPerf2Worth
+     *  COmputes the linearly scaled fitnesses
+     *  with given selective pressure
+     *  Pselect(Best) == pressure/sizePop
+     *  Pselect(average) == 1.0/sizePop
+     *  truncate negative values to 0 -
+     *
+     * to be used within an eoSelectFromWorth object
+     *
+     * @ingroup Selectors
+     */
+    template <class EOT>
+    class eoLinearFitScaling : public eoPerf2Worth<EOT> // false: do not cache fitness
+    {
+    public:
 
-    /* Ctor:
-       @param _p selective pressure (in (1,2])
-       @param _e exponent (1 == linear)
-    */
-    eoLinearFitScaling(double _p=2.0)
-        : pressure(_p) {}
+	using eoPerf2Worth<EOT>::value;
 
-    /* COmputes the ranked fitness: fitnesses range in [m,M]
-       with m=2-pressure/popSize and M=pressure/popSize.
-       in between, the progression depends on exponent (linear if 1).
-    */
-    virtual void operator()(const eoPop<EOT>& _pop) {
-        unsigned pSize =_pop.size();
-        // value() refers to the vector of worthes (we're in an eoParamvalue)
-        value().resize(pSize);
+	/* Ctor:
+	   @param _p selective pressure (in (1,2])
+	   @param _e exponent (1 == linear)
+	*/
+	eoLinearFitScaling(double _p=2.0)
+	    : pressure(_p) {}
 
-        // best and worse fitnesses
-        double bestFitness = static_cast<double> (_pop.best_element().fitness());
-        //    double worstFitness = static_cast<double> (_pop.worse_element().fitness());
+	/* COmputes the ranked fitness: fitnesses range in [m,M]
+	   with m=2-pressure/popSize and M=pressure/popSize.
+	   in between, the progression depends on exponent (linear if 1).
+	*/
+	virtual void operator()(const eoPop<EOT>& _pop) {
+	    unsigned pSize =_pop.size();
+	    // value() refers to the vector of worthes (we're in an eoParamvalue)
+	    value().resize(pSize);
 
-        // average fitness
-        double sum=0.0;
-        unsigned i;
-        for (i=0; i<pSize; i++)
-            sum += static_cast<double>(_pop[i].fitness());
-        double averageFitness = sum/pSize;
+	    // best and worse fitnesses
+	    double bestFitness = static_cast<double> (_pop.best_element().fitness());
+	    //    double worstFitness = static_cast<double> (_pop.worse_element().fitness());
 
-        // the coefficients for linear scaling
-        double denom = pSize*(bestFitness - averageFitness);
-        double alpha = (pressure-1)/denom;
-        double beta = (bestFitness - pressure*averageFitness)/denom;
+	    // average fitness
+	    double sum=0.0;
+	    unsigned i;
+	    for (i=0; i<pSize; i++)
+		sum += static_cast<double>(_pop[i].fitness());
+	    double averageFitness = sum/pSize;
 
-        for (i=0; i<pSize; i++) { // truncate to 0
-            value()[i] = std::max(alpha*_pop[i].fitness()+beta, 0.0);
-        }
-    }
+	    // the coefficients for linear scaling
+	    double denom = pSize*(bestFitness - averageFitness);
+	    double alpha = (pressure-1)/denom;
+	    double beta = (bestFitness - pressure*averageFitness)/denom;
 
-private:
-    double pressure;	// selective pressure
-};
+	    for (i=0; i<pSize; i++) { // truncate to 0
+		value()[i] = std::max(alpha*_pop[i].fitness()+beta, 0.0);
+	    }
+	}
 
+    private:
+	double pressure;	// selective pressure
+    };
 
+}
 
 #endif

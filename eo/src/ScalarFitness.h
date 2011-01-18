@@ -29,89 +29,94 @@
 #include <functional>
 #include <iostream>
 
-/** @addtogroup Evaluation
- * @{
- */
-
-/**
- * eoScalarFitness<ScalarType, Compare = less<ScalarType> >:
- * Wraps a scalar fitness values such as a double or int, with the option of
- * maximizing (using less<ScalarType>) or minimizing (using greater<ScalarType>)
-
- * It overrides operator<() to use the Compare template argument
- *
- * Suitable constructors and assignments and casts are defined to work
- * with this quantity as if it were a ScalarType.
-*/
-template <class ScalarType, class Compare >
-class eoScalarFitness
+namespace eo
 {
+
+    /** @addtogroup Evaluation
+     * @{
+     */
+
+    /**
+     * eoScalarFitness<ScalarType, Compare = less<ScalarType> >:
+     * Wraps a scalar fitness values such as a double or int, with the option of
+     * maximizing (using less<ScalarType>) or minimizing (using greater<ScalarType>)
+
+     * It overrides operator<() to use the Compare template argument
+     *
+     * Suitable constructors and assignments and casts are defined to work
+     * with this quantity as if it were a ScalarType.
+     */
+    template <class ScalarType, class Compare >
+    class eoScalarFitness
+    {
     public :
 
-    eoScalarFitness() : value() {}
-    eoScalarFitness(const eoScalarFitness& other) : value(other.value) {}
-    eoScalarFitness(const ScalarType& v) : value(v) {}
+	eoScalarFitness() : value() {}
+	eoScalarFitness(const eoScalarFitness& other) : value(other.value) {}
+	eoScalarFitness(const ScalarType& v) : value(v) {}
 
-    eoScalarFitness& operator=(const eoScalarFitness& other)
-    { value = other.value; return *this; }
-    eoScalarFitness& operator=(const ScalarType& v)
-    { value = v; return *this; }
+	eoScalarFitness& operator=(const eoScalarFitness& other)
+	{ value = other.value; return *this; }
+	eoScalarFitness& operator=(const ScalarType& v)
+	{ value = v; return *this; }
 
-    operator ScalarType(void) const { return value; }
+	operator ScalarType(void) const { return value; }
 
-    /// Comparison, using less by default
-    bool operator<(const eoScalarFitness& other) const
-    { return Compare()(value, other.value); }
+	/// Comparison, using less by default
+	bool operator<(const eoScalarFitness& other) const
+	{ return Compare()(value, other.value); }
 
 	/// Comparison, using less by default
 	//  needed for MSVC 8 (MSVC 2005) added by J.Eggermont 20-11-2006
-    bool operator<(const ScalarType& other) const
-    { return Compare()(value, other); }
+	bool operator<(const ScalarType& other) const
+	{ return Compare()(value, other); }
 
-    // implementation of the other operators
-    bool operator>( const eoScalarFitness<ScalarType, Compare>& y ) const  { return y < *this; }
-    // implementation of the other operators
-    bool operator<=( const eoScalarFitness<ScalarType, Compare>& y ) const { return !(*this > y); }
-    // implementation of the other operators
-    bool operator>=(const eoScalarFitness<ScalarType, Compare>& y ) const { return !(*this < y); }
+	// implementation of the other operators
+	bool operator>( const eoScalarFitness<ScalarType, Compare>& y ) const  { return y < *this; }
+	// implementation of the other operators
+	bool operator<=( const eoScalarFitness<ScalarType, Compare>& y ) const { return !(*this > y); }
+	// implementation of the other operators
+	bool operator>=(const eoScalarFitness<ScalarType, Compare>& y ) const { return !(*this < y); }
 
 
     private :
         ScalarType value;
-};
-/** @example t-eofitness.cpp
- *
- */
+    };
+    /** @example t-eofitness.cpp
+     *
+     */
 
-/**
-Typedefs for fitness comparison, Maximizing Fitness compares with less,
-and minimizing fitness compares with greater. This because we want ordinary
-fitness values (doubles) to be equivalent with Maximizing Fitness, and
-comparing with less is the default behaviour.
-*/
+    /**
+       Typedefs for fitness comparison, Maximizing Fitness compares with less,
+       and minimizing fitness compares with greater. This because we want ordinary
+       fitness values (doubles) to be equivalent with Maximizing Fitness, and
+       comparing with less is the default behaviour.
+    */
 
 #if defined(__CUDACC__)
-typedef eoScalarFitness<float, std::less<float> >    eoMaximizingFitness;
-typedef eoScalarFitness<float, std::greater<float> > eoMinimizingFitness;
+    typedef eoScalarFitness<float, std::less<float> >    eoMaximizingFitness;
+    typedef eoScalarFitness<float, std::greater<float> > eoMinimizingFitness;
 #else
-typedef eoScalarFitness<double, std::less<double> >    eoMaximizingFitness;
-typedef eoScalarFitness<double, std::greater<double> > eoMinimizingFitness;
+    typedef eoScalarFitness<double, std::less<double> >    eoMaximizingFitness;
+    typedef eoScalarFitness<double, std::greater<double> > eoMinimizingFitness;
 #endif
 
-template <class F, class Cmp>
-std::ostream& operator<<(std::ostream& os, const eoScalarFitness<F, Cmp>& f)
-{
-    os << (F) f;
-    return os;
-}
+    template <class F, class Cmp>
+    std::ostream& operator<<(std::ostream& os, const eoScalarFitness<F, Cmp>& f)
+    {
+	os << (F) f;
+	return os;
+    }
 
-template <class F, class Cmp>
-std::istream& operator>>(std::istream& is, eoScalarFitness<F, Cmp>& f)
-{
-    F value;
-    is >> value;
-    f = value;
-    return is;
+    template <class F, class Cmp>
+    std::istream& operator>>(std::istream& is, eoScalarFitness<F, Cmp>& f)
+    {
+	F value;
+	is >> value;
+	f = value;
+	return is;
+    }
+
 }
 
 /** @} */

@@ -33,53 +33,58 @@
 
 #include <EO.h>
 
-//-----------------------------------------------------------------------------
-// eoString
-//-----------------------------------------------------------------------------
-
-/** Adaptor that turns an STL std::string into an EO 
- 
-  @ingroup Representations
-  @ingroup Utilities
- */
-template <class fitnessT >
-class eoString: public EO<fitnessT>, public std::string
+namespace eo
 {
-public:
 
-    typedef char Type;
-    typedef char AtomType;
-    typedef std::string   ContainerType;
+    //-----------------------------------------------------------------------------
+    // eoString
+    //-----------------------------------------------------------------------------
 
+    /** Adaptor that turns an STL std::string into an EO 
+ 
+	@ingroup Representations
+	@ingroup Utilities
+    */
+    template <class fitnessT >
+    class eoString: public EO<fitnessT>, public std::string
+    {
+    public:
 
-  /// Canonical part of the objects: several ctors, copy ctor, dtor and assignment operator
-  //@{
-  /// ctor
-  eoString( const std::string& _str ="" )
-    : std::string( _str ) {};
-
-  /// printing...
-  virtual void printOn(std::ostream& os) const
-  {
-    EO<fitnessT>::printOn(os);
-    os << ' ';
-
-    os << size() << ' ' << substr() << std::endl;
-
-  }
-
-  /** @name Methods from eoObject
-      readFrom and printOn are directly inherited from eo1d
-  */
-  //@{
-  /** Inherited from eoObject
-      @see eoObject
-  */
-  virtual std::string className() const {return "eoString";};
-  //@}
+	typedef char Type;
+	typedef char AtomType;
+	typedef std::string   ContainerType;
 
 
-};
+	/// Canonical part of the objects: several ctors, copy ctor, dtor and assignment operator
+	//@{
+	/// ctor
+	eoString( const std::string& _str ="" )
+	    : std::string( _str ) {};
+
+	/// printing...
+	virtual void printOn(std::ostream& os) const
+	{
+	    EO<fitnessT>::printOn(os);
+	    os << ' ';
+
+	    os << size() << ' ' << substr() << std::endl;
+
+	}
+
+	/** @name Methods from eoObject
+	    readFrom and printOn are directly inherited from eo1d
+	*/
+	//@{
+	/** Inherited from eoObject
+	    @see eoObject
+	*/
+	virtual std::string className() const {return "eoString";};
+	//@}
+
+
+    };
+
+}
 
 #endif
 

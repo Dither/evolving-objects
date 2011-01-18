@@ -48,17 +48,21 @@
 // the instanciating EOType
 #include <ga/eoBit.h>
 
-/// The following function merely call the templatized do_* functions above
-
-// Algo
-///////
-eoAlgo<eoBit<double> >&  make_algo_scalar(eoParser& _parser, eoState& _state, eoEvalFunc<eoBit<double> >& _eval, eoContinue<eoBit<double> >& _continue, eoGenOp<eoBit<double> >& _op, eoDistance<eoBit<double> >* _dist)
+namespace eo
 {
-  return do_make_algo_scalar(_parser, _state, _eval, _continue, _op, _dist);
-}
 
-eoAlgo<eoBit<eoMinimizingFitness> >&  make_algo_scalar(eoParser& _parser, eoState& _state, eoEvalFunc<eoBit<eoMinimizingFitness> >& _eval, eoContinue<eoBit<eoMinimizingFitness> >& _continue, eoGenOp<eoBit<eoMinimizingFitness> >& _op, eoDistance<eoBit<eoMinimizingFitness> >* _dist)
-{
-  return do_make_algo_scalar(_parser, _state, _eval, _continue, _op, _dist);
-}
+    /// The following function merely call the templatized do_* functions above
 
+    // Algo
+    ///////
+    eoAlgo<eoBit<double> >&  make_algo_scalar(eoParser& _parser, eoState& _state, eoEvalFunc<eoBit<double> >& _eval, eoContinue<eoBit<double> >& _continue, eoGenOp<eoBit<double> >& _op, eoDistance<eoBit<double> >* _dist)
+    {
+	return do_make_algo_scalar(_parser, _state, _eval, _continue, _op, _dist);
+    }
+
+    eoAlgo<eoBit<eoMinimizingFitness> >&  make_algo_scalar(eoParser& _parser, eoState& _state, eoEvalFunc<eoBit<eoMinimizingFitness> >& _eval, eoContinue<eoBit<eoMinimizingFitness> >& _continue, eoGenOp<eoBit<eoMinimizingFitness> >& _op, eoDistance<eoBit<eoMinimizingFitness> >* _dist)
+    {
+	return do_make_algo_scalar(_parser, _state, _eval, _continue, _op, _dist);
+    }
+
+}

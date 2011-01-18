@@ -30,39 +30,43 @@
 #include <eoSelectOne.h>     // eoSelectOne
 #include <utils/selectors.h> // stochastic_tournament
 
-/** eoStochTournamentSelect: a selection method that selects ONE individual by
- binary stochastic tournament 
- -MS- 24/10/99 
- 
- @ingroup Selectors
- */
-template <class EOT> class eoStochTournamentSelect: public eoSelectOne<EOT>
+namespace eo
 {
- public:
 
-  ///
-  eoStochTournamentSelect(double _Trate = 1.0 ) : eoSelectOne<EOT>(), Trate(_Trate) 
-  {
-    // consistency checks
-    if (Trate < 0.5) {
-      std::cerr << "Warning, Tournament rate should be > 0.5\nAdjusted to 0.55\n";
-      Trate = 0.55;
-    }
-    if (Trate > 1) {
-      std::cerr << "Warning, Tournament rate should be < 1\nAdjusted to 1\n";
-      Trate = 1;
-    }
-  }
+    /** eoStochTournamentSelect: a selection method that selects ONE individual by
+	binary stochastic tournament 
+	-MS- 24/10/99 
+ 
+	@ingroup Selectors
+    */
+    template <class EOT> class eoStochTournamentSelect: public eoSelectOne<EOT>
+    {
+    public:
+
+	///
+	eoStochTournamentSelect(double _Trate = 1.0 ) : eoSelectOne<EOT>(), Trate(_Trate) 
+	{
+	    // consistency checks
+	    if (Trate < 0.5) {
+		std::cerr << "Warning, Tournament rate should be > 0.5\nAdjusted to 0.55\n";
+		Trate = 0.55;
+	    }
+	    if (Trate > 1) {
+		std::cerr << "Warning, Tournament rate should be < 1\nAdjusted to 1\n";
+		Trate = 1;
+	    }
+	}
   
-  /** Perform the stochastic tournament  */
-  virtual const EOT& operator()(const eoPop<EOT>& pop) 
-  {
-      return stochastic_tournament(pop, Trate);
-  }
+	/** Perform the stochastic tournament  */
+	virtual const EOT& operator()(const eoPop<EOT>& pop) 
+	{
+	    return stochastic_tournament(pop, Trate);
+	}
   
-private:
-  double Trate;
-};
+    private:
+	double Trate;
+    };
+
+}
 
 #endif
-

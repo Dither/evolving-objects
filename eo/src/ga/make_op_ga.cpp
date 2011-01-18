@@ -46,17 +46,21 @@
 // Templatized code
 #include <ga/make_op.h>
 
-/// The following function merely call the templatized do_* functions above
-
-// oeprators
-////////////
-eoGenOp<eoBit<double> >&  make_op(eoParser& _parser, eoState& _state, eoInit<eoBit<double> >& _init)
+namespace eo
 {
-  return do_make_op(_parser, _state, _init);
-}
 
-eoGenOp<eoBit<eoMinimizingFitness> >&  make_op(eoParser& _parser, eoState& _state, eoInit<eoBit<eoMinimizingFitness> >& _init)
-{
-  return do_make_op(_parser, _state, _init);
-}
+    /// The following function merely call the templatized do_* functions above
 
+    // oeprators
+    ////////////
+    eoGenOp<eoBit<double> >&  make_op(eoParser& _parser, eoState& _state, eoInit<eoBit<double> >& _init)
+    {
+	return do_make_op(_parser, _state, _init);
+    }
+
+    eoGenOp<eoBit<eoMinimizingFitness> >&  make_op(eoParser& _parser, eoState& _state, eoInit<eoBit<eoMinimizingFitness> >& _init)
+    {
+	return do_make_op(_parser, _state, _init);
+    }
+
+}

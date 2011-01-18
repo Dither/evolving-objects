@@ -33,148 +33,153 @@
 #include <eoInit.h>
 #include <eoEvalFunc.h>
 
-/**
-    Initialization of external struct, ctor expects a function of the following
-    signature:
-
-    External func();
-
-  Where External is the user defined struct or class
-
-  @ingroup Utilities
-*/
-template <class F, class External, class ExternalEO = eoExternalEO<F, External> >
-class eoExternalInit : public eoInit<ExternalEO>
+namespace eo
 {
 
-public :
+    /**
+       Initialization of external struct, ctor expects a function of the following
+       signature:
 
-    eoExternalInit(External (*_init)(void)) : init(_init) {}
+       External func();
 
+       Where External is the user defined struct or class
 
-    void operator()(ExternalEO& _eo)
+       @ingroup Utilities
+    */
+    template <class F, class External, class ExternalEO = eoExternalEO<F, External> >
+    class eoExternalInit : public eoInit<ExternalEO>
     {
-        _eo.External::operator=( (*init)() );
-        _eo.invalidate();
-    }
 
-private :
-
-    External (*init)(void);
-};
-
-/**
-    Evaluation of external struct, ctor expects a function of the following
-    signature:
-
-    Fit func(External&);
-
-  Where External is the user defined struct or class and Fit the fitness type
-
-@ingroup Utilities
-*/
-template <class F, class External, class ExternalEO = eoExternalEO<F, External> >
-class eoExternalEvalFunc : public eoEvalFunc<ExternalEO>
-{
     public :
 
-    eoExternalEvalFunc(F (*_eval)(const External&)) : eval(_eval) {}
+	eoExternalInit(External (*_init)(void)) : init(_init) {}
 
-    void operator()(ExternalEO& eo)
-    {
-        if (eo.invalid())
-            eo.fitness( (*eval)(eo) );
-    }
+
+	void operator()(ExternalEO& _eo)
+	{
+	    _eo.External::operator=( (*init)() );
+	    _eo.invalidate();
+	}
 
     private :
 
-    F (*eval)(const External&);
-};
+	External (*init)(void);
+    };
 
-/**
-    Mutation of external struct, ctor expects a function of the following
-    signature:
+    /**
+       Evaluation of external struct, ctor expects a function of the following
+       signature:
 
-    bool func(External&);
+       Fit func(External&);
 
+       Where External is the user defined struct or class and Fit the fitness type
 
-  Where External is the user defined struct or class.
-  The function should return true when it changed something, false otherwise
-
-  @ingroup Utilities
-*/
-
-template <class F, class External, class ExternalEO = eoExternalEO<F, External> >
-class eoExternalMonOp : public eoMonOp<ExternalEO>
-{
+       @ingroup Utilities
+    */
+    template <class F, class External, class ExternalEO = eoExternalEO<F, External> >
+    class eoExternalEvalFunc : public eoEvalFunc<ExternalEO>
+    {
     public :
 
-    eoExternalMonOp(bool (*_mutate)(External&)) : mutate(_mutate) {}
+	eoExternalEvalFunc(F (*_eval)(const External&)) : eval(_eval) {}
 
-    bool operator()(ExternalEO& eo)
-    {
-        return (*mutate)(eo);
-    }
+	void operator()(ExternalEO& eo)
+	{
+	    if (eo.invalid())
+		eo.fitness( (*eval)(eo) );
+	}
 
     private :
 
-    bool (*mutate)(External&);
-};
+	F (*eval)(const External&);
+    };
 
-/**
-    Crossover of external struct, ctor expects a function of the following
-    signature:
+    /**
+       Mutation of external struct, ctor expects a function of the following
+       signature:
 
-    bool func(External&, const External&);
+       bool func(External&);
 
-  Where External is the user defined struct or class
-  The function should return true when it changed something, false otherwise
 
-  @ingroup Utilities
-*/
-template <class F, class External, class ExternalEO = eoExternalEO<F, External> >
-class eoExternalBinOp : public eoBinOp<ExternalEO>
-{
+       Where External is the user defined struct or class.
+       The function should return true when it changed something, false otherwise
+
+       @ingroup Utilities
+    */
+
+    template <class F, class External, class ExternalEO = eoExternalEO<F, External> >
+    class eoExternalMonOp : public eoMonOp<ExternalEO>
+    {
     public :
 
-    eoExternalBinOp(bool (*_binop)(External&, const External&)) : binop(_binop) {}
+	eoExternalMonOp(bool (*_mutate)(External&)) : mutate(_mutate) {}
 
-    bool operator()(ExternalEO& eo1, const ExternalEO& eo2)
-    {
-        return (*binop)(eo1, eo2);
-    }
+	bool operator()(ExternalEO& eo)
+	{
+	    return (*mutate)(eo);
+	}
 
     private :
 
-    bool (*binop)(External&, const External&);
-};
+	bool (*mutate)(External&);
+    };
 
-/**
-    Crossover of external struct, ctor expects a function of the following
-    signature:
+    /**
+       Crossover of external struct, ctor expects a function of the following
+       signature:
 
-    bool func(External&, External&);
+       bool func(External&, const External&);
 
-  Where External is the user defined struct or class
-  The function should return true when it changed something, false otherwise
+       Where External is the user defined struct or class
+       The function should return true when it changed something, false otherwise
 
-  @ingroup Utilities
-*/
-template <class F, class External, class ExternalEO = eoExternalEO<F, External> >
-class eoExternalQuadOp : public eoQuadOp<ExternalEO>
-{
+       @ingroup Utilities
+    */
+    template <class F, class External, class ExternalEO = eoExternalEO<F, External> >
+    class eoExternalBinOp : public eoBinOp<ExternalEO>
+    {
     public :
 
-    eoExternalQuadOp(bool (*_quadop)(External&, External&)) : quadop(_quadop) {}
+	eoExternalBinOp(bool (*_binop)(External&, const External&)) : binop(_binop) {}
 
-    bool operator()(ExternalEO& eo1, ExternalEO& eo2)
-    {
-        return (*quadop)(eo1, eo2);
-    }
+	bool operator()(ExternalEO& eo1, const ExternalEO& eo2)
+	{
+	    return (*binop)(eo1, eo2);
+	}
 
     private :
 
-    bool (*quadop)(External&, External&);
-};
+	bool (*binop)(External&, const External&);
+    };
+
+    /**
+       Crossover of external struct, ctor expects a function of the following
+       signature:
+
+       bool func(External&, External&);
+
+       Where External is the user defined struct or class
+       The function should return true when it changed something, false otherwise
+
+       @ingroup Utilities
+    */
+    template <class F, class External, class ExternalEO = eoExternalEO<F, External> >
+    class eoExternalQuadOp : public eoQuadOp<ExternalEO>
+    {
+    public :
+
+	eoExternalQuadOp(bool (*_quadop)(External&, External&)) : quadop(_quadop) {}
+
+	bool operator()(ExternalEO& eo1, ExternalEO& eo2)
+	{
+	    return (*quadop)(eo1, eo2);
+	}
+
+    private :
+
+	bool (*quadop)(External&, External&);
+    };
+
+}
 
 #endif

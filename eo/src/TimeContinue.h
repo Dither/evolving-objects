@@ -30,58 +30,63 @@
 #include <eoContinue.h>
 #include <utils/eoLogger.h>
 
-/**
- * Termination condition until a running time is reached.
- *
- * @ingroup Continuators
- */
-template < class EOT >
-class eoTimeContinue: public eoContinue<EOT>
+namespace eo
 {
-public:
 
     /**
-     * Ctor.
-     * @param _max maximum running time
+     * Termination condition until a running time is reached.
+     *
+     * @ingroup Continuators
      */
-    eoTimeContinue(time_t _max): max(_max)
+    template < class EOT >
+    class eoTimeContinue: public eoContinue<EOT>
     {
-        start = time(NULL);
-    }
+    public:
+
+	/**
+	 * Ctor.
+	 * @param _max maximum running time
+	 */
+	eoTimeContinue(time_t _max): max(_max)
+	{
+	    start = time(NULL);
+	}
 
 
-    /**
-     * Returns false when the running time is reached.
-     * @param _pop the population
-     */
-    virtual bool operator() (const eoPop < EOT > & _pop)
-    {
-        time_t elapsed = (time_t) difftime(time(NULL), start);
-        if (elapsed >= max)
-        {
-            eo::log << eo::progress << "STOP in eoTimeContinue: Reached maximum time [" << elapsed << "/" << max << "]" << std::endl;
-            return false;
-        }
-        return true;
-    }
+	/**
+	 * Returns false when the running time is reached.
+	 * @param _pop the population
+	 */
+	virtual bool operator() (const eoPop < EOT > & _pop)
+	{
+	    time_t elapsed = (time_t) difftime(time(NULL), start);
+	    if (elapsed >= max)
+		{
+		    eo::log << eo::progress << "STOP in eoTimeContinue: Reached maximum time [" << elapsed << "/" << max << "]" << std::endl;
+		    return false;
+		}
+	    return true;
+	}
 
 
-    /**
-     * Class name
-     */
-    virtual std::string className(void) const
-    {
-        return "eoTimeContinue";
-    }
+	/**
+	 * Class name
+	 */
+	virtual std::string className(void) const
+	{
+	    return "eoTimeContinue";
+	}
 
 
-private:
+    private:
 
-    /** maximum running time */
-    time_t max;
-    /** starting time */
-    time_t start;
+	/** maximum running time */
+	time_t max;
+	/** starting time */
+	time_t start;
 
-};
+    };
+
+}
 
 #endif

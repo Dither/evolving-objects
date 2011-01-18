@@ -30,26 +30,31 @@
 #include <utils/eoRealVectorBounds.h>
 //-----------------------------------------------------------------------------
 
-/** Abstract class for particle swarm optimization flight.
-* All the flights must derivated from eoFlight.
-*
-* @ingroup Variators
-*/
-template < class POT > class eoFlight:public eoUF < POT &, void >
+namespace eo
 {
-public:
 
-    /**
-    * Apply the flight to a whole population.
-    */
-    virtual void apply (eoPop < POT > &_pop)
+    /** Abstract class for particle swarm optimization flight.
+     * All the flights must derivated from eoFlight.
+     *
+     * @ingroup Variators
+     */
+    template < class POT > class eoFlight:public eoUF < POT &, void >
     {
-        for (unsigned i = 0; i < _pop.size (); i++)
-        {
-            operator  ()(_pop[i]);
-        }
+    public:
 
-    }
-};
+	/**
+	 * Apply the flight to a whole population.
+	 */
+	virtual void apply (eoPop < POT > &_pop)
+	{
+	    for (unsigned i = 0; i < _pop.size (); i++)
+		{
+		    operator  ()(_pop[i]);
+		}
+
+	}
+    };
+
+}
 
 #endif /*EOFLIGHT_H */

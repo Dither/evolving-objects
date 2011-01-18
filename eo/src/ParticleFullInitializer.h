@@ -33,123 +33,124 @@
 #include <eoParticleBestInit.h>
 #include <eoTopology.h>
 
-/**
- @addtogroup Initializators
- @{
- */
+namespace eo
+{
 
-
-/*
- * Abstract class for initialization of algorithm PSO
- */
-template <class POT> class eoInitializerBase : public eoFunctorBase
-  {
-  public :
-
-    virtual ~eoInitializerBase()
-    {}
-
-    virtual void operator()()
-    {};
-  };
-
-/**
-	Base (name) class for Initialization of algorithm PSO
-
-	@see eoInitializerBase eoUF apply
-*/
-template <class POT> class eoParticleInitializer : public eoInitializerBase <POT>
-  {
-  public:
-
-    //!	Constructor
-    //! @param _proc Evaluation function
-    //! @param _initVelo Initialization of the velocity
-    //! @param _initBest Initialization of the best
-    //! @param _topology Topology to use
-    //! @param _pop Population
-    eoParticleFullInitializer(
-      eoUF<POT&, void>& _proc,
-      eoVelocityInit < POT > &_initVelo,
-      eoParticleBestInit <POT> &_initBest,
-      eoTopology <POT> &_topology,
-      eoPop < POT > &_pop
-    ) : proc(_proc), procPara(dummyEval), initVelo(_initVelo), initBest(_initBest), topology(_topology), pop(_pop) {}
-
-
-    //!	Constructor for parallel evaluation
-    //! @param _proc Evaluation function
-    //! @param _initVelo Initialization of the velocity
-    //! @param _initBest Initialization of the best
-    //! @param _topology Topology to use
-    //! @param _pop Population
-    eoParticleFullInitializer(
-      eoPopEvalFunc <POT>& _proc,
-      eoVelocityInit < POT > &_initVelo,
-      eoParticleBestInit <POT> &_initBest,
-      eoTopology <POT> &_topology,
-      eoPop < POT > &_pop
-    ) : proc(dummy), procPara(_proc), initVelo(_initVelo), initBest(_initBest), topology(_topology), pop(_pop)
-    {}
-
-
-    //! Give the name of the class
-    //! @return The name of the class
-    virtual std::string className (void) const
-      {
-        return "eoInitializer";
-      }
-    
-    
-      
-    virtual void operator  () ()
-    {
-		eoPop<POT> empty_pop;
-		
-		// evaluates using either the "sequential" evaluator ...
-		apply(proc, pop);
-		
-		// ... or the parallel one
-    	procPara(empty_pop, pop);
-    	
-    	// no matter what is the eval operator, initializes the velocities and the particle's best
-        apply < POT > (initVelo, pop);
-        apply < POT > (initBest, pop);
-        
-        // finally setup the topology. We have now all we need to do so.
-    	topology.setup(pop);
-    }
-
-  private :
+    /**
+       @addtogroup Initializators
+       @{
+    */
 
     /*
-    	@param proc First evaluation
-    	@param initVelo Initialization of the velocity
-    	@param initBest Initialization of the best
-    	
+     * Abstract class for initialization of algorithm PSO
+     */
+    template <class POT> class eoInitializerBase : public eoFunctorBase
+    {
+    public :
+
+	virtual ~eoInitializerBase()
+	{}
+
+	virtual void operator()()
+	{};
+    };
+
+    /**
+       Base (name) class for Initialization of algorithm PSO
+
+       @see eoInitializerBase eoUF apply
     */
-    eoPop < POT > & pop;
-    eoUF<POT&, void>& proc;
-    eoPopEvalFunc <POT>& procPara;
-    eoVelocityInit < POT > & initVelo;
-    eoParticleBestInit <POT> & initBest;
-    eoTopology <POT> & topology;
-    class eoDummyEval : public eoPopEvalFunc<POT>
+    template <class POT> class eoParticleInitializer : public eoInitializerBase <POT>
     {
-      public:
-        void operator()(eoPop<POT> &,eoPop<POT> &_pop)
-        {}
-    }
-    dummyEval;
-    class eoDummy : public eoUF<POT&, void>
-    {
-      public:
-        void operator()(POT &)
-        {}
-        
-    }
-    dummy;    
-  };
+    public:
+
+	//!	Constructor
+	//! @param _proc Evaluation function
+	//! @param _initVelo Initialization of the velocity
+	//! @param _initBest Initialization of the best
+	//! @param _topology Topology to use
+	//! @param _pop Population
+	eoParticleFullInitializer(
+				  eoUF<POT&, void>& _proc,
+				  eoVelocityInit < POT > &_initVelo,
+				  eoParticleBestInit <POT> &_initBest,
+				  eoTopology <POT> &_topology,
+				  eoPop < POT > &_pop
+				  ) : proc(_proc), procPara(dummyEval), initVelo(_initVelo), initBest(_initBest), topology(_topology), pop(_pop) {}
+
+
+	//!	Constructor for parallel evaluation
+	//! @param _proc Evaluation function
+	//! @param _initVelo Initialization of the velocity
+	//! @param _initBest Initialization of the best
+	//! @param _topology Topology to use
+	//! @param _pop Population
+	eoParticleFullInitializer(
+				  eoPopEvalFunc <POT>& _proc,
+				  eoVelocityInit < POT > &_initVelo,
+				  eoParticleBestInit <POT> &_initBest,
+				  eoTopology <POT> &_topology,
+				  eoPop < POT > &_pop
+				  ) : proc(dummy), procPara(_proc), initVelo(_initVelo), initBest(_initBest), topology(_topology), pop(_pop)
+	{}
+
+
+	//! Give the name of the class
+	//! @return The name of the class
+	virtual std::string className (void) const
+	{
+	    return "eoInitializer";
+	}
+
+	virtual void operator  () ()
+	{
+	    eoPop<POT> empty_pop;
+
+	    // evaluates using either the "sequential" evaluator ...
+	    apply(proc, pop);
+
+	    // ... or the parallel one
+	    procPara(empty_pop, pop);
+
+	    // no matter what is the eval operator, initializes the velocities and the particle's best
+	    apply < POT > (initVelo, pop);
+	    apply < POT > (initBest, pop);
+
+	    // finally setup the topology. We have now all we need to do so.
+	    topology.setup(pop);
+	}
+
+    private :
+
+	/*
+	  @param proc First evaluation
+	  @param initVelo Initialization of the velocity
+	  @param initBest Initialization of the best
+	*/
+	eoPop < POT > & pop;
+	eoUF<POT&, void>& proc;
+	eoPopEvalFunc <POT>& procPara;
+	eoVelocityInit < POT > & initVelo;
+	eoParticleBestInit <POT> & initBest;
+	eoTopology <POT> & topology;
+
+	class eoDummyEval : public eoPopEvalFunc<POT>
+	{
+	public:
+	    void operator()(eoPop<POT> &,eoPop<POT> &_pop)
+	    {}
+	} dummyEval;
+
+	class eoDummy : public eoUF<POT&, void>
+	{
+	public:
+	    void operator()(POT &)
+	    {}
+	} dummy;
+    };
+
+}
+
 #endif /*_eoParticleFullInitializer_H*/
 
 /** @} */

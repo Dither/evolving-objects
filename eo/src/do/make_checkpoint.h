@@ -1,13 +1,8 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
-
-
 //-----------------------------------------------------------------------------
-
 // make_checkpoint.h
-
 // (c) Maarten Keijzer, Marc Schoenauer and GeNeura Team, 2000
-
 /*
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -24,21 +19,13 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
     Contact: todos@geneura.ugr.es, http://geneura.ugr.es
-
              Marc.Schoenauer@polytechnique.fr
-
              mkeijzer@dhi.dk
-
  */
-
 //-----------------------------------------------------------------------------
 
-
-
 #ifndef _make_checkpoint_h
-
 #define _make_checkpoint_h
-
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -52,522 +39,400 @@
 #include <eoEvalFuncCounter.h>
 #include <utils/checkpointing>
 
-
-
-// at the moment, in utils/make_help.cpp
-
-// this should become some eoUtils.cpp with corresponding eoUtils.h
-
-bool testDirRes(std::string _dirName, bool _erase);
-
-/////////////////// The checkpoint and other I/O //////////////
-
-
-
-
-/**
- *
- * CHANGE (March 2008): now receiving an eoValueParam instead of an eoEvalFuncCounter. This function is just interested
- * in the value of the parameter calculated on the evaluation function, not in the actual function itself!!
- *
- * @ingroup Builders
-*/
-template <class EOT>
-eoCheckPoint<EOT>& do_make_checkpoint(eoParser& _parser, eoState& _state, eoValueParam<unsigned long>& _eval, eoContinue<EOT>& _continue)
+namespace eo
 {
 
-  // first, create a checkpoint from the eoContinue
-  eoCheckPoint<EOT> *checkpoint = new eoCheckPoint<EOT>(_continue);
+    // at the moment, in utils/make_help.cpp
+    // this should become some eoUtils.cpp with corresponding eoUtils.h
 
-  _state.storeFunctor(checkpoint);
+    bool testDirRes(std::string _dirName, bool _erase);
 
-
-
-  ///////////////////
-
-  // Counters
-
-  //////////////////
-
-  // is nb Eval to be used as counter?
-
-  eoValueParam<bool>& useEvalParam = _parser.createParam(true, "useEval", "Use nb of eval. as counter (vs nb of gen.)", '\0', "Output");
-
-  eoValueParam<bool>& useTimeParam = _parser.createParam(true, "useTime", "Display time (s) every generation", '\0', "Output");
-
-
-
-  // if we want the time, we need an eoTimeCounter
-
-  eoTimeCounter * tCounter = NULL;
-
-
-
-  // Create anyway a generation-counter
-
-  // Recent change (03/2002): it is now an eoIncrementorParam, both
-
-  // a parameter AND updater so you can store it into the eoState
-
-  eoIncrementorParam<unsigned> *generationCounter = new eoIncrementorParam<unsigned>("Gen.");
-
-  // store it in the state
-
-  _state.storeFunctor(generationCounter);
-
-  // And add it to the checkpoint,
-
-  checkpoint->add(*generationCounter);
-
-
-
-    // dir for DISK output
-
-    eoValueParam<std::string>& dirNameParam =  _parser.createParam(std::string("Res"), "resDir", "Directory to store DISK outputs", '\0', "Output - Disk");
-
-    // shoudl we empty it if exists
-
-    eoValueParam<bool>& eraseParam = _parser.createParam(true, "eraseDir", "erase files in dirName if any", '\0', "Output - Disk");
-
-    bool dirOK = false;		   // not tested yet
-
-
-
-    /////////////////////////////////////////
-
-    // now some statistics on the population:
-
-    /////////////////////////////////////////
+    /////////////////// The checkpoint and other I/O //////////////
 
     /**
-
-     * existing stats as of today, April 10. 2001
-
      *
-
-     * eoBestFitnessStat : best value in pop - type EOT::Fitness
-
-     * eoAverageStat     : average value in pop - type EOT::Fitness
-
-     * eoSecondMomentStat: average + stdev - type std::pair<double, double>
-
-     * eoSortedPopStat   : whole population - type std::string (!!)
-
-     * eoScalarFitnessStat: the fitnesses - type std::vector<double>
-
+     * CHANGE (March 2008): now receiving an eoValueParam instead of an eoEvalFuncCounter. This function is just interested
+     * in the value of the parameter calculated on the evaluation function, not in the actual function itself!!
+     *
+     * @ingroup Builders
      */
+    template <class EOT>
+    eoCheckPoint<EOT>& do_make_checkpoint(eoParser& _parser, eoState& _state, eoValueParam<unsigned long>& _eval, eoContinue<EOT>& _continue)
+    {
 
+	// first, create a checkpoint from the eoContinue
+	eoCheckPoint<EOT> *checkpoint = new eoCheckPoint<EOT>(_continue);
 
+	_state.storeFunctor(checkpoint);
 
-    // Best fitness in population
+	///////////////////
+	// Counters
+	//////////////////
 
-    //---------------------------
+	// is nb Eval to be used as counter?
 
-    eoValueParam<bool>& printBestParam = _parser.createParam(true, "printBestStat", "Print Best/avg/stdev every gen.", '\0', "Output");
+	eoValueParam<bool>& useEvalParam = _parser.createParam(true, "useEval", "Use nb of eval. as counter (vs nb of gen.)", '\0', "Output");
+	eoValueParam<bool>& useTimeParam = _parser.createParam(true, "useTime", "Display time (s) every generation", '\0', "Output");
 
-    eoValueParam<bool>& plotBestParam = _parser.createParam(false, "plotBestStat", "Plot Best/avg Stat", '\0', "Output - Graphical");
+	// if we want the time, we need an eoTimeCounter
 
-    eoValueParam<bool>& fileBestParam = _parser.createParam(false, "fileBestStat", "Output bes/avg/std to file", '\0', "Output - Disk");
+	eoTimeCounter * tCounter = NULL;
 
+	// Create anyway a generation-counter
+	// Recent change (03/2002): it is now an eoIncrementorParam, both
+	// a parameter AND updater so you can store it into the eoState
 
+	eoIncrementorParam<unsigned> *generationCounter = new eoIncrementorParam<unsigned>("Gen.");
 
-    eoBestFitnessStat<EOT> *bestStat = NULL;
+	// store it in the state
 
-    if ( printBestParam.value() || plotBestParam.value() || fileBestParam.value() )
+	_state.storeFunctor(generationCounter);
 
-      // we need the bestStat for at least one of the 3 above
+	// And add it to the checkpoint,
 
-      {
+	checkpoint->add(*generationCounter);
 
-	bestStat = new eoBestFitnessStat<EOT>;
+	// dir for DISK output
 
-	// store it
+	eoValueParam<std::string>& dirNameParam =  _parser.createParam(std::string("Res"), "resDir", "Directory to store DISK outputs", '\0', "Output - Disk");
 
-	_state.storeFunctor(bestStat);
+	// shoudl we empty it if exists
 
-	// add it to the checkpoint
+	eoValueParam<bool>& eraseParam = _parser.createParam(true, "eraseDir", "erase files in dirName if any", '\0', "Output - Disk");
 
-	checkpoint->add(*bestStat);
+	bool dirOK = false;		   // not tested yet
 
-      }
+	/////////////////////////////////////////
+	// now some statistics on the population:
+	/////////////////////////////////////////
 
+	/**
+	 * existing stats as of today, April 10. 2001
+	 *
+	 * eoBestFitnessStat : best value in pop - type EOT::Fitness
+	 * eoAverageStat     : average value in pop - type EOT::Fitness
+	 * eoSecondMomentStat: average + stdev - type std::pair<double, double>
+	 * eoSortedPopStat   : whole population - type std::string (!!)
+	 * eoScalarFitnessStat: the fitnesses - type std::vector<double>
+	 */
 
+	// Best fitness in population
+	//---------------------------
 
-    // Average fitness alone
+	eoValueParam<bool>& printBestParam = _parser.createParam(true, "printBestStat", "Print Best/avg/stdev every gen.", '\0', "Output");
+	eoValueParam<bool>& plotBestParam = _parser.createParam(false, "plotBestStat", "Plot Best/avg Stat", '\0', "Output - Graphical");
+	eoValueParam<bool>& fileBestParam = _parser.createParam(false, "fileBestStat", "Output bes/avg/std to file", '\0', "Output - Disk");
 
-    //----------------------
+	eoBestFitnessStat<EOT> *bestStat = NULL;
 
-    eoAverageStat<EOT> *averageStat = NULL; // do we need averageStat?
-
-    if ( plotBestParam.value() ) // we need it for gnuplot output
-
-      {
-
-	averageStat = new eoAverageStat<EOT>;
-
-	// store it
-
-	_state.storeFunctor(averageStat);
-
-	// add it to the checkpoint
-
-	checkpoint->add(*averageStat);
-
-      }
-
-
-
-    // Second moment stats: average and stdev
-
-    //---------------------------------------
-
-    eoSecondMomentStats<EOT> *secondStat = NULL;
-
-	if ( printBestParam.value() || fileBestParam.value() ) // we need it for screen output or file output
-
-      {
-
-	secondStat = new eoSecondMomentStats<EOT>;
-
-	// store it
-
-	_state.storeFunctor(secondStat);
-
-	// add it to the checkpoint
-
-	checkpoint->add(*secondStat);
-
-      }
-
-
-
-
-
-    // Dump of the whole population
-
-    //-----------------------------
-
-    eoSortedPopStat<EOT> *popStat = NULL;
-
-    eoValueParam<bool>& printPopParam = _parser.createParam(false, "printPop", "Print sorted pop. every gen.", '\0', "Output");
-
-    if ( printPopParam.value() ) // we do want pop dump
-
-      {
-
-	  popStat = new eoSortedPopStat<EOT>;
-
-	// store it
-
-	_state.storeFunctor(popStat);
-
-	// add it to the checkpoint
-
-	checkpoint->add(*popStat);
-
-      }
-
-
-
-
-
-    // do we wnat some histogram of fitnesses snpashots?
-
-    eoValueParam<bool> plotHistogramParam = _parser.createParam(false, "plotHisto", "Plot histogram of fitnesses", '\0', "Output - Graphical");
-
-
-
-    ///////////////
-
-    // The monitors
-
-    ///////////////
-
-    // do we want an eoStdoutMonitor?
-
-    bool needStdoutMonitor = printBestParam.value()
-
-	|| printPopParam.value() ;
-
-
-
-    // The Stdout monitor will print parameters to the screen ...
-
-    if ( needStdoutMonitor )
-
-      {
-
-	eoStdoutMonitor *monitor = new eoStdoutMonitor(false);
-
-	_state.storeFunctor(monitor);
-
-
-
-	// when called by the checkpoint (i.e. at every generation)
-
-	checkpoint->add(*monitor);
-
-
-
-	// the monitor will output a series of parameters: add them
-
-	monitor->add(*generationCounter);
-
-	if (useEvalParam.value()) // we want nb of evaluations
-
-	      monitor->add(_eval);
-
-	if (useTimeParam.value()) // we want time
-
-	  {
-
-	    tCounter = new eoTimeCounter;
-
-	    _state.storeFunctor(tCounter);
-
-	    checkpoint->add(*tCounter);
-
-	    monitor->add(*tCounter);
-
-	  }
-
-	if (printBestParam.value())
-
+	if ( printBestParam.value() || plotBestParam.value() || fileBestParam.value() )
+	    // we need the bestStat for at least one of the 3 above
 	    {
-
-		monitor->add(*bestStat);
-
-		monitor->add(*secondStat);
-
+		bestStat = new eoBestFitnessStat<EOT>;
+		// store it
+		_state.storeFunctor(bestStat);
+		// add it to the checkpoint
+		checkpoint->add(*bestStat);
 	    }
 
-	if ( printPopParam.value())
+	// Average fitness alone
+	//----------------------
 
-	  monitor->add(*popStat);
+	eoAverageStat<EOT> *averageStat = NULL; // do we need averageStat?
 
-      }
+	if ( plotBestParam.value() ) // we need it for gnuplot output
+	    {
+		averageStat = new eoAverageStat<EOT>;
+		// store it
+		_state.storeFunctor(averageStat);
+		// add it to the checkpoint
+		checkpoint->add(*averageStat);
+	    }
 
+	// Second moment stats: average and stdev
+	//---------------------------------------
 
+	eoSecondMomentStats<EOT> *secondStat = NULL;
 
-    // first handle the dir test - if we need at least one file
+	if ( printBestParam.value() || fileBestParam.value() ) // we need it for screen output or file output
+	    {
+		secondStat = new eoSecondMomentStats<EOT>;
+		// store it
+		_state.storeFunctor(secondStat);
+		// add it to the checkpoint
+		checkpoint->add(*secondStat);
+	    }
 
-    if ( ( fileBestParam.value() || plotBestParam.value() ||
+	// Dump of the whole population
+	//-----------------------------
 
-	   plotHistogramParam.value() )
+	eoSortedPopStat<EOT> *popStat = NULL;
 
-	 && !dirOK )		   // just in case we add something before
+	eoValueParam<bool>& printPopParam = _parser.createParam(false, "printPop", "Print sorted pop. every gen.", '\0', "Output");
 
-      dirOK = testDirRes(dirNameParam.value(), eraseParam.value()); // TRUE
+	if ( printPopParam.value() ) // we do want pop dump
+	    {
+		popStat = new eoSortedPopStat<EOT>;
+		// store it
+		_state.storeFunctor(popStat);
+		// add it to the checkpoint
+		checkpoint->add(*popStat);
+	    }
 
+	// do we want some histogram of fitnesses snpashots?
 
+	eoValueParam<bool> plotHistogramParam = _parser.createParam(false, "plotHisto", "Plot histogram of fitnesses", '\0', "Output - Graphical");
 
-    if (fileBestParam.value())    // A file monitor for best & secondMoment
+	///////////////
+	// The monitors
+	///////////////
 
-      {
+	// do we want an eoStdoutMonitor?
+	bool needStdoutMonitor = printBestParam.value() || printPopParam.value();
+
+	// The Stdout monitor will print parameters to the screen ...
+	if ( needStdoutMonitor )
+	    {
+		eoStdoutMonitor *monitor = new eoStdoutMonitor(false);
+		_state.storeFunctor(monitor);
+
+		// when called by the checkpoint (i.e. at every generation)
+		checkpoint->add(*monitor);
+
+		// the monitor will output a series of parameters: add them
+		monitor->add(*generationCounter);
+
+		if (useEvalParam.value()) // we want nb of evaluations
+		    monitor->add(_eval);
+
+		if (useTimeParam.value()) // we want time
+		    {
+			tCounter = new eoTimeCounter;
+			_state.storeFunctor(tCounter);
+			checkpoint->add(*tCounter);
+			monitor->add(*tCounter);
+		    }
+
+		if (printBestParam.value())
+		    {
+			monitor->add(*bestStat);
+			monitor->add(*secondStat);
+		    }
+
+		if ( printPopParam.value())
+		    monitor->add(*popStat);
+	    }
+
+	// first handle the dir test - if we need at least one file
+
+	if ( ( fileBestParam.value() || plotBestParam.value() || plotHistogramParam.value() )
+	     && !dirOK )		   // just in case we add something before
+	    dirOK = testDirRes(dirNameParam.value(), eraseParam.value()); // TRUE
+
+	if (fileBestParam.value())    // A file monitor for best & secondMoment
+	    {
 
 #ifdef _MSVC
 
-	std::string stmp = dirNameParam.value() + "\best.xg";
+		std::string stmp = dirNameParam.value() + "\best.xg";
 
 #else
 
-	std::string stmp = dirNameParam.value() + "/best.xg";
+		std::string stmp = dirNameParam.value() + "/best.xg";
 
 #endif
 
-	eoFileMonitor *fileMonitor = new eoFileMonitor(stmp);
+		eoFileMonitor *fileMonitor = new eoFileMonitor(stmp);
 
-	// save and give to checkpoint
+		// save and give to checkpoint
 
-	_state.storeFunctor(fileMonitor);
+		_state.storeFunctor(fileMonitor);
 
-	checkpoint->add(*fileMonitor);
+		checkpoint->add(*fileMonitor);
 
-	// and feed with some statistics
+		// and feed with some statistics
 
-	fileMonitor->add(*generationCounter);
+		fileMonitor->add(*generationCounter);
 
-	fileMonitor->add(_eval);
+		fileMonitor->add(_eval);
 
-	if (tCounter)		   // we want the time as well
+		if (tCounter)		   // we want the time as well
 
-	  {
+		    {
 
-	    //	    std::cout << "On met timecounter\n";
+			//	    std::cout << "On met timecounter\n";
 
-	    fileMonitor->add(*tCounter);
+			fileMonitor->add(*tCounter);
 
-	  }
+		    }
 
-	fileMonitor->add(*bestStat);
+		fileMonitor->add(*bestStat);
 
-	fileMonitor->add(*secondStat);
+		fileMonitor->add(*secondStat);
 
-      }
+	    }
 
 
 
 #if defined(HAVE_GNUPLOT)
 
-    if (plotBestParam.value())    // an eoGnuplot1DMonitor for best & average
+	if (plotBestParam.value())    // an eoGnuplot1DMonitor for best & average
 
-      {
+	    {
 
-	std::string stmp = dirNameParam.value() + "/gnu_best.xg";
+		std::string stmp = dirNameParam.value() + "/gnu_best.xg";
 
-	eoGnuplot1DMonitor *gnuMonitor = new eoGnuplot1DMonitor(stmp,minimizing_fitness<EOT>());
+		eoGnuplot1DMonitor *gnuMonitor = new eoGnuplot1DMonitor(stmp,minimizing_fitness<EOT>());
 
-	// save and give to checkpoint
+		// save and give to checkpoint
 
-	_state.storeFunctor(gnuMonitor);
+		_state.storeFunctor(gnuMonitor);
 
-	checkpoint->add(*gnuMonitor);
+		checkpoint->add(*gnuMonitor);
 
-	// and feed with some statistics
+		// and feed with some statistics
 
-	if (useEvalParam.value())  // do we want eval as X coordinate
+		if (useEvalParam.value())  // do we want eval as X coordinate
 
-	  gnuMonitor->add(_eval);
+		    gnuMonitor->add(_eval);
 
-	else if (tCounter)	   // or time?
+		else if (tCounter)	   // or time?
 
-	  gnuMonitor->add(*tCounter);
+		    gnuMonitor->add(*tCounter);
 
-	else			   // default: generation
+		else			   // default: generation
 
-	  gnuMonitor->add(*generationCounter);
+		    gnuMonitor->add(*generationCounter);
 
-	gnuMonitor->add(*bestStat);
+		gnuMonitor->add(*bestStat);
 
-	gnuMonitor->add(*averageStat);
+		gnuMonitor->add(*averageStat);
 
-      }
+	    }
 
 
 
-    // historgram?
+	// historgram?
 
-    if (plotHistogramParam.value()) // want to see how the fitness is spread?
+	if (plotHistogramParam.value()) // want to see how the fitness is spread?
 
-      {
+	    {
 
-	eoScalarFitnessStat<EOT> *fitStat = new eoScalarFitnessStat<EOT>;
+		eoScalarFitnessStat<EOT> *fitStat = new eoScalarFitnessStat<EOT>;
 
-	_state.storeFunctor(fitStat);
+		_state.storeFunctor(fitStat);
 
-	checkpoint->add(*fitStat);
+		checkpoint->add(*fitStat);
 
-	// a gnuplot-based monitor for snapshots: needs a dir name
+		// a gnuplot-based monitor for snapshots: needs a dir name
 
-	eoGnuplot1DSnapshot *fitSnapshot = new eoGnuplot1DSnapshot(dirNameParam.value());
+		eoGnuplot1DSnapshot *fitSnapshot = new eoGnuplot1DSnapshot(dirNameParam.value());
 
-	_state.storeFunctor(fitSnapshot);
+		_state.storeFunctor(fitSnapshot);
 
-	// add any stat that is a std::vector<double> to it
+		// add any stat that is a std::vector<double> to it
 
-	fitSnapshot->add(*fitStat);
+		fitSnapshot->add(*fitStat);
 
-	// and of course add it to the checkpoint
+		// and of course add it to the checkpoint
 
-	checkpoint->add(*fitSnapshot);
+		checkpoint->add(*fitSnapshot);
 
-      }
+	    }
 
 #endif
 
-    //////////////////////////////////
+	//////////////////////////////////
 
-    // State savers
+	// State savers
 
-    //////////////////////////////
-
-
-
-    // feed the state to state savers
-
-    // save state every N  generation
-
-    eoValueParam<unsigned>& saveFrequencyParam = _parser.createParam(unsigned(0), "saveFrequency", "Save every F generation (0 = only final state, absent = never)", '\0', "Persistence" );
+	//////////////////////////////
 
 
 
-    if (_parser.isItThere(saveFrequencyParam))
+	// feed the state to state savers
 
-    {
+	// save state every N  generation
 
-      // first make sure dirName is OK
-
-      if (! dirOK )
-
-	dirOK = testDirRes(dirNameParam.value(), eraseParam.value()); // TRUE
+	eoValueParam<unsigned>& saveFrequencyParam = _parser.createParam(unsigned(0), "saveFrequency", "Save every F generation (0 = only final state, absent = never)", '\0', "Persistence" );
 
 
 
-      unsigned freq = (saveFrequencyParam.value()>0 ? saveFrequencyParam.value() : UINT_MAX );
+	if (_parser.isItThere(saveFrequencyParam))
+
+	    {
+
+		// first make sure dirName is OK
+
+		if (! dirOK )
+
+		    dirOK = testDirRes(dirNameParam.value(), eraseParam.value()); // TRUE
+
+
+
+		unsigned freq = (saveFrequencyParam.value()>0 ? saveFrequencyParam.value() : UINT_MAX );
 
 #ifdef _MSVC
 
-      std::string stmp = dirNameParam.value() + "\generations";
+		std::string stmp = dirNameParam.value() + "\generations";
 
 #else
 
-      std::string stmp = dirNameParam.value() + "/generations";
+		std::string stmp = dirNameParam.value() + "/generations";
 
 #endif
 
-      eoCountedStateSaver *stateSaver1 = new eoCountedStateSaver(freq, _state, stmp);
+		eoCountedStateSaver *stateSaver1 = new eoCountedStateSaver(freq, _state, stmp);
 
-      _state.storeFunctor(stateSaver1);
+		_state.storeFunctor(stateSaver1);
 
-    checkpoint->add(*stateSaver1);
+		checkpoint->add(*stateSaver1);
 
-    }
+	    }
 
 
 
-    // save state every T seconds
+	// save state every T seconds
 
-    eoValueParam<unsigned>& saveTimeIntervalParam = _parser.createParam(unsigned(0), "saveTimeInterval", "Save every T seconds (0 or absent = never)", '\0',"Persistence" );
+	eoValueParam<unsigned>& saveTimeIntervalParam = _parser.createParam(unsigned(0), "saveTimeInterval", "Save every T seconds (0 or absent = never)", '\0',"Persistence" );
 
-    if (_parser.isItThere(saveTimeIntervalParam) && saveTimeIntervalParam.value()>0)
+	if (_parser.isItThere(saveTimeIntervalParam) && saveTimeIntervalParam.value()>0)
 
-    {
+	    {
 
-      // first make sure dirName is OK
+		// first make sure dirName is OK
 
-      if (! dirOK )
+		if (! dirOK )
 
-	dirOK = testDirRes(dirNameParam.value(), eraseParam.value()); // TRUE
+		    dirOK = testDirRes(dirNameParam.value(), eraseParam.value()); // TRUE
 
 
 
 #ifdef _MSVC
 
-      std::string stmp = dirNameParam.value() + "\time";
+		std::string stmp = dirNameParam.value() + "\time";
 
 #else
 
-      std::string stmp = dirNameParam.value() + "/time";
+		std::string stmp = dirNameParam.value() + "/time";
 
 #endif
 
-      eoTimedStateSaver *stateSaver2 = new eoTimedStateSaver(saveTimeIntervalParam.value(), _state, stmp);
+		eoTimedStateSaver *stateSaver2 = new eoTimedStateSaver(saveTimeIntervalParam.value(), _state, stmp);
 
-      _state.storeFunctor(stateSaver2);
+		_state.storeFunctor(stateSaver2);
 
-      checkpoint->add(*stateSaver2);
+		checkpoint->add(*stateSaver2);
 
+	    }
+
+
+
+	// and that's it for the (control and) output
+
+	return *checkpoint;
     }
-
-
-
-    // and that's it for the (control and) output
-
-    return *checkpoint;
 
 }
 
-
-
 #endif
-

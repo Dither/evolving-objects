@@ -37,88 +37,93 @@
 #include <utils/eoHowMany.h>
 //-----------------------------------------------------------------------------
 
-/** @addtogroup Replacors
- * @{
- */
-
-/** 
-eoReduceMerge: Replacement strategies that start by reducing the parents, 
-               then merge with the offspring
-
-This is the way to do SSGA: the offspring gets inserted in the population
-even if it is worse than anybody else.
-
-@see eoReduceMerge
-@see eoSSGAWorseReplacement
-@see eoSSGADetTournamentReplacement
-@see eoSSGAStochTournamentReplacement
-*/
-template <class EOT>
-class eoReduceMerge : public eoReplacement<EOT>
+namespace eo
 {
+
+    /** @addtogroup Replacors
+     * @{
+     */
+
+    /** 
+	eoReduceMerge: Replacement strategies that start by reducing the parents, 
+	then merge with the offspring
+
+	This is the way to do SSGA: the offspring gets inserted in the population
+	even if it is worse than anybody else.
+
+	@see eoReduceMerge
+	@see eoSSGAWorseReplacement
+	@see eoSSGADetTournamentReplacement
+	@see eoSSGAStochTournamentReplacement
+    */
+    template <class EOT>
+    class eoReduceMerge : public eoReplacement<EOT>
+    {
     public:
         eoReduceMerge(eoReduce<EOT>& _reduce, eoMerge<EOT>& _merge) :
-        reduce(_reduce), merge(_merge)
+	    reduce(_reduce), merge(_merge)
         {}
 
         void operator()(eoPop<EOT>& _parents, eoPop<EOT>& _offspring)
         {
-	  if (_parents.size() < _offspring.size())
-	    throw std::logic_error("eoReduceMerge: More offspring than parents!\n");
-	  reduce(_parents, _parents.size() - _offspring.size()); 
-	  merge(_offspring, _parents);
+	    if (_parents.size() < _offspring.size())
+		throw std::logic_error("eoReduceMerge: More offspring than parents!\n");
+	    reduce(_parents, _parents.size() - _offspring.size()); 
+	    merge(_offspring, _parents);
         }
 
     private :
         eoReduce<EOT>& reduce;
         eoMerge<EOT>& merge;
-};
+    };
 
-/** 
-SSGA replace worst. Is an eoReduceMerge.
-*/
-template <class EOT> 
-class eoSSGAWorseReplacement : public eoReduceMerge<EOT>
-{
+    /** 
+	SSGA replace worst. Is an eoReduceMerge.
+    */
+    template <class EOT> 
+    class eoSSGAWorseReplacement : public eoReduceMerge<EOT>
+    {
     public :
         eoSSGAWorseReplacement() : eoReduceMerge<EOT>(truncate, plus) {}
 
     private :
         eoLinearTruncate<EOT> truncate;
         eoPlus<EOT> plus;
-};
+    };
 
-/** 
-SSGA deterministic tournament replacement. Is an eoReduceMerge.
-*/
-template <class EOT> 
-class eoSSGADetTournamentReplacement : public eoReduceMerge<EOT>
-{
+    /** 
+	SSGA deterministic tournament replacement. Is an eoReduceMerge.
+    */
+    template <class EOT> 
+    class eoSSGADetTournamentReplacement : public eoReduceMerge<EOT>
+    {
     public :
         eoSSGADetTournamentReplacement(unsigned _t_size) : 
-	  eoReduceMerge<EOT>(truncate, plus), truncate(_t_size) {}
+	    eoReduceMerge<EOT>(truncate, plus), truncate(_t_size) {}
 
     private :
         eoDetTournamentTruncate<EOT> truncate;
         eoPlus<EOT> plus;
-};
+    };
 
-/** SSGA stochastic tournament replacement. Is an eoReduceMerge.
-It much cleaner to insert directly the offspring in the parent population, 
-but it is NOT equivalent in case of more than 1 offspring as already 
-replaced could be removed , which is not possible in the eoReduceMerge 
-So what the heck ! */
-template <class EOT> 
-class eoSSGAStochTournamentReplacement : public eoReduceMerge<EOT>
-{
+    /** SSGA stochastic tournament replacement. Is an eoReduceMerge.
+	It much cleaner to insert directly the offspring in the parent population, 
+	but it is NOT equivalent in case of more than 1 offspring as already 
+	replaced could be removed , which is not possible in the eoReduceMerge 
+	So what the heck ! */
+    template <class EOT> 
+    class eoSSGAStochTournamentReplacement : public eoReduceMerge<EOT>
+    {
     public :
         eoSSGAStochTournamentReplacement(double _t_rate) : 
-	  eoReduceMerge<EOT>(truncate, plus), truncate(_t_rate) {}
+	    eoReduceMerge<EOT>(truncate, plus), truncate(_t_rate) {}
 
     private :
         eoStochTournamentTruncate<EOT> truncate;
         eoPlus<EOT> plus;
-};
+    };
+
+}
 
 /** @} */
 #endif

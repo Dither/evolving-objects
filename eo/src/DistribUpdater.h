@@ -31,20 +31,25 @@
 #include <eoDistribution.h>
 #include <eoPop.h>
 
-/**
- * Base class for Distribution Evolution Algorithms within EO: 
- *    the update rule of distribution
- *
- * It takes one distribution and updates it according to one population
- *
- * @ingroup Core
-*/
-template <class EOT>
-class eoDistribUpdater :  
-  public eoBF<eoDistribution<EOT> &, eoPop<EOT> &, void>
+namespace eo
 {
-public:
-  virtual void operator()(eoDistribution<EOT> &, eoPop<EOT> &)=0;
-};
+
+    /**
+     * Base class for Distribution Evolution Algorithms within EO: 
+     *    the update rule of distribution
+     *
+     * It takes one distribution and updates it according to one population
+     *
+     * @ingroup Core
+     */
+    template <class EOT>
+    class eoDistribUpdater :  
+	public eoBF<eoDistribution<EOT> &, eoPop<EOT> &, void>
+    {
+    public:
+	virtual void operator()(eoDistribution<EOT> &, eoPop<EOT> &)=0;
+    };
+
+}
 
 #endif

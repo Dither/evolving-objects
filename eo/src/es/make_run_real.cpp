@@ -47,17 +47,21 @@
 // the instanciating fitnesses
 #include <eoScalarFitness.h>
 
-/// The following function merely call the templatized do_* functions above
-
-// run
-/////////
-void run_ea(eoAlgo<eoReal<double> >& _ga, eoPop<eoReal<double> >& _pop)
+namespace eo
 {
-  do_run(_ga, _pop);
-}
 
-void run_ea(eoAlgo<eoReal<eoMinimizingFitness> >& _ga, eoPop<eoReal<eoMinimizingFitness> >& _pop)
-{
-  do_run(_ga, _pop);
-}
+    /// The following function merely call the templatized do_* functions above
 
+    // run
+    /////////
+    void run_ea(eoAlgo<eoReal<double> >& _ga, eoPop<eoReal<double> >& _pop)
+    {
+	do_run(_ga, _pop);
+    }
+
+    void run_ea(eoAlgo<eoReal<eoMinimizingFitness> >& _ga, eoPop<eoReal<eoMinimizingFitness> >& _pop)
+    {
+	do_run(_ga, _pop);
+    }
+
+}

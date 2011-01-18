@@ -43,13 +43,18 @@
 // the templatized code
 #include <ga/make_genotype_ga.h>
 
-/// The following function merely call the templatized do_* functions above
+namespace eo
+{
 
-eoInit<eoBit<double> > & make_genotype(eoParser& _parser, eoState& _state, eoBit<double> _eo)
-{
-  return do_make_genotype(_parser, _state, _eo);
-}
-eoInit<eoBit<eoMinimizingFitness> > & make_genotype(eoParser& _parser, eoState& _state, eoBit<eoMinimizingFitness> _eo)
-{
-  return do_make_genotype(_parser, _state, _eo);
+    /// The following function merely call the templatized do_* functions above
+
+    eoInit<eoBit<double> > & make_genotype(eoParser& _parser, eoState& _state, eoBit<double> _eo)
+    {
+	return do_make_genotype(_parser, _state, _eo);
+    }
+    eoInit<eoBit<eoMinimizingFitness> > & make_genotype(eoParser& _parser, eoState& _state, eoBit<eoMinimizingFitness> _eo)
+    {
+	return do_make_genotype(_parser, _state, _eo);
+    }
+
 }

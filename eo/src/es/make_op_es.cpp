@@ -44,37 +44,41 @@
 // Templatized code
 #include <es/make_op_es.h>
 
-/// The following function merely call the templatized do_* functions above
-
-// operators
-////////////
-eoGenOp<eoEsSimple<double> >&  make_op(eoParser& _parser, eoState& _state, eoRealInitBounded<eoEsSimple<double> >& _init)
+namespace eo
 {
-  return do_make_op(_parser, _state, _init);
-}
 
-eoGenOp<eoEsSimple<eoMinimizingFitness> >&  make_op(eoParser& _parser, eoState& _state, eoRealInitBounded<eoEsSimple<eoMinimizingFitness> >& _init)
-{
-  return do_make_op(_parser, _state, _init);
-}
+    /// The following function merely call the templatized do_* functions above
 
-eoGenOp<eoEsStdev<double> >&  make_op(eoParser& _parser, eoState& _state, eoRealInitBounded<eoEsStdev<double> >& _init)
-{
-  return do_make_op(_parser, _state, _init);
-}
+    // operators
+    ////////////
+    eoGenOp<eoEsSimple<double> >&  make_op(eoParser& _parser, eoState& _state, eoRealInitBounded<eoEsSimple<double> >& _init)
+    {
+	return do_make_op(_parser, _state, _init);
+    }
 
-eoGenOp<eoEsStdev<eoMinimizingFitness> >&  make_op(eoParser& _parser, eoState& _state, eoRealInitBounded<eoEsStdev<eoMinimizingFitness> >& _init)
-{
-  return do_make_op(_parser, _state, _init);
-}
+    eoGenOp<eoEsSimple<eoMinimizingFitness> >&  make_op(eoParser& _parser, eoState& _state, eoRealInitBounded<eoEsSimple<eoMinimizingFitness> >& _init)
+    {
+	return do_make_op(_parser, _state, _init);
+    }
 
-eoGenOp<eoEsFull<double> >&  make_op(eoParser& _parser, eoState& _state, eoRealInitBounded<eoEsFull<double> >& _init)
-{
-  return do_make_op(_parser, _state, _init);
-}
+    eoGenOp<eoEsStdev<double> >&  make_op(eoParser& _parser, eoState& _state, eoRealInitBounded<eoEsStdev<double> >& _init)
+    {
+	return do_make_op(_parser, _state, _init);
+    }
 
-eoGenOp<eoEsFull<eoMinimizingFitness> >&  make_op(eoParser& _parser, eoState& _state, eoRealInitBounded<eoEsFull<eoMinimizingFitness> >& _init)
-{
-  return do_make_op(_parser, _state, _init);
-}
+    eoGenOp<eoEsStdev<eoMinimizingFitness> >&  make_op(eoParser& _parser, eoState& _state, eoRealInitBounded<eoEsStdev<eoMinimizingFitness> >& _init)
+    {
+	return do_make_op(_parser, _state, _init);
+    }
 
+    eoGenOp<eoEsFull<double> >&  make_op(eoParser& _parser, eoState& _state, eoRealInitBounded<eoEsFull<double> >& _init)
+    {
+	return do_make_op(_parser, _state, _init);
+    }
+
+    eoGenOp<eoEsFull<eoMinimizingFitness> >&  make_op(eoParser& _parser, eoState& _state, eoRealInitBounded<eoEsFull<eoMinimizingFitness> >& _init)
+    {
+	return do_make_op(_parser, _state, _init);
+    }
+
+}

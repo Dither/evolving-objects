@@ -25,51 +25,53 @@ Contact: http://eodev.sourceforge.net
 
 #include <eoVector.h>
 
+namespace eo
+{
 
 /** Evolutionary Strategy with a standard deviation per parameter
 
-Evolutionary strategie style representation, supporting co-evolving
-standard deviations.
+    Evolutionary strategie style representation, supporting co-evolving
+    standard deviations.
 
-@ingroup Real
+    @ingroup Real
 */
-template <class Fit>
-class eoEsStdev : public eoVector<Fit, double>
-{
-public:
-
-    using eoVector<Fit, double>::size;
-
-    typedef double Type;
-
-    eoEsStdev(void) : eoVector<Fit, double>() {}
-
-    virtual std::string className(void) const { return "eoEsStdev"; }
-
-    void printOn(std::ostream& os) const
+    template <class Fit>
+    class eoEsStdev : public eoVector<Fit, double>
     {
-        eoVector<Fit,double>::printOn(os);
-        os << ' ';
-        std::copy(stdevs.begin(), stdevs.end(), std::ostream_iterator<double>(os, " "));
-        os << ' ';
-    }
+    public:
 
-    void readFrom(std::istream& is)
-    {
-        eoVector<Fit,double>::readFrom(is);
-        stdevs.resize(size());
-        unsigned i;
-        for (i = 0; i < size(); ++i)
-            is >> stdevs[i];
-    }
+	using eoVector<Fit, double>::size;
+
+	typedef double Type;
+
+	eoEsStdev(void) : eoVector<Fit, double>() {}
+
+	virtual std::string className(void) const { return "eoEsStdev"; }
+
+	void printOn(std::ostream& os) const
+	    {
+		eoVector<Fit,double>::printOn(os);
+		os << ' ';
+		std::copy(stdevs.begin(), stdevs.end(), std::ostream_iterator<double>(os, " "));
+		os << ' ';
+	    }
+
+	void readFrom(std::istream& is)
+	    {
+		eoVector<Fit,double>::readFrom(is);
+		stdevs.resize(size());
+		unsigned i;
+		for (i = 0; i < size(); ++i)
+		    is >> stdevs[i];
+	    }
 
 
-    std::vector<double> stdevs;
-};
+	std::vector<double> stdevs;
+    };
+
+}
 
 #endif
-
-
 
 // Local Variables:
 // coding: iso-8859-1

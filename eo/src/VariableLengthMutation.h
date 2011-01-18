@@ -30,132 +30,136 @@
 #include <eoOp.h>
 #include <eoInit.h>
 
-/**
-  Base classes for generic mutations on variable length chromosomes.
-  Contains addition and deletion of a gene
-
-  The generic mutations that apply a gene-level mutation to some genes
-  dont't modify the length, and so are NOT specific to variable-length
-  Hence they are in file eoFlOr MonOp.h file (FixedLengthOrdered mutations)
-*/
-
-/* @addtogroup Variators
- * @{
- */
-
-/** Addition of a gene
-    Is inserted at a random position - so can be applied to both
-    order-dependent and order-independent
- */
-template <class EOT>
-class eoVlAddMutation : public eoMonOp<EOT>
+namespace eo
 {
-public :
 
-  typedef typename EOT::AtomType AtomType;
+    /**
+       Base classes for generic mutations on variable length chromosomes.
+       Contains addition and deletion of a gene
 
-  /** default ctor
+       The generic mutations that apply a gene-level mutation to some genes
+       dont't modify the length, and so are NOT specific to variable-length
+       Hence they are in file eoFlOr MonOp.h file (FixedLengthOrdered mutations)
+    */
 
-   * @param _nMax      max number of atoms
-   * @param _atomInit an Atom initializer
-   */
-  eoVlAddMutation(unsigned _nMax, eoInit<AtomType> & _atomInit) :
-    nMax(_nMax), atomInit(_atomInit) {}
+    /* @addtogroup Variators
+     * @{
+     */
 
-  /** operator: actually adds an Atom */
-  bool operator()(EOT & _eo)
-  {
-    if (_eo.size() >= nMax)
-      return false;		   // unmodifed
-    AtomType atom;
-    atomInit(atom);
-    unsigned pos = rng.random(_eo.size()+1);
-    _eo.insert(_eo.begin()+pos, atom);
-    return true;
-  }
-
-  /** inherited className */
-  virtual std::string className() const { return "eoVlAddMutation"; }
-
-private:
-  unsigned nMax;
-  eoInit<AtomType> & atomInit;
-};
-
-
-/** A helper class for choosing which site to delete */
-template <class EOT>
-class eoGeneDelChooser : public eoUF<EOT &, unsigned int>
-{
-public:
-  virtual std::string className() const =0;
-
-};
-
-/** Uniform choice of gene to delete */
-template <class EOT>
-class eoUniformGeneChooser: public eoGeneDelChooser<EOT>
-{
-public:
-    eoUniformGeneChooser(){}
-    unsigned operator()(EOT & _eo)
+    /** Addition of a gene
+	Is inserted at a random position - so can be applied to both
+	order-dependent and order-independent
+    */
+    template <class EOT>
+    class eoVlAddMutation : public eoMonOp<EOT>
     {
-	return eo::rng.random(_eo.size());
-    }
-  virtual std::string className() const { return "eoUniformGeneChooser"; }
-};
+    public :
 
-/** Deletion of a gene
-    By default at a random position, but a "chooser" can be specified
-    can of course be applied to both order-dependent and order-independent
- */
-template <class EOT>
-class eoVlDelMutation : public eoMonOp<EOT>
-{
-public :
+	typedef typename EOT::AtomType AtomType;
 
-  typedef typename EOT::AtomType AtomType;
+	/** default ctor
 
-  /** ctor with an external gene chooser
+	 * @param _nMax      max number of atoms
+	 * @param _atomInit an Atom initializer
+	 */
+	eoVlAddMutation(unsigned _nMax, eoInit<AtomType> & _atomInit) :
+	    nMax(_nMax), atomInit(_atomInit) {}
 
-   * @param _nMin      min number of atoms to leave in the individual
-   * @param _chooser   an eoGeneCHooser to choose which one to delete
-   */
-  eoVlDelMutation(unsigned _nMin, eoGeneDelChooser<EOT> & _chooser) :
-    nMin(_nMin), uChooser(), chooser(_chooser) {}
+	/** operator: actually adds an Atom */
+	bool operator()(EOT & _eo)
+	{
+	    if (_eo.size() >= nMax)
+		return false;		   // unmodifed
+	    AtomType atom;
+	    atomInit(atom);
+	    unsigned pos = rng.random(_eo.size()+1);
+	    _eo.insert(_eo.begin()+pos, atom);
+	    return true;
+	}
 
-  /** ctor with uniform gene chooser - the default
+	/** inherited className */
+	virtual std::string className() const { return "eoVlAddMutation"; }
 
-   * @param _nMin      min number of atoms to leave in the individual
-   */
-  eoVlDelMutation(unsigned _nMin) :
-    nMin(_nMin), uChooser(), chooser(uChooser) {}
+    private:
+	unsigned nMax;
+	eoInit<AtomType> & atomInit;
+    };
 
-  /** Do the job (delete one gene)
-   * @param _eo  the EO to mutate
-   */
-  bool operator()(EOT & _eo)
-  {
-    if (_eo.size() <= nMin)
-      return false;		   // unmodifed
-    unsigned pos = chooser(_eo);
-    _eo.erase(_eo.begin()+pos);
-    return true;
-  }
 
-  virtual std::string className() const
-  {
-    std::ostringstream os;
-    os << "eoVlDelMutation("<<chooser.className() << ")";
-    return os.str();
-  }
+    /** A helper class for choosing which site to delete */
+    template <class EOT>
+    class eoGeneDelChooser : public eoUF<EOT &, unsigned int>
+    {
+    public:
+	virtual std::string className() const =0;
 
-private:
-    unsigned nMin;
-    eoUniformGeneChooser<EOT> uChooser;
-    eoGeneDelChooser<EOT> & chooser;
-};
+    };
+
+    /** Uniform choice of gene to delete */
+    template <class EOT>
+    class eoUniformGeneChooser: public eoGeneDelChooser<EOT>
+    {
+    public:
+	eoUniformGeneChooser(){}
+	unsigned operator()(EOT & _eo)
+	{
+	    return eo::rng.random(_eo.size());
+	}
+	virtual std::string className() const { return "eoUniformGeneChooser"; }
+    };
+
+    /** Deletion of a gene
+	By default at a random position, but a "chooser" can be specified
+	can of course be applied to both order-dependent and order-independent
+    */
+    template <class EOT>
+    class eoVlDelMutation : public eoMonOp<EOT>
+    {
+    public :
+
+	typedef typename EOT::AtomType AtomType;
+
+	/** ctor with an external gene chooser
+
+	 * @param _nMin      min number of atoms to leave in the individual
+	 * @param _chooser   an eoGeneCHooser to choose which one to delete
+	 */
+	eoVlDelMutation(unsigned _nMin, eoGeneDelChooser<EOT> & _chooser) :
+	    nMin(_nMin), uChooser(), chooser(_chooser) {}
+
+	/** ctor with uniform gene chooser - the default
+
+	 * @param _nMin      min number of atoms to leave in the individual
+	 */
+	eoVlDelMutation(unsigned _nMin) :
+	    nMin(_nMin), uChooser(), chooser(uChooser) {}
+
+	/** Do the job (delete one gene)
+	 * @param _eo  the EO to mutate
+	 */
+	bool operator()(EOT & _eo)
+	{
+	    if (_eo.size() <= nMin)
+		return false;		   // unmodifed
+	    unsigned pos = chooser(_eo);
+	    _eo.erase(_eo.begin()+pos);
+	    return true;
+	}
+
+	virtual std::string className() const
+	{
+	    std::ostringstream os;
+	    os << "eoVlDelMutation("<<chooser.className() << ")";
+	    return os.str();
+	}
+
+    private:
+	unsigned nMin;
+	eoUniformGeneChooser<EOT> uChooser;
+	eoGeneDelChooser<EOT> & chooser;
+    };
+
+}
 
 /** @} */
 #endif
-

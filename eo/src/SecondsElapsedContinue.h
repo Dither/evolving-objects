@@ -27,51 +27,56 @@
 
 #include <eoContinue.h>
 
-/** 
-    Timed continuator: continues until a number of seconds is used
-
-    @ingroup Continuators
-*/
-template< class EOT>
-class eoSecondsElapsedContinue: public eoContinue<EOT>
+namespace eo
 {
-    time_t start;
-    int seconds;
-public:
 
-  eoSecondsElapsedContinue(int nSeconds) : start(time(0)), seconds(nSeconds) {}
+    /** 
+	Timed continuator: continues until a number of seconds is used
 
-  virtual bool operator() ( const eoPop<EOT>& _vEO ) {
-        time_t now = time(0);
-        time_t diff = now - start;
+	@ingroup Continuators
+    */
+    template< class EOT>
+    class eoSecondsElapsedContinue: public eoContinue<EOT>
+    {
+	time_t start;
+	int seconds;
+    public:
+
+	eoSecondsElapsedContinue(int nSeconds) : start(time(0)), seconds(nSeconds) {}
+
+	virtual bool operator() ( const eoPop<EOT>& _vEO ) {
+	    time_t now = time(0);
+	    time_t diff = now - start;
   
-        if (diff >= seconds) return false; // stop
-        return true;
+	    if (diff >= seconds) return false; // stop
+	    return true;
 
-    }
+	}
 
   
-  virtual std::string className(void) const { return "eoSecondsElapsedContinue"; }
+	virtual std::string className(void) const { return "eoSecondsElapsedContinue"; }
 
-  /** REad from a stream
-   * @param __is the ostream to read from
-   */
-  void readFrom (std :: istream & __is) {
+	/** REad from a stream
+	 * @param __is the ostream to read from
+	 */
+	void readFrom (std :: istream & __is) {
     
-    __is >> start >> seconds; 
-  }
+	    __is >> start >> seconds; 
+	}
   
-  /** Print on a stream
-   * @param __os the ostream to print on
-   */
-  void printOn (std :: ostream & __os) const {
+	/** Print on a stream
+	 * @param __os the ostream to print on
+	 */
+	void printOn (std :: ostream & __os) const {
     
-    __os << start << ' ' << seconds << std :: endl;    
-  }
+	    __os << start << ' ' << seconds << std :: endl;    
+	}
 
-};
-/** @example t-eoSecondsElapsedContinue.cpp
- */
+    };
+
+    /** @example t-eoSecondsElapsedContinue.cpp
+     */
+
+}
 
 #endif
-

@@ -36,39 +36,44 @@
 #include <utils/eoLogger.h>
 #include <utils/selectors.h>
 
-/** eoDetTournamentSelect: a selection method that selects ONE individual by
- deterministic tournament 
- -MS- 24/10/99
-
- @ingroup Selectors
- */
-template <class EOT> class eoDetTournamentSelect: public eoSelectOne<EOT>
+namespace eo
 {
- public:
-  /* (Default) Constructor - 
-     @param _tSize tournament size
-  */
-  eoDetTournamentSelect(unsigned _tSize = 2 ):eoSelectOne<EOT>(), tSize(_tSize) {
-    // consistency check
-    if (tSize < 2) {
-        eo::log << eo::warnings << "Tournament size should be >= 2, adjusted to 2" << std::endl;
-      tSize = 2;
-    }
-  }
-  
-  /* Perform deterministic tournament calling the appropriate fn 
-     see selectors.h
-  */
-  virtual const EOT& operator()(const eoPop<EOT>& _pop) 
-  {
-      return deterministic_tournament(_pop, tSize);
-  }
-  
- private:
-  unsigned tSize;
-};
 
-//-----------------------------------------------------------------------------
+    /** eoDetTournamentSelect: a selection method that selects ONE individual by
+	deterministic tournament 
+	-MS- 24/10/99
+
+	@ingroup Selectors
+    */
+    template <class EOT> class eoDetTournamentSelect: public eoSelectOne<EOT>
+    {
+    public:
+	/* (Default) Constructor - 
+	   @param _tSize tournament size
+	*/
+	eoDetTournamentSelect(unsigned _tSize = 2 ):eoSelectOne<EOT>(), tSize(_tSize) {
+	    // consistency check
+	    if (tSize < 2) {
+		eo::log << eo::warnings << "Tournament size should be >= 2, adjusted to 2" << std::endl;
+		tSize = 2;
+	    }
+	}
+  
+	/* Perform deterministic tournament calling the appropriate fn 
+	   see selectors.h
+	*/
+	virtual const EOT& operator()(const eoPop<EOT>& _pop) 
+	{
+	    return deterministic_tournament(_pop, tSize);
+	}
+  
+    private:
+	unsigned tSize;
+    };
+
+    //-----------------------------------------------------------------------------
+
+}
 
 #endif
 

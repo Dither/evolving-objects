@@ -33,6 +33,11 @@
 #include <signal.h>
 #include <iostream>
 
-// --- Global variables - but don't know what else to do - MS ---
-bool     existSIGContinue = false;
-bool     call_func = false;
+namespace eo
+{
+
+    // --- Global variables - but don't know what else to do - MS ---
+    bool     existSIGContinue = false;
+    bool     call_func = false;
+
+}

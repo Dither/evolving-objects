@@ -27,57 +27,61 @@
 
 #include <eoOp.h>
 
-/**
- * The different null-variation operators (i.e. they do nothing)
- * 
- * eoQuadCloneOp at least is useful to emulate the standard 
- *               crossover(pCross) + mutation(pMut) 
- *               within the eoGenOp framework
- * eoMonCloneOp will probably be useful as the copy operator
- * eoBinCloneOp will certainly never been used - but let's be complete :-)
- *
- * @addtogroup Core
- * @{
- */
-
-/**
-Mon clone: one argument
-*/
-template <class EOT>
-class eoMonCloneOp: public eoMonOp<EOT>
+namespace eo
 {
-public:
-  /// Ctor
-  eoMonCloneOp() : eoMonOp<EOT>() {}
-  virtual std::string className() const {return "eoMonCloneOp";}
-  virtual bool operator()(EOT&){return false;}
-};
+
+    /**
+     * The different null-variation operators (i.e. they do nothing)
+     * 
+     * eoQuadCloneOp at least is useful to emulate the standard 
+     *               crossover(pCross) + mutation(pMut) 
+     *               within the eoGenOp framework
+     * eoMonCloneOp will probably be useful as the copy operator
+     * eoBinCloneOp will certainly never been used - but let's be complete :-)
+     *
+     * @addtogroup Core
+     * @{
+     */
+
+    /**
+       Mon clone: one argument
+    */
+    template <class EOT>
+    class eoMonCloneOp: public eoMonOp<EOT>
+    {
+    public:
+	/// Ctor
+	eoMonCloneOp() : eoMonOp<EOT>() {}
+	virtual std::string className() const {return "eoMonCloneOp";}
+	virtual bool operator()(EOT&){return false;}
+    };
 
 
-/** Binary clone: two operands, only the first could be modified
- */
-template<class EOT>
-class eoBinCloneOp: public eoBinOp<EOT>
-{
-public:
-  /// Ctor
-  eoBinCloneOp() : eoBinOp<EOT>() {}
-  virtual std::string className() const {return "eoBinCloneOp";}
-  virtual bool operator()(EOT&, const EOT&){return false;}
-};
+    /** Binary clone: two operands, only the first could be modified
+     */
+    template<class EOT>
+    class eoBinCloneOp: public eoBinOp<EOT>
+    {
+    public:
+	/// Ctor
+	eoBinCloneOp() : eoBinOp<EOT>() {}
+	virtual std::string className() const {return "eoBinCloneOp";}
+	virtual bool operator()(EOT&, const EOT&){return false;}
+    };
 
-/** Quad clone: two operands, both could be modified - but are not!
-*/
-template<class EOT>
-class eoQuadCloneOp: public eoQuadOp<EOT>
-{
-public:
-  /// Ctor
-  eoQuadCloneOp():eoQuadOp<EOT>() {}
-  virtual std::string className() const {return "eoQuadCloneOp";}
-virtual bool operator()(EOT& , EOT& ) {return false;}
-};
+    /** Quad clone: two operands, both could be modified - but are not!
+     */
+    template<class EOT>
+    class eoQuadCloneOp: public eoQuadOp<EOT>
+    {
+    public:
+	/// Ctor
+	eoQuadCloneOp():eoQuadOp<EOT>() {}
+	virtual std::string className() const {return "eoQuadCloneOp";}
+	virtual bool operator()(EOT& , EOT& ) {return false;}
+    };
+
+}
 
 #endif
 /** @} */
-

@@ -30,14 +30,19 @@
 #include <eoPop.h>
 //-----------------------------------------------------------------------------
 
-/** 
-eoTransform transforms a population by applying genetic operators on it.
+namespace eo
+{
 
-@ingroup Combination
-@ingroup Core
-*/
-template<class EOT>
-class eoTransform : public eoUF<eoPop<EOT>&, void>
-{};
+    /** 
+	eoTransform transforms a population by applying genetic operators on it.
+
+	@ingroup Combination
+	@ingroup Core
+    */
+    template<class EOT>
+    class eoTransform : public eoUF<eoPop<EOT>&, void>
+    {};
+
+}
 
 #endif

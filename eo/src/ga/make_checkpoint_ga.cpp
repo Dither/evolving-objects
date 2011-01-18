@@ -48,17 +48,20 @@
 // the instanciating EOType
 #include <ga/eoBit.h>
 
-/// The following function merely call the templatized do_* functions 
-
-// checkpoint
-/////////////
-eoCheckPoint<eoBit<double> >& make_checkpoint(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoBit<double> >& _eval, eoContinue<eoBit<double> >& _continue)
+namespace eo
 {
-  return do_make_checkpoint(_parser, _state, _eval, _continue);
-}
-eoCheckPoint<eoBit<eoMinimizingFitness> >& make_checkpoint(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoBit<eoMinimizingFitness> >& _eval, eoContinue<eoBit<eoMinimizingFitness> >& _continue) 
-{
-  return do_make_checkpoint(_parser, _state, _eval, _continue);
-}
 
+    /// The following function merely call the templatized do_* functions 
 
+    // checkpoint
+    /////////////
+    eoCheckPoint<eoBit<double> >& make_checkpoint(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoBit<double> >& _eval, eoContinue<eoBit<double> >& _continue)
+    {
+	return do_make_checkpoint(_parser, _state, _eval, _continue);
+    }
+    eoCheckPoint<eoBit<eoMinimizingFitness> >& make_checkpoint(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoBit<eoMinimizingFitness> >& _eval, eoContinue<eoBit<eoMinimizingFitness> >& _continue) 
+    {
+	return do_make_checkpoint(_parser, _state, _eval, _continue);
+    }
+
+}

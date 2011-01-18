@@ -34,54 +34,60 @@
 #include <eoSelectOne.h>
 #include <eoPop.h>
 
-/** eoProportionalSelect: select an individual proportional to her stored fitness
-    value 
-    
-    Changed the algorithm to make use of a cumulative array of fitness scores, 
-    This changes the algorithm from O(n) per call to  O(log n) per call. (MK)
-
-    @ingroup Selectors
-*/
-template <class EOT> class eoProportionalSelect: public eoSelectOne<EOT> 
+namespace eo
 {
-public:
-  /// Sanity check
-  eoProportionalSelect(const eoPop<EOT>& pop = eoPop<EOT>()) 
-  {
-    if (minimizing_fitness<EOT>())
-      throw std::logic_error("eoProportionalSelect: minimizing fitness");
-  }
 
-  void setup(const eoPop<EOT>& _pop)
-  {
-      if (_pop.size() == 0) return;
-      
-      cumulative.resize(_pop.size());
-      cumulative[0] = _pop[0].fitness();
-
-      for (unsigned i = 1; i < _pop.size(); ++i) 
-      {
-	  cumulative[i] = _pop[i].fitness() + cumulative[i-1];
-      }
-  }
+    /** eoProportionalSelect: select an individual proportional to her stored fitness
+	value 
     
-  /** do the selection,  
-   */
-  const EOT& operator()(const eoPop<EOT>& _pop) 
-  {
-      if (cumulative.size() == 0) setup(_pop);
+	Changed the algorithm to make use of a cumulative array of fitness scores, 
+	This changes the algorithm from O(n) per call to  O(log n) per call. (MK)
+
+	@ingroup Selectors
+    */
+    template <class EOT> class eoProportionalSelect: public eoSelectOne<EOT> 
+    {
+    public:
+	/// Sanity check
+	eoProportionalSelect(const eoPop<EOT>& pop = eoPop<EOT>()) 
+	{
+	    if (minimizing_fitness<EOT>())
+		throw std::logic_error("eoProportionalSelect: minimizing fitness");
+	}
+
+	void setup(const eoPop<EOT>& _pop)
+	{
+	    if (_pop.size() == 0) return;
       
-      double fortune = rng.uniform() * cumulative.back(); 
-      typename FitVec::iterator result = std::upper_bound(cumulative.begin(), cumulative.end(), fortune);
-      return _pop[result - cumulative.begin()];
-  }
+	    cumulative.resize(_pop.size());
+	    cumulative[0] = _pop[0].fitness();
 
-private :
+	    for (unsigned i = 1; i < _pop.size(); ++i) 
+		{
+		    cumulative[i] = _pop[i].fitness() + cumulative[i-1];
+		}
+	}
+    
+	/** do the selection,  
+	 */
+	const EOT& operator()(const eoPop<EOT>& _pop) 
+	{
+	    if (cumulative.size() == 0) setup(_pop);
+      
+	    double fortune = rng.uniform() * cumulative.back(); 
+	    typename FitVec::iterator result = std::upper_bound(cumulative.begin(), cumulative.end(), fortune);
+	    return _pop[result - cumulative.begin()];
+	}
 
-  typedef std::vector<typename EOT::Fitness> FitVec;
-  FitVec cumulative;
-};
-/** @example t-eoRoulette.cpp
- */
+    private :
+
+	typedef std::vector<typename EOT::Fitness> FitVec;
+	FitVec cumulative;
+    };
+
+    /** @example t-eoRoulette.cpp
+     */
+
+}
 
 #endif

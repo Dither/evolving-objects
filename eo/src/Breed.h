@@ -33,36 +33,39 @@
 #include <eoTransform.h>
 //-----------------------------------------------------------------------------
 
-/** Breeding: combination of selecting and transforming a population
-
-Breeding is thought of a combination of selecting and transforming a
-population. For efficiency reasons you might want to build your own
-eoBreed derived class rather than relying on a seperate select and
-transform function.
-
-@see eoSelect, eoTransform, eoSelectTransform
-
-@ingroup Combination
-*/
-template<class EOT>
-class eoBreed : public eoBF<const eoPop<EOT>&, eoPop<EOT>&, void>
-{};
-
-
-
-/** Embedded select, followed by an embedded transform
-
-Special breeder that is just an application of an embedded select,
-followed by an embedded transform
-
-@ingroup Combination
-*/
-template <class EOT>
-class eoSelectTransform : public eoBreed<EOT>
+namespace eo
 {
+
+    /** Breeding: combination of selecting and transforming a population
+
+	Breeding is thought of a combination of selecting and transforming a
+	population. For efficiency reasons you might want to build your own
+	eoBreed derived class rather than relying on a seperate select and
+	transform function.
+
+	@see eoSelect, eoTransform, eoSelectTransform
+
+	@ingroup Combination
+    */
+    template<class EOT>
+    class eoBreed : public eoBF<const eoPop<EOT>&, eoPop<EOT>&, void>
+    {};
+
+
+
+    /** Embedded select, followed by an embedded transform
+
+	Special breeder that is just an application of an embedded select,
+	followed by an embedded transform
+
+	@ingroup Combination
+    */
+    template <class EOT>
+    class eoSelectTransform : public eoBreed<EOT>
+    {
     public:
         eoSelectTransform(eoSelect<EOT>& _select, eoTransform<EOT>& _transform) :
-        select(_select), transform(_transform)
+	    select(_select), transform(_transform)
         {}
 
         void operator()(const eoPop<EOT>& _parents, eoPop<EOT>& _offspring)
@@ -74,6 +77,8 @@ class eoSelectTransform : public eoBreed<EOT>
     private :
         eoSelect<EOT>& select;
         eoTransform<EOT>& transform;
-};
+    };
+
+}
 
 #endif

@@ -25,69 +25,74 @@
 #ifndef _eoCombinedInit_h
 #define _eoCombinedInit_h
 
+namespace eo
+{
+
 #include <eoInit.h>
 
-/** 
-    Combined INIT: a proportional recombination of eoInit objects
+    /** 
+	Combined INIT: a proportional recombination of eoInit objects
 
-    @ingroup Initializators
-*/
-template< class EOT>
-class eoCombinedInit: public eoInit<EOT> {
-public:
+	@ingroup Initializators
+    */
+    template< class EOT>
+    class eoCombinedInit: public eoInit<EOT> {
+    public:
 
-  /** Ctor, make sure that at least one eoInit is present */
-  eoCombinedInit( eoInit<EOT>& _init, double _rate)
-    : eoInit<EOT> ()
-  {
-    initializers.push_back(&_init);
-    rates.push_back(_rate);
-  }
+	/** Ctor, make sure that at least one eoInit is present */
+	eoCombinedInit( eoInit<EOT>& _init, double _rate)
+	    : eoInit<EOT> ()
+	{
+	    initializers.push_back(&_init);
+	    rates.push_back(_rate);
+	}
 
-  void add(eoInit<EOT> & _init, double _rate, bool _verbose)
-  {
-      eo::log << eo::warnings << "WARNING: the use of the verbose parameter in eoCombinedInit::add is deprecated and will be removed in the next release." << std::endl;
-      add( _init, _rate );
-  }
+	void add(eoInit<EOT> & _init, double _rate, bool _verbose)
+	{
+	    eo::log << eo::warnings << "WARNING: the use of the verbose parameter in eoCombinedInit::add is deprecated and will be removed in the next release." << std::endl;
+	    add( _init, _rate );
+	}
   
-  /** The usual method to add objects to the combination
-   */
-  void add(eoInit<EOT> & _init, double _rate)
-  {
-    initializers.push_back(&_init);
-    rates.push_back(_rate);
-    // compute the relative rates in percent - to warn the user!
-      printOn( eo::log << eo::logging );
-  }
+	/** The usual method to add objects to the combination
+	 */
+	void add(eoInit<EOT> & _init, double _rate)
+	{
+	    initializers.push_back(&_init);
+	    rates.push_back(_rate);
+	    // compute the relative rates in percent - to warn the user!
+	    printOn( eo::log << eo::logging );
+	}
 
-  /** outputs the operators and percentages */
-  virtual void printOn(std::ostream & _os)
-  {
-    double total = 0;
-    unsigned i;
-    for (i=0; i<initializers.size(); i++)
-      total += rates[i];
-    _os << "In " << className() << "\n" ;
-    for (i=0; i<initializers.size(); i++)
-      _os << initializers[i]->className() << " with rate " << 100*rates[i]/total << " %\n";
-  }
+	/** outputs the operators and percentages */
+	virtual void printOn(std::ostream & _os)
+	{
+	    double total = 0;
+	    unsigned i;
+	    for (i=0; i<initializers.size(); i++)
+		total += rates[i];
+	    _os << "In " << className() << "\n" ;
+	    for (i=0; i<initializers.size(); i++)
+		_os << initializers[i]->className() << " with rate " << 100*rates[i]/total << " %\n";
+	}
 
-  /** Performs the init: chooses among all initializers
-   * using roulette wheel on the rates
-   */
-  virtual void operator() ( EOT & _eo )
-  {
-    unsigned what = rng.roulette_wheel(rates); // choose one op
-    (*initializers[what])(_eo);		   // apply it
-    return;
-  }
+	/** Performs the init: chooses among all initializers
+	 * using roulette wheel on the rates
+	 */
+	virtual void operator() ( EOT & _eo )
+	{
+	    unsigned what = rng.roulette_wheel(rates); // choose one op
+	    (*initializers[what])(_eo);		   // apply it
+	    return;
+	}
 
-  virtual std::string className(void) const { return "eoCombinedInit"; }
+	virtual std::string className(void) const { return "eoCombinedInit"; }
 
-private:
-std::vector<eoInit<EOT>*> initializers;
-std::vector<double> rates;
-};
+    private:
+	std::vector<eoInit<EOT>*> initializers;
+	std::vector<double> rates;
+    };
+
+}
 
 #endif
 

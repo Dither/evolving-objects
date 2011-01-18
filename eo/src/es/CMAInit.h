@@ -32,23 +32,27 @@
 #include <eoVector.h>
 #include <es/CMAState.h>
 
-/// @todo handle bounds
-template <class FitT>
-class eoCMAInit : public eoInit< eoVector<FitT, double> > {
-    
-    const eo::CMAState& state;
+namespace eo
+{
 
-    typedef eoVector<FitT, double> EOT;
+    /// @todo handle bounds
+    template <class FitT>
+    class eoCMAInit : public eoInit< eoVector<FitT, double> > {
+    
+	const eo::CMAState& state;
+
+	typedef eoVector<FitT, double> EOT;
     
     public:
-    eoCMAInit(const eo::CMAState& state_) : state(state_) {}
+	eoCMAInit(const eo::CMAState& state_) : state(state_) {}
 
     
-    void operator()(EOT& v) {
-	state.sample(static_cast<std::vector<double>& >(v));
-	v.invalidate();
-    }
-};
+	void operator()(EOT& v) {
+	    state.sample(static_cast<std::vector<double>& >(v));
+	    v.invalidate();
+	}
+    };
 
+}
 
 #endif

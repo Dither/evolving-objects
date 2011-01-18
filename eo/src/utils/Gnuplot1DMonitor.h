@@ -32,50 +32,52 @@
 #include "utils/eoGnuplot.h"
 #include "utils/pipecom.h"
 
+namespace eo
+{
+
 /** Plot eoStat
 
-@author Marc Schoenauer
-@version 0.0 (2000)
+    @author Marc Schoenauer
+    @version 0.0 (2000)
 
-This class plots through gnuplot the eoStat given as argument
+    This class plots through gnuplot the eoStat given as argument
 
-eoGnuplot1DMonitor plots stats through gnuplot
+    eoGnuplot1DMonitor plots stats through gnuplot
 
-Assumes that the same file is appened every so and so, and replots it
-everytime
+    Assumes that the same file is appened every so and so, and replots it
+    everytime
 
-@ingroup Monitors
+    @ingroup Monitors
 */
-class eoGnuplot1DMonitor : public eoFileMonitor, public eoGnuplot
-{
-public:
+    class eoGnuplot1DMonitor : public eoFileMonitor, public eoGnuplot
+    {
+    public:
 
-  // this "using" directive generates a compiler internal error in GCC 4.0.0 ...
-  // it's been removed, and the only call to vec was replaced by this->vec in eoGnuplot1DMonitor.cpp
-  //    using eoMonitor::vec;
+	// this "using" directive generates a compiler internal error in GCC 4.0.0 ...
+	// it's been removed, and the only call to vec was replaced by this->vec in eoGnuplot1DMonitor.cpp
+	//    using eoMonitor::vec;
 
-    /** Constructor */
-    eoGnuplot1DMonitor(std::string _filename, bool _top=false) :
-        eoFileMonitor(_filename, " "),
-        eoGnuplot(_filename,(_top?"":"set key bottom"))
-        {}
+	/** Constructor */
+	eoGnuplot1DMonitor(std::string _filename, bool _top=false) :
+	    eoFileMonitor(_filename, " "),
+	    eoGnuplot(_filename,(_top?"":"set key bottom"))
+	    {}
 
-    /** Destructor */
-    virtual ~eoGnuplot1DMonitor(){}
+	/** Destructor */
+	virtual ~eoGnuplot1DMonitor(){}
 
-    virtual eoMonitor& operator()();
+	virtual eoMonitor& operator()();
 
-    virtual void FirstPlot();
+	virtual void FirstPlot();
 
-    /** Class name */
-    virtual std::string className() const
-        { return "eoGnuplot1DMonitor"; }
-};
+	/** Class name */
+	virtual std::string className() const
+	    { return "eoGnuplot1DMonitor"; }
+    };
 
+}
 
 #endif // EO_eoGnuplot1DMonitor_H
-
-
 
 // Local Variables:
 // c-file-style: "Stroustrup"

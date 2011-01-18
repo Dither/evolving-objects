@@ -27,23 +27,28 @@
 
 #include <eoOp.h>
 
-/** a simple boolean mutation - to be used in generic eoOp's
- *
-  @ingroup bitstring
-  @ingroup Variators
- */
-class eoBoolFlip : public eoMonOp<bool> {
-public: 
-  /** simply flips the boolean argument */
-  bool operator()(bool & _b)
-  {
-    _b = !_b;
-    return true;
-  }
+namespace eo
+{
 
-  /** inherited className() */
-  virtual string className() const {return "boolFlip";}
+    /** a simple boolean mutation - to be used in generic eoOp's
+     *
+     @ingroup bitstring
+     @ingroup Variators
+    */
+    class eoBoolFlip : public eoMonOp<bool> {
+    public: 
+	/** simply flips the boolean argument */
+	bool operator()(bool & _b)
+	{
+	    _b = !_b;
+	    return true;
+	}
 
-};
+	/** inherited className() */
+	virtual string className() const {return "boolFlip";}
+
+    };
+
+}
 
 #endif

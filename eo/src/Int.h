@@ -31,33 +31,38 @@
 
 #include <eoVector.h>
 
-/** eoInt: implementation of simple integer-valued chromosome.
-  * based on eoVector class
-  *
-  * @ingroup Representations
-*/
-template <class FitT> class eoInt: public eoVector<FitT, int>
+namespace eo
 {
- public:
 
-  /**
-   * (Default) Constructor.
-   * @param size Size of the std::vector
-   * @param value fill the vector with this value
-   */
-  eoInt(unsigned size = 0, int value = 0):
-    eoVector<FitT, int>(size, value) {}
-
-  /// My class name.
-  virtual std::string className() const
+    /** eoInt: implementation of simple integer-valued chromosome.
+     * based on eoVector class
+     *
+     * @ingroup Representations
+     */
+    template <class FitT> class eoInt: public eoVector<FitT, int>
     {
-      return "eoInt";
-    }
+    public:
 
-};
-/** @example t-eoInt.cpp
- */
+	/**
+	 * (Default) Constructor.
+	 * @param size Size of the std::vector
+	 * @param value fill the vector with this value
+	 */
+	eoInt(unsigned size = 0, int value = 0):
+	    eoVector<FitT, int>(size, value) {}
 
-//-----------------------------------------------------------------------------
+	/// My class name.
+	virtual std::string className() const
+	{
+	    return "eoInt";
+	}
+
+    };
+    /** @example t-eoInt.cpp
+     */
+
+    //-----------------------------------------------------------------------------
+
+}
 
 #endif

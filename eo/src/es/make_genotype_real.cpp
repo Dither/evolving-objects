@@ -55,19 +55,24 @@
 // the templatized code
 #include <es/make_genotype_real.h>
 
-/// The following functions merely call the templatized do_* functions
-eoRealInitBounded<eoReal<double> > & make_genotype(eoParser& _parser,
-                                                   eoState& _state,
-                                                   eoReal<double> _eo)
+namespace eo
 {
-    return do_make_genotype(_parser, _state, _eo);
-}
+
+    /// The following functions merely call the templatized do_* functions
+    eoRealInitBounded<eoReal<double> > & make_genotype(eoParser& _parser,
+						       eoState& _state,
+						       eoReal<double> _eo)
+    {
+	return do_make_genotype(_parser, _state, _eo);
+    }
 
 
 
-eoRealInitBounded<eoReal<eoMinimizingFitness> > & make_genotype(eoParser& _parser,
-                                                                eoState& _state,
-                                                                eoReal<eoMinimizingFitness> _eo)
-{
-    return do_make_genotype(_parser, _state, _eo);
+    eoRealInitBounded<eoReal<eoMinimizingFitness> > & make_genotype(eoParser& _parser,
+								    eoState& _state,
+								    eoReal<eoMinimizingFitness> _eo)
+    {
+	return do_make_genotype(_parser, _state, _eo);
+    }
+
 }

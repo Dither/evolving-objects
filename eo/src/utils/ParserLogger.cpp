@@ -24,57 +24,62 @@ Caner Candan <caner.candan@thalesgroup.com>
 
 #include "eoParserLogger.h"
 
-eoParserLogger::eoParserLogger(unsigned _argc, char** _argv,
-			       std::string _programDescription /*= ""*/
-			       ,
-			       std::string _lFileParamName /*= "param-file"*/,
-			       char _shortHand /*= 'p'*/)
-    : eoParser(_argc, _argv, _programDescription, _lFileParamName, _shortHand),
-    _verbose("quiet", "verbose", "Set the verbose level", 'v'),
-    _printVerboseLevels(false, "print-verbose-levels", "Print verbose levels", 'l'),
-    _output("", "output", "Redirect a standard output to a file", 'o')
+namespace eo
 {
-    //------------------------------------------------------------------
-    // we are saying to eoParser to create the parameters created above.
-    //------------------------------------------------------------------
 
-    processParam(_verbose);
-    processParam(_printVerboseLevels);
-    processParam(_output);
+    eoParserLogger::eoParserLogger(unsigned _argc, char** _argv,
+				   std::string _programDescription /*= ""*/
+				   ,
+				   std::string _lFileParamName /*= "param-file"*/,
+				   char _shortHand /*= 'p'*/)
+	: eoParser(_argc, _argv, _programDescription, _lFileParamName, _shortHand),
+	  _verbose("quiet", "verbose", "Set the verbose level", 'v'),
+	  _printVerboseLevels(false, "print-verbose-levels", "Print verbose levels", 'l'),
+	  _output("", "output", "Redirect a standard output to a file", 'o')
+    {
+	//------------------------------------------------------------------
+	// we are saying to eoParser to create the parameters created above.
+	//------------------------------------------------------------------
 
-    //------------------------------------------------------------------
+	processParam(_verbose);
+	processParam(_printVerboseLevels);
+	processParam(_output);
+
+	//------------------------------------------------------------------
 
 
-    //------------------------------------------------------------------
-    // we're gonna redirect the log to the given filename if -o is used.
-    //------------------------------------------------------------------
+	//------------------------------------------------------------------
+	// we're gonna redirect the log to the given filename if -o is used.
+	//------------------------------------------------------------------
 
-    if ( ! _output.value().empty() )
-	{
-	    eo::log << eo::file( _output.value() );
-	}
+	if ( ! _output.value().empty() )
+	    {
+		eo::log << eo::file( _output.value() );
+	    }
 
-    //------------------------------------------------------------------
+	//------------------------------------------------------------------
 
 
-    //------------------------------------------------------------------
-    // // we're gonna print the list of levels if -l parameter is used.
-    //------------------------------------------------------------------
+	//------------------------------------------------------------------
+	// // we're gonna print the list of levels if -l parameter is used.
+	//------------------------------------------------------------------
 
-    if ( _printVerboseLevels.value() )
-	{
-	    eo::log.printLevels();
-	}
+	if ( _printVerboseLevels.value() )
+	    {
+		eo::log.printLevels();
+	    }
 
-    //------------------------------------------------------------------
+	//------------------------------------------------------------------
 
-}
+    }
 
-eoParserLogger::~eoParserLogger()
-{}
+    eoParserLogger::~eoParserLogger()
+    {}
 
-//! make_verbose gets level of verbose and sets it in eoLogger
-void	make_verbose(eoParserLogger& _parser)
-{
-    eo::log << eo::setlevel(_parser._verbose.value());
+    //! make_verbose gets level of verbose and sets it in eoLogger
+    void	make_verbose(eoParserLogger& _parser)
+    {
+	eo::log << eo::setlevel(_parser._verbose.value());
+    }
+
 }

@@ -35,66 +35,71 @@
 
 #include <eoOp.h>
 
-/** 
-  Discrete crossover == exchange of values
- *
- * @ingroup Real
- * @ingroup Variators
-*/
-class eoDoubleExchange: public eoBinOp<double>
+namespace eo
 {
-public:
-  /**
-   * (Default) Constructor.
-   */
-  eoDoubleExchange() {}
 
-  /// The class name. Used to display statistics
-  virtual std::string className() const { return "eoDoubleExchange"; }
+    /** 
+	Discrete crossover == exchange of values
+	*
+	* @ingroup Real
+	* @ingroup Variators
+	*/
+    class eoDoubleExchange: public eoBinOp<double>
+    {
+    public:
+	/**
+	 * (Default) Constructor.
+	 */
+	eoDoubleExchange() {}
 
-  /**
-     Exchanges or not the values
-   */
-  bool operator()(double& r1, const double& r2) 
-  {
-    if (eo::rng.flip())
-      if (r1 != r2)	   // if r1 == r2 you must return false
+	/// The class name. Used to display statistics
+	virtual std::string className() const { return "eoDoubleExchange"; }
+
+	/**
+	   Exchanges or not the values
+	*/
+	bool operator()(double& r1, const double& r2) 
 	{
-	  r1 = r2;
-	  return true;
+	    if (eo::rng.flip())
+		if (r1 != r2)	   // if r1 == r2 you must return false
+		    {
+			r1 = r2;
+			return true;
+		    }
+	    return false;
 	}
-    return false;
-  }
   
-};
+    };
 
-/** 
-  Intermediate crossover == linear combination
- *
- * @ingroup Real
- * @ingroup Variators
-*/
-class eoDoubleIntermediate: public eoBinOp<double>
-{
-public:
-  /**
-   * (Default) Constructor.
-   */
-  eoDoubleIntermediate() {}
+    /** 
+	Intermediate crossover == linear combination
+	*
+	* @ingroup Real
+	* @ingroup Variators
+	*/
+    class eoDoubleIntermediate: public eoBinOp<double>
+    {
+    public:
+	/**
+	 * (Default) Constructor.
+	 */
+	eoDoubleIntermediate() {}
 
-  /// The class name. Used to display statistics
-  virtual std::string className() const { return "eoDoubleIntermediate"; }
+	/// The class name. Used to display statistics
+	virtual std::string className() const { return "eoDoubleIntermediate"; }
 
-  /**
-     Linear combination of both parents
-   */
-  bool operator()(double& r1, const double& r2) 
-  {
-    double alpha = eo::rng.uniform();
-    r1 = alpha * r2 + (1-alpha) * r1;
-    return true;
-  }
+	/**
+	   Linear combination of both parents
+	*/
+	bool operator()(double& r1, const double& r2) 
+	{
+	    double alpha = eo::rng.uniform();
+	    r1 = alpha * r2 + (1-alpha) * r1;
+	    return true;
+	}
   
-};
+    };
+
+}
 
 #endif

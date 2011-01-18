@@ -30,51 +30,54 @@
 #include <utils/eoRNG.h>
 //-----------------------------------------------------------------------------
 
-/**
- * Update an inertia weight by assigning it an (uniform) random value. 
- * The weight is a basic feature to evaluate the velocity of a particle in
- * swarm optimization.
- *
- * @ingroup Variators
- */
-class eoRandomRealWeightUp:public eoWeightUpdater<double>
+namespace eo
 {
-public:
 
     /**
-     * Default constructor
-     * @param _min - The minimum bound for the weight
-     * @param _max - The maximum bound for the weight
+     * Update an inertia weight by assigning it an (uniform) random value. 
+     * The weight is a basic feature to evaluate the velocity of a particle in
+     * swarm optimization.
+     *
+     * @ingroup Variators
      */
-    eoRandomRealWeightUp(
-        double  _min,
-        double  _max
-    ):min(_min),max(_max)
+    class eoRandomRealWeightUp:public eoWeightUpdater<double>
     {
-        // consistency check
-        if (min > max)
-        {
-            std::string s;
-            s.append (" min > max in eoRandomRealWeightUp");
-            throw std::runtime_error (s);
-        }
-    }
+    public:
 
-    /**
-     * Generate an real random number in [min,max] and assign it to _weight
-     * @param _weight - The assigned (real) weight
-     */
-    void operator() (double & _weight)
-    {
-        _weight=rng.uniform(max-min)+min;
-    }
+	/**
+	 * Default constructor
+	 * @param _min - The minimum bound for the weight
+	 * @param _max - The maximum bound for the weight
+	 */
+	eoRandomRealWeightUp(
+			     double  _min,
+			     double  _max
+			     ):min(_min),max(_max)
+	{
+	    // consistency check
+	    if (min > max)
+		{
+		    std::string s;
+		    s.append (" min > max in eoRandomRealWeightUp");
+		    throw std::runtime_error (s);
+		}
+	}
+
+	/**
+	 * Generate an real random number in [min,max] and assign it to _weight
+	 * @param _weight - The assigned (real) weight
+	 */
+	void operator() (double & _weight)
+	{
+	    _weight=rng.uniform(max-min)+min;
+	}
 
 
-protected:
-    double min,max;
+    protected:
+	double min,max;
 
-};
+    };
 
-
+}
 
 #endif/*EORANDOMREALWEIGHTUP_H*/
