@@ -65,7 +65,7 @@ SET (TEST_LIST
   t-ExtendedVelocity
   t-Logger
   t-IQRStat
-  t-DualFitness
+  #t-DualFitness
   t-Parser
   )
 
