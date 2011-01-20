@@ -33,6 +33,8 @@
 #include <Populator.h>
 #include <OpContainer.h>
 
+using namespace eo;
+
 struct Dummy : public EO<double>
 {
     Dummy(std::string _s="") : s(_s) {}
@@ -195,7 +197,7 @@ int the_main(int argc, char **argv)
 
     ValueParam<uint32_t> seedParam(time(0), "seed", "Random number seed", 'S');
     parser.processParam( seedParam );
-    eo::rng.reseed(seedParam.value());
+    rng.reseed(seedParam.value());
 
    // do the following AFTER ALL PARAMETERS HAVE BEEN PROCESSED
    // i.e. in case you need parameters somewhere else, postpone these

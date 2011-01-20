@@ -4,6 +4,8 @@
 #include "real_value.h"
 #include <apply.h>
 
+using namespace eo;
+
 using namespace std;
 
 int main(int argc, char* argv[])

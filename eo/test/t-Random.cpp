@@ -37,6 +37,8 @@ CVS Info: $Date: 2003-02-27 19:20:24 $  $Author: okoenig $ $Revision: 1.13 $
 
 //-----------------------------------------------------------------------------
 
+using namespace eo;
+
 int main() {
   UniformGenerator<float> u1(-2.5,3.5);
   UniformGenerator<double> u2(0.003, 0.05 );

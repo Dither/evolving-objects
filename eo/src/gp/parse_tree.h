@@ -172,13 +172,13 @@
 #pragma warning(disable : 4786) // disable this nagging warning about the limitations of the mirkosoft debugger
 #endif
 
+#include "node_pool.h"
+
 namespace eo
 {
 
     namespace gp_parse_tree
     {
-
-#include "node_pool.h"
 
 	/// This ones defined because gcc does not always implement namespaces
 	template <class T>
@@ -966,8 +966,8 @@ namespace eo
 
     } // end namespace gp_parse_tree
 
-    namespace std
-    { // for use with stlport on MSVC
+    // namespace std
+    // { // for use with stlport on MSVC
 
 	template <class T> inline
 	std::forward_iterator_tag iterator_category(typename gp_parse_tree::parse_tree<T>::embedded_iterator)
@@ -1008,7 +1008,7 @@ namespace eo
 	   }*/
 
 
-    } // namespace std
+    // } // namespace std
 
 }
 

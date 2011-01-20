@@ -29,19 +29,19 @@
 
 #include <algorithm>
 
-#include <eoOp.h>
-#include <eoSTLFunctor.h>
-#include <utils/eoRndGenerators.h>
-#include <eoInit.h>
+#include <Op.h>
+#include <STLFunctor.h>
+#include <utils/RndGenerators.h>
+#include <Init.h>
 
 /**
     Initializer for binary chromosome with MGE
 */
 template <class FitT>
-class eoInitVirus: public eoInit< eoVirus<FitT> > {
+class eoInitVirus: public Init< eoVirus<FitT> > {
 public:
 
-  eoInitVirus(unsigned _combien, eoRndGenerator<bool>& _generator )
+  eoInitVirus(unsigned _combien, RndGenerator<bool>& _generator )
 	: combien(_combien), generator(_generator) {}
   
   virtual void operator()( eoVirus<FitT>& chrom)
@@ -58,15 +58,15 @@ public:
 private :
   unsigned combien;
   /// generic wrapper for eoFunctor (s), to make them have the function-pointer style copy semantics
-  eoSTLF<bool> generator;
+  STLF<bool> generator;
 };
 
 /// Inits the virus with one bit to the left set to one
 template <class FitT>
-class eoInitVirus1bit: public eoInit< eoVirus<FitT> > {
+class eoInitVirus1bit: public Init< eoVirus<FitT> > {
 public:
 
-  eoInitVirus1bit(unsigned _combien, eoRndGenerator<bool>& _generator )
+  eoInitVirus1bit(unsigned _combien, RndGenerator<bool>& _generator )
 	: combien(_combien), generator(_generator) {}
   
   virtual void operator()( eoVirus<FitT>& chrom)
@@ -81,6 +81,6 @@ public:
 private :
   unsigned combien;
   /// generic wrapper for eoFunctor (s), to make them have the function-pointer style copy semantics
-  eoSTLF<bool> generator;
+  STLF<bool> generator;
 };
 #endif

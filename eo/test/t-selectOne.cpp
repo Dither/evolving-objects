@@ -38,6 +38,8 @@
 #include <DetTournament.h>
 
 
+using namespace eo;
+
 //-----------------------------------------------------------------------------
 
 typedef Bin<float> Chrom;

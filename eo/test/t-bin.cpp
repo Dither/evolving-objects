@@ -34,6 +34,8 @@
 #include <utils/RndGenerators.h>
 #include "binary_value.h"
 
+using namespace eo;
+
 //-----------------------------------------------------------------------------
 
 typedef Bit<double> Chrom;
@@ -105,7 +107,7 @@ void main_function()
        << std::endl << "BinOp's aplied to ... "
        << chrom << " " << chrom2 << std::endl;
 
-  1PtBitXover<Chrom> xover;
+  OnePtBitXover<Chrom> xover;
   std::fill(chrom.begin(), chrom.end(), false);
   std::fill(chrom2.begin(), chrom2.end(), true);
   xover(chrom, chrom2);

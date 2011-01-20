@@ -8,6 +8,8 @@
 
 #include <eo>
 
+using namespace eo;
+
 //-----------------------------------------------------------------------------
 
 struct Dummy : public EO<double>
@@ -92,83 +94,83 @@ void testSelectOne(SelectOne<EOT> & _select, HowMany & _offspringRate,
 
 int the_main(int argc, char **argv)
 {
-  Parser parser(argc, argv);
-  ValueParam<unsigned> parentSizeParam = parser.createParam(unsigned(10), "parentSize", "Parent size",'P');
+    Parser parser(argc, argv);
+    ValueParam<unsigned> parentSizeParam = parser.createParam(unsigned(10), "parentSize", "Parent size",'P');
     pSize = parentSizeParam.value(); // global variable
 
-//   ValueParam<double> offsrpringRateParam = parser.createParam<double>(1.0, "offsrpringRate", "Offsrpring rate",'O');
-//     double oRate = offsrpringRateParam.value();
-  ValueParam<HowMany> offsrpringRateParam = parser.createParam(HowMany(1.0), "offsrpringRate", "Offsrpring rate (% or absolute)",'O');
+    //   ValueParam<double> offsrpringRateParam = parser.createParam<double>(1.0, "offsrpringRate", "Offsrpring rate",'O');
+    //     double oRate = offsrpringRateParam.value();
+    ValueParam<HowMany> offsrpringRateParam = parser.createParam(HowMany(1.0), "offsrpringRate", "Offsrpring rate (% or absolute)",'O');
     HowMany oRate = offsrpringRateParam.value();
 
-  ValueParam<HowMany> fertileRateParam = parser.createParam(HowMany(1.0), "fertileRate", "Fertility rate (% or absolute)",'F');
+    ValueParam<HowMany> fertileRateParam = parser.createParam(HowMany(1.0), "fertileRate", "Fertility rate (% or absolute)",'F');
     HowMany fRate = fertileRateParam.value();
 
-ValueParam<unsigned> tournamentSizeParam = parser.createParam(unsigned(2), "tournamentSize", "Deterministic tournament size",'T');
+    ValueParam<unsigned> tournamentSizeParam = parser.createParam(unsigned(2), "tournamentSize", "Deterministic tournament size",'T');
     unsigned int tSize = tournamentSizeParam.value();
 
-  ValueParam<double> tournamentRateParam = parser.createParam(1.0, "tournamentRate", "Stochastic tournament rate",'t');
+    ValueParam<double> tournamentRateParam = parser.createParam(1.0, "tournamentRate", "Stochastic tournament rate",'t');
     double tRate = tournamentRateParam.value();
 
-  ValueParam<double> rankingPressureParam = parser.createParam(2.0, "rankingPressure", "Selective pressure for the ranking selection",'p');
+    ValueParam<double> rankingPressureParam = parser.createParam(2.0, "rankingPressure", "Selective pressure for the ranking selection",'p');
     double rankingPressure = rankingPressureParam.value();
 
-  ValueParam<double> rankingExponentParam = parser.createParam(1.0, "rankingExponent", "Exponent for the ranking selection",'e');
+    ValueParam<double> rankingExponentParam = parser.createParam(1.0, "rankingExponent", "Exponent for the ranking selection",'e');
     double rankingExponent = rankingExponentParam.value();
 
-  ValueParam<std::string> fitTypeParam = parser.createParam(std::string("linear"), "fitType", "Type of fitness (linear, exp, log, super",'f');
+    ValueParam<std::string> fitTypeParam = parser.createParam(std::string("linear"), "fitType", "Type of fitness (linear, exp, log, super",'f');
     fitnessType = fitTypeParam.value();
 
     if (parser.userNeedsHelp())
-      {
-        parser.printHelp(std::cout);
-        exit(0);
-      }
+	{
+	    parser.printHelp(std::cout);
+	    exit(0);
+	}
 
     // hard-coded directory name ...
     system("mkdir ResSelect");
     std::cout << "Testing the Selections\nParents size = " << pSize
-	 << ", offspring rate = " << oRate;
+	      << ", offspring rate = " << oRate;
     std::cout << " and putting rsulting files in dir ResSelect" << std::endl;
 
     // initialize parent population
     parentsOrg.resize(pSize);
     if (fitnessType == std::string("linear"))
-      for (unsigned i=0; i<pSize; i++)
-	parentsOrg[i].fitness(i);
+	for (unsigned i=0; i<pSize; i++)
+	    parentsOrg[i].fitness(i);
     else if (fitnessType == std::string("exp"))
-      for (unsigned i=0; i<pSize; i++)
-	parentsOrg[i].fitness(exp((double)i));
+	for (unsigned i=0; i<pSize; i++)
+	    parentsOrg[i].fitness(::exp((double)i));
     else if (fitnessType == std::string("log"))
-      for (unsigned i=0; i<pSize; i++)
-	parentsOrg[i].fitness(log(i+1.));
+	for (unsigned i=0; i<pSize; i++)
+	    parentsOrg[i].fitness(::log(i+1.));
     else if (fitnessType == std::string("super"))
-      {
-	for (unsigned i=0; i<pSize-1; i++)
-	  parentsOrg[i].fitness(i);
-	parentsOrg[pSize-1].fitness(10*pSize);
-      }
+	{
+	    for (unsigned i=0; i<pSize-1; i++)
+		parentsOrg[i].fitness(i);
+	    parentsOrg[pSize-1].fitness(10*pSize);
+	}
     else
-      throw std::runtime_error("Invalid fitness Type"+fitnessType);
+	throw std::runtime_error("Invalid fitness Type"+fitnessType);
 
     std::cout << "Initial parents (odd)\n" << parentsOrg << std::endl;
 
-  // random seed
+    // random seed
     ValueParam<uint32_t>& seedParam = parser.createParam(uint32_t(0), "seed",
-                                                           "Random number seed", 'S');
+							 "Random number seed", 'S');
     if (seedParam.value() == 0)
 	seedParam.value() = time(0);
     rng.reseed(seedParam.value());
 
     char fileName[1024];
 
-// the selection procedures under test
+    // the selection procedures under test
     //    DetSelect<Dummy> detSelect(oRate);
     //    testSelectMany(detSelect, "detSelect");
 
     // Roulette
-     ProportionalSelect<Dummy> propSelect;
-     testSelectOne<Dummy>(propSelect, oRate, fRate, "PropSelect");
+    ProportionalSelect<Dummy> propSelect;
+    testSelectOne<Dummy>(propSelect, oRate, fRate, "PropSelect");
 
     // Linear ranking using the perf2Worth construct
     RankingSelect<Dummy> newRankingSelect(rankingPressure);

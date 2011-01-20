@@ -25,36 +25,41 @@ CVS Info: $Date: 2001-06-21 12:03:17 $ $Header: /home/nojhan/dev/eodev/eodev_cvs
 #ifndef RoyalRoad_h
 #define RoyalRoad_h
 
-template<class EOT>
-class RoyalRoad: public EvalFunc<EOT> {
+namespace eo
+{
 
- public:
+    template<class EOT>
+    class RoyalRoad: public EvalFunc<EOT>
+    {
+    public:
 
-  typedef typename EOT::Fitness FitT;
+	typedef typename EOT::Fitness FitT;
 
-  /// Ctor: takes a length, and divides that length in equal parts
-  RoyalRoad( unsigned _div ): EvalFunc<EOT >(), div( _div ) {};
+	/// Ctor: takes a length, and divides that length in equal parts
+	RoyalRoad( unsigned _div ): EvalFunc<EOT >(), div( _div ) {};
 
-  // Applies the function
-  virtual void operator() ( EOT & _eo )  {
-	FitT fitness = 0;
-    if (_eo.invalid()) {
-	  for ( unsigned i = 0; i < _eo.size()/div; i ++ ) {
-		bool block = true;
-		for ( unsigned j = 0; j < div; j ++ ) {
-		  block &= _eo[i*div+j];
+	// Applies the function
+	virtual void operator() ( EOT & _eo )  {
+	    FitT fitness = 0;
+	    if (_eo.invalid()) {
+		for ( unsigned i = 0; i < _eo.size()/div; i ++ ) {
+		    bool block = true;
+		    for ( unsigned j = 0; j < div; j ++ ) {
+			block &= _eo[i*div+j];
+		    }
+		    if (block) {
+			fitness += div;
+		    }
 		}
-		if (block) {
-		  fitness += div;
-		}
-	  }
-	  _eo.fitness( fitness );
-	}
-  };
-	
-  private:
+		_eo.fitness( fitness );
+	    }
+	};
+
+    private:
 	unsigned div;
 
-};
+    };
+
+}
 
 #endif

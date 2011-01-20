@@ -5,6 +5,8 @@
 
 #include <eo>
 
+using namespace eo;
+
 typedef RealParticle < double >Indi;
 
 //Evaluation function

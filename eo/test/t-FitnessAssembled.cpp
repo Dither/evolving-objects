@@ -31,6 +31,8 @@
 
 #include "ScalarFitnessAssembled.h"
 
+using namespace eo;
+
 void test_ScalarFitnessAssembledClass(){
   
   // Create instances

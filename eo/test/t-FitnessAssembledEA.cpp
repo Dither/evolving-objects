@@ -44,7 +44,6 @@
 #include <EvalFunc.h>		        // Base class for fitness evaluation 
 #include <es/make_op_real.h>		// Variation operators using standard Real operators
 #include <ScalarFitnessAssembled.h>     // The fitness class
-typedef Real<AssembledMinimizingFitness> Indi;
 
 // Representation independent modules
 #include <do/make_pop.h>		// Initialization of population
@@ -52,6 +51,10 @@ typedef Real<AssembledMinimizingFitness> Indi;
 #include <do/make_checkpoint_assembled.h>	// Outputs (stats, population dumps, ...)
 #include <do/make_algo_scalar.h>	// Evolution engine (selection and replacement)
 #include <do/make_run.h>		// simple call to the algo.stays there for consistency reasons 
+
+using namespace eo;
+
+typedef Real<AssembledMinimizingFitness> Indi;
 
 // Define a fitness class
 template <class EOT>
@@ -95,7 +98,7 @@ public:
 };
 
 // checks for help demand, and writes the status file and make_help; in libutils
-void make_help(Parser & _parser);
+//void make_help(Parser & _parser);
 
 // now use all of the above, + representation dependent things
 int main(int argc, char* argv[]){

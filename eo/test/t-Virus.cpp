@@ -27,10 +27,12 @@
 #include <eo>         // general EO
 #include "MGE/VirusOp.h"
 #include "MGE/eoVirus.h"
-#include "MGE/InitVirus.h"
+#include "MGE/eoInitVirus.h"
 #include <utils/RndGenerators.h>
 
 #include "binary_value.h"
+
+using namespace eo;
 
 //-----------------------------------------------------------------------------
 

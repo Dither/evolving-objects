@@ -5,6 +5,8 @@
 #include <gp/ParseTree.h>
 #include <eo>
 
+using namespace eo;
+
 using namespace gp_parse_tree;
 using namespace std;
 

@@ -6,6 +6,8 @@
 
 #include <Int.h>
 
+using namespace eo;
+
 //-----------------------------------------------------------------------------
 
 typedef Int<double> Chrom;

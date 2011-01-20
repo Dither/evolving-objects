@@ -9,6 +9,8 @@
 
 #include <eo>
 
+using namespace eo;
+
 //-----------------------------------------------------------------------------
 typedef MinimizingFitness FitT;
 typedef RealParticle < FitT > Particle;

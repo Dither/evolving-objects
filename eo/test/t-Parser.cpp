@@ -1,6 +1,8 @@
 #include <iostream>
 #include <eo>
 
+using namespace eo;
+
 int main(int ac, char** av)
 {
     Parser parser(ac, av);

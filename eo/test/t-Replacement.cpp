@@ -17,6 +17,8 @@
 #include <eo>
 //-----------------------------------------------------------------------------
 
+using namespace eo;
+
 struct Dummy : public EO<double>
 {
     typedef double Type;

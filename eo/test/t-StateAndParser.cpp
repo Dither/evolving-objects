@@ -26,6 +26,8 @@
 // and provisions for Bounds reading
 #include <utils/RealVectorBounds.h>
 
+using namespace eo;
+
 struct Dummy : public EO<double>
 {
     typedef double Type;

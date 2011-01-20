@@ -8,6 +8,8 @@
 #include <Int.h>
 #include <TwoOptMutation.h>
 
+using namespace eo;
+
 //-----------------------------------------------------------------------------
 
 typedef Int<double> Chrom;

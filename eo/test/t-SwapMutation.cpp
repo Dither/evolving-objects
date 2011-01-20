@@ -8,6 +8,8 @@
 #include <Int.h>
 #include <SwapMutation.h>
 
+using namespace eo;
+
 //-----------------------------------------------------------------------------
 
 typedef Int<double> Chrom;

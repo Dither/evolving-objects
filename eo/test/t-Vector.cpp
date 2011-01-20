@@ -36,6 +36,8 @@
 #include <Init.h>
 #include <ScalarFitness.h>
 
+using namespace eo;
+
 //-----------------------------------------------------------------------------
 
 typedef Vector<MaximizingFitness, int> Chrom1;

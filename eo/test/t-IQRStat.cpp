@@ -5,6 +5,8 @@
 
 #include "real_value.h"
 
+using namespace eo;
+
 typedef Real<MinimizingFitness> realVec;
 
 double test( Pop<realVec>& pop, double target_value )

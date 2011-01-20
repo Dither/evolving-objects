@@ -30,14 +30,16 @@
 #include <functional>  // bind2nd
 #include <string>      // std::string
 
-#include <utils/eoRNG.h>
+#include <utils/RNG.h>
 #include "eoVirus.h"
+
+using namespace eo;
 
 /** VirusBitFlip --> changes 1 bit
 */
 
 template<class FitT>
-class VirusBitFlip: public eoMonOp<eoVirus<FitT> > {
+class VirusBitFlip: public MonOp<eoVirus<FitT> > {
  public:
   /// The class name.
   virtual std::string className() const { return "VirusBitFlip"; };
@@ -47,7 +49,7 @@ class VirusBitFlip: public eoMonOp<eoVirus<FitT> > {
   @param chrom The cromosome which one bit is going to be changed.
   */
   bool operator()(eoVirus<FitT>& _chrom) {
-      unsigned i = eo::rng.random(_chrom.size());
+      unsigned i = rng.random(_chrom.size());
       _chrom.virusBitSet(i, _chrom.virusBit(i) ? false : true );
       return true;
   }
@@ -55,7 +57,7 @@ class VirusBitFlip: public eoMonOp<eoVirus<FitT> > {
 
 
 template<class FitT>
-class VirusMutation: public eoMonOp<eoVirus<FitT> > {
+class VirusMutation: public MonOp<eoVirus<FitT> > {
 public:
     /// The class name.
     virtual std::string className() const { return "VirusMutation"; };
@@ -75,7 +77,7 @@ public:
 	if ( !bitsSet.size() ) {
             return false;
 	}
-        unsigned flipSite = eo::rng.random(bitsSet.size());
+        unsigned flipSite = rng.random(bitsSet.size());
 	unsigned flipValue = bitsSet[ flipSite ];
 	_chrom[flipValue] = _chrom[flipValue] ? false : true;
 	return true;
@@ -85,7 +87,7 @@ public:
 
 /// Works for 1-bit virus; shifts the one to the right or left
 template<class FitT>
-class VirusShiftMutation: public eoMonOp<eoVirus<FitT> >
+class VirusShiftMutation: public MonOp<eoVirus<FitT> >
 {
 public:
 
@@ -101,7 +103,7 @@ public:
     */
     bool operator()(eoVirus<FitT>& _chrom) {
         // Search for virus bits
-        eoBooleanGenerator gen;
+        BooleanGenerator gen;
         for ( unsigned i = 0; i < _chrom.size(); i ++ ) {
             if ( _chrom.virusBit(i) ) {
                 if ( gen() ) {
@@ -123,7 +125,7 @@ public:
 
 
 template<class FitT>
-class VirusTransmission: public eoBinOp<eoVirus<FitT> > {
+class VirusTransmission: public BinOp<eoVirus<FitT> > {
  public:
   /// The class name.
   virtual std::string className() const { return "VirusTransmission"; };

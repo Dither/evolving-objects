@@ -8,6 +8,7 @@
 #include <Int.h>
 #include <OrderXover.h>
 
+using namespace eo;
 
 //-----------------------------------------------------------------------------
 

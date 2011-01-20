@@ -19,7 +19,9 @@
 // Viri
 #include "VirusOp.h"
 #include "eoVirus.h"
-#include "InitVirus.h"
+#include "eoInitVirus.h"
+
+using namespace eo;
 
 //-----------------------------------------------------------------------------
 
@@ -40,7 +42,7 @@ int main()
   RoyalRoad<Chrom> rr( 8 );
   EvalFuncCounter<Chrom> eval( rr );
 
-  InitVirus<float> random(CHROM_SIZE, gen);
+  eoInitVirus<float> random(CHROM_SIZE, gen);
   for (i = 0; i < POP_SIZE; ++i) {
       Chrom chrom;
       random(chrom);

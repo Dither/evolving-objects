@@ -24,6 +24,8 @@ using namespace std;
 
 #include "real_value.h"		// the sphere fitness
 
+using namespace eo;
+
 // Now the main
 ///////////////
 typedef MinimizingFitness  FitT;

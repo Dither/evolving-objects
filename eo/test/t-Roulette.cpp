@@ -4,6 +4,8 @@
 #include <ProportionalSelect.h>
 #include <StochasticUniversalSelect.h>
 
+using namespace eo;
+
 class TestEO : public EO<double> { public: unsigned index; };
 
 using namespace std;

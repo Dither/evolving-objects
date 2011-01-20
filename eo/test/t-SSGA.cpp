@@ -1,5 +1,7 @@
 #include <eo>
 
+using namespace eo;
+
 // tests a Steady State GA
 
 // Needed to define this breeder, maybe make it a breeder

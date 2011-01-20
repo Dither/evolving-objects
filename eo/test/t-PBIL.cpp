@@ -38,6 +38,7 @@
 #include <ga/PBILAdditive.h>
 #include <SimpleEDA.h>
 
+using namespace eo;
 
 using namespace std;
 

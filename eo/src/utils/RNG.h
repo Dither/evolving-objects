@@ -527,59 +527,55 @@ namespace eo
 
 
 
-    namespace eo
-    {
-	/** @brief Random function
+    /** @brief Random function
 
-	This is a convenience function for generating random numbers using the
-	global eo::rng object.
+    This is a convenience function for generating random numbers using the
+    global eo::rng object.
 
-	Templatized random function, returns a random double in the range [min, max).
-	It works with most basic types such as:
-	- char
-	- int (short, long, signed and unsigned)
-	- float, double
+    Templatized random function, returns a random double in the range [min, max).
+    It works with most basic types such as:
+    - char
+    - int (short, long, signed and unsigned)
+    - float, double
 
-	@param min Minimum for distribution
-	@param max Maximum for distribution
+    @param min Minimum for distribution
+    @param max Maximum for distribution
 
-	@see random(const T& max)
-	*/
-	template <typename T>
-	inline T random(const T& min, const T& max) {
-	    return static_cast<T>(rng.uniform() * (max-min)) + min; }
+    @see random(const T& max)
+    */
+    template <typename T>
+    inline T random(const T& min, const T& max) {
+	return static_cast<T>(rng.uniform() * (max-min)) + min; }
 
-	/** @brief Random function
+    /** @brief Random function
 
-	@overload
+    @overload
 
-	This is a convenience function for generating random numbers using the
-	global eo::rng object.
+    This is a convenience function for generating random numbers using the
+    global eo::rng object.
 
-	Templatized random function, returns a random double in the range [0, max).
-	It works with most basic types such as:
-	- char
-	- int (short, long, signed and unsigned)
-	- float, double
+    Templatized random function, returns a random double in the range [0, max).
+    It works with most basic types such as:
+    - char
+    - int (short, long, signed and unsigned)
+    - float, double
 
-	@param max Maximum for distribution
+    @param max Maximum for distribution
 
-	@see random(const T& min, const T& max)
-	*/
-	template <typename T>
-	inline T random(const T& max) {
-	    return static_cast<T>(rng.uniform() * max); }
+    @see random(const T& min, const T& max)
+    */
+    template <typename T>
+    inline T random(const T& max) {
+	return static_cast<T>(rng.uniform() * max); }
 
-	/** Normal distribution
+    /** Normal distribution
 
-	This is a convenience function for generating random numbers using the
-	global eo::rng object.
+    This is a convenience function for generating random numbers using the
+    global eo::rng object.
 
-	@return ormally distributed random number
-	*/
-	inline double normal() { return rng.normal(); }
-    }
-
+    @return ormally distributed random number
+    */
+    inline double normal() { return rng.normal(); }
 }
 
 #endif

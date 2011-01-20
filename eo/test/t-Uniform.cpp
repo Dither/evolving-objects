@@ -6,6 +6,8 @@
 #include <strstream>  // ostrstream, istrstream
 #include <Uniform.h>         // Bin
 
+using namespace eo;
+
 //-----------------------------------------------------------------------------
 
 main() {

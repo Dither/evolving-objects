@@ -13,6 +13,7 @@
 #include <eo>
 #include <utils/RNG.h>
 
+using namespace eo;
 
 using namespace std;
 

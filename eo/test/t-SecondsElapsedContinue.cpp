@@ -8,6 +8,8 @@
 #include <Pop.h>
 #include <EO.h>
 
+using namespace eo;
+
 class Dummy : public EO<double> {};
 
 int main() {

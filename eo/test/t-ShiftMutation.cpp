@@ -8,6 +8,8 @@
 #include <ShiftMutation.h>
 #include <set>
 
+using namespace eo;
+
 //-----------------------------------------------------------------------------
 
 typedef Int<double> Chrom;

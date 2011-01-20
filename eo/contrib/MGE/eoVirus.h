@@ -30,7 +30,9 @@ Contact: todos@geneura.ugr.es, http://geneura.ugr.es
 #include <string>
 #include <vector>
 
-#include "ga/eoBit.h"
+#include "ga/Bit.h"
+
+using namespace eo;
 
 /**
 \defgroup bitstring
@@ -46,13 +48,13 @@ Contact: todos@geneura.ugr.es, http://geneura.ugr.es
 Based on STL's vector<bool> specialization.
 */
 template <class FitT>
-class eoVirus : public eoBit<FitT>
+class eoVirus : public Bit<FitT>
 {
 public:
 
-    using eoBit<FitT>::begin;
-    using eoBit<FitT>::end;
-    using eoBit<FitT>::size;
+    using Bit<FitT>::begin;
+    using Bit<FitT>::end;
+    using Bit<FitT>::size;
 
 
     /** (Default) Constructor
@@ -60,7 +62,7 @@ public:
     @param size Size of the binary std::string.
     */
     eoVirus(unsigned _size = 0, bool _value = false, bool _virValue = false):
-        eoBit<FitT>(_size, _value), virus( _size, _virValue) {}
+        Bit<FitT>(_size, _value), virus( _size, _virValue) {}
 
     /// My class name
     virtual std::string className() const {
@@ -100,7 +102,7 @@ public:
     @param is The istream.
     */
     virtual void readFrom(std::istream& is){
-        eoBit<FitT>::readFrom(is);
+        Bit<FitT>::readFrom(is);
         unsigned s;
         is >> s;
         std::string bits;
@@ -120,7 +122,7 @@ private:
 
 //-----------------------------------------------------------------------------
 
-#endif //eoBit_h
+#endif //Bit_h
 
 
 // Local Variables:

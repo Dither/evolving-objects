@@ -16,6 +16,8 @@
 #include <eo>
 #include <utils/Distance.h>
 
+using namespace eo;
+
 //-----------------------------------------------------------------------------
 
 struct Dummy : public EO<double>
