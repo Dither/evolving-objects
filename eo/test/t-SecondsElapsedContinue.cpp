@@ -4,17 +4,17 @@
 #endif
 
 #include <time.h>
-#include <eoSecondsElapsedContinue.h>
-#include <eoPop.h>
+#include <SecondsElapsedContinue.h>
+#include <Pop.h>
 #include <EO.h>
 
 class Dummy : public EO<double> {};
 
 int main() {
 
-    eoPop<Dummy> pop;
+    Pop<Dummy> pop;
 
-    eoSecondsElapsedContinue<Dummy> cnt(1);
+    SecondsElapsedContinue<Dummy> cnt(1);
 
 	time_t start_time = time(0);
 

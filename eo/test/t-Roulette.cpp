@@ -1,8 +1,8 @@
 
-#include <eoPop.h>
+#include <Pop.h>
 #include <EO.h>
-#include <eoProportionalSelect.h>
-#include <eoStochasticUniversalSelect.h>
+#include <ProportionalSelect.h>
+#include <StochasticUniversalSelect.h>
 
 class TestEO : public EO<double> { public: unsigned index; };
 
@@ -20,7 +20,7 @@ int test_select()
     vector<double> counts(4,0.0);
 
     // setup population
-    eoPop<TestEO> pop;
+    Pop<TestEO> pop;
     for (unsigned i = 0; i < probs.size(); ++i)
     {
 	pop.push_back( TestEO());
@@ -61,8 +61,8 @@ int main()
 {
     rng.reseed(44);
 
-    if (test_select<eoProportionalSelect<TestEO> >()) return 1;
+    if (test_select<ProportionalSelect<TestEO> >()) return 1;
     
-    return test_select<eoStochasticUniversalSelect<TestEO> >();
+    return test_select<StochasticUniversalSelect<TestEO> >();
 }
 

@@ -7,7 +7,7 @@
 #include <stdlib.h>  // srand, rand
 #include <iostream>  // std::cout
 
-#include <eoScalarFitness.h>
+#include <ScalarFitness.h>
 
 using namespace std;
 
@@ -61,8 +61,8 @@ int main()
     std::cout << "Testing minimizing fitness with 1 and 2" << std::endl;
     std::cout << "------------------------------------------------------" << std::endl;
 
-    eoMinimizingFitness a = 1;
-    eoMinimizingFitness b = 2;
+    MinimizingFitness a = 1;
+    MinimizingFitness b = 2;
 
     test_fitness(a, b);
 
@@ -74,8 +74,8 @@ int main()
     std::cout << "Testing maximizing fitness with 1 and 2" << std::endl;
     std::cout << "------------------------------------------------------" << std::endl;
     
-    eoMaximizingFitness a1 = 1;
-    eoMaximizingFitness b1 = 2;
+    MaximizingFitness a1 = 1;
+    MaximizingFitness b1 = 2;
 
     test_fitness(a1,b1);
     

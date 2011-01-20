@@ -14,17 +14,17 @@
 
 
 // general
-#include <utils/eoRNG.h>		// Random number generators
+#include <utils/RNG.h>		// Random number generators
 #include <ga.h>
-#include <utils/eoParser.h>
-#include <utils/eoState.h>
+#include <utils/Parser.h>
+#include <utils/State.h>
 
 //-----------------------------------------------------------------------------
 
 // include package checkpointing
 #include <utils/checkpointing>
 // and provisions for Bounds reading
-#include <utils/eoRealVectorBounds.h>
+#include <utils/RealVectorBounds.h>
 
 struct Dummy : public EO<double>
 {
@@ -37,23 +37,23 @@ struct Dummy : public EO<double>
 int the_main(int argc, char **argv)
 { // ok, we have a command line parser and a state
 
-    typedef eoBit<float> Chrom;
+    typedef Bit<float> Chrom;
 
-    eoParser parser(argc, argv);
+    Parser parser(argc, argv);
 
     // Define Parameters
-    eoValueParam<unsigned int> dimParam((unsigned int)(5), "dimension", "dimension");
-    eoValueParam<double> rate(0.01, "mutationRatePerBit", "Initial value for mutation rate per bit");
-    eoValueParam<double> factor(0.99, "mutationFactor", "Decrease factor for mutation rate");
-    eoValueParam<uint32_t> seed(time(0), "seed", "Random number seed");
+    ValueParam<unsigned int> dimParam((unsigned int)(5), "dimension", "dimension");
+    ValueParam<double> rate(0.01, "mutationRatePerBit", "Initial value for mutation rate per bit");
+    ValueParam<double> factor(0.99, "mutationFactor", "Decrease factor for mutation rate");
+    ValueParam<uint32_t> seed(time(0), "seed", "Random number seed");
     // test if user entered or if default value used
     if (parser.isItThere(seed))
       std::cout << "YES\n";
     else
       std::cout << "NO\n";
 
-    eoValueParam<std::string> load_name("", "Load","Load",'L');
-    eoValueParam<std::string> save_name("", "Save","Save",'S');
+    ValueParam<std::string> load_name("", "Load","Load",'L');
+    ValueParam<std::string> save_name("", "Save","Save",'S');
 
 
     // Register them
@@ -65,13 +65,13 @@ int the_main(int argc, char **argv)
     parser.processParam(seed,       "Rng seeding");
 
     // a bound param (need dim)
-    eoValueParam<eoRealVectorBounds> boundParam(eoRealVectorBounds(dimParam.value(),eoDummyRealNoBounds), "bounds","bounds",'b');
+    ValueParam<RealVectorBounds> boundParam(RealVectorBounds(dimParam.value(),DummyRealNoBounds), "bounds","bounds",'b');
 
     parser.processParam(boundParam, "Genetic Operators");
 
     std::cout << "Bounds: " << boundParam.value() << std::endl;
 
-   eoState state;
+   State state;
    state.registerObject(parser);
 
 

@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// eoGenOp.cpp
+// GenOp.cpp
 // (c) Maarten Keijzer and Marc Schoenauer, 2001
 /*
     This library is free software; you can redistribute it and/or
@@ -30,8 +30,8 @@
 #include <sstream>
 
 #include <eo>
-#include <eoPopulator.h>
-#include <eoOpContainer.h>
+#include <Populator.h>
+#include <OpContainer.h>
 
 struct Dummy : public EO<double>
 {
@@ -50,8 +50,8 @@ typedef Dummy EOT;
 
 unsigned int pSize;	 // global to be used as marker in the fitness
 
-// DEFINITIONS of the eoOps
-class monop : public eoMonOp<EOT>
+// DEFINITIONS of the Ops
+class monop : public MonOp<EOT>
 {
   public :
   monop(char * _sig){sig=_sig;}
@@ -66,7 +66,7 @@ class monop : public eoMonOp<EOT>
     std::string sig;
 };
 
-class binop: public eoBinOp<EOT>
+class binop: public BinOp<EOT>
 {
   public :
     bool operator()(EOT& _eo1, const EOT& _eo2)
@@ -79,7 +79,7 @@ class binop: public eoBinOp<EOT>
   std::string className() const {return "binop";}
 };
 
-class quadop: public eoQuadOp<EOT>
+class quadop: public QuadOp<EOT>
 {
   public :
   std::string className() const {return "quadop";}
@@ -96,8 +96,8 @@ class quadop: public eoQuadOp<EOT>
       return false;
     }
 };
-// an eoQuadOp that does nothing
-class quadClone: public eoQuadOp<EOT>
+// an QuadOp that does nothing
+class quadClone: public QuadOp<EOT>
 {
   public :
   std::string className() const {return "quadclone";}
@@ -106,12 +106,12 @@ class quadClone: public eoQuadOp<EOT>
 
 // User defined General Operator... adapted from Marc's example
 
-class one2threeOp : public eoGenOp<EOT> // :-)
+class one2threeOp : public GenOp<EOT> // :-)
 {
   public:
     unsigned max_production(void) { return 3; }
 
-    void apply(eoPopulator<EOT>& _plop)
+    void apply(Populator<EOT>& _plop)
     {
       EOT& eo = *_plop; // select the guy
 
@@ -126,12 +126,12 @@ class one2threeOp : public eoGenOp<EOT> // :-)
 };
 
 
-class two2oneOp : public eoGenOp<EOT> // :-)
+class two2oneOp : public GenOp<EOT> // :-)
 {
   public:
     unsigned max_production(void) { return 1; }
 
-    void apply(eoPopulator<EOT>& _plop)
+    void apply(Populator<EOT>& _plop)
     {
       EOT& eo = *_plop; // select the guy
       const EOT& eo2 = _plop.select();
@@ -141,12 +141,12 @@ class two2oneOp : public eoGenOp<EOT> // :-)
   virtual std::string className() const {return "two2oneOp";}
 };
 
-class three2threeOp : public eoGenOp<EOT> // :-)
+class three2threeOp : public GenOp<EOT> // :-)
 {
   public:
     unsigned max_production(void) { return 3; }
 
-    void apply(eoPopulator<EOT>& _plop)
+    void apply(Populator<EOT>& _plop)
     {
       EOT& eo1 = *_plop; // select 1st guy
       EOT& eo2 = *++_plop; // select 2nd guy
@@ -166,7 +166,7 @@ class three2threeOp : public eoGenOp<EOT> // :-)
 
 
 // dummy intialization. Re-init if no pSize, resize first if pSize
-void init(eoPop<Dummy> & _pop, unsigned _pSize)
+void init(Pop<Dummy> & _pop, unsigned _pSize)
 {
   if (_pSize)
     {
@@ -188,12 +188,12 @@ void init(eoPop<Dummy> & _pop, unsigned _pSize)
 // ok, now for the real work
 int the_main(int argc, char **argv)
 {
-    eoParser parser(argc, argv);
-    eoValueParam<unsigned int> parentSizeParam(
+    Parser parser(argc, argv);
+    ValueParam<unsigned int> parentSizeParam(
         parser.createParam(unsigned(10), "parentSize", "Parent size",'P'));
     pSize = parentSizeParam.value(); // global variable
 
-    eoValueParam<uint32_t> seedParam(time(0), "seed", "Random number seed", 'S');
+    ValueParam<uint32_t> seedParam(time(0), "seed", "Random number seed", 'S');
     parser.processParam( seedParam );
     eo::rng.reseed(seedParam.value());
 
@@ -219,51 +219,51 @@ int the_main(int argc, char **argv)
 
 
   // a selector
-  eoDetTournamentSelect<EOT> select;
+  DetTournamentSelect<EOT> select;
   // and a recognizable selector for testing the inbedded selector mechanism
-  eoBestSelect<EOT> selectBest;
+  BestSelect<EOT> selectBest;
 
   // proportional selection between quad and bin
   // so we either do a quad or a bin
-  eoProportionalOp<EOT> pOp;
+  ProportionalOp<EOT> pOp;
   pOp.add(quad, 0.1);
   pOp.add(bin, 0.1);
 
   // sequential selection between pOp and mon
-  eoSequentialOp<EOT> sOp;
+  SequentialOp<EOT> sOp;
   sOp.add(pOp, 0.9);
   sOp.add(mon, 0.1);
 
   // with one2three op
-  eoSequentialOp<EOT> sOp2;
+  SequentialOp<EOT> sOp2;
   sOp2.add(o2t, 1);
   //  sOp2.add(quad, 1);
 
   // with three2three op
-  eoSequentialOp<EOT> sOp3;
+  SequentialOp<EOT> sOp3;
   sOp3.add(t2t, 1);
 
-//   eoSequentialOp<EOT> sOp3;
+//   SequentialOp<EOT> sOp3;
 //   sOp3.add(t2o, 1);
 //   sOp3.add(bin, 1);
 //   sOp3.add(quad, 1);
   // try adding quads and bins to see what results you'll get
 
   // now a sequential selection that is a simple "addition"
-  eoSequentialOp<EOT> sOpQuadPlusMon;
+  SequentialOp<EOT> sOpQuadPlusMon;
   sOpQuadPlusMon.add(quad, 1);
   sOpQuadPlusMon.add(mon, 1);
 
   // this corresponds
-  eoProportionalOp<EOT> pOpSAGLike;
+  ProportionalOp<EOT> pOpSAGLike;
   pOpSAGLike.add(sOpQuadPlusMon, 0.24);
   pOpSAGLike.add(quad, 0.56);
   pOpSAGLike.add(mon, 0.06);
   pOpSAGLike.add(clone, 0.14);
 
   // init
-  eoPop<EOT> pop;
-  eoPop<EOT> offspring;
+  Pop<EOT> pop;
+  Pop<EOT> offspring;
 
   init(pop, pSize);
 // sort pop so seqPopulator is identical to SelectPopulator(SequentialSelect)
@@ -271,15 +271,15 @@ int the_main(int argc, char **argv)
   std::cout << "Population initiale" << std::endl << pop << std::endl;
 
   // To simulate SGA: first a prop between quadOp and quadClone
-  eoProportionalOp<EOT> pSGAOp;
+  ProportionalOp<EOT> pSGAOp;
   pSGAOp.add(quad, 0.8);
   pSGAOp.add(quadclone, 0.2);
   // sequential selection between pSGAOp and mon
-  eoSequentialOp<EOT> virtualSGA;
+  SequentialOp<EOT> virtualSGA;
   virtualSGA.add(pSGAOp, 1.0);
   virtualSGA.add(mon, 0.3);
 
-  eoSeqPopulator<EOT> popit(pop, offspring);  // no selection, a copy of pop
+  SeqPopulator<EOT> popit(pop, offspring);  // no selection, a copy of pop
 
   // until we filled a new population
   try
@@ -291,7 +291,7 @@ int the_main(int argc, char **argv)
        ++popit;
 	   }
     }
-  catch(eoPopulator<EOT>::OutOfIndividuals&)
+  catch(Populator<EOT>::OutOfIndividuals&)
     {
       std::cout << "Warning: not enough individuals to handle\n";
     }
@@ -305,11 +305,11 @@ int the_main(int argc, char **argv)
   init(pop, pSize);
 
   std::cout << "=========================================================\n";
-  std::cout << "Now the eoSelectPopulator version !" << std::endl;
+  std::cout << "Now the SelectPopulator version !" << std::endl;
 
-  eoSequentialSelect<EOT> seqSelect;
+  SequentialSelect<EOT> seqSelect;
   //   select.init(); should be sorted out: is it the setup method???
-  eoSelectivePopulator<EOT> it_step3(pop, offspring, seqSelect);
+  SelectivePopulator<EOT> it_step3(pop, offspring, seqSelect);
 
   while (offspring.size() < 2*pop.size())
   {
@@ -322,13 +322,13 @@ int the_main(int argc, char **argv)
   offspring.clear();
 
     // ok, now print
-  std::cout << "Apres SGA-like eoSelectivePopulator\n" << pop << std::endl;
+  std::cout << "Apres SGA-like SelectivePopulator\n" << pop << std::endl;
 
   std::cout << "=========================================================\n";
   std::cout << "Now the pure addition !" << std::endl;
 
   init(pop, pSize);
-  eoSelectivePopulator<EOT> it_step4(pop, offspring, seqSelect);
+  SelectivePopulator<EOT> it_step4(pop, offspring, seqSelect);
   while (offspring.size() < 2*pop.size())
   {
     sOpQuadPlusMon(it_step4);
@@ -339,11 +339,11 @@ int the_main(int argc, char **argv)
   offspring.clear();
 
     // ok, now print
-  std::cout << "Apres Quad+Mon ds un eoSelectivePopulator\n" << pop << std::endl;
+  std::cout << "Apres Quad+Mon ds un SelectivePopulator\n" << pop << std::endl;
 
   // On teste 1->3
   init(pop, pSize);
-  eoSelectivePopulator<EOT> it_step5(pop, offspring, seqSelect);
+  SelectivePopulator<EOT> it_step5(pop, offspring, seqSelect);
   while (offspring.size() < 2*pop.size())
   {
     sOp2(it_step5);
@@ -354,11 +354,11 @@ int the_main(int argc, char **argv)
   offspring.clear();
 
     // ok, now print
-  std::cout << "Apres 1->3 seul ds un eoSelectivePopulator\n" << pop << std::endl;
+  std::cout << "Apres 1->3 seul ds un SelectivePopulator\n" << pop << std::endl;
 
   // On teste 3->3
   init(pop, pSize);
-  eoSelectivePopulator<EOT> it_step6(pop, offspring, seqSelect);
+  SelectivePopulator<EOT> it_step6(pop, offspring, seqSelect);
   while (offspring.size() < 2*pop.size())
   {
     sOp3(it_step6);
@@ -369,7 +369,7 @@ int the_main(int argc, char **argv)
   offspring.clear();
 
     // ok, now print
-  std::cout << "Apres 3->3 seul ds un eoSelectivePopulator\n" << pop << std::endl;
+  std::cout << "Apres 3->3 seul ds un SelectivePopulator\n" << pop << std::endl;
 
 
   return 1;

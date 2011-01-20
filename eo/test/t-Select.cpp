@@ -25,15 +25,15 @@ bool operator==(const Dummy & _d1, const Dummy & _d2)
   return _d1.fitness() == _d2.fitness();
 }
 
-struct eoDummyPop : public eoPop<Dummy>
+struct DummyPop : public Pop<Dummy>
 {
 public :
-    eoDummyPop(int s=0) { resize(s); }
+    DummyPop(int s=0) { resize(s); }
 };
 
 // helper - DOES NOT WORK if different individuals have same fitness!!!
 template <class EOT>
-unsigned isInPop(EOT & _indi, eoPop<EOT> & _pop)
+unsigned isInPop(EOT & _indi, Pop<EOT> & _pop)
 {
   for (unsigned i=0; i<_pop.size(); i++)
     if (_pop[i] == _indi)
@@ -43,17 +43,17 @@ unsigned isInPop(EOT & _indi, eoPop<EOT> & _pop)
 
 unsigned int pSize;		// global variable, bouh!
 std::string fitnessType;		// yes, a global variable :-)
-eoDummyPop parentsOrg;
+DummyPop parentsOrg;
 
 template <class EOT>
-void testSelectMany(eoSelect<EOT> & _select, std::string _name)
+void testSelectMany(Select<EOT> & _select, std::string _name)
 {
     unsigned i;
   std::cout << "\n\n" << fitnessType + _name << std::endl;
   std::cout << "===============\n";
 
-    eoDummyPop parents(parentsOrg);
-    eoDummyPop offspring(0);
+    DummyPop parents(parentsOrg);
+    DummyPop offspring(0);
 
     // do the selection
     _select(parents, offspring);
@@ -79,11 +79,11 @@ void testSelectMany(eoSelect<EOT> & _select, std::string _name)
 }
 
 template <class EOT>
-void testSelectOne(eoSelectOne<EOT> & _select, eoHowMany & _offspringRate,
-		   eoHowMany & _fertileRate, std::string _name)
+void testSelectOne(SelectOne<EOT> & _select, HowMany & _offspringRate,
+		   HowMany & _fertileRate, std::string _name)
 {
-  eoTruncatedSelectOne<EOT> truncSelect(_select, _fertileRate);
-  eoSelectMany<EOT> percSelect(truncSelect, _offspringRate);
+  TruncatedSelectOne<EOT> truncSelect(_select, _fertileRate);
+  SelectMany<EOT> percSelect(truncSelect, _offspringRate);
   testSelectMany<EOT>(percSelect, _name);
 }
 
@@ -92,31 +92,31 @@ void testSelectOne(eoSelectOne<EOT> & _select, eoHowMany & _offspringRate,
 
 int the_main(int argc, char **argv)
 {
-  eoParser parser(argc, argv);
-  eoValueParam<unsigned> parentSizeParam = parser.createParam(unsigned(10), "parentSize", "Parent size",'P');
+  Parser parser(argc, argv);
+  ValueParam<unsigned> parentSizeParam = parser.createParam(unsigned(10), "parentSize", "Parent size",'P');
     pSize = parentSizeParam.value(); // global variable
 
-//   eoValueParam<double> offsrpringRateParam = parser.createParam<double>(1.0, "offsrpringRate", "Offsrpring rate",'O');
+//   ValueParam<double> offsrpringRateParam = parser.createParam<double>(1.0, "offsrpringRate", "Offsrpring rate",'O');
 //     double oRate = offsrpringRateParam.value();
-  eoValueParam<eoHowMany> offsrpringRateParam = parser.createParam(eoHowMany(1.0), "offsrpringRate", "Offsrpring rate (% or absolute)",'O');
-    eoHowMany oRate = offsrpringRateParam.value();
+  ValueParam<HowMany> offsrpringRateParam = parser.createParam(HowMany(1.0), "offsrpringRate", "Offsrpring rate (% or absolute)",'O');
+    HowMany oRate = offsrpringRateParam.value();
 
-  eoValueParam<eoHowMany> fertileRateParam = parser.createParam(eoHowMany(1.0), "fertileRate", "Fertility rate (% or absolute)",'F');
-    eoHowMany fRate = fertileRateParam.value();
+  ValueParam<HowMany> fertileRateParam = parser.createParam(HowMany(1.0), "fertileRate", "Fertility rate (% or absolute)",'F');
+    HowMany fRate = fertileRateParam.value();
 
-eoValueParam<unsigned> tournamentSizeParam = parser.createParam(unsigned(2), "tournamentSize", "Deterministic tournament size",'T');
+ValueParam<unsigned> tournamentSizeParam = parser.createParam(unsigned(2), "tournamentSize", "Deterministic tournament size",'T');
     unsigned int tSize = tournamentSizeParam.value();
 
-  eoValueParam<double> tournamentRateParam = parser.createParam(1.0, "tournamentRate", "Stochastic tournament rate",'t');
+  ValueParam<double> tournamentRateParam = parser.createParam(1.0, "tournamentRate", "Stochastic tournament rate",'t');
     double tRate = tournamentRateParam.value();
 
-  eoValueParam<double> rankingPressureParam = parser.createParam(2.0, "rankingPressure", "Selective pressure for the ranking selection",'p');
+  ValueParam<double> rankingPressureParam = parser.createParam(2.0, "rankingPressure", "Selective pressure for the ranking selection",'p');
     double rankingPressure = rankingPressureParam.value();
 
-  eoValueParam<double> rankingExponentParam = parser.createParam(1.0, "rankingExponent", "Exponent for the ranking selection",'e');
+  ValueParam<double> rankingExponentParam = parser.createParam(1.0, "rankingExponent", "Exponent for the ranking selection",'e');
     double rankingExponent = rankingExponentParam.value();
 
-  eoValueParam<std::string> fitTypeParam = parser.createParam(std::string("linear"), "fitType", "Type of fitness (linear, exp, log, super",'f');
+  ValueParam<std::string> fitTypeParam = parser.createParam(std::string("linear"), "fitType", "Type of fitness (linear, exp, log, super",'f');
     fitnessType = fitTypeParam.value();
 
     if (parser.userNeedsHelp())
@@ -154,7 +154,7 @@ eoValueParam<unsigned> tournamentSizeParam = parser.createParam(unsigned(2), "to
     std::cout << "Initial parents (odd)\n" << parentsOrg << std::endl;
 
   // random seed
-    eoValueParam<uint32_t>& seedParam = parser.createParam(uint32_t(0), "seed",
+    ValueParam<uint32_t>& seedParam = parser.createParam(uint32_t(0), "seed",
                                                            "Random number seed", 'S');
     if (seedParam.value() == 0)
 	seedParam.value() = time(0);
@@ -163,45 +163,45 @@ eoValueParam<unsigned> tournamentSizeParam = parser.createParam(unsigned(2), "to
     char fileName[1024];
 
 // the selection procedures under test
-    //    eoDetSelect<Dummy> detSelect(oRate);
+    //    DetSelect<Dummy> detSelect(oRate);
     //    testSelectMany(detSelect, "detSelect");
 
     // Roulette
-     eoProportionalSelect<Dummy> propSelect;
+     ProportionalSelect<Dummy> propSelect;
      testSelectOne<Dummy>(propSelect, oRate, fRate, "PropSelect");
 
     // Linear ranking using the perf2Worth construct
-    eoRankingSelect<Dummy> newRankingSelect(rankingPressure);
+    RankingSelect<Dummy> newRankingSelect(rankingPressure);
     sprintf(fileName,"LinRank_%g",rankingPressure);
     testSelectOne<Dummy>(newRankingSelect, oRate, fRate, fileName);
 
     // Exponential ranking using the perf2Worth construct
     std::cout << "rankingExponent " << rankingExponent << std::endl;
-    eoRankingSelect<Dummy> expRankingSelect(rankingPressure,rankingExponent);
+    RankingSelect<Dummy> expRankingSelect(rankingPressure,rankingExponent);
     sprintf(fileName,"ExpRank_%g_%g",rankingPressure, rankingExponent);
     testSelectOne<Dummy>(expRankingSelect, oRate, fRate, fileName);
 
     // Det tournament
-    eoDetTournamentSelect<Dummy> detTourSelect(tSize);
+    DetTournamentSelect<Dummy> detTourSelect(tSize);
     sprintf(fileName,"DetTour_%d",tSize);
     testSelectOne<Dummy>(detTourSelect, oRate, fRate, fileName);
 
     // Stoch tournament
-    eoStochTournamentSelect<Dummy> stochTourSelect(tRate);
+    StochTournamentSelect<Dummy> stochTourSelect(tRate);
     sprintf(fileName,"StochTour_%g",tRate);
     testSelectOne<Dummy>(stochTourSelect, oRate, fRate, fileName);
 
     // Fitness scaling
-    eoFitnessScalingSelect<Dummy> newFitScaleSelect(rankingPressure);
+    FitnessScalingSelect<Dummy> newFitScaleSelect(rankingPressure);
     sprintf(fileName,"LinFitScale_%g",rankingPressure);
     testSelectOne<Dummy>(newFitScaleSelect, oRate, fRate, fileName);
 
     // Sequential selections
-    eoSequentialSelect<Dummy> seqSel(false);
+    SequentialSelect<Dummy> seqSel(false);
     strcpy(fileName,"Sequential");
     testSelectOne<Dummy>(seqSel, oRate, fRate, fileName);
 
-    eoEliteSequentialSelect<Dummy> eliteSeqSel;
+    EliteSequentialSelect<Dummy> eliteSeqSel;
     strcpy(fileName,"EliteSequential");
     testSelectOne<Dummy>(eliteSeqSel, oRate, fRate, fileName);
 

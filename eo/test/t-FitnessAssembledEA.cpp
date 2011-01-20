@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
  
 //-----------------------------------------------------------------------------
-// t-eoFitnessAssembledEA.cpp
+// t-FitnessAssembledEA.cpp
 // Marc Wintermantel & Oliver Koenig
 // IMES-ST@ETHZ.CH
 // March 2003
@@ -35,16 +35,16 @@
 
 // General eo includes
 #include <eo>
-#include <utils/eoRealVectorBounds.h>	// The real bounds (not yet in general eo include)
+#include <utils/RealVectorBounds.h>	// The real bounds (not yet in general eo include)
 
 // Representation dependent includes and typedefs
-#include <es/eoReal.h>			// Definition of representation
-#include <es/eoRealInitBounded.h>	// Uniformly initializes real vector in bounds
+#include <es/Real.h>			// Definition of representation
+#include <es/RealInitBounded.h>	// Uniformly initializes real vector in bounds
 #include <es/make_genotype_real.h>		// Initialization of a genotype
-#include <eoEvalFunc.h>		        // Base class for fitness evaluation 
+#include <EvalFunc.h>		        // Base class for fitness evaluation 
 #include <es/make_op_real.h>		// Variation operators using standard Real operators
-#include <eoScalarFitnessAssembled.h>     // The fitness class
-typedef eoReal<eoAssembledMinimizingFitness> Indi;
+#include <ScalarFitnessAssembled.h>     // The fitness class
+typedef Real<AssembledMinimizingFitness> Indi;
 
 // Representation independent modules
 #include <do/make_pop.h>		// Initialization of population
@@ -55,10 +55,10 @@ typedef eoReal<eoAssembledMinimizingFitness> Indi;
 
 // Define a fitness class
 template <class EOT>
-class eoAssembledEvalFunc : public eoEvalFunc<EOT>{
+class AssembledEvalFunc : public EvalFunc<EOT>{
 public:
   // Constructor defining number and descriptions of fitness terms
-  eoAssembledEvalFunc() {
+  AssembledEvalFunc() {
     
     // Define a temporary fitness object to have access to its static traits
     typename EOT::Fitness tmpfit(3, 0.0);    
@@ -95,49 +95,49 @@ public:
 };
 
 // checks for help demand, and writes the status file and make_help; in libutils
-void make_help(eoParser & _parser);
+void make_help(Parser & _parser);
 
 // now use all of the above, + representation dependent things
 int main(int argc, char* argv[]){
   
   std::cout << "-----------------------------------" << std::endl;
-  std::cout << "START t-eoFitnessAssembledEA" << std::endl;
+  std::cout << "START t-FitnessAssembledEA" << std::endl;
 
   try{
 
     // Parser & State
-    eoParser parser(argc, argv);  // for user-parameter reading    
-    eoState state;    // keeps all things allocated
+    Parser parser(argc, argv);  // for user-parameter reading    
+    State state;    // keeps all things allocated
 
     ////
     // A) Representation dependent stuff
     ////
 
     // The fitness
-    eoAssembledEvalFunc<Indi> plainEval;
+    AssembledEvalFunc<Indi> plainEval;
     // turn that object into an evaluation counter
-    eoEvalFuncCounter<Indi> eval(plainEval);
+    EvalFuncCounter<Indi> eval(plainEval);
 
     // The genotype
-    eoRealInitBounded<Indi>& init = do_make_genotype(parser, state, Indi() );
+    RealInitBounded<Indi>& init = do_make_genotype(parser, state, Indi() );
     
     // The variation operators
-    eoGenOp<Indi>& op = do_make_op(parser, state, init);
+    GenOp<Indi>& op = do_make_op(parser, state, init);
 
     ////
     // B) Create representation independent stuff
     ////
 
     // initialize the population
-    // yes, this is representation indepedent once you have an eoInit
-    eoPop<Indi>& pop   = do_make_pop(parser, state, init);
+    // yes, this is representation indepedent once you have an Init
+    Pop<Indi>& pop   = do_make_pop(parser, state, init);
 
     // stopping criteria
-    eoContinue<Indi> & term = do_make_continue(parser, state, eval);
+    Continue<Indi> & term = do_make_continue(parser, state, eval);
     // output
-    eoCheckPoint<Indi> & checkpoint = do_make_checkpoint_assembled(parser, state, eval, term);
+    CheckPoint<Indi> & checkpoint = do_make_checkpoint_assembled(parser, state, eval, term);
     // algorithm (need the operator!)
-    eoAlgo<Indi>& ga = do_make_algo_scalar(parser, state, eval, checkpoint, op);
+    Algo<Indi>& ga = do_make_algo_scalar(parser, state, eval, checkpoint, op);
 
 
     make_help(parser);	// To be called after all parameters have been read !
@@ -167,7 +167,7 @@ int main(int argc, char* argv[]){
     }
 
   std::cout << "-----------------------------------" << std::endl;
-  std::cout << "END t-eoFitnessAssembledEA" << std::endl;
+  std::cout << "END t-FitnessAssembledEA" << std::endl;
 
   return 0;
 

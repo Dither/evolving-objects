@@ -26,14 +26,14 @@ CVS Info: $Date: 2001-06-21 12:03:17 $ $Header: /home/nojhan/dev/eodev/eodev_cvs
 #define RoyalRoad_h
 
 template<class EOT>
-class RoyalRoad: public eoEvalFunc<EOT> {
+class RoyalRoad: public EvalFunc<EOT> {
 
  public:
 
   typedef typename EOT::Fitness FitT;
 
   /// Ctor: takes a length, and divides that length in equal parts
-  RoyalRoad( unsigned _div ): eoEvalFunc<EOT >(), div( _div ) {};
+  RoyalRoad( unsigned _div ): EvalFunc<EOT >(), div( _div ) {};
 
   // Applies the function
   virtual void operator() ( EOT & _eo )  {

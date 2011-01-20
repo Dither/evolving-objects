@@ -4,28 +4,28 @@
 
 // Needed to define this breeder, maybe make it a breeder
 template <class EOT>
-class eoBreedOne : public eoBreed<EOT>
+class BreedOne : public Breed<EOT>
 {
 public :
-  eoBreedOne(eoSelectOne<EOT>& _select, eoGenOp<EOT>& _op) : select(_select), op(_op) {}
+  BreedOne(SelectOne<EOT>& _select, GenOp<EOT>& _op) : select(_select), op(_op) {}
 
-  void operator()(const eoPop<EOT>& _src, eoPop<EOT>& _dest)
+  void operator()(const Pop<EOT>& _src, Pop<EOT>& _dest)
   {
     _dest.clear();
-    eoSelectivePopulator<EOT> pop(_src, _dest, select);
+    SelectivePopulator<EOT> pop(_src, _dest, select);
     op(pop);
   }
 
 private :
-  eoSelectOne<EOT>& select;
-  eoGenOp<EOT>& op;
+  SelectOne<EOT>& select;
+  GenOp<EOT>& op;
 };
 
-typedef eoMinimizingFitness FitnessType;
-typedef eoVector<FitnessType, unsigned> EoType;
+typedef MinimizingFitness FitnessType;
+typedef Vector<FitnessType, unsigned> EoType;
 
 template <class EOT>
-class eoMyEval : public eoEvalFunc<EOT>
+class eoMyEval : public EvalFunc<EOT>
 {
   public :
 
@@ -36,7 +36,7 @@ class eoMyEval : public eoEvalFunc<EOT>
 };
 
 template <class EOT>
-class Xover : public eoBinOp<EOT>
+class Xover : public BinOp<EOT>
 {
   bool operator()(EOT& _eo, const EOT& _eo2)
   {
@@ -47,7 +47,7 @@ class Xover : public eoBinOp<EOT>
 };
 
 template <class EOT>
-class Mutate : public eoMonOp<EOT>
+class Mutate : public MonOp<EOT>
 {
   bool operator()(EOT& _eo)
   {
@@ -62,46 +62,46 @@ int main()
 {
   int pop_size = 10;
 
-  eoGenContinue<EoType> cnt(10);
-  eoCheckPoint<EoType> cp(cnt);
+  GenContinue<EoType> cnt(10);
+  CheckPoint<EoType> cp(cnt);
 
 
   Xover<EoType> xover;
   Mutate<EoType> mutate;
 
-  eoProportionalOp<EoType> opsel;
+  ProportionalOp<EoType> opsel;
 
   opsel.add(xover, 0.8);
   opsel.add(mutate, 0.2);
 
 
-  eoDetTournamentSelect<EoType> selector(3);
-  eoBreedOne<EoType> breed(selector, opsel);
+  DetTournamentSelect<EoType> selector(3);
+  BreedOne<EoType> breed(selector, opsel);
 
   // Replace a single one
-  eoSSGAWorseReplacement<EoType> replace;
+  SSGAWorseReplacement<EoType> replace;
 
 
-//  eoRandomSelect<EoType> selector;
-//  eoGeneralBreeder<EoType> breed(selector, opsel);
-//  eoPlusReplacement<EoType> replace;
+//  RandomSelect<EoType> selector;
+//  GeneralBreeder<EoType> breed(selector, opsel);
+//  PlusReplacement<EoType> replace;
 
 
   eoMyEval<EoType> eval;
 
-  eoEasyEA<EoType> algo(cp, eval, breed, replace);
+  EasyEA<EoType> algo(cp, eval, breed, replace);
 
-  eoUniformGenerator<unsigned> unif(0,1024);
-  eoInitFixedLength<EoType> init(20, unif);
+  UniformGenerator<unsigned> unif(0,1024);
+  InitFixedLength<EoType> init(20, unif);
 
-  eoPop<EoType> pop(pop_size, init);
+  Pop<EoType> pop(pop_size, init);
 
   // evaluate
   apply<EoType>(eval, pop);
 
-  eoBestFitnessStat<EoType>  best("Best_Fitness");
-	eoAverageStat<EoType> avg("Avg_Fitness");
-  eoStdoutMonitor mon;
+  BestFitnessStat<EoType>  best("Best_Fitness");
+	AverageStat<EoType> avg("Avg_Fitness");
+  StdoutMonitor mon;
 
   cp.add(best);
   cp.add(avg);

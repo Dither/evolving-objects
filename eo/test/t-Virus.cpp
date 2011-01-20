@@ -27,8 +27,8 @@
 #include <eo>         // general EO
 #include "MGE/VirusOp.h"
 #include "MGE/eoVirus.h"
-#include "MGE/eoInitVirus.h"
-#include <utils/eoRndGenerators.h>
+#include "MGE/InitVirus.h"
+#include <utils/RndGenerators.h>
 
 #include "binary_value.h"
 
@@ -41,7 +41,7 @@ typedef eoVirus<float> Chrom;
 int main()
 {
   const unsigned SIZE = 8;
-  eoBooleanGenerator gen;
+  BooleanGenerator gen;
   eo::rng.reseed( time( 0 ) );
 
   Chrom chrom(SIZE), chrom2(SIZE);

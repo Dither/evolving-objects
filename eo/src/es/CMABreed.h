@@ -36,35 +36,35 @@ namespace eo
     /// @todo handle bounds
     template <class FitT>
     class CMABreed : public Breed< Vector<FitT, double> > {
-    
-	eo::CMAState& state;
+
+	CMAState& state;
 	unsigned lambda;
-    
+
 	typedef Vector<FitT, double> EOT;
-    
+
     public:
-	CMABreed(eo::CMAState& state_, unsigned lambda_) : state(state_), lambda(lambda_) {}
-    
+	CMABreed(CMAState& state_, unsigned lambda_) : state(state_), lambda(lambda_) {}
+
 	void operator()(const Pop<EOT>& parents, Pop<EOT>& offspring) {
-	
+
 	    // two temporary arrays of pointers to store the sorted population
 	    std::vector<const EOT*> sorted(parents.size());
-	
+
 	    // mu stores population as vector (instead of Pop)
 	    std::vector<const std::vector<double>* > mu(parents.size());
-	
+
 	    parents.sort(sorted);
 	    for (unsigned i = 0; i < sorted.size(); ++i) {
 		mu[i] = static_cast< const std::vector<double>* >( sorted[i] );
 	    }
-	
+
 	    // learn
 	    state.reestimate(mu, sorted[0]->fitness(), sorted.back()->fitness());
-	
+
 	    if (!state.updateEigenSystem(10)) {
 		std::cerr << "No good eigensystem found" << std::endl;
 	    }
-	
+
 	    // generate
 	    offspring.resize(lambda);
 
@@ -72,7 +72,7 @@ namespace eo
 		state.sample( static_cast< std::vector<double>& >( offspring[i] ));
 		offspring[i].invalidate();
 	    }
-	
+
 	}
     };
 

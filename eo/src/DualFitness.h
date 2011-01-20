@@ -259,13 +259,13 @@ namespace eo
      */
     //template<class EOT, class T>
     template<class EOT, class EOSTAT>
-    class eoDualStatSwitch : public Stat< EOT, std::string >
+    class DualStatSwitch : public Stat< EOT, std::string >
     {
     public:
 	using Stat<EOT,std::string>::value;
 
-	//    eoDualStatSwitch( Stat<EOT,T> & stat_feasible,  Stat<EOT,T> & stat_unfeasible, std::string sep=" "  ) :
-	eoDualStatSwitch( EOSTAT & stat_feasible,  EOSTAT & stat_unfeasible, std::string sep=" "  ) :
+	//    DualStatSwitch( Stat<EOT,T> & stat_feasible,  Stat<EOT,T> & stat_unfeasible, std::string sep=" "  ) :
+	DualStatSwitch( EOSTAT & stat_feasible,  EOSTAT & stat_unfeasible, std::string sep=" "  ) :
 	    _stat_feasible(stat_feasible), 
 	    _stat_unfeasible(stat_unfeasible), 
 	    _sep(sep),

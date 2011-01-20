@@ -14,7 +14,7 @@
 
 // general
 #include <eo>
-#include <utils/eoDistance.h>
+#include <utils/Distance.h>
 
 //-----------------------------------------------------------------------------
 
@@ -30,7 +30,7 @@ struct Dummy : public EO<double>
 };
 
 class
-eoDummyDistance : public eoDistance<Dummy>
+DummyDistance : public Distance<Dummy>
 {
   double operator()(const Dummy & _v1, const Dummy & _v2)
   {
@@ -45,15 +45,15 @@ bool operator==(const Dummy & _d1, const Dummy & _d2)
   return _d1.fitness() == _d2.fitness();
 }
 
-struct eoDummyPop : public eoPop<Dummy>
+struct DummyPop : public Pop<Dummy>
 {
 public :
-    eoDummyPop(int s=0) { resize(s); }
+    DummyPop(int s=0) { resize(s); }
 };
 
 // helper - DOES NOT WORK if different individuals have same fitness!!!
 template <class EOT>
-unsigned isInPop(EOT & _indi, eoPop<EOT> & _pop)
+unsigned isInPop(EOT & _indi, Pop<EOT> & _pop)
 {
   for (unsigned i=0; i<_pop.size(); i++)
     if (_pop[i] == _indi)
@@ -63,17 +63,17 @@ unsigned isInPop(EOT & _indi, eoPop<EOT> & _pop)
 
 unsigned int pSize;		// global variable, bouh!
 std::string fitnessType;		// yes, a global variable :-)
-eoDummyPop parentsOrg;
+DummyPop parentsOrg;
 
 template <class EOT>
-void testSelectMany(eoSelect<EOT> & _select, std::string _name)
+void testSelectMany(Select<EOT> & _select, std::string _name)
 {
     unsigned i;
   std::cout << "\n\n" << fitnessType + _name << std::endl;
   std::cout << "===============\n";
 
-    eoDummyPop parents(parentsOrg);
-    eoDummyPop offspring(0);
+    DummyPop parents(parentsOrg);
+    DummyPop offspring(0);
 
     // do the selection
     _select(parents, offspring);
@@ -101,11 +101,11 @@ void testSelectMany(eoSelect<EOT> & _select, std::string _name)
 }
 
 template <class EOT>
-void testSelectOne(eoSelectOne<EOT> & _select, eoHowMany & _offspringRate,
-		   eoHowMany & _fertileRate, std::string _name)
+void testSelectOne(SelectOne<EOT> & _select, HowMany & _offspringRate,
+		   HowMany & _fertileRate, std::string _name)
 {
-  eoTruncatedSelectOne<EOT> truncSelect(_select, _fertileRate);
-  eoSelectMany<EOT> percSelect(truncSelect, _offspringRate);
+  TruncatedSelectOne<EOT> truncSelect(_select, _fertileRate);
+  SelectMany<EOT> percSelect(truncSelect, _offspringRate);
   testSelectMany<EOT>(percSelect, _name);
 }
 
@@ -114,27 +114,27 @@ void testSelectOne(eoSelectOne<EOT> & _select, eoHowMany & _offspringRate,
 
 int the_main(int argc, char **argv)
 {
-  eoParser parser(argc, argv);
+  Parser parser(argc, argv);
 
   // random seed
-    eoValueParam<uint32_t>& seedParam = parser.createParam(uint32_t(0), "seed", "Random number seed", 'S');
+    ValueParam<uint32_t>& seedParam = parser.createParam(uint32_t(0), "seed", "Random number seed", 'S');
     if (seedParam.value() == 0)
 	seedParam.value() = time(0);
     rng.reseed(seedParam.value());
 
 
   // pSize global variable !
-  eoValueParam<unsigned> pSizeParam = parser.createParam(unsigned(10), "parentSize", "Parent size",'P');
+  ValueParam<unsigned> pSizeParam = parser.createParam(unsigned(10), "parentSize", "Parent size",'P');
   pSize = pSizeParam.value();
 
-  eoHowMany oRate = parser.createParam(eoHowMany(1.0), "offsrpringRate", "Offsrpring rate (% or absolute)",'O').value();
+  HowMany oRate = parser.createParam(HowMany(1.0), "offsrpringRate", "Offsrpring rate (% or absolute)",'O').value();
 
-  eoHowMany fRate = parser.createParam(eoHowMany(1.0), "fertileRate", "Fertility rate (% or absolute)",'F').value();
+  HowMany fRate = parser.createParam(HowMany(1.0), "fertileRate", "Fertility rate (% or absolute)",'F').value();
 
 
   double nicheSize = parser.createParam(0.1, "nicheSize", "Paramter Sigma for Sharing",'\0').value();
 
-  eoParamParamType & peakParam = parser.createParam(eoParamParamType("2(1,2)"), "peaks", "Description of the peaks: N(nb1,nb2,...,nbN)", 'p').value();
+  ParamParamType & peakParam = parser.createParam(ParamParamType("2(1,2)"), "peaks", "Description of the peaks: N(nb1,nb2,...,nbN)", 'p').value();
 
   // the number of peaks: first item of the paramparam
   unsigned peakNumber = atoi(peakParam.first.c_str());
@@ -213,13 +213,13 @@ int the_main(int argc, char **argv)
     char fileName[1024];
 
 // the selection procedures under test
-    //    eoDetSelect<Dummy> detSelect(oRate);
+    //    DetSelect<Dummy> detSelect(oRate);
     //    testSelectMany(detSelect, "detSelect");
 
     // Sharing using the perf2Worth construct
     // need a distance for that
-    eoDummyDistance dist;
-    eoSharingSelect<Dummy> newSharingSelect(nicheSize, dist);
+    DummyDistance dist;
+    SharingSelect<Dummy> newSharingSelect(nicheSize, dist);
     sprintf(fileName,"Niche_%g",nicheSize);
     testSelectOne<Dummy>(newSharingSelect, oRate, fRate, fileName);
 

@@ -3,7 +3,7 @@
 
 int main(int ac, char** av)
 {
-    eoParser parser(ac, av);
+    Parser parser(ac, av);
 
     unsigned int alpha1 = parser.createParam(10, "alpha1", "Alpha parameter").value();
     unsigned int alpha2 = parser.createParam(10, "alpha2", "Alpha parameter").value();

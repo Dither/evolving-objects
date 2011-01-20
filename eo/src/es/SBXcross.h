@@ -104,9 +104,9 @@ namespace eo
 		    double u = rng.uniform(range) ;
 
 		    if ( u <= 0.5 )
-			beta = exp( (1/(eta+1))*log(2*u));
+			beta = ::exp( (1/(eta+1))*::log(2*u));
 		    else
-			beta = exp((1/(eta+1))*log(1/(2*(1-u))));
+			beta = ::exp((1/(eta+1))*::log(1/(2*(1-u))));
 
 		    r1=_eo1[i];
 		    r2=_eo2[i];

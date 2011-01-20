@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------
-// t-eoEasyPSO.cpp
+// t-EasyPSO.cpp
 //-----------------------------------------------------------------------------
 
 #ifndef __GNUG__
@@ -10,8 +10,8 @@
 #include <eo>
 
 //-----------------------------------------------------------------------------
-typedef eoMinimizingFitness FitT;
-typedef eoRealParticle < FitT > Particle;
+typedef MinimizingFitness FitT;
+typedef RealParticle < FitT > Particle;
 //-----------------------------------------------------------------------------
 
 // the objective function
@@ -32,50 +32,50 @@ int main()
     unsigned i;
 
     // the population:
-    eoPop<Particle> pop;
+    Pop<Particle> pop;
 
     // Evaluation
-    eoEvalFuncPtr<Particle, double, const Particle& > eval(  real_value );
+    EvalFuncPtr<Particle, double, const Particle& > eval(  real_value );
 
     // position init
-    eoUniformGenerator < double >uGen (-3, 3);
-    eoInitFixedLength < Particle > random (VEC_SIZE, uGen);
+    UniformGenerator < double >uGen (-3, 3);
+    InitFixedLength < Particle > random (VEC_SIZE, uGen);
 
     // velocity init
-    eoUniformGenerator < double >sGen (-2, 2);
-    eoVelocityInitFixedLength < Particle > veloRandom (VEC_SIZE, sGen);
+    UniformGenerator < double >sGen (-2, 2);
+    VelocityInitFixedLength < Particle > veloRandom (VEC_SIZE, sGen);
 
     // local best init
-    eoFirstIsBestInit < Particle > localInit;
+    FirstIsBestInit < Particle > localInit;
 
     // perform position initialization
     pop.append (POP_SIZE, random);
   
     // topology
-    eoLinearTopology<Particle> topology(NEIGHBORHOOD_SIZE);
+    LinearTopology<Particle> topology(NEIGHBORHOOD_SIZE);
 
 	// the full initializer
-    eoInitializer <Particle> init(eval,veloRandom,localInit,topology,pop);
+    Initializer <Particle> init(eval,veloRandom,localInit,topology,pop);
     init();
     
    
     // bounds
-    eoRealVectorBounds bnds(VEC_SIZE,-1.5,1.5);
+    RealVectorBounds bnds(VEC_SIZE,-1.5,1.5);
 
     // velocity
-    eoStandardVelocity <Particle> velocity (topology,1,1.6,2,bnds);
+    StandardVelocity <Particle> velocity (topology,1,1.6,2,bnds);
 
     // flight
-    eoStandardFlight <Particle> flight;
+    StandardFlight <Particle> flight;
 
     // Terminators
-    eoGenContinue <Particle> genCont1 (50);
-	eoGenContinue <Particle> genCont2 (50);
+    GenContinue <Particle> genCont1 (50);
+	GenContinue <Particle> genCont2 (50);
 	
     // PS flight
-    eoEasyPSO<Particle> pso1(genCont1, eval, velocity, flight);
+    EasyPSO<Particle> pso1(genCont1, eval, velocity, flight);
 
-	eoEasyPSO<Particle> pso2(init,genCont2, eval, velocity, flight);
+	EasyPSO<Particle> pso2(init,genCont2, eval, velocity, flight);
     
     // flight
     try

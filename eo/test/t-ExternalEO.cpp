@@ -6,9 +6,9 @@
 #include <iostream>
 #include <stdexcept>  // runtime_error 
 
-#include <eoEvalFuncPtr.h>
+#include <EvalFuncPtr.h>
 #include <other/external_eo>
-#include <utils/eoRNG.h>
+#include <utils/RNG.h>
 
 using namespace std;
 
@@ -107,14 +107,14 @@ int main()
 {
     typedef UserDefStruct External;
     typedef float FitnessType;
-    typedef eoExternalEO<float, External> EoType;
+    typedef ExternalEO<float, External> EoType;
 
-    eoExternalInit<FitnessType, External> init(RandomStruct);
-    eoExternalMonOp<FitnessType, External> mutate(UserDefMutate);
-    eoExternalBinOp<FitnessType, External> cross1(UserDefBinCrossover);
-    eoExternalQuadOp<FitnessType, External> cross2(UserDefQuadCrossover);
+    ExternalInit<FitnessType, External> init(RandomStruct);
+    ExternalMonOp<FitnessType, External> mutate(UserDefMutate);
+    ExternalBinOp<FitnessType, External> cross1(UserDefBinCrossover);
+    ExternalQuadOp<FitnessType, External> cross2(UserDefQuadCrossover);
 
-    // eoExternalEvalFunc<FitnessType, External>   eval(UserDefEvalFunc);
+    // ExternalEvalFunc<FitnessType, External>   eval(UserDefEvalFunc);
 
     EoType eo1;
     init(eo1);

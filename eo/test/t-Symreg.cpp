@@ -2,7 +2,7 @@
 #pragma warning(disable:4786)
 #endif
 
-#include <gp/eoParseTree.h>
+#include <gp/ParseTree.h>
 #include <eo>
 
 using namespace gp_parse_tree;
@@ -90,10 +90,10 @@ private :
 /// initializor
 static SymregNode init_sequence[5] = {SymregNode::X, SymregNode::Plus, SymregNode::Min, SymregNode::Mult, SymregNode::PDiv}; // needed for intialization
 
-// MSVC does not recognize the lt_arity<Node> in eoParseTreeDepthInit
+// MSVC does not recognize the lt_arity<Node> in ParseTreeDepthInit
 // without this specialization ...
 // 2 months later, it seems it does not accept this definition ...
-// but dies accept the lt_arity<Node> in eoParseTreeDepthInit
+// but dies accept the lt_arity<Node> in ParseTreeDepthInit
 // !!!
 // #ifdef _MSC_VER
 // template <>
@@ -134,16 +134,16 @@ const double xbegin = -10.0f;
 const double xend   = 10.0f;
 const double xstep  = 1.3f;
 
-template <class FType, class Node> struct RMS: public eoEvalFunc< eoParseTree<FType, Node> >
+template <class FType, class Node> struct RMS: public EvalFunc< ParseTree<FType, Node> >
 {
 public :
 
-    typedef eoParseTree<FType, Node> EoType;
+    typedef ParseTree<FType, Node> EoType;
 
-    typedef eoParseTree<FType, Node> argument_type;
+    typedef ParseTree<FType, Node> argument_type;
     typedef double                   fitness_type;
 
-	RMS() : eoEvalFunc<EoType>()
+	RMS() : EvalFunc<EoType>()
 	{
 		int n = int( (xend - xbegin) / xstep);
 
@@ -189,7 +189,7 @@ private :
 };
 
 template <class EOT, class FitnessType>
-void print_best(eoPop<EOT>& pop)
+void print_best(Pop<EOT>& pop)
 {
     std::cout << std::endl;
     FitnessType best = pop[0].fitness();
@@ -215,11 +215,11 @@ void print_best(eoPop<EOT>& pop)
 
 int main()
 {
-    typedef eoMinimizingFitness FitnessType;
+    typedef MinimizingFitness FitnessType;
     typedef SymregNode GpNode;
 
-    typedef eoParseTree<FitnessType, GpNode> EoType;
-    typedef eoPop<EoType> Pop;
+    typedef ParseTree<FitnessType, GpNode> EoType;
+    typedef Pop<EoType> Pop;
 
     const int MaxSize = 100;
     const int nGenerations = 10; // only a test, so few generations
@@ -228,7 +228,7 @@ int main()
     vector<GpNode> init(init_sequence, init_sequence + 5);
 
     // Depth Initializor, defaults to grow method.
-    eoGpDepthInitializer<FitnessType, GpNode> initializer(10, init);
+    GpDepthInitializer<FitnessType, GpNode> initializer(10, init);
 
     // Root Mean Squared Error Measure
     RMS<FitnessType, GpNode>              eval;
@@ -237,29 +237,29 @@ int main()
 
     apply<EoType>(eval, pop);
 
-    eoSubtreeXOver<FitnessType, GpNode>   xover(MaxSize);
+    SubtreeXOver<FitnessType, GpNode>   xover(MaxSize);
     eoBranchMutation<FitnessType, GpNode> mutation(initializer, MaxSize);
 
     // The operators are  encapsulated into an eoTRansform object,
     // that performs sequentially crossover and mutation
-    eoSGATransform<EoType> transform(xover, 0.75, mutation, 0.25);
+    SGATransform<EoType> transform(xover, 0.75, mutation, 0.25);
 
     // The robust tournament selection
-    eoDetTournamentSelect<EoType> selectOne(2);   // tSize in [2,POPSIZE]
-    // is now encapsulated in a eoSelectMany: 2 at a time -> SteadyState
-    eoSelectMany<EoType> select(selectOne,2, eo_is_an_integer);
+    DetTournamentSelect<EoType> selectOne(2);   // tSize in [2,POPSIZE]
+    // is now encapsulated in a SelectMany: 2 at a time -> SteadyState
+    SelectMany<EoType> select(selectOne,2, eo_is_an_integer);
 
     // and the Steady-State replacement
-    eoSSGAWorseReplacement<EoType> replace;
+    SSGAWorseReplacement<EoType> replace;
 
     // Terminators
-    eoGenContinue<EoType> term(nGenerations);
+    GenContinue<EoType> term(nGenerations);
 
-    eoCheckPoint<EoType> checkPoint(term);
+    CheckPoint<EoType> checkPoint(term);
 
-    eoAverageStat<EoType>     avg;
-    eoBestFitnessStat<EoType> best;
-    eoStdoutMonitor monitor;
+    AverageStat<EoType>     avg;
+    BestFitnessStat<EoType> best;
+    StdoutMonitor monitor;
 
     checkPoint.add(monitor);
     checkPoint.add(avg);
@@ -269,7 +269,7 @@ int main()
     monitor.add(best);
 
     // GP generation
-    eoEasyEA<EoType> gp(checkPoint, eval, select, transform, replace);
+    EasyEA<EoType> gp(checkPoint, eval, select, transform, replace);
 
     std::cout << "Initialization done" << std::endl;
 

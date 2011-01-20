@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// t-eoPBIL.cpp
+// t-PBIL.cpp
 // (c) Marc Schoenauer, 2001
 /*
     This library is free software; you can redistribute it and/or
@@ -33,26 +33,26 @@
 #include <ga/make_ga.h>
 #include "binary_value.h"
 #include <apply.h>
-#include <ga/eoPBILDistrib.h>
-#include <ga/eoPBILOrg.h>
-#include <ga/eoPBILAdditive.h>
-#include <eoSimpleEDA.h>
+#include <ga/PBILDistrib.h>
+#include <ga/PBILOrg.h>
+#include <ga/PBILAdditive.h>
+#include <SimpleEDA.h>
 
 
 using namespace std;
 
-typedef eoBit<double> Indi;
+typedef Bit<double> Indi;
 
 // instanciating the outside subroutine that creates the distribution
 #include "ga/make_PBILdistrib.h"
-eoPBILDistrib<Indi> & make_PBILdistrib(eoParser& _parser, eoState&_state, Indi _eo)
+PBILDistrib<Indi> & make_PBILdistrib(Parser& _parser, State&_state, Indi _eo)
 {
   return do_make_PBILdistrib(_parser, _state, _eo);
 }
 
 // instanciating the outside subroutine that creates the update rule
 #include "ga/make_PBILupdate.h"
-eoDistribUpdater<Indi> & make_PBILupdate(eoParser& _parser, eoState&_state, Indi _eo)
+DistribUpdater<Indi> & make_PBILupdate(Parser& _parser, State&_state, Indi _eo)
 {
   return do_make_PBILupdate(_parser, _state, _eo);
 }
@@ -63,51 +63,51 @@ int main(int argc, char* argv[])
 
   try
   {
-  eoParser parser(argc, argv);  // for user-parameter reading
+  Parser parser(argc, argv);  // for user-parameter reading
 
-  eoState state;    // keeps all things allocated
+  State state;    // keeps all things allocated
 
   ///// FIRST, problem or representation dependent stuff
   //////////////////////////////////////////////////////
 
   // The evaluation fn - encapsulated into an eval counter for output
-  eoEvalFuncPtr<Indi, double> mainEval( binary_value<Indi>);
-  eoEvalFuncCounter<Indi> eval(mainEval);
+  EvalFuncPtr<Indi, double> mainEval( binary_value<Indi>);
+  EvalFuncCounter<Indi> eval(mainEval);
 
   // Construction of the distribution
-  eoPBILDistrib<Indi> & distrib = make_PBILdistrib(parser, state, Indi());
+  PBILDistrib<Indi> & distrib = make_PBILdistrib(parser, state, Indi());
   // and the update rule
-  eoDistribUpdater<Indi> & update = make_PBILupdate(parser, state, Indi());
+  DistribUpdater<Indi> & update = make_PBILupdate(parser, state, Indi());
 
   //// Now the representation-independent things
   //////////////////////////////////////////////
 
   // stopping criteria
-  eoContinue<Indi> & term = make_continue(parser, state, eval);
+  Continue<Indi> & term = make_continue(parser, state, eval);
   // output
-  eoCheckPoint<Indi> & checkpoint = make_checkpoint(parser, state, eval, term);
+  CheckPoint<Indi> & checkpoint = make_checkpoint(parser, state, eval, term);
 
   // add a graphical output for the distribution
   // first, get the direname from the parser
   //    it has been enetered in make_checkoint
 
-  eoParam* ptParam = parser.getParamWithLongName(string("resDir"));
-  eoValueParam<string>* ptDirNameParam = dynamic_cast<eoValueParam<string>*>(ptParam);
+  Param* ptParam = parser.getParamWithLongName(string("resDir"));
+  ValueParam<string>* ptDirNameParam = dynamic_cast<ValueParam<string>*>(ptParam);
   if (!ptDirNameParam)	// not found
     throw runtime_error("Parameter resDir not found where it was supposed to be");
 
   // now create the snapshot monitor
-  eoValueParam<bool>& plotDistribParam = parser.getORcreateParam(false, "plotDistrib",
+  ValueParam<bool>& plotDistribParam = parser.getORcreateParam(false, "plotDistrib",
                                                                  "Plot Distribution", '\0',
                                                                  "Output - Graphical");
     if (plotDistribParam.value())
       {
 #ifdef HAVE_GNUPLOT
 	unsigned frequency=1;		// frequency of plots updates
-	eoGnuplot1DSnapshot *distribSnapshot = new eoGnuplot1DSnapshot(ptDirNameParam->value(),
+	Gnuplot1DSnapshot *distribSnapshot = new Gnuplot1DSnapshot(ptDirNameParam->value(),
                                                                        frequency, "distrib");
 	state.storeFunctor(distribSnapshot);
-	// add the distribution (it is an eoValueParam<vector<double> >)
+	// add the distribution (it is an ValueParam<vector<double> >)
 	distribSnapshot->add(distrib);
 	// and of course add it to the checkpoint
 	checkpoint.add(*distribSnapshot);
@@ -118,7 +118,7 @@ int main(int argc, char* argv[])
     // don't know where else to put the population size!
   unsigned popSize = parser.getORcreateParam(unsigned(100), "popSize",
                                              "Population Size", 'P', "Algorithm").value();
-  eoSimpleEDA<Indi> eda(update, eval, popSize, checkpoint);
+  SimpleEDA<Indi> eda(update, eval, popSize, checkpoint);
 
   ///// End of construction of the algorith
   /////////////////////////////////////////

@@ -1,10 +1,10 @@
 //-----------------------------------------------------------------------------
-// t-eoLogger.cpp
+// t-Logger.cpp
 //-----------------------------------------------------------------------------
 
 #include <iostream>
-#include <utils/eoLogger.h>
-#include <utils/eoParserLogger.h>
+#include <utils/Logger.h>
+#include <utils/ParserLogger.h>
 
 #include <eo>
 
@@ -12,7 +12,7 @@
 
 int	main(int ac, char** av)
 {
-    eoParserLogger	parser(ac, av);
+    ParserLogger	parser(ac, av);
 
     if (parser.userNeedsHelp())
 	{

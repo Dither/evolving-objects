@@ -29,18 +29,18 @@
 #pragma warning(disable:4786)
 #endif // __GNUG__
 
-#include <ga/eoBin.h>  // eoBin, eoPop, eoBreeder
-#include <eoPop.h>
-#include <ga/eoBitOp.h>
+#include <ga/Bin.h>  // Bin, Pop, Breeder
+#include <Pop.h>
+#include <ga/BitOp.h>
 
-#include <eoUniformSelect.h>
-#include <eoStochTournament.h>
-#include <eoDetTournament.h>
+#include <UniformSelect.h>
+#include <StochTournament.h>
+#include <DetTournament.h>
 
 
 //-----------------------------------------------------------------------------
 
-typedef eoBin<float> Chrom;
+typedef Bin<float> Chrom;
 
 #include "binary_value.h"
 
@@ -51,8 +51,8 @@ main()
   const unsigned POP_SIZE = 8, CHROM_SIZE = 4;
   unsigned i;
 
-  eoBinRandom<Chrom> random;
-  eoPop<Chrom> pop; 
+  BinRandom<Chrom> random;
+  Pop<Chrom> pop; 
 
   // Create the population
   for (i = 0; i < POP_SIZE; ++i) {
@@ -68,17 +68,17 @@ main()
     std::cout << pop[i] << " " << pop[i].fitness() << std::endl;
 
   // Declare 1-selectors
-  eoUniformSelect<Chrom> uSelect;
+  UniformSelect<Chrom> uSelect;
 
   Chrom aChrom;
   aChrom = uSelect( pop );
   std::cout << "Uniform Select " << aChrom << " " << aChrom.fitness() << std::endl;
 
-  eoStochTournament<Chrom> sSelect(0.7);
+  StochTournament<Chrom> sSelect(0.7);
   aChrom = sSelect( pop );
   std::cout << "Stochastic Tournament " << aChrom << " " << aChrom.fitness() << std::endl;
 
-  eoDetTournament<Chrom> dSelect(3);
+  DetTournament<Chrom> dSelect(3);
   aChrom = dSelect( pop );
   std::cout << "Deterministic Tournament " << aChrom << " " << aChrom.fitness() << std::endl;
 

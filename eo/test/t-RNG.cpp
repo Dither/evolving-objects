@@ -11,7 +11,7 @@
 
 #include <iostream>
 #include <eo>
-#include <utils/eoRNG.h>
+#include <utils/RNG.h>
 
 
 using namespace std;

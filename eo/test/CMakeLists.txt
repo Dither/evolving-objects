@@ -25,48 +25,48 @@ LINK_DIRECTORIES(${EO_BINARY_DIR}/lib)
 ######################################################################################
 
 SET (TEST_LIST
-  t-eofitness
-  t-eoRandom
-  t-eobin
-  t-eoVirus
+  t-fitness
+  t-Random
+  t-bin
+  t-Virus
   t-MGE
   t-MGE1bit
   t-MGE-control
-  t-eoStateAndParser
-  t-eoCheckpointing
-  t-eoSSGA
-  t-eoExternalEO
-  t-eoSymreg
+  t-StateAndParser
+  t-Checkpointing
+  t-SSGA
+  t-ExternalEO
+  t-Symreg
   t-eo
-  t-eoReplacement
-  t-eoSelect
-  t-eoGenOp
-  t-eoGA
-  t-eoReal
-  t-eoVector
-  t-eoESAll
-  t-eoPBIL
-  t-eoFitnessAssembled
-  t-eoFitnessAssembledEA
-  t-eoRoulette
-  t-eoSharing
-  t-eoCMAES
-  t-eoSecondsElapsedContinue
-  t-eoRNG
-  t-eoEasyPSO
-  t-eoInt
-  t-eoInitPermutation
-  t-eoSwapMutation
-  t-eoShiftMutation
-  t-eoTwoOptMutation
-  t-eoRingTopology
-  t-eoSyncEasyPSO
-  t-eoOrderXover
-  t-eoExtendedVelocity
-  t-eoLogger
-  t-eoIQRStat
-  t-eoDualFitness
-  t-eoParser
+  t-Replacement
+  t-Select
+  t-GenOp
+  t-GA
+  t-Real
+  t-Vector
+  t-ESAll
+  t-PBIL
+  t-FitnessAssembled
+  t-FitnessAssembledEA
+  t-Roulette
+  t-Sharing
+  t-CMAES
+  t-SecondsElapsedContinue
+  t-RNG
+  t-EasyPSO
+  t-Int
+  t-InitPermutation
+  t-SwapMutation
+  t-ShiftMutation
+  t-TwoOptMutation
+  t-RingTopology
+  t-SyncEasyPSO
+  t-OrderXover
+  t-ExtendedVelocity
+  t-Logger
+  t-IQRStat
+  t-DualFitness
+  t-Parser
   )
 
 
@@ -77,7 +77,7 @@ ENDFOREACH (test)
 
 IF(ENABLE_MINIMAL_CMAKE_TESTING)
 
-  SET (MIN_TEST_LIST t-eoEasyPSO)
+  SET (MIN_TEST_LIST t-EasyPSO)
   FOREACH (mintest ${MIN_TEST_LIST})
     SET ("T_${mintest}_SOURCES" "${mintest}.cpp")
     ADD_EXECUTABLE(${mintest} ${T_${mintest}_SOURCES})

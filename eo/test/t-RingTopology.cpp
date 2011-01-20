@@ -1,11 +1,11 @@
 //-----------------------------------------------------------------------------
-// t-eoRingTopology.cpp
+// t-RingTopology.cpp
 //-----------------------------------------------------------------------------
 
 
 #include <eo>
 
-typedef eoRealParticle < double >Indi;
+typedef RealParticle < double >Indi;
 
 //Evaluation function
 double f (const Indi & _indi)
@@ -24,19 +24,19 @@ int main_function(int argc, char **argv)
     const unsigned int NEIGHBORHOOD_SIZE= 3; 
 
     rng.reseed (33);
-    eoEvalFuncPtr<Indi, double, const Indi& > plainEval(f);
-    eoEvalFuncCounter < Indi > eval (plainEval);
-    eoUniformGenerator < double >uGen (0., 5.);
-    eoInitFixedLength < Indi > random (VEC_SIZE, uGen);   
-    eoUniformGenerator < double >sGen (-1., 1.);
-    eoVelocityInitFixedLength < Indi > veloRandom (VEC_SIZE, sGen);
-    eoFirstIsBestInit < Indi > localInit;
-    eoPop < Indi > pop;
+    EvalFuncPtr<Indi, double, const Indi& > plainEval(f);
+    EvalFuncCounter < Indi > eval (plainEval);
+    UniformGenerator < double >uGen (0., 5.);
+    InitFixedLength < Indi > random (VEC_SIZE, uGen);   
+    UniformGenerator < double >sGen (-1., 1.);
+    VelocityInitFixedLength < Indi > veloRandom (VEC_SIZE, sGen);
+    FirstIsBestInit < Indi > localInit;
+    Pop < Indi > pop;
     pop.append (POP_SIZE, random);
     apply(eval, pop);
     apply < Indi > (veloRandom, pop);
     apply < Indi > (localInit, pop);
-    eoRingTopology<Indi> topology(NEIGHBORHOOD_SIZE);
+    RingTopology<Indi> topology(NEIGHBORHOOD_SIZE);
     topology.setup(pop);
     std::cout<<"\n\n\nPopulation :\n\n"<<pop;
     std::cout<<"\n\nNeighborhood :\n\n";
@@ -61,7 +61,7 @@ int main(int argc, char **argv)
     }
     catch(std::exception& e)
     {
-        std::cout << "Exception: " << e.what() << " in t-eoRingTopology" << std::endl;
+        std::cout << "Exception: " << e.what() << " in t-RingTopology" << std::endl;
     }
 
 }

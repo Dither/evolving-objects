@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
  
 //-----------------------------------------------------------------------------
-// t-eoFitnessAssembled.cpp
+// t-FitnessAssembled.cpp
 // Marc Wintermantel & Oliver Koenig
 // IMES-ST@ETHZ.CH
 // March 2003
@@ -29,12 +29,12 @@
 #include <iostream>
 #include <stdexcept>
 
-#include "eoScalarFitnessAssembled.h"
+#include "ScalarFitnessAssembled.h"
 
-void test_eoScalarFitnessAssembledClass(){
+void test_ScalarFitnessAssembledClass(){
   
   // Create instances
-  eoAssembledMinimizingFitness A,B,C(5, 1.3, "C value");
+  AssembledMinimizingFitness A,B,C(5, 1.3, "C value");
 
   // Add some values to them
   A.push_back( 5.6, "first value"  );
@@ -62,9 +62,9 @@ void test_eoScalarFitnessAssembledClass(){
   std::cout << "Access fitness values of A and B: " << "f(A)= " << (double) A << " f(B)= " << (double) B << std::endl;
 
   // Testing constructors and assignments
-  eoAssembledMinimizingFitness D(A) ,E(3.2);
+  AssembledMinimizingFitness D(A) ,E(3.2);
   std::cout << "D(A) = " << D << "\t" << "E(3.2)= " << E << std::endl;
-  eoAssembledMinimizingFitness F,G;
+  AssembledMinimizingFitness F,G;
   F=A;
   G= 7.5;
   std::cout << "F = A : " << F << "\t G = 7.5 : " << G << std::endl;
@@ -82,11 +82,11 @@ void test_eoScalarFitnessAssembledClass(){
 int main(){
   
   std::cout << "-----------------------------------" << std::endl;
-  std::cout << "START t-eoFitnessAssembled" << std::endl;
+  std::cout << "START t-FitnessAssembled" << std::endl;
 
   try{
     // Test the fitness class itself
-    test_eoScalarFitnessAssembledClass();
+    test_ScalarFitnessAssembledClass();
     
     
 
@@ -96,7 +96,7 @@ int main(){
     return 1;
   }
 
-  std::cout << "END  t-eoFitnessAssembled" << std::endl;
+  std::cout << "END  t-FitnessAssembled" << std::endl;
   std::cout << "----------------------------------" << std::endl;
 
   return 0;

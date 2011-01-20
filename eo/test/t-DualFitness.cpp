@@ -1,14 +1,15 @@
-
 #include <utility>
 
 #include <eo>
 #include <es.h>
-#include <utils/eoStat.h>
+#include <utils/Stat.h>
 
-typedef eoVector<eoDualFitness<double,eoMinimizingFitness>,double> DualVector;
+using namespace eo;
+
+typedef Vector<DualFitness<double,MinimizingFitness>,double> DualVector;
 
 template<class EOT>
-class DualSphere : public eoEvalFunc<EOT>
+class DualSphere : public EvalFunc<EOT>
 {
 public:
     virtual void operator()( EOT & x )
@@ -27,15 +28,15 @@ public:
 };
 
 
-double test( eoPop<DualVector>& pop, double target_value )
+double test( Pop<DualVector>& pop, double target_value )
 {
     DualSphere<DualVector> eval;
 
-    eoPopLoopEval<DualVector> pop_eval(eval);
+    PopLoopEval<DualVector> pop_eval(eval);
 
     pop_eval(pop,pop);
 
-    eoInterquartileRangeStat<DualVector> iqr_stat( std::make_pair(0.0,false), "IQR" );
+    InterquartileRangeStat<DualVector> iqr_stat( std::make_pair(0.0,false), "IQR" );
 
     iqr_stat( pop );
 
@@ -47,7 +48,7 @@ double test( eoPop<DualVector>& pop, double target_value )
 
 int main()
 {
-    eoPop<DualVector> pop;
+    Pop<DualVector> pop;
 
     // fixed test
     DualVector sol1(2,-1);
@@ -79,12 +80,11 @@ int main()
     }
 
     // test on a random normal distribution
-    eoNormalGenerator<double> normal(1,rng);
-    eoInitFixedLength<DualVector> init_N(2, normal);
-    pop = eoPop<DualVector>( 1000000, init_N );
+    NormalGenerator<double> normal(1,rng);
+    InitFixedLength<DualVector> init_N(2, normal);
+    pop = Pop<DualVector>( 1000000, init_N );
     double iqr = test(pop, 1.09);
     if( iqr < 1.08 || iqr > 1.11 ) {
         exit(1);
     }
 }
-

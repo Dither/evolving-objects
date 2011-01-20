@@ -1,6 +1,6 @@
 /* -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
-    t-eoVector.cpp
+    t-Vector.cpp
       This program tests vector-like chromosomes
     (c) GeNeura Team, 1999, 2000
 
@@ -31,15 +31,15 @@
 #include <cassert>
 #include <iostream>
 
-#include <utils/eoRndGenerators.h>
-#include <eoVector.h>         // eoVector
-#include <eoInit.h>
-#include <eoScalarFitness.h>
+#include <utils/RndGenerators.h>
+#include <Vector.h>         // Vector
+#include <Init.h>
+#include <ScalarFitness.h>
 
 //-----------------------------------------------------------------------------
 
-typedef eoVector<eoMaximizingFitness, int> Chrom1;
-typedef eoVector<eoMinimizingFitness, int> Chrom2;
+typedef Vector<MaximizingFitness, int> Chrom1;
+typedef Vector<MinimizingFitness, int> Chrom2;
 
 //-----------------------------------------------------------------------------
 
@@ -55,8 +55,8 @@ int main()
     assert(chrom[i] == 5);
   }
 
-  eoUniformGenerator<Chrom1::AtomType> uniform(-1,1);
-  eoInitFixedLength<Chrom1> init(SIZE, uniform);
+  UniformGenerator<Chrom1::AtomType> uniform(-1,1);
+  InitFixedLength<Chrom1> init(SIZE, uniform);
 
   init(chrom);
 
@@ -66,7 +66,7 @@ int main()
 
   std::cout << chrom2 << std::endl;
 
-//  eoInitVariableLength<Chrom1> initvar(
+//  InitVariableLength<Chrom1> initvar(
 
   return 0;
 }

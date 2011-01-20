@@ -19,7 +19,7 @@ struct fitness_traits
   // storage_type: what to store next to the genotype
   typedef T storage_type;
 
-  // performance_type: what the eoEvalFunc calculates
+  // performance_type: what the EvalFunc calculates
   typedef T performance_type;
 
   // worth_type: what the scaling function does
@@ -66,7 +66,7 @@ struct fitness_traits<minimization> : public fitness_traits<double>
 struct fitness_traits<maximization> : public fitness_traits<double> {};
 
 // forward declaration
-//template <class EOT> class eoPop;
+//template <class EOT> class Pop;
 //template <class Fitness, class Traits> class EO;
 
 // unfortunately, partial template specialization is not approved by Microsoft (though ANSI says it's ok)
@@ -185,13 +185,13 @@ public :
 
 /* end EO.h */
 
-/* eoPerf2Worth.h */
+/* Perf2Worth.h */
 
 // get the name known
-template <class EOT> class eoPop;
+template <class EOT> class Pop;
 
 template <class EOT>
-void exponential_scaling(eoPop<EOT>& _pop)
+void exponential_scaling(Pop<EOT>& _pop)
 {
     for (unsigned i = 0; i < _pop.size(); ++i)
     { // change minimimization into maximization
@@ -200,28 +200,28 @@ void exponential_scaling(eoPop<EOT>& _pop)
 }
 
 template <class EOT>
-class eoPerf2Worth /* : public eoUF<eoPop<EOT>&, void> */
+class Perf2Worth /* : public UF<Pop<EOT>&, void> */
 {
 public :
-  virtual void operator()(eoPop<EOT>& _pop)
+  virtual void operator()(Pop<EOT>& _pop)
   {
     return exponential_scaling(_pop);
   }
 };
 
-/* end eoPerf2Worth.h */
+/* end Perf2Worth.h */
 
 
-/* eoPop.h */
+/* Pop.h */
 
 template <class EOT>
-class eoPop : public vector<EOT>
+class Pop : public vector<EOT>
 {
 public :
 
   typedef typename EOT::fitness_traits fitness_traits;
 
-  eoPop(void) : p2w(0) {}
+  Pop(void) : p2w(0) {}
 
   void sort()
   {
@@ -236,33 +236,33 @@ public :
     {
       if (!fitness_traits::needs_mapping)
       {
-        throw runtime_error("eoPop: no scaling needed, yet a scaling function is defined");
+        throw runtime_error("Pop: no scaling needed, yet a scaling function is defined");
       }
 
       (*p2w)(*this);
     }
     else if (fitness_traits::needs_mapping)
     {
-      throw runtime_error("eoPop: no scaling function attached to the population, while one was certainly called for");
+      throw runtime_error("Pop: no scaling function attached to the population, while one was certainly called for");
     }
   }
 
-  void setPerf2Worth(eoPerf2Worth<EOT>& _p2w)
+  void setPerf2Worth(Perf2Worth<EOT>& _p2w)
   {
     p2w = &_p2w;
   }
 
-  void setPerf2Worth(eoPerf2Worth<EOT>* _p2w)
+  void setPerf2Worth(Perf2Worth<EOT>* _p2w)
   {
     p2w = _p2w;
   }
 
-  eoPerf2Worth<EOT>* getPerf2Worth() { return p2w; }
+  Perf2Worth<EOT>* getPerf2Worth() { return p2w; }
 
-  void swap(eoPop<EOT>& other)
+  void swap(Pop<EOT>& other)
   {
     vector<EOT>::swap(other);
-    eoPerf2Worth<EOT>* tmp = p2w;
+    Perf2Worth<EOT>* tmp = p2w;
     p2w = other.p2w;
     other.p2w = tmp;
   }
@@ -270,24 +270,24 @@ public :
 private :
 
   // a pointer as it can be emtpy
-  eoPerf2Worth<EOT>* p2w;
+  Perf2Worth<EOT>* p2w;
 };
 
 // need this one to be able to swap the members as well...
 template <class EOT>
-void swap(eoPop<EOT>& _p1, eoPop<EOT>& _p2)
+void swap(Pop<EOT>& _p1, Pop<EOT>& _p2)
 {
   _p1.swap(_p2);
 }
 
-/* end eoPop.h */
+/* end Pop.h */
 
 /* main and test */
 
 template <class EOT>
-void algo(eoPop<EOT>& _pop)
+void algo(Pop<EOT>& _pop)
 {
-  eoPop<EOT> offspring;                          // how to get the scaling info into this guy??
+  Pop<EOT> offspring;                          // how to get the scaling info into this guy??
   offspring.setPerf2Worth(_pop.getPerf2Worth()); // like this!
 
   std::copy(_pop.begin(), _pop.end(), back_inserter(offspring));
@@ -367,7 +367,7 @@ void the_main()
 /* Populations */
 
 // test pop without scaling, should have no overhead save for a single empty pointer in pop
-  eoPop<simple_eo> pop0;
+  Pop<simple_eo> pop0;
   pop0.resize(1);
   pop0[0].fitness(1);
 
@@ -379,8 +379,8 @@ void the_main()
 
 /* test pop with scaling */
 
-  eoPerf2Worth<scaled_eo> perf2worth;
-  eoPop<scaled_eo> pop1;
+  Perf2Worth<scaled_eo> perf2worth;
+  Pop<scaled_eo> pop1;
 
   pop1.resize(1);
 

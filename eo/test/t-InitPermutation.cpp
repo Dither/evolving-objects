@@ -1,14 +1,14 @@
 //-----------------------------------------------------------------------------
-// t-eoInitPermutation.cpp
+// t-InitPermutation.cpp
 //-----------------------------------------------------------------------------
 
 #include <eo>
 
-#include <eoInt.h>
+#include <Int.h>
 
 //-----------------------------------------------------------------------------
 
-typedef eoInt<double> Chrom;
+typedef Int<double> Chrom;
 
 //-----------------------------------------------------------------------------
 
@@ -31,7 +31,7 @@ bool check_permutation(const Chrom & _chrom)
 				if(_chrom[i]==_chrom[j]){
 						 std::cout << " Error: Wrong permutation !" << std::endl;
 						 std::string s;
-						 s.append( " Wrong permutation in t-eoInitPermutation");
+						 s.append( " Wrong permutation in t-InitPermutation");
 	    				 throw std::runtime_error( s );	
 				}
 	return true;				
@@ -43,13 +43,13 @@ int main()
   unsigned i;
 
    // a chromosome randomizer
-  eoInitPermutation <Chrom> random(CHROM_SIZE);
+  InitPermutation <Chrom> random(CHROM_SIZE);
   
    // the population: 
-  eoPop<Chrom> pop;
+  Pop<Chrom> pop;
 	
    // Evaluation
-  eoEvalFuncPtr<Chrom> eval(  real_value );
+  EvalFuncPtr<Chrom> eval(  real_value );
  
   for (i = 0; i < POP_SIZE; ++i)
     {

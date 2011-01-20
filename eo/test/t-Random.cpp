@@ -1,6 +1,6 @@
 /* -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
-    t-eoRandom.cpp
+    t-Random.cpp
       Test program for random generator
 
     (c) GeNeura Team, 1999
@@ -31,20 +31,20 @@ CVS Info: $Date: 2003-02-27 19:20:24 $  $Author: okoenig $ $Revision: 1.13 $
 
 #include <iostream>   // cout
 #include <fstream>  // ostrstream, istrstream
-#include <utils/eoRndGenerators.h>         // eoBin
-//#include <eoNormal.h>
-//#include <eoNegExp.h>
+#include <utils/RndGenerators.h>         // Bin
+//#include <Normal.h>
+//#include <NegExp.h>
 
 //-----------------------------------------------------------------------------
 
 int main() {
-  eoUniformGenerator<float> u1(-2.5,3.5);
-  eoUniformGenerator<double> u2(0.003, 0.05 );
-  eoUniformGenerator<unsigned long> u3( 10000U, 10000000U);
+  UniformGenerator<float> u1(-2.5,3.5);
+  UniformGenerator<double> u2(0.003, 0.05 );
+  UniformGenerator<unsigned long> u3( 10000U, 10000000U);
 
   try
   { // throws an error
-    eoUniformGenerator<unsigned long> utest( 10000000U, 10000U);
+    UniformGenerator<unsigned long> utest( 10000000U, 10000U);
     throw; // if this succeeds something is wrong, make sure that that is noticed
   }
   catch (std::logic_error& e)
@@ -52,7 +52,7 @@ int main() {
     std::cout << e.what() << std::endl;
   }
 
-  std::ofstream os("t-eoRandom.out");
+  std::ofstream os("t-Random.out");
 
   for ( unsigned i = 0; i < 100; i ++)
   {

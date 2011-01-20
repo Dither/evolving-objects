@@ -28,46 +28,46 @@ struct Dummy : public EO<double>
 };
 
 
-struct eoDummyPop : public eoPop<Dummy>
+struct DummyPop : public Pop<Dummy>
 {
 public :
-    eoDummyPop(int s=0) { resize(s); }
+    DummyPop(int s=0) { resize(s); }
 };
 
 //-----------------------------------------------------------------------------
 
 int the_main(int argc, char **argv)
 { 
-  eoParser parser(argc, argv);
-  eoValueParam<unsigned int> parentSizeParam(10, "parentSize", "Parent size",'P');
+  Parser parser(argc, argv);
+  ValueParam<unsigned int> parentSizeParam(10, "parentSize", "Parent size",'P');
   parser.processParam( parentSizeParam );
     unsigned int pSize = parentSizeParam.value();
 
-  eoValueParam<unsigned int> offsrpringSizeParam(10, "offsrpringSize", "Offsrpring size",'O');
+  ValueParam<unsigned int> offsrpringSizeParam(10, "offsrpringSize", "Offsrpring size",'O');
   parser.processParam( offsrpringSizeParam );
     unsigned int oSize = offsrpringSizeParam.value();
 
-  eoValueParam<unsigned int> tournamentSizeParam(2, "tournamentSize", "Deterministic tournament size",'T');
+  ValueParam<unsigned int> tournamentSizeParam(2, "tournamentSize", "Deterministic tournament size",'T');
   parser.processParam( tournamentSizeParam );
     unsigned int tSize = tournamentSizeParam.value();
 
-  eoValueParam<double> tournamentRateParam(0.75, "tournamentRate", "Stochastic tournament rate",'R');
+  ValueParam<double> tournamentRateParam(0.75, "tournamentRate", "Stochastic tournament rate",'R');
   parser.processParam( tournamentRateParam );
     double tRate = tournamentRateParam.value();
 
-  eoValueParam<double> sParentsElitismRateParam(0.1, "sParentsElitismRateParam", "Strong elitism rate for parents",'E');
+  ValueParam<double> sParentsElitismRateParam(0.1, "sParentsElitismRateParam", "Strong elitism rate for parents",'E');
   parser.processParam( sParentsElitismRateParam );
     double sParentsElitismRate = sParentsElitismRateParam.value();
 
-  eoValueParam<double> sParentsEugenismRateParam(0, "sParentsEugenismRateParam", "Strong Eugenism rate",'e');
+  ValueParam<double> sParentsEugenismRateParam(0, "sParentsEugenismRateParam", "Strong Eugenism rate",'e');
   parser.processParam( sParentsEugenismRateParam );
     double sParentsEugenismRate = sParentsEugenismRateParam.value();
 
-  eoValueParam<double> sOffspringElitismRateParam(0, "sOffspringElitismRateParam", "Strong elitism rate for parents",'E');
+  ValueParam<double> sOffspringElitismRateParam(0, "sOffspringElitismRateParam", "Strong elitism rate for parents",'E');
   parser.processParam( sOffspringElitismRateParam );
     double sOffspringElitismRate = sOffspringElitismRateParam.value();
 
-  eoValueParam<double> sOffspringEugenismRateParam(0, "sOffspringEugenismRateParam", "Strong Eugenism rate",'e');
+  ValueParam<double> sOffspringEugenismRateParam(0, "sOffspringEugenismRateParam", "Strong Eugenism rate",'e');
   parser.processParam( sOffspringEugenismRateParam );
     double sOffspringEugenismRate = sOffspringEugenismRateParam.value();
 
@@ -85,8 +85,8 @@ int the_main(int argc, char **argv)
     rng.reseed(42);
 
 
-    eoDummyPop orgParents(pSize);
-    eoDummyPop orgOffspring(oSize);
+    DummyPop orgParents(pSize);
+    DummyPop orgOffspring(oSize);
 
     // initialize so we can recognize them later!
     for (i=0; i<pSize; i++)
@@ -97,26 +97,26 @@ int the_main(int argc, char **argv)
 std::cout << "Initial parents (odd)\n" << orgParents << "\n And initial offsprings (even)\n" << orgOffspring << std::endl;
 
     // now the ones we're going to play with
-    eoDummyPop parents(0);
-    eoDummyPop offspring(0);
+    DummyPop parents(0);
+    DummyPop offspring(0);
 
 // the replacement procedures under test
-    eoGenerationalReplacement<Dummy> genReplace;
-    eoPlusReplacement<Dummy> plusReplace;
-    eoEPReplacement<Dummy> epReplace(tSize);
-    eoCommaReplacement<Dummy> commaReplace;
-    eoWeakElitistReplacement<Dummy> weakElitistReplace(commaReplace);
+    GenerationalReplacement<Dummy> genReplace;
+    PlusReplacement<Dummy> plusReplace;
+    EPReplacement<Dummy> epReplace(tSize);
+    CommaReplacement<Dummy> commaReplace;
+    WeakElitistReplacement<Dummy> weakElitistReplace(commaReplace);
     // the SSGA replacements
-    eoSSGAWorseReplacement<Dummy> ssgaWorseReplace;
-    eoSSGADetTournamentReplacement<Dummy> ssgaDTReplace(tSize);
-    eoSSGAStochTournamentReplacement<Dummy> ssgaDSReplace(tRate);
+    SSGAWorseReplacement<Dummy> ssgaWorseReplace;
+    SSGADetTournamentReplacement<Dummy> ssgaDTReplace(tSize);
+    SSGAStochTournamentReplacement<Dummy> ssgaDSReplace(tRate);
 
     // here we go
     // Generational
     parents = orgParents;
     offspring = orgOffspring;
 
-    std::cout << "eoGenerationalReplacement\n";
+    std::cout << "GenerationalReplacement\n";
     std::cout << "=========================\n";
     genReplace(parents, offspring);
 std::cout << "Parents (originally odd)\n" << parents << "\n And offsprings (orogonally even\n" << offspring << std::endl;
@@ -125,7 +125,7 @@ std::cout << "Parents (originally odd)\n" << parents << "\n And offsprings (orog
     parents = orgParents;
     offspring = orgOffspring;
 
-    std::cout << "eoPlusReplacement\n";
+    std::cout << "PlusReplacement\n";
     std::cout << "=================\n";
     plusReplace(parents, offspring);
 std::cout << "Parents (originally odd)\n" << parents << "\n And offsprings (originally even)\n" << offspring << std::endl;
@@ -134,7 +134,7 @@ std::cout << "Parents (originally odd)\n" << parents << "\n And offsprings (orig
     parents = orgParents;
     offspring = orgOffspring;
 
-    std::cout << "eoEPReplacement\n";
+    std::cout << "EPReplacement\n";
     std::cout << "===============\n";
     epReplace(parents, offspring);
 std::cout << "Parents (originally odd)\n" << parents << "\n And offsprings (originally even)\n" << offspring << std::endl;
@@ -147,7 +147,7 @@ std::cout << "Parents (originally odd)\n" << parents << "\n And offsprings (orig
 	std::cout << "Skipping Comma Replacement, more parents than offspring\n";
     else
       {
-	std::cout << "eoCommaReplacement\n";
+	std::cout << "CommaReplacement\n";
 	std::cout << "==================\n";
 	commaReplace(parents, offspring);
 	std::cout << "Parents (originally odd)\n" << parents << "\n And offsprings (originally even)\n" << offspring << std::endl;
@@ -195,7 +195,7 @@ std::cout << "Parents (originally odd)\n" << parents << "\n And offsprings (orig
       }
 
     // the general replacement
-    eoDeterministicSaDReplacement<Dummy> sAdReplace(sParentsElitismRate, sParentsEugenismRate, sOffspringElitismRate, sOffspringEugenismRate);// 10% parents survive
+    DeterministicSaDReplacement<Dummy> sAdReplace(sParentsElitismRate, sParentsEugenismRate, sOffspringElitismRate, sOffspringEugenismRate);// 10% parents survive
 
     parents = orgParents;
     offspring = orgOffspring;

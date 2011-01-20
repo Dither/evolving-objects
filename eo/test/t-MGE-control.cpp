@@ -12,14 +12,14 @@
 #endif // __GNUG__
 
 #include "eo"
-#include "ga/eoBitOp.h"
+#include "ga/BitOp.h"
 
 #include "RoyalRoad.h"
 
 // Viri
 #include "VirusOp.h"
 #include "eoVirus.h"
-#include "eoInitVirus.h"
+#include "InitVirus.h"
 
 //-----------------------------------------------------------------------------
 
@@ -31,16 +31,16 @@ int main()
 {
   const unsigned POP_SIZE = 10, CHROM_SIZE = 12;
   unsigned i;
-  eoBooleanGenerator gen;
+  BooleanGenerator gen;
 
   // the populations:
-  eoPop<Chrom> pop;
+  Pop<Chrom> pop;
 
   // Evaluation
   RoyalRoad<Chrom> rr( 8 );
-  eoEvalFuncCounter<Chrom> eval( rr );
+  EvalFuncCounter<Chrom> eval( rr );
 
-  eoInitVirus<float> random(CHROM_SIZE, gen);
+  InitVirus<float> random(CHROM_SIZE, gen);
   for (i = 0; i < POP_SIZE; ++i) {
       Chrom chrom;
       random(chrom);
@@ -53,34 +53,34 @@ int main()
     std::cout << "\t" << pop[i] << " " << pop[i].fitness() << std::endl;
 
   // selection
-  eoStochTournamentSelect<Chrom> lottery(0.9 );
+  StochTournamentSelect<Chrom> lottery(0.9 );
 
   // breeder
-  eoOneBitFlip<Chrom> vm;
-  eoUBitXover<Chrom> xover;
-  eoProportionalOp<Chrom> propSel;
-  eoGeneralBreeder<Chrom> breeder( lottery, propSel );
+  OneBitFlip<Chrom> vm;
+  UBitXover<Chrom> xover;
+  ProportionalOp<Chrom> propSel;
+  GeneralBreeder<Chrom> breeder( lottery, propSel );
   propSel.add(vm, 0.2);
   propSel.add(xover, 0.8);
 
   // Replace a single one
-  eoCommaReplacement<Chrom> replace;
+  CommaReplacement<Chrom> replace;
 
   // Terminators
-  eoGenContinue<Chrom> continuator1(10);
-  eoFitContinue<Chrom> continuator2(CHROM_SIZE);
-  eoCombinedContinue<Chrom> continuator(continuator1, continuator2);
-  eoCheckPoint<Chrom> checkpoint(continuator);
-  eoStdoutMonitor monitor;
+  GenContinue<Chrom> continuator1(10);
+  FitContinue<Chrom> continuator2(CHROM_SIZE);
+  CombinedContinue<Chrom> continuator(continuator1, continuator2);
+  CheckPoint<Chrom> checkpoint(continuator);
+  StdoutMonitor monitor;
   checkpoint.add(monitor);
-  eoSecondMomentStats<Chrom> stats;
-  eoPopStat<Chrom> dumper( 10 );
+  SecondMomentStats<Chrom> stats;
+  PopStat<Chrom> dumper( 10 );
   monitor.add(stats);
   checkpoint.add(dumper);
   checkpoint.add(stats);
 
   // GA generation
-  eoEasyEA<Chrom> ea(checkpoint, eval,  breeder, replace );
+  EasyEA<Chrom> ea(checkpoint, eval,  breeder, replace );
 
   // evolution
   try

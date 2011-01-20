@@ -1,16 +1,16 @@
 //-----------------------------------------------------------------------------
-// t-eoSwapMutation.cpp
+// t-SwapMutation.cpp
 //-----------------------------------------------------------------------------
 
 #include <set>
 
 #include <eo>
-#include <eoInt.h>
-#include <eoSwapMutation.h>
+#include <Int.h>
+#include <SwapMutation.h>
 
 //-----------------------------------------------------------------------------
 
-typedef eoInt<double> Chrom;
+typedef Int<double> Chrom;
 
 //-----------------------------------------------------------------------------
 
@@ -32,7 +32,7 @@ bool check_permutation(const Chrom& _chrom){
 		if(verif.insert(_chrom[i]).second==false){
 			std::cout << " Error: Wrong permutation !" << std::endl;
 			std::string s;
-			s.append( " Wrong permutation in t-eoShiftMutation");
+			s.append( " Wrong permutation in t-ShiftMutation");
 			throw std::runtime_error( s );
 			return false;
 		}
@@ -47,13 +47,13 @@ int main()
   unsigned i;
 
    // a chromosome randomizer
-  eoInitPermutation <Chrom> random(CHROM_SIZE);
+  InitPermutation <Chrom> random(CHROM_SIZE);
   
    // the population: 
-  eoPop<Chrom> pop;
+  Pop<Chrom> pop;
 	
    // Evaluation
-  eoEvalFuncPtr<Chrom> eval(  real_value );
+  EvalFuncPtr<Chrom> eval(  real_value );
  
   for (i = 0; i < POP_SIZE; ++i)
     {
@@ -65,7 +65,7 @@ int main()
     
     
   // a swap mutation
-  eoSwapMutation <Chrom> swap;
+  SwapMutation <Chrom> swap;
   
   for (i = 0; i < POP_SIZE; ++i)
     {

@@ -37,15 +37,15 @@ namespace eo
     /// @todo handle bounds
     template <class FitT>
     class CMAInit : public Init< Vector<FitT, double> > {
-    
-	const eo::CMAState& state;
+
+	const CMAState& state;
 
 	typedef Vector<FitT, double> EOT;
-    
-    public:
-	CMAInit(const eo::CMAState& state_) : state(state_) {}
 
-    
+    public:
+	CMAInit(const CMAState& state_) : state(state_) {}
+
+
 	void operator()(EOT& v) {
 	    state.sample(static_cast<std::vector<double>& >(v));
 	    v.invalidate();

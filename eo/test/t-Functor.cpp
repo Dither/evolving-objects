@@ -1,14 +1,14 @@
 
-#include <eoInit.h>
-#include <eoCounter.h>
+#include <Init.h>
+#include <Counter.h>
 
-void f(eoInit<int>& func)
+void f(Init<int>& func)
 {
     int i;
     func(i);
 }
 
-class Tester : public eoInit<int>
+class Tester : public Init<int>
 {
 public :
     void operator()(int& i)
@@ -27,12 +27,12 @@ int main(void)
 {
     Tester test;
 
-    eoFunctorStore store;
+    FunctorStore store;
 
     /// make a counter and store it in 'store'
-    eoInit<int>& cntr = make_counter(functor_category(test), test, store);
+    Init<int>& cntr = make_counter(functor_category(test), test, store);
 
-    eoUnaryFunctorCounter<eoInit<int> > cntr2(test);
+    UnaryFunctorCounter<Init<int> > cntr2(test);
 
     f(cntr);
     f(cntr2);

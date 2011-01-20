@@ -1,36 +1,36 @@
 
 #include <iostream>
 
-#include <eoScalarFitness.h>
-#include <eoVector.h>
-#include <eoPop.h>
-#include <utils/eoParser.h>
-#include <utils/eoCheckPoint.h>
-#include <eoEvalFuncPtr.h>
+#include <ScalarFitness.h>
+#include <Vector.h>
+#include <Pop.h>
+#include <utils/Parser.h>
+#include <utils/CheckPoint.h>
+#include <EvalFuncPtr.h>
 
-#include <eoGenContinue.h>
-#include <eoFitContinue.h>
-#include <utils/eoStdoutMonitor.h>
-#include <utils/eoStat.h>
-#include <utils/eoTimedMonitor.h>
+#include <GenContinue.h>
+#include <FitContinue.h>
+#include <utils/StdoutMonitor.h>
+#include <utils/Stat.h>
+#include <utils/TimedMonitor.h>
 
-#include <eoMergeReduce.h>
-#include <eoEasyEA.h>
+#include <MergeReduce.h>
+#include <EasyEA.h>
 
 #include <es/CMAState.h>
 #include <es/CMAParams.h>
-#include <es/eoCMAInit.h>
-#include <es/eoCMABreed.h>
+#include <es/CMAInit.h>
+#include <es/CMABreed.h>
 
 using namespace eo;
 using namespace std;
 
-typedef eoMinimizingFitness FitT;
-typedef eoVector<FitT, double> EoType;
+typedef MinimizingFitness FitT;
+typedef Vector<FitT, double> EoType;
 
 double sqr(double x) { return x*x; }
 
-eoValueParam<int> evals(0,"Function Evals","Number of Evaluations");
+ValueParam<int> evals(0,"Function Evals","Number of Evaluations");
 
 double f_sphere(const vector<double>& values) {
     double sum = 0.0;
@@ -63,7 +63,7 @@ int main(int argc, char* argv[]) {
 	rargv[i] = argv[i-1];
     }
 
-    eoParser parser(argc+1, rargv);
+    Parser parser(argc+1, rargv);
 
     CMAParams params(parser);
 
@@ -77,39 +77,39 @@ int main(int argc, char* argv[]) {
 	return 1;
     }
 
-    eoCMAInit<FitT> init(state);
+    CMAInit<FitT> init(state);
 
-    eoPop<EoType> pop(params.mu, init);
+    Pop<EoType> pop(params.mu, init);
 
-    eoEvalFuncPtr<EoType, double, const vector<double>&> eval(  f_rosen );
+    EvalFuncPtr<EoType, double, const vector<double>&> eval(  f_rosen );
 
-    eoCMABreed<FitT> breed(state, params.lambda);
+    CMABreed<FitT> breed(state, params.lambda);
 
     for (unsigned i = 0; i < pop.size(); ++i) {
 	eval(pop[i]);
     }
 
-    eoCommaReplacement<EoType> comma;
+    CommaReplacement<EoType> comma;
 
-    eoGenContinue<EoType> gen(params.maxgen);
-    eoFitContinue<EoType> fit(1e-10);
+    GenContinue<EoType> gen(params.maxgen);
+    FitContinue<EoType> fit(1e-10);
 
-    eoCheckPoint<EoType> checkpoint(gen);
+    CheckPoint<EoType> checkpoint(gen);
     checkpoint.add(fit);
 
-    eoBestFitnessStat<EoType> stat;
+    BestFitnessStat<EoType> stat;
 
-    eoStdoutMonitor mon;
+    StdoutMonitor mon;
     mon.add(stat);
     mon.add(evals);
 
-    eoTimedMonitor timed(1);// 1 seconds
+    TimedMonitor timed(1);// 1 seconds
     timed.add(mon); // wrap it
 
     checkpoint.add(timed);
     checkpoint.add(stat);
 
-    eoEasyEA<EoType> algo(
+    EasyEA<EoType> algo(
 	    checkpoint,
 	    eval,
 	    breed,

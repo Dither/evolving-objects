@@ -7,7 +7,7 @@
 
 #include "binary_value.h"
 
-typedef eoBin<float> Chrom;
+typedef Bin<float> Chrom;
 
 main()
 {
@@ -15,12 +15,12 @@ main()
   unsigned i;
 
 // a chromosome randomizer
-  eoBinRandom<Chrom> random;
+  BinRandom<Chrom> random;
 // the populations: 
-  eoPop<Chrom> pop; 
+  Pop<Chrom> pop; 
 
    // Evaluation
-  eoEvalFuncPtr<Chrom> eval(  binary_value );
+  EvalFuncPtr<Chrom> eval(  binary_value );
  
   for (i = 0; i < POP_SIZE; ++i)
     {
@@ -39,10 +39,10 @@ main()
   eoLottery<Chrom> lottery;
 
   // breeder
-  eoBinBitFlip<Chrom> bitflip;
-  eoBinCrossover<Chrom> xover;
-  eoProportionalOpSel<Chrom> propSel;
-  eoBreeder<Chrom> breeder( propSel );
+  BinBitFlip<Chrom> bitflip;
+  BinCrossover<Chrom> xover;
+  ProportionalOpSel<Chrom> propSel;
+  Breeder<Chrom> breeder( propSel );
   propSel.addOp(bitflip, 0.25);
   propSel.addOp(xover, 0.75);
   
@@ -53,7 +53,7 @@ main()
   eoFitTerm<Chrom> term( pow(2.0, CHROM_SIZE), 1 );
 
   // GA generation
-  eoEasyEA<Chrom> ea(lottery, breeder, inclusion, eval, term);
+  EasyEA<Chrom> ea(lottery, breeder, inclusion, eval, term);
 
   // evolution
   try

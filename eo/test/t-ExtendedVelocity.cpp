@@ -1,11 +1,11 @@
 //-----------------------------------------------------------------------------
-// t-eoExtendedVelocity.cpp
+// t-ExtendedVelocity.cpp
 //-----------------------------------------------------------------------------
 
 
 #include <eo>
 
-typedef eoRealParticle < double > Particle;
+typedef RealParticle < double > Particle;
 
 //Evaluation function
 double f (const Particle & _particle)
@@ -21,26 +21,26 @@ int main_function(int argc, char **argv)
 	const unsigned POP_SIZE = 6, VEC_SIZE = 2, NEIGHBORHOOD_SIZE=2;
 
 	// the population:
-    eoPop<Particle> pop;
+    Pop<Particle> pop;
 
     // Evaluation
-    eoEvalFuncPtr<Particle, double, const Particle& > eval(  f );
+    EvalFuncPtr<Particle, double, const Particle& > eval(  f );
 
     // position + velocity + best init
-    eoUniformGenerator < double >uGen (-3, 3);
-    eoInitFixedLength < Particle > random (VEC_SIZE, uGen);
-    eoUniformGenerator < double >sGen (-2, 2);
-    eoVelocityInitFixedLength < Particle > veloRandom (VEC_SIZE, sGen);
-    eoFirstIsBestInit < Particle > localInit;
+    UniformGenerator < double >uGen (-3, 3);
+    InitFixedLength < Particle > random (VEC_SIZE, uGen);
+    UniformGenerator < double >sGen (-2, 2);
+    VelocityInitFixedLength < Particle > veloRandom (VEC_SIZE, sGen);
+    FirstIsBestInit < Particle > localInit;
     pop.append (POP_SIZE, random);
 
     // topology
-    eoLinearTopology<Particle> topology(NEIGHBORHOOD_SIZE);
-    eoInitializer <Particle> init(eval,veloRandom,localInit,topology,pop);
+    LinearTopology<Particle> topology(NEIGHBORHOOD_SIZE);
+    Initializer <Particle> init(eval,veloRandom,localInit,topology,pop);
     init();
 
     // velocity
-    eoExtendedVelocity <Particle> velocity (topology,1,1,1,1);
+    ExtendedVelocity <Particle> velocity (topology,1,1,1,1);
 
     // the test itself
     for (unsigned int i = 0; i < POP_SIZE; i++)
@@ -70,7 +70,7 @@ int main(int argc, char **argv)
     }
     catch(std::exception& e)
     {
-        std::cout << "Exception: " << e.what() <<  " in t-eoExtendedVelocity" << std::endl;
+        std::cout << "Exception: " << e.what() <<  " in t-ExtendedVelocity" << std::endl;
     }
     return EXIT_SUCCESS;
 }
