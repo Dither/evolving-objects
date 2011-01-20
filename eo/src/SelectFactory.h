@@ -1,4 +1,4 @@
-// eoSelectFactory.h
+// SelectFactory.h
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
@@ -26,8 +26,8 @@
 #ifndef _SELECTFACTORY_H
 #define _SELECTFACTORY_H
 
-#include <eoFactory.h>
-#include <eoRandomSelect.h>
+#include <Factory.h>
+#include <RandomSelect.h>
 #include <eoTournament.h>
 
 //-----------------------------------------------------------------------------
@@ -36,32 +36,32 @@ namespace eo
 {
 
     /** EO Factory.An instance of the factory class to create selectors, that is,
-	eoSelect objects
+	Select objects
 
-	@see eoSelect
+	@see Select
 	@ingroup Selectors
 	@ingroup Utilities
     */
     template< class EOT>
-    class eoSelectFactory: public eoFactory<eoSelect< EOT> > {
+    class SelectFactory: public Factory<Select< EOT> > {
 	
     public:
 	
 	/// @name ctors and dtors
 	//{@
 	/// constructor
-	eoSelectFactory( ) {}
+	SelectFactory( ) {}
 	
 	/// destructor
-	virtual ~eoSelectFactory() {}
+	virtual ~SelectFactory() {}
 	//@}
 
 	/** Another factory methods: creates an object from an std::istream, reading from
 	    it whatever is needed to create the object. Usually, the format for the std::istream will be\\
 	    objectType parameter1 parameter2 ... parametern\\
 	*/
-	virtual eoSelect<EOT>* make(std::istream& _is) {
-	    eoSelect<EOT> * selectPtr;
+	virtual Select<EOT>* make(std::istream& _is) {
+	    Select<EOT> * selectPtr;
 	    std::string objectTypeStr;
 	    _is >> objectTypeStr;
 	    // All selectors have a rate, the proportion of the original population
@@ -73,8 +73,8 @@ namespace eo
 		_is >> tSize;
 		selectPtr = new eoTournament<EOT>( rate, tSize );
 	    } else 	{
-		if ( objectTypeStr == "eoRandomSelect" ) {
-		    selectPtr = new eoRandomSelect<EOT>( rate );
+		if ( objectTypeStr == "RandomSelect" ) {
+		    selectPtr = new RandomSelect<EOT>( rate );
 		} else {
 		    throw std::runtime_error( "Incorrect selector type" );
 		}
@@ -82,7 +82,7 @@ namespace eo
 	    return selectPtr;
 	}
 
-	///@name eoObject methods
+	///@name Object methods
 	//@{
 	void printOn( std::ostream& _os ) const {};
 	void readFrom( std::istream& _is ){};

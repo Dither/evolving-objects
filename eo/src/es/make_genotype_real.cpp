@@ -29,7 +29,7 @@
 #pragma warning(disable:4786)
 #endif
 
-/** This file contains ***INSTANCIATED DEFINITIONS*** of eoReal Init fns
+/** This file contains ***INSTANCIATED DEFINITIONS*** of Real Init fns
  * It should be included in the file that calls any of the corresponding fns
  * Compiling this file allows one to generate part of the library (i.e. object
  * files that you just need to link with your own main and fitness code).
@@ -41,7 +41,7 @@
  * It is instanciated in src/es/make_genotype_real.cpp -
  * and incorporated in the ga/libga.a
  *
- * It returns an eoInit<EOT> that can later be used to initialize
+ * It returns an Init<EOT> that can later be used to initialize
  * the population (see make_pop.h).
  *
  * It uses a parser (to get user parameters) and a state (to store the memory)
@@ -59,18 +59,18 @@ namespace eo
 {
 
     /// The following functions merely call the templatized do_* functions
-    eoRealInitBounded<eoReal<double> > & make_genotype(eoParser& _parser,
-						       eoState& _state,
-						       eoReal<double> _eo)
+    RealInitBounded<Real<double> > & make_genotype(Parser& _parser,
+						       State& _state,
+						       Real<double> _eo)
     {
 	return do_make_genotype(_parser, _state, _eo);
     }
 
 
 
-    eoRealInitBounded<eoReal<eoMinimizingFitness> > & make_genotype(eoParser& _parser,
-								    eoState& _state,
-								    eoReal<eoMinimizingFitness> _eo)
+    RealInitBounded<Real<MinimizingFitness> > & make_genotype(Parser& _parser,
+								    State& _state,
+								    Real<MinimizingFitness> _eo)
     {
 	return do_make_genotype(_parser, _state, _eo);
     }

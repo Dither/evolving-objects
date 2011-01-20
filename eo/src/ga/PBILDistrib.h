@@ -25,7 +25,7 @@
 #ifndef _PBILDistrib_H
 #define _PBILDistrib_H
 
-#include <eoDistribution.h>
+#include <Distribution.h>
 
 namespace eo
 {
@@ -37,21 +37,21 @@ namespace eo
      * It encodes a univariate distribution on the space of bitstrings,
      * i.e. one probability for each bit to be one
      *
-     * It is an eoValueParam<std::vector<double> > : 
+     * It is an ValueParam<std::vector<double> > : 
      *    the std::vector<double> stores the probabilities that each bit is 1
      *
      * It is still pure virtual, as the update method needs to be specified
      */
 
     template <class EOT>
-    class eoPBILDistrib :  public eoDistribution<EOT>, 
-			   public eoValueParam<std::vector<double> >
+    class PBILDistrib :  public Distribution<EOT>, 
+			   public ValueParam<std::vector<double> >
     {
     public:
 	/** Ctor with size of genomes, and update parameters */
-	eoPBILDistrib(unsigned _genomeSize) :
-	    eoDistribution<EOT>(), 
-	    eoValueParam<std::vector<double> >(std::vector<double>(_genomeSize, 0.5), "Distribution"),
+	PBILDistrib(unsigned _genomeSize) :
+	    Distribution<EOT>(), 
+	    ValueParam<std::vector<double> >(std::vector<double>(_genomeSize, 0.5), "Distribution"),
 	    genomeSize(_genomeSize)
 	{}
 
@@ -94,7 +94,7 @@ namespace eo
 
 	unsigned int size() {return genomeSize;}
 
-	virtual std::string className() const {return "eoPBILDistrib";};
+	virtual std::string className() const {return "PBILDistrib";};
 
     private:
 	unsigned genomeSize; // size of indis

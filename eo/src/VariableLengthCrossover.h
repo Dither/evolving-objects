@@ -26,8 +26,8 @@
 #ifndef _VariableLengthCrossover_h
 #define _VariableLengthCrossover_h
 
-#include <eoFunctor.h>
-#include <eoOp.h>
+#include <Functor.h>
+#include <Op.h>
 
 namespace eo
 {
@@ -45,7 +45,7 @@ namespace eo
 
     /** A helper class for choosing which genes to exchange */
     template <class Atom>
-    class eoAtomExchange : public eoBF<unsigned, Atom &, bool>
+    class AtomExchange : public BF<unsigned, Atom &, bool>
     {
     public:
 	/** a function to initlialize - to be called before every crossover */
@@ -56,10 +56,10 @@ namespace eo
 
     /** Uniform crossover - well, not really, efficient for FixedLength */
     template <class Atom>
-    class eoUniformAtomExchange: public eoAtomExchange<Atom>
+    class UniformAtomExchange: public AtomExchange<Atom>
     {
     public:
-	eoUniformAtomExchange(double _rate=0.5):rate(_rate){}
+	UniformAtomExchange(double _rate=0.5):rate(_rate){}
 
 	/** randomize: fill the mask: the exchange will be simulated first
 	 * to see if sizes are OK, so it must be repeatable :
@@ -79,7 +79,7 @@ namespace eo
 	}
 
 	/** inherited className() */
-	virtual std::string className() const {return "eoUniformAtomExchange";}
+	virtual std::string className() const {return "UniformAtomExchange";}
 
     private:
 	double rate;
@@ -93,15 +93,15 @@ namespace eo
     /** Exchange Crossover using an AtomExchange
      */
     template <class EOT>
-    class eoVlAtomExchangeQuadOp : public eoQuadOp<EOT>
+    class VlAtomExchangeQuadOp : public QuadOp<EOT>
     {
     public :
 
 	typedef typename EOT::AtomType AtomType;
 
 	/** default ctor: requires bounds on number of genes + a rate */
-	eoVlAtomExchangeQuadOp(unsigned _Min, unsigned _Max,
-			       eoAtomExchange<AtomType>& _atomExchange):
+	VlAtomExchangeQuadOp(unsigned _Min, unsigned _Max,
+			       AtomExchange<AtomType>& _atomExchange):
 	    Min(_Min), Max(_Max), atomExchange(_atomExchange) {}
 
 	bool operator()(EOT & _eo1, EOT & _eo2)
@@ -163,27 +163,27 @@ namespace eo
 	virtual std::string className() const
 	{
 	    std::ostringstream os;
-	    os << "eoVlAtomExchangeQuadOp(" << atomExchange.className() << ")";
+	    os << "VlAtomExchangeQuadOp(" << atomExchange.className() << ")";
 	    return os.str();
 	}
 
     private:
 	unsigned Min, Max;
-	eoAtomExchange<AtomType> & atomExchange;
+	AtomExchange<AtomType> & atomExchange;
     };
 
     /** Crossover using an AtomCrossover. Probably irrelevant in Variable Length -
-	see eoFlOrBinOp.h and eoFlOrQuadOp.h for the similar Fixed Length operators
+	see FlOrBinOp.h and FlOrQuadOp.h for the similar Fixed Length operators
     */
     template <class EOT>
-    class eoInnerExchangeQuadOp : public eoQuadOp<EOT>
+    class InnerExchangeQuadOp : public QuadOp<EOT>
     {
     public :
 
 	typedef typename EOT::AtomType AtomType;
 
 	/** default ctor: requires bounds on number of genes + a rate */
-	eoInnerExchangeQuadOp( eoQuadOp<AtomType>& _op, float _rate = 0.5):
+	InnerExchangeQuadOp( QuadOp<AtomType>& _op, float _rate = 0.5):
 	    op(_op), rate( _rate ) {}
 
 	/** performs the Atom crossover */
@@ -202,12 +202,12 @@ namespace eo
 
 	virtual std::string className() const
 	{
-	    return "eoInnerExchangeQuadOp(" + op.className() + ")";
+	    return "InnerExchangeQuadOp(" + op.className() + ")";
 	}
 
     private:
 	float rate;
-	eoQuadOp<AtomType> & op;
+	QuadOp<AtomType> & op;
     };
 
 
@@ -223,14 +223,14 @@ namespace eo
 	offspring, and only after that exchange the other ones (Radcliffe's RRR).
     */
     template <class EOT>
-    class eoVlUniformQuadOp : public eoQuadOp<EOT>
+    class VlUniformQuadOp : public QuadOp<EOT>
     {
     public :
 
 	typedef typename EOT::AtomType AtomType;
 
 	// default ctor: requires bounds on number of genes + a rate
-	eoVlUniformQuadOp(unsigned _Min, unsigned _Max, double _rate=0.5) :
+	VlUniformQuadOp(unsigned _Min, unsigned _Max, double _rate=0.5) :
 	    Min(_Min), Max(_Max), rate(_rate) {}
 
 	bool operator()(EOT & _eo1, EOT & _eo2)
@@ -285,7 +285,7 @@ namespace eo
 	offspring, and only after that exchange the other ones (Radcliffe's RRR).
     */
     template <class EOT>
-    class eoVlUniformBinOp : public eoBinOp<EOT>
+    class eoVlUniformBinOp : public BinOp<EOT>
     {
     public :
 

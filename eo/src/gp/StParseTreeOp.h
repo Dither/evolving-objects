@@ -29,12 +29,12 @@
 #define StParseTreeOp_h
 
 #include <EO.h>
-#include <eoOp.h>
+#include <Op.h>
 #include <map.h>
 #include <iostream>
 #include <set>
 
-#include <gp/eoParseTree.h>
+#include <gp/ParseTree.h>
 
 namespace eo
 {
@@ -52,27 +52,27 @@ namespace eo
     }	
 
 
-    /** eoStSubtreeXOver --> subtree xover for strongly typed tree-based genetic programming
-	\class eoStSubtreeXOver eoStParseTreeOp.h gp/eoStParseTreeOp.h 
+    /** StSubtreeXOver --> subtree xover for strongly typed tree-based genetic programming
+	\class StSubtreeXOver StParseTreeOp.h gp/StParseTreeOp.h 
 	\ingroup StParseTree
     */
     template<class FType, class Node>
-    class eoStSubtreeXOver: public eoQuadOp< eoParseTree<FType, Node> > {
+    class StSubtreeXOver: public QuadOp< ParseTree<FType, Node> > {
     public:
 
-	typedef eoParseTree<FType,Node> EoType;
+	typedef ParseTree<FType,Node> EoType;
 	/**
 	 * Constructor
 	 * @param _max_length the maximum size of an individual
 	 */
-	eoStSubtreeXOver( unsigned _max_length)
-	    : eoQuadOp<EoType>(), max_length(_max_length) {};
+	StSubtreeXOver( unsigned _max_length)
+	    : QuadOp<EoType>(), max_length(_max_length) {};
 
 	/// the ckassname
-	virtual std::string className() const { return "eoStSubtreeXOver"; };
+	virtual std::string className() const { return "StSubtreeXOver"; };
 
 	/// Dtor
-	virtual ~eoStSubtreeXOver () {};
+	virtual ~StSubtreeXOver () {};
 
 	/**
 	 * Perform crossover on two individuals
@@ -112,7 +112,7 @@ namespace eo
 	   
 
 	
-	    typename eoParseTree<FType, Node>::subtree tmp = _eo1[i];
+	    typename ParseTree<FType, Node>::subtree tmp = _eo1[i];
 	    _eo1[i] = _eo2[j]; // insert subtree
 	    _eo2[j] = tmp;
 
@@ -128,30 +128,30 @@ namespace eo
 	unsigned max_length;
     };
 
-    /** eoStBranchMutation --> replace a strongly typed subtree with a randomly created strongly typed subtree 
-	\class eoStBranchMutation eoStParseTreeOp.h gp/eoStParseTreeOp.h
+    /** StBranchMutation --> replace a strongly typed subtree with a randomly created strongly typed subtree 
+	\class StBranchMutation StParseTreeOp.h gp/StParseTreeOp.h
 	\ingroup StParseTree
     */
     template<class FType, class Node>
-    class eoStBranchMutation: public eoMonOp< eoParseTree<FType, Node> >
+    class StBranchMutation: public MonOp< ParseTree<FType, Node> >
     {
     public:
 
-	typedef eoParseTree<FType,Node> EoType;
+	typedef ParseTree<FType,Node> EoType;
 	/**
 	 * Constructor
-	 * @param _init An instantiation of eoGpDepthInitializer
+	 * @param _init An instantiation of GpDepthInitializer
 	 * @param _max_length the maximum size of an individual
 	 */
-	eoStBranchMutation(eoInit<EoType>& _init, unsigned _max_length)
-	    : eoMonOp<EoType>(), max_length(_max_length), initializer(_init)
+	StBranchMutation(Init<EoType>& _init, unsigned _max_length)
+	    : MonOp<EoType>(), max_length(_max_length), initializer(_init)
 	{};
   
 	/// the class name
-	virtual std::string className() const { return "eoStBranchMutation"; };
+	virtual std::string className() const { return "StBranchMutation"; };
 
 	/// Dtor
-	virtual ~eoStBranchMutation() {};
+	virtual ~StBranchMutation() {};
   
 	/**
 	 * Mutate an individual
@@ -189,27 +189,27 @@ namespace eo
     private :
 
 	unsigned max_length;
-	eoInit<EoType>& initializer;
+	Init<EoType>& initializer;
     };
 
 
-    /** eoStPointMutation --> replace a Node with a Node of the same arity and type
-	\class eoStPointMutation eoStParseTreeOp.h gp/eoStParseTreeOp.h
+    /** StPointMutation --> replace a Node with a Node of the same arity and type
+	\class StPointMutation StParseTreeOp.h gp/StParseTreeOp.h
 	\ingroup StParseTree
     */
     template<class FType, class Node>
-    class eoStPointMutation: public eoMonOp< eoParseTree<FType, Node> >
+    class StPointMutation: public MonOp< ParseTree<FType, Node> >
     {
     public:
 
-	typedef eoParseTree<FType,Node> EoType;
+	typedef ParseTree<FType,Node> EoType;
 
 	/**
 	 * Constructor
-	 * @param _node The std::vector of Nodes given to the eoGpDepthInitializer
+	 * @param _node The std::vector of Nodes given to the GpDepthInitializer
 	 */
-	eoStPointMutation( std::vector<Node>& _node)
-	    : eoMonOp<EoType>()
+	StPointMutation( std::vector<Node>& _node)
+	    : MonOp<EoType>()
 	{
 	    unsigned int i=0;
 	    int arity=0;
@@ -228,10 +228,10 @@ namespace eo
 	};
   
 	/// the class name
-	virtual std::string className() const { return "eoStPointMutation"; };
+	virtual std::string className() const { return "StPointMutation"; };
 
 	/// Dtor
-	virtual ~eoStPointMutation() {};
+	virtual ~StPointMutation() {};
 
 	/**
 	 * Mutate an individual
@@ -256,30 +256,30 @@ namespace eo
     };
 
  
-    /** eoStHoistMutation -->  replace the individual with one of its strongly typed subtree's 
-	\class eoStHoistMutation eoStParseTreeOp.h gp/eoStParseTreeOp.h
+    /** StHoistMutation -->  replace the individual with one of its strongly typed subtree's 
+	\class StHoistMutation StParseTreeOp.h gp/StParseTreeOp.h
 	\ingroup StParseTree
     */
     template<class FType, class Node>
-    class eoStHoistMutation: public eoMonOp< eoParseTree<FType, Node> >
+    class StHoistMutation: public MonOp< ParseTree<FType, Node> >
     {
     public:
 
-	typedef eoParseTree<FType,Node> EoType;
+	typedef ParseTree<FType,Node> EoType;
 	/**
 	 * Constructor
-	 * @param _init An instantiation of eoStDepthInit
+	 * @param _init An instantiation of StDepthInit
 	 * @param _max_length the maximum size of an individual
 	 */
-	eoStHoistMutation(eoInit<EoType>& _init, unsigned _max_length)
-	    : eoMonOp<EoType>(), max_length(_max_length), initializer(_init)
+	StHoistMutation(Init<EoType>& _init, unsigned _max_length)
+	    : MonOp<EoType>(), max_length(_max_length), initializer(_init)
 	{};
   
 	/// the class name
-	virtual std::string className() const { return "eoStHoistMutation"; };
+	virtual std::string className() const { return "StHoistMutation"; };
 
 	/// Dtor
-	virtual ~eoStHoistMutation() {};
+	virtual ~StHoistMutation() {};
   
 	/**
 	 * Mutate an individual
@@ -308,7 +308,7 @@ namespace eo
     private :
 
 	unsigned max_length;
-	eoInit<EoType>& initializer;
+	Init<EoType>& initializer;
     };
 
 }

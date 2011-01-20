@@ -10,40 +10,40 @@
 #include <ctime>
 #include <sstream>
 
-#include "eoIntBounds.h"
+#include "IntBounds.h"
 
 namespace eo
 {
 
     // the global dummy bounds
     // (used for unbounded variables when bounds are required)
-    eoIntNoBounds eoDummyIntNoBounds;
+    IntNoBounds DummyIntNoBounds;
 
-    ///////////// helper read functions defined in eoRealBounds.cpp
+    ///////////// helper read functions defined in RealBounds.cpp
     extern bool remove_leading(std::string & _s, const std::string _delim);
     extern double read_double(std::string _s);
     extern long int read_int(std::string _s);
 
 
-    /** the constructor for eoGeneralIntBound - from a string
+    /** the constructor for GeneralIntBound - from a string
      */
-    eoIntBounds* eoGeneralIntBounds::getBoundsFromString(std::string _value)
+    IntBounds* GeneralIntBounds::getBoundsFromString(std::string _value)
     {
 	// now read
 	std::string delim(",; ");
 	std::string beginOrClose("[(])");
 	if (!remove_leading(_value, delim)) // only delimiters were left
-	    throw std::runtime_error("Syntax error in eoGeneralIntBounds Ctor");
+	    throw std::runtime_error("Syntax error in GeneralIntBounds Ctor");
 
 	// look for opening char
 	size_t posDeb = _value.find_first_of(beginOrClose);	// allow ]a,b]
 	if (posDeb >= _value.size())	// nothing left to read
-	    throw std::runtime_error("Syntax error in eoGeneralIntBounds Ctor");
+	    throw std::runtime_error("Syntax error in GeneralIntBounds Ctor");
 
 	// ending char: next {}() after posDeb
 	size_t posFin = _value.find_first_of(beginOrClose,posDeb+1);
 	if (posFin >= _value.size())	// not found
-	    throw std::runtime_error("Syntax error in eoGeneralIntBounds Ctor");
+	    throw std::runtime_error("Syntax error in GeneralIntBounds Ctor");
 
 	// the bounds
 	std::string sBounds = _value.substr(posDeb+1, posFin-posDeb-1);
@@ -53,7 +53,7 @@ namespace eo
 	remove_leading(sBounds, delim);
 	size_t posDelim = sBounds.find_first_of(delim);
 	if (posDelim >= sBounds.size())
-	    throw std::runtime_error("Syntax error in eoGeneralIntBounds Ctor");
+	    throw std::runtime_error("Syntax error in GeneralIntBounds Ctor");
 
 	bool minBounded=false, maxBounded=false;
 	long int minBound=0, maxBound=0;
@@ -82,20 +82,20 @@ namespace eo
 		maxBound = read_int(sMaxBounds);
 	    }
 
-	// now create the embedded eoIntBounds object
-	eoIntBounds * locBound;
+	// now create the embedded IntBounds object
+	IntBounds * locBound;
 	if (minBounded && maxBounded)
 	    {
 		if (maxBound <= minBound)
-		    throw std::runtime_error("Syntax error in eoGeneralIntBounds Ctor");
-		locBound = new eoIntInterval(minBound, maxBound);
+		    throw std::runtime_error("Syntax error in GeneralIntBounds Ctor");
+		locBound = new IntInterval(minBound, maxBound);
 	    }
 	else if (!minBounded && !maxBounded)	// no bound at all
-	    locBound = new eoIntNoBounds;
+	    locBound = new IntNoBounds;
 	else if (!minBounded && maxBounded)
-	    locBound = new eoIntAboveBound(maxBound);
+	    locBound = new IntAboveBound(maxBound);
 	else if (minBounded && !maxBounded)
-	    locBound = new eoIntBelowBound(minBound);
+	    locBound = new IntBelowBound(minBound);
 	return locBound;
     }
 

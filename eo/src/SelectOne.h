@@ -27,18 +27,18 @@
 
 
 //-----------------------------------------------------------------------------
-#include <eoPop.h>
-#include <eoFunctor.h>
+#include <Pop.h>
+#include <Functor.h>
 //-----------------------------------------------------------------------------
 
 namespace eo
 {
 
-    /** eoSelectOne selects only one element from a whole population.
+    /** SelectOne selects only one element from a whole population.
 	Most selection techniques are simply repeated applications
-	of eoSelectOne.
+	of SelectOne.
 
-	@see eoSelectMany, eoSelectRandom, eoDetTournament, eoStochTournament, eoProportional
+	@see SelectMany, SelectRandom, DetTournament, StochTournament, Proportional
 
 	@ingroup Selectors
     */
@@ -47,11 +47,11 @@ namespace eo
 #else
     template<class EOT, class WorthT = typename EOT::Fitness>
 #endif
-    class eoSelectOne : public eoUF<const eoPop<EOT>&, const EOT&>
+    class SelectOne : public UF<const Pop<EOT>&, const EOT&>
     {
     public :
-	/// virtual function to setup some population stats (for instance eoProportional can benefit greatly from this)
-	virtual void setup(const eoPop<EOT>& _pop)
+	/// virtual function to setup some population stats (for instance Proportional can benefit greatly from this)
+	virtual void setup(const Pop<EOT>& _pop)
 	{
 	    (void)_pop;
 	}

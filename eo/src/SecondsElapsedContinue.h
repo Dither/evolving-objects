@@ -25,7 +25,7 @@
 #ifndef _SecondsElapsedContinue_h
 #define _SecondsElapsedContinue_h
 
-#include <eoContinue.h>
+#include <Continue.h>
 
 namespace eo
 {
@@ -36,15 +36,15 @@ namespace eo
 	@ingroup Continuators
     */
     template< class EOT>
-    class eoSecondsElapsedContinue: public eoContinue<EOT>
+    class SecondsElapsedContinue: public Continue<EOT>
     {
 	time_t start;
 	int seconds;
     public:
 
-	eoSecondsElapsedContinue(int nSeconds) : start(time(0)), seconds(nSeconds) {}
+	SecondsElapsedContinue(int nSeconds) : start(time(0)), seconds(nSeconds) {}
 
-	virtual bool operator() ( const eoPop<EOT>& _vEO ) {
+	virtual bool operator() ( const Pop<EOT>& _vEO ) {
 	    time_t now = time(0);
 	    time_t diff = now - start;
   
@@ -54,7 +54,7 @@ namespace eo
 	}
 
   
-	virtual std::string className(void) const { return "eoSecondsElapsedContinue"; }
+	virtual std::string className(void) const { return "SecondsElapsedContinue"; }
 
 	/** REad from a stream
 	 * @param __is the ostream to read from
@@ -74,7 +74,7 @@ namespace eo
 
     };
 
-    /** @example t-eoSecondsElapsedContinue.cpp
+    /** @example t-SecondsElapsedContinue.cpp
      */
 
 }

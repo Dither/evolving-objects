@@ -26,7 +26,7 @@
 
 /** WARNING: this file contains 2 classes:
 
-eoPopString and eoSortedPopString
+PopString and SortedPopString
 
 that transform the population into a std::string
 that can be used to dump to the screen
@@ -35,41 +35,41 @@ that can be used to dump to the screen
 #ifndef _PopStat_h
 #define _PopStat_h
 
-#include <utils/eoStat.h>
+#include <utils/Stat.h>
 
 namespace eo
 {
 
-    /** Thanks to MS/VC++, eoParam mechanism is unable to handle std::vectors of stats.
+    /** Thanks to MS/VC++, Param mechanism is unable to handle std::vectors of stats.
 	This snippet is a workaround:
 	This class will "print" a whole population into a std::string - that you can later
 	send to any stream
-	This is the plain version - see eoPopString for the Sorted version
+	This is the plain version - see PopString for the Sorted version
 
-	Note: this Stat should probably be used only within eoStdOutMonitor, and not
-	inside an eoFileMonitor, as the eoState construct will work much better there.
+	Note: this Stat should probably be used only within StdOutMonitor, and not
+	inside an FileMonitor, as the State construct will work much better there.
 
 	@ingroup Stats
     */
     template <class EOT>
-    class eoPopStat : public eoStat<EOT, std::string>
+    class PopStat : public Stat<EOT, std::string>
     {
     public:
 
-	using eoStat<EOT, std::string>::value;
+	using Stat<EOT, std::string>::value;
 
 	/** default Ctor, void std::string by default, as it appears
 	    on the description line once at beginning of evolution. and
 	    is meaningless there. _howMany defaults to 0, that is, the whole
 	    population*/
-	eoPopStat(unsigned _howMany = 0, std::string _desc ="")
-	    : eoStat<EOT, std::string>("", _desc), combien( _howMany) {}
+	PopStat(unsigned _howMany = 0, std::string _desc ="")
+	    : Stat<EOT, std::string>("", _desc), combien( _howMany) {}
 
-	/** Fills the value() of the eoParam with the dump of the population.
+	/** Fills the value() of the Param with the dump of the population.
 	    Adds a \n before so it does not get mixed up with the rest of the stats
 	    that are written by the monitor it is probably used from.
 	*/
-	void operator()(const eoPop<EOT>& _pop)
+	void operator()(const Pop<EOT>& _pop)
 	{
 	    value() = "\n# ====== pop dump =====\n";
 	    unsigned howmany=combien?combien:_pop.size();
@@ -87,34 +87,34 @@ namespace eo
 	unsigned combien;
     };
 
-    /** Thanks to MS/VC++, eoParam mechanism is unable to handle std::vectors of stats.
+    /** Thanks to MS/VC++, Param mechanism is unable to handle std::vectors of stats.
 	This snippet is a workaround:
 	This class will "print" a whole population into a std::string - that you can later
 	send to any stream
-	This is the Sorted version - see eoPopString for the plain version
+	This is the Sorted version - see PopString for the plain version
 
-	Note: this Stat should probably be used only within eoStdOutMonitor, and not
-	inside an eoFileMonitor, as the eoState construct will work much better there.
+	Note: this Stat should probably be used only within StdOutMonitor, and not
+	inside an FileMonitor, as the State construct will work much better there.
 
 	@ingroup Stats
     */
     template <class EOT>
-    class eoSortedPopStat : public eoSortedStat<EOT, std::string>
+    class SortedPopStat : public SortedStat<EOT, std::string>
     {
     public:
 
-	using eoSortedStat<EOT, std::string>::value;
+	using SortedStat<EOT, std::string>::value;
 
 	/** default Ctor, void std::string by default, as it appears on
 	    the description line once at beginning of evolution. and is
 	    meaningless there _howMany defaults to 0, that is, the whole
 	    population
 	*/
-	eoSortedPopStat(unsigned _howMany = 0, std::string _desc ="")
-	    : eoSortedStat<EOT, std::string>("", _desc) , combien( _howMany)
+	SortedPopStat(unsigned _howMany = 0, std::string _desc ="")
+	    : SortedStat<EOT, std::string>("", _desc) , combien( _howMany)
         {}
 
-	/** Fills the value() of the eoParam with the dump of the
+	/** Fills the value() of the Param with the dump of the
 	    population. Adds a \n before so it does not get mixed up with
 	    the rest of the stats that are written by the monitor it is
 	    probably used from.

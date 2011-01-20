@@ -26,8 +26,8 @@
 #define GAUSSREALWEIGHTUP_H
 
 //-----------------------------------------------------------------------------
-#include <eoWeightUpdater.h>
-#include <utils/eoRNG.h>
+#include <WeightUpdater.h>
+#include <utils/RNG.h>
 //-----------------------------------------------------------------------------
 
 namespace eo
@@ -39,7 +39,7 @@ namespace eo
      *
      * @ingroup Variators
      */
-    class eoGaussRealWeightUp:public eoWeightUpdater<double>
+    class GaussRealWeightUp:public WeightUpdater<double>
     {
     public:
 
@@ -48,7 +48,7 @@ namespace eo
 	 * @param _mean - Mean for Gaussian distribution
 	 * @param _stdev - Standard deviation for Gaussian distribution
 	 */
-	eoGaussRealWeightUp(
+	GaussRealWeightUp(
 			    double  _mean=0,
 			    double  _stdev=1.0
 			    ):mean(_mean),stdev(_stdev){}

@@ -27,8 +27,8 @@
 #ifndef _CMAINIT_H
 #define _CMAINIT_H
 
-#include <eoInit.h>
-#include <eoVector.h>
+#include <Init.h>
+#include <Vector.h>
 #include <es/CMAState.h>
 
 namespace eo
@@ -36,14 +36,14 @@ namespace eo
 
     /// @todo handle bounds
     template <class FitT>
-    class eoCMAInit : public eoInit< eoVector<FitT, double> > {
+    class CMAInit : public Init< Vector<FitT, double> > {
     
 	const eo::CMAState& state;
 
-	typedef eoVector<FitT, double> EOT;
+	typedef Vector<FitT, double> EOT;
     
     public:
-	eoCMAInit(const eo::CMAState& state_) : state(state_) {}
+	CMAInit(const eo::CMAState& state_) : state(state_) {}
 
     
 	void operator()(EOT& v) {

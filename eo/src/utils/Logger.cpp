@@ -40,13 +40,13 @@ Authors:
 #include <stdexcept>
 #include <locale>
 
-#include "eoLogger.h"
+#include "Logger.h"
 
 namespace eo
 {
-    eoLogger	log;
+    Logger	log;
 
-    eoLogger::eoLogger()
+    Logger::Logger()
 	: std::ostream(&_obuf),
 	  _selectedLevel(eo::progress), _contextLevel(eo::quiet),
 	  _fd(2), _obuf(_fd, _contextLevel, _selectedLevel)
@@ -66,21 +66,21 @@ namespace eo
 	addLevel("xdebug", eo::xdebug);
     }
 
-    eoLogger::~eoLogger()
+    Logger::~Logger()
     {}
 
-    std::string	eoLogger::className() const
+    std::string	Logger::className() const
     {
-	return ("eoLogger");
+	return ("Logger");
     }
 
-    void	eoLogger::addLevel(std::string name, eo::Levels level)
+    void	Logger::addLevel(std::string name, eo::Levels level)
     {
 	_levels[name] = level;
 	_sortedLevels.push_back(name);
     }
 
-    void	eoLogger::printLevels() const
+    void	Logger::printLevels() const
     {
 	std::cout << "Available verbose levels:" << std::endl;
 
@@ -93,25 +93,25 @@ namespace eo
 	::exit(0);
     }
 
-    eoLogger&	operator<<(eoLogger& l, const eo::Levels lvl)
+    Logger&	operator<<(Logger& l, const eo::Levels lvl)
     {
 	l._contextLevel = lvl;
 	return l;
     }
 
-    eoLogger&	operator<<(eoLogger& l, eo::file f)
+    Logger&	operator<<(Logger& l, eo::file f)
     {
 	l._fd = ::open(f._f.c_str(), O_WRONLY | O_APPEND | O_CREAT, 0644);
 	return l;
     }
 
-    eoLogger&	operator<<(eoLogger& l, eo::setlevel v)
+    Logger&	operator<<(Logger& l, eo::setlevel v)
     {
 	l._selectedLevel = (v._lvl < 0 ? l._levels[v._v] : v._lvl);
 	return l;
     }
 
-    eoLogger&	operator<<(eoLogger& l, std::ostream& os)
+    Logger&	operator<<(Logger& l, std::ostream& os)
     {
 	if (l._standard_io_streams.find(&os) != l._standard_io_streams.end())
 	    {
@@ -120,13 +120,13 @@ namespace eo
 	return l;
     }
 
-    eoLogger::outbuf::outbuf(const int& fd,
+    Logger::outbuf::outbuf(const int& fd,
 			     const eo::Levels& contexlvl,
 			     const eo::Levels& selectedlvl)
 	: _fd(fd), _contextLevel(contexlvl), _selectedLevel(selectedlvl)
     {}
 
-    int	eoLogger::outbuf::overflow(int_type c)
+    int	Logger::outbuf::overflow(int_type c)
     {
 	if (_selectedLevel >= _contextLevel)
 	    {

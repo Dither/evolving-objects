@@ -28,9 +28,9 @@
 #define StParseTreeDepthInit_h
 
 #include <EO.h>
-#include <gp/eoParseTree.h>
-#include <eoInit.h>
-#include <eoOp.h>
+#include <gp/ParseTree.h>
+#include <Init.h>
+#include <Op.h>
 
 #include <map>
 
@@ -48,7 +48,7 @@ namespace eo
        \defgroup StParseTree
 
        Various functions for strongly typed tree-based Genetic Programming.
-       The StParseTree functions use the same eoParseTree class for the
+       The StParseTree functions use the same ParseTree class for the
        individual but now each node class must have two additional functions.
        \li int type(void) which returns the return type of the node
        \li int type(int child) which returns the required type for child 0, 1 or 2
@@ -58,17 +58,17 @@ namespace eo
        \ingroup Representations
     */
 
-    /** eoStParseTreeDepthInit : the initializer class for strongly typed tree-based genetic programming
-	\class eoStParseTreeDepthInit eoStParseTreeDepthInit.h gp/eoStParseTreeDepthInit.h
+    /** StParseTreeDepthInit : the initializer class for strongly typed tree-based genetic programming
+	\class StParseTreeDepthInit StParseTreeDepthInit.h gp/StParseTreeDepthInit.h
 	\ingroup StParseTree
     */
 
     template <class FType, class Node>
-    class eoStParseTreeDepthInit : public eoInit< eoParseTree<FType, Node> >
+    class StParseTreeDepthInit : public Init< ParseTree<FType, Node> >
     {
     public :
 
-	typedef eoParseTree<FType, Node> EoType;
+	typedef ParseTree<FType, Node> EoType;
     
 	/**
 	 * Constructor
@@ -77,20 +77,20 @@ namespace eo
 	 * @param _return_type (JD_2010-11-09: don't know the use of this parameter, maybe to force implicit template instanciation?)
 	 * @param _grow False results in a full tree, True result is a randomly grown tree
 	 */
-	eoStParseTreeDepthInit(
+	StParseTreeDepthInit(
 			       unsigned _max_depth,
 			       const std::vector<Node>& _node,
 			       const int& _return_type,
 			       bool _grow = true)
             :
-            eoInit<EoType>(),
+            Init<EoType>(),
 	    max_depth(_max_depth),
 	    return_type(_return_type),
 	    grow(_grow)
 	{
 	    if(_node.empty())
 		{
-		    throw std::logic_error("eoStParseTreeDepthInit: uhm, wouldn't you rather give a non-empty set of Nodes?");
+		    throw std::logic_error("StParseTreeDepthInit: uhm, wouldn't you rather give a non-empty set of Nodes?");
 		}
       
       
@@ -124,7 +124,7 @@ namespace eo
 
 	}
         /// My class name
-	virtual std::string className() const { return "eoStParseTreeDepthInit"; };
+	virtual std::string className() const { return "StParseTreeDepthInit"; };
 
 	/**initialize a tree
 	 * @param _tree : the tree to be initialized

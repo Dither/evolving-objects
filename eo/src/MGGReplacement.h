@@ -28,19 +28,19 @@
 
 
 //-----------------------------------------------------------------------------
-#include <eoPop.h>
-#include <eoFunctor.h>
-#include <eoMerge.h>
-#include <eoReduce.h>
-#include <utils/eoHowMany.h>
-#include <eoReduceSplit.h>
+#include <Pop.h>
+#include <Functor.h>
+#include <Merge.h>
+#include <Reduce.h>
+#include <utils/HowMany.h>
+#include <ReduceSplit.h>
 //-----------------------------------------------------------------------------
 
 namespace eo
 {
 
     /**
-       eoMGGReplacement is an eoReplacement:
+       MGGReplacement is an Replacement:
        - choose N (2) parents RANDOMLY - remove them from the parent population
        - select best offspring, add to parents
        - merge (other?) offspring and the N removed parents
@@ -51,10 +51,10 @@ namespace eo
     */
 
     template <class EOT>
-    class eoMGGReplacement : public eoReplacement<EOT>
+    class MGGReplacement : public Replacement<EOT>
     {
     public:
-	eoMGGReplacement(eoHowMany _howManyEliminatedParents = eoHowMany(2, false),
+	MGGReplacement(HowMany _howManyEliminatedParents = HowMany(2, false),
 			 unsigned _tSize=2) :
 	    // split truncates the parents and returns eliminated parents
 	    split(_howManyEliminatedParents, true), 
@@ -62,22 +62,22 @@ namespace eo
 	{
 	    if (tSize < 2)
 		{ 
-		    eo::log << eo::warnings << "Warning, Size for eoDetTournamentTruncateSplit adjusted to 2" << std::endl;
+		    eo::log << eo::warnings << "Warning, Size for DetTournamentTruncateSplit adjusted to 2" << std::endl;
 		    tSize = 2;
 		}
 	}
     
-	void operator()(eoPop<EOT> & _parents, eoPop<EOT> & _offspring)
+	void operator()(Pop<EOT> & _parents, Pop<EOT> & _offspring)
 	{
-	    eoPop<EOT> temp;
+	    Pop<EOT> temp;
 	    split(_parents, temp);
 	    unsigned toKeep = temp.size(); // how many to keep from merged populations
 	    // minimal check
 	    if (toKeep < 2)
-		throw std::runtime_error("Not enough parents killed in eoMGGReplacement");
+		throw std::runtime_error("Not enough parents killed in MGGReplacement");
 
 	    // select best offspring
-	    typename eoPop<EOT>::iterator it = _offspring.it_best_element();
+	    typename Pop<EOT>::iterator it = _offspring.it_best_element();
 	    // add to parents
 	    _parents.push_back(*it);
 	    // remove from offspring
@@ -99,8 +99,8 @@ namespace eo
 	}
 
     private:
-	eoLinearTruncateSplit<EOT> split; // few parents to truncate -> linear 
-	eoPlus<EOT> plus;
+	LinearTruncateSplit<EOT> split; // few parents to truncate -> linear 
+	Plus<EOT> plus;
 	unsigned int tSize;
     };
 

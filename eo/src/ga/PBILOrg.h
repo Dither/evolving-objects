@@ -26,8 +26,8 @@
 #ifndef _PBILOrg_H
 #define _PBILOrg_H
 
-#include <eoDistribUpdater.h>
-#include <ga/eoPBILDistrib.h>
+#include <DistribUpdater.h>
+#include <ga/PBILDistrib.h>
 
 namespace eo
 {
@@ -42,20 +42,20 @@ namespace eo
      */
 
     template <class EOT>
-    class eoPBILOrg :  public eoDistribUpdater<EOT>
+    class PBILOrg :  public DistribUpdater<EOT>
     {
     public:
 	/** Ctor with size of genomes, and update parameters */
-	eoPBILOrg(double _LR, double _tolerance=0.0 ) :
+	PBILOrg(double _LR, double _tolerance=0.0 ) :
 	    LR(_LR), maxBound(1.0-_tolerance), minBound(_tolerance)
 	{}
 
 
 	/** Update the distribution from the current population */
-	virtual void operator()(eoDistribution<EOT> & _distrib, eoPop<EOT>& _pop)
+	virtual void operator()(Distribution<EOT> & _distrib, Pop<EOT>& _pop)
 	{
 	    const EOT & best = _pop.best_element();
-	    eoPBILDistrib<EOT>& distrib = dynamic_cast<eoPBILDistrib<EOT>&>(_distrib);
+	    PBILDistrib<EOT>& distrib = dynamic_cast<PBILDistrib<EOT>&>(_distrib);
 
 	    std::vector<double> & p = distrib.value();
 

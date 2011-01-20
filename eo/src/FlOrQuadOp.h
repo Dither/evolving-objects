@@ -26,8 +26,8 @@
 #ifndef _FlOrQuadOp_h
 #define _FlOrQuadOp_h
 
-#include <eoFunctor.h>
-#include <eoOp.h>
+#include <Functor.h>
+#include <Op.h>
 
 namespace eo
 {
@@ -36,7 +36,7 @@ namespace eo
      * @{
      */
 
-    /** Generic eoQuadOps on fixed length genotypes.
+    /** Generic QuadOps on fixed length genotypes.
      *  Contains exchange crossovers (1pt and uniform)
      *      and crossovers that applies an Atom crossover 
      *          to all components with given rate, or
@@ -44,20 +44,20 @@ namespace eo
      */
 
     //////////////////////////////////////////////////////////////////////
-    //                        eoFlOrAllAtomQuadOp
+    //                        FlOrAllAtomQuadOp
     //////////////////////////////////////////////////////////////////////
 
     /** Quad Crossover using an Atom Crossover
      */
     template <class EOT>
-    class eoFlOrAllAtomQuadOp : public eoQuadOp<EOT>
+    class FlOrAllAtomQuadOp : public QuadOp<EOT>
     {
     public :
 
 	typedef typename EOT::AtomType AtomType;
 
 	/** default ctor: requires an Atom QuadOp */
-	eoFlOrAllAtomQuadOp( eoQuadOp<AtomType>& _op, double _rate = 1):
+	FlOrAllAtomQuadOp( QuadOp<AtomType>& _op, double _rate = 1):
 	    op(_op), rate( _rate ) {}
 
 	/** applies Atom crossover to ALL components with given rate */
@@ -74,28 +74,28 @@ namespace eo
 	}
 
 	/** inherited className()*/
-	virtual string className() const { return "eoFlOrAllAtomQuadOp"; }
+	virtual string className() const { return "FlOrAllAtomQuadOp"; }
 
     private:
 	double rate;
-	eoQuadOp<AtomType> & op;
+	QuadOp<AtomType> & op;
     };
 
     //////////////////////////////////////////////////////////////////////
-    //                        eoFlOrKAtomQuadOp
+    //                        FlOrKAtomQuadOp
     //////////////////////////////////////////////////////////////////////
     /** Quad Crossover using an Atom Crossover
      *  that is applied to a FIXED NB of components
      */
     template <class EOT>
-    class eoFlOrKAtomQuadOp : public eoQuadOp<EOT>
+    class FlOrKAtomQuadOp : public QuadOp<EOT>
     {
     public :
 
 	typedef typename EOT::AtomType AtomType;
 
 	/** default ctor: requires an Atom QuadOp and an unsigned */
-	eoFlOrAtomQuadOp( eoQuadOp<AtomType>& _op, unsigned _k = 1):
+	FlOrAtomQuadOp( QuadOp<AtomType>& _op, unsigned _k = 1):
 	    op(_op), k( _k ) {}
 
 	/** applies the Atom QuadOp to some components */
@@ -118,27 +118,27 @@ namespace eo
 	}
 
 	/** inherited className()*/
-	virtual string className() const { return "eoFlOrKAtomQuadOp"; }
+	virtual string className() const { return "FlOrKAtomQuadOp"; }
 
     private:
 	unsigned k;
-	eoQuadOp<AtomType> & op;
+	QuadOp<AtomType> & op;
     };
 
 
     //////////////////////////////////////////////////////////////////////
-    //                        eoFlOrUniformQuadOp
+    //                        FlOrUniformQuadOp
     //////////////////////////////////////////////////////////////////////
     /** The uniform crossover - exchanges atoms uniformly ! */
     template <class EOT>
-    class eoFlOrUniformQuadOp : public eoQuadOp<EOT>
+    class FlOrUniformQuadOp : public QuadOp<EOT>
     {
     public :
 
 	typedef typename EOT::AtomType AtomType;
 
 	/** default ctor: requires a rate - 0.5 by default */
-	eoVlUniformQuadOp(double _rate=0.5) : eoQuadOp<EOT>(_size),
+	VlUniformQuadOp(double _rate=0.5) : QuadOp<EOT>(_size),
 					      rate(_rate) {}
 
 	/** excahnges atoms at given rate */
@@ -166,25 +166,25 @@ namespace eo
 	}
 
 	/** inherited className()*/
-	virtual string className() const { return "eoFlOrUniformQuadOp"; }
+	virtual string className() const { return "FlOrUniformQuadOp"; }
 
     private:
 	double rate;
     };
 
     //////////////////////////////////////////////////////////////////////
-    //                        eoFlOr1ptQuadOp
+    //                        FlOr1ptQuadOp
     //////////////////////////////////////////////////////////////////////
     /** The 1pt  crossover (just in case someone wants it some day!) */
     template <class EOT>
-    class eoFlOr1ptQuadOp : public eoQuadOp<EOT>
+    class FlOr1ptQuadOp : public QuadOp<EOT>
     {
     public :
 
 	typedef typename EOT::AtomType AtomType;
 
 	/** default ctor: no argument */
-	eoVlUniformQuadOp() {}
+	VlUniformQuadOp() {}
 
 	/** exchanges first and second parts of the vectors of Atoms */
 	bool operator()(EOT & _eo1, EOT & _eo2)
@@ -212,7 +212,7 @@ namespace eo
 	}
 
 	/** inherited className()*/
-	virtual string className() const { return "eoFlOr1ptQuadOp"; }
+	virtual string className() const { return "FlOr1ptQuadOp"; }
 
     };
 

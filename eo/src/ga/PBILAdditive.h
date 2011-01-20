@@ -26,8 +26,8 @@
 #ifndef _PBILAdditive_H
 #define _PBILAdditive_H
 
-#include <eoDistribUpdater.h>
-#include <ga/eoPBILDistrib.h>
+#include <DistribUpdater.h>
+#include <ga/PBILDistrib.h>
 
 namespace eo
 {
@@ -45,20 +45,20 @@ namespace eo
      * and for some of the worst individuals (with different learning rates)
      */
     template <class EOT>
-    class eoPBILAdditive :  public eoDistribUpdater<EOT>
+    class PBILAdditive :  public DistribUpdater<EOT>
     {
     public:
 	/** Ctor with parameters
-	 *  using the default values is equivalent to using eoPBILOrg
+	 *  using the default values is equivalent to using PBILOrg
 	 */
-	eoPBILAdditive(double _LRBest, unsigned _nbBest = 1,
+	PBILAdditive(double _LRBest, unsigned _nbBest = 1,
 		       double _tolerance=0.0,
 		       double _LRWorst = 0.0, unsigned _nbWorst = 0 ) :
 	    maxBound(1.0-_tolerance), minBound(_tolerance),
 	    LR(0.0), nbBest(_nbBest), nbWorst(_nbWorst)
 	{
 	    if (nbBest+nbWorst == 0)
-		throw std::runtime_error("Must update either from best or from worst in eoPBILAdditive");
+		throw std::runtime_error("Must update either from best or from worst in PBILAdditive");
 
 	    if (_nbBest)
 		{
@@ -77,9 +77,9 @@ namespace eo
 	}
 
 	/** Update the distribution from the current population */
-	virtual void operator()(eoDistribution<EOT> & _distrib, eoPop<EOT>& _pop)
+	virtual void operator()(Distribution<EOT> & _distrib, Pop<EOT>& _pop)
 	{
-	    eoPBILDistrib<EOT>& distrib = dynamic_cast<eoPBILDistrib<EOT>&>(_distrib);
+	    PBILDistrib<EOT>& distrib = dynamic_cast<PBILDistrib<EOT>&>(_distrib);
 
 	    std::vector<double> & p = distrib.value();
 

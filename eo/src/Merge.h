@@ -31,18 +31,18 @@
 #include <stdexcept>
 
 // EO includes
-#include <eoPop.h>     // eoPop
-#include <eoFunctor.h>  // eoMerge
+#include <Pop.h>     // Pop
+#include <Functor.h>  // Merge
 
 namespace eo
 {
 
     /**
-     * eoMerge: Base class for elitist replacement algorithms. 
+     * Merge: Base class for elitist replacement algorithms. 
      * Merges the old population (first argument), with the new generation
      *
      * Its signature is exactly
-     * that of the selection base eoSelect, but its purpose is to merge the 
+     * that of the selection base Select, but its purpose is to merge the 
      * two populations into one (the second argument).
      * Note that the algorithms assume that the second argument denotes the 
      * next generation.
@@ -51,7 +51,7 @@ namespace eo
      * @ingroup Replacors
      */
 
-    template<class Chrom> class eoMerge: public eoBF<const eoPop<Chrom>&, eoPop<Chrom>&, void>
+    template<class Chrom> class Merge: public BF<const Pop<Chrom>&, Pop<Chrom>&, void>
     {};
 
     /**
@@ -60,29 +60,29 @@ namespace eo
  
        @ingroup Replacors
     */
-    template <class EOT> class eoElitism : public eoMerge<EOT>
+    template <class EOT> class Elitism : public Merge<EOT>
     {
     public :
-	eoElitism(double  _rate, bool _interpret_as_rate = true):
+	Elitism(double  _rate, bool _interpret_as_rate = true):
 	    rate(0), combien(0)
 	{
 	    if (_interpret_as_rate)
 		{
 		    if ( (_rate<0) || (_rate>1) )
-			throw std::logic_error("eoElitism: rate shoud be in [0,1]");
+			throw std::logic_error("Elitism: rate shoud be in [0,1]");
 		    rate = _rate;
 		}
 	    else
 		{
 		    if (_rate<0)
-			throw std::logic_error("Negative number of offspring in eoElitism!");
+			throw std::logic_error("Negative number of offspring in Elitism!");
 		    combien = (unsigned int)_rate;
 		    if (combien != _rate)
-			eo::log << eo::warnings << "Warning: Number of guys to merge in eoElitism was rounded" << std::endl;
+			log << warnings << "Warning: Number of guys to merge in Elitism was rounded" << std::endl;
 		}
 	}
   
-	void operator()(const eoPop<EOT>& _pop, eoPop<EOT>& _offspring)
+	void operator()(const Pop<EOT>& _pop, Pop<EOT>& _offspring)
 	{
 	    if ((combien == 0) && (rate == 0.0))
 		return;
@@ -113,20 +113,20 @@ namespace eo
        No elite
        @ingroup Replacors
     */
-    template <class EOT> class eoNoElitism : public eoElitism<EOT>
+    template <class EOT> class NoElitism : public Elitism<EOT>
     {
     public :
-        eoNoElitism() : eoElitism<EOT>(0) {}
+        NoElitism() : Elitism<EOT>(0) {}
     };
 
     /**
        Very elitist class, copies entire population into next gen
        @ingroup Replacors
     */
-    template <class EOT> class eoPlus : public eoMerge<EOT>
+    template <class EOT> class Plus : public Merge<EOT>
     {
     public :
-	void operator()(const eoPop<EOT>& _pop, eoPop<EOT>& _offspring)
+	void operator()(const Pop<EOT>& _pop, Pop<EOT>& _offspring)
 	{
 	    _offspring.reserve(_offspring.size() + _pop.size());
 

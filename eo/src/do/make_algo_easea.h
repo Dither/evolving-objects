@@ -27,35 +27,35 @@
 #ifndef _make_algo_easea_h
 #define _make_algo_easea_h
 
-#include <utils/eoData.h>     // for eo_is_a_rate
+#include <utils/Data.h>     // for eo_is_a_rate
 // everything tha's needed for the algorithms - SCALAR fitness
 
 // Selection
-// the eoSelectOne's
-#include <eoRandomSelect.h>
-#include <eoSequentialSelect.h>
-#include <eoDetTournamentSelect.h>
-#include <eoProportionalSelect.h>
-#include <eoFitnessScalingSelect.h>
-#include <eoRankingSelect.h>
-#include <eoStochTournamentSelect.h>
-// #include <eoSelect.h>    included in all others
+// the SelectOne's
+#include <RandomSelect.h>
+#include <SequentialSelect.h>
+#include <DetTournamentSelect.h>
+#include <ProportionalSelect.h>
+#include <FitnessScalingSelect.h>
+#include <RankingSelect.h>
+#include <StochTournamentSelect.h>
+// #include <Select.h>    included in all others
 
 // Breeders
-#include <eoGeneralBreeder.h>
+#include <GeneralBreeder.h>
 
 // Replacement
 #include "make_general_replacement.h"
-#include "eoMGGReplacement.h"
-#include "eoG3Replacement.h"
+#include "MGGReplacement.h"
+#include "G3Replacement.h"
 
 
 // Algorithm (only this one needed)
-#include <eoEasyEA.h>
+#include <EasyEA.h>
 
   // also need the parser and param includes
-#include <utils/eoParser.h>
-#include <utils/eoState.h>
+#include <utils/Parser.h>
+#include <utils/State.h>
 
 namespace eo
 {
@@ -76,14 +76,14 @@ namespace eo
      * @ingroup Builders
      */
     template <class EOT>
-    eoAlgo<EOT> & do_make_algo_scalar(eoParser& _parser, eoState& _state, eoPopEvalFunc<EOT>& _popeval, eoContinue<EOT>& _continue, eoGenOp<EOT>& _op)
+    Algo<EOT> & do_make_algo_scalar(Parser& _parser, State& _state, PopEvalFunc<EOT>& _popeval, Continue<EOT>& _continue, GenOp<EOT>& _op)
     {
 	// the selection
-	eoValueParam<eoParamParamType>& selectionParam = _parser.createParam(eoParamParamType("DetTour(2)"), "selection", "Selection: Roulette, Ranking(p,e), DetTour(T), StochTour(t), Sequential(ordered/unordered) or EliteSequentialSelect", 'S', "Evolution Engine");
+	ValueParam<ParamParamType>& selectionParam = _parser.createParam(ParamParamType("DetTour(2)"), "selection", "Selection: Roulette, Ranking(p,e), DetTour(T), StochTour(t), Sequential(ordered/unordered) or EliteSequentialSelect", 'S', "Evolution Engine");
 
-	eoParamParamType & ppSelect = selectionParam.value(); // std::pair<std::string,std::vector<std::string> >
+	ParamParamType & ppSelect = selectionParam.value(); // std::pair<std::string,std::vector<std::string> >
 
-	eoSelectOne<EOT>* select ;
+	SelectOne<EOT>* select ;
 	if (ppSelect.first == std::string("DetTour")) 
 	    {
 		unsigned detSize;
@@ -97,7 +97,7 @@ namespace eo
 		    }
 		else	  // parameter passed by user as DetTour(T)
 		    detSize = atoi(ppSelect.second[0].c_str());
-		select = new eoDetTournamentSelect<EOT>(detSize);
+		select = new DetTournamentSelect<EOT>(detSize);
 	    }
 	else if (ppSelect.first == std::string("StochTour"))
 	    {
@@ -112,7 +112,7 @@ namespace eo
 		else	  // parameter passed by user as DetTour(T)
 		    p = atof(ppSelect.second[0].c_str());
       
-		select = new eoStochTournamentSelect<EOT>(p);
+		select = new StochTournamentSelect<EOT>(p);
 	    }
 	else if (ppSelect.first == std::string("Ranking"))
 	    {
@@ -155,8 +155,8 @@ namespace eo
 			ppSelect.second[1] = (std::string("1"));
 		    }
 		// now we're OK
-		eoPerf2Worth<EOT> & p2w = _state.storeFunctor( new eoRanking<EOT>(p,e) );
-		select = new eoRouletteWorthSelect<EOT>(p2w);
+		Perf2Worth<EOT> & p2w = _state.storeFunctor( new Ranking<EOT>(p,e) );
+		select = new RouletteWorthSelect<EOT>(p2w);
 	    }
 	else if (ppSelect.first == std::string("Sequential")) // one after the other
 	    {
@@ -169,19 +169,19 @@ namespace eo
 		    }
 		else
 		    b = !(ppSelect.second[0] == std::string("unordered"));
-		select = new eoSequentialSelect<EOT>(b);
+		select = new SequentialSelect<EOT>(b);
 	    }
 	else if (ppSelect.first == std::string("EliteSequential")) // Best first, one after the other in random order afterwards
 	    {
-		select = new eoEliteSequentialSelect<EOT>;
+		select = new EliteSequentialSelect<EOT>;
 	    }
 	else if (ppSelect.first == std::string("Roulette")) // no argument (yet)
 	    {
-		select = new eoProportionalSelect<EOT>;
+		select = new ProportionalSelect<EOT>;
 	    }
 	else if (ppSelect.first == std::string("Random")) // no argument
 	    {
-		select = new eoRandomSelect<EOT>;
+		select = new RandomSelect<EOT>;
 	    }
 	else
 	    {
@@ -192,7 +192,7 @@ namespace eo
 	_state.storeFunctor(select);
 
 	// the number of offspring 
-	eoValueParam<eoHowMany>& offspringRateParam =  _parser.createParam(eoHowMany(1.0), "nbOffspring", "Nb of offspring (percentage or absolute)", 'O', "Evolution Engine");
+	ValueParam<HowMany>& offspringRateParam =  _parser.createParam(HowMany(1.0), "nbOffspring", "Nb of offspring (percentage or absolute)", 'O', "Evolution Engine");
 
 	/////////////////////////////////////////////////////
 	// the replacement
@@ -226,18 +226,18 @@ namespace eo
 	 *
 	 */
 
-	eoParamParamType & replacementParam = _parser.createParam(eoParamParamType("General"), "replacement", "Type of replacement: General, or Generational, ESComma, ESPlus, SSGA(T), EP(T), G3, MGG(T)", '\0', "Evolution Engine").value();
+	ParamParamType & replacementParam = _parser.createParam(ParamParamType("General"), "replacement", "Type of replacement: General, or Generational, ESComma, ESPlus, SSGA(T), EP(T), G3, MGG(T)", '\0', "Evolution Engine").value();
 	// the pointer
-	eoReplacement<EOT> * ptReplace;
+	Replacement<EOT> * ptReplace;
 
 	// first, separate G3 and MGG
 	// maybe one day we have a common class - but is it really necessary???
 	if (replacementParam.first == std::string("G3"))
 	    {
 		// reduce the parents: by default, survive parents = -2 === 2 parents die
-		eoHowMany surviveParents =  _parser.createParam(eoHowMany(-2,false), "surviveParents", "Nb of surviving parents (percentage or absolute)", '\0', "Evolution Engine / Replacement").value();
+		HowMany surviveParents =  _parser.createParam(HowMany(-2,false), "surviveParents", "Nb of surviving parents (percentage or absolute)", '\0', "Evolution Engine / Replacement").value();
 		// at the moment, this is the only argument
-		ptReplace = new eoG3Replacement<EOT>(-surviveParents);    // must receive nb of eliminated parets!
+		ptReplace = new G3Replacement<EOT>(-surviveParents);    // must receive nb of eliminated parets!
 		_state.storeFunctor(ptReplace);
 	    }
 	else  if (replacementParam.first == std::string("MGG"))
@@ -245,7 +245,7 @@ namespace eo
 		float t;
 		unsigned tSize;
 		// reduce the parents: by default, survive parents = -2 === 2 parents die
-		eoHowMany surviveParents =  _parser.createParam(eoHowMany(-2,false), "surviveParents", "Nb of surviving parents (percentage or absolute)", '\0', "Evolution Engine / Replacement").value();
+		HowMany surviveParents =  _parser.createParam(HowMany(-2,false), "surviveParents", "Nb of surviving parents (percentage or absolute)", '\0', "Evolution Engine / Replacement").value();
 		// the tournament size
 		if (!replacementParam.second.size())   // no parameter added
 		    {
@@ -266,19 +266,19 @@ namespace eo
 				throw std::runtime_error("Sorry, only deterministic tournament available at the moment");
 			    }
 		    }
-		ptReplace = new eoMGGReplacement<EOT>(-surviveParents, tSize);    
+		ptReplace = new MGGReplacement<EOT>(-surviveParents, tSize);    
 		_state.storeFunctor(ptReplace);
 	    }
 	else {   // until the end of what was the only loop/switch
     
 	    // the default deafult values
-	    eoHowMany elite (0.0);
+	    HowMany elite (0.0);
 	    bool strongElitism (false);
-	    eoHowMany surviveParents (0.0);
-	    eoParamParamType reduceParentType ("Deterministic");
-	    eoHowMany surviveOffspring (1.0);
-	    eoParamParamType reduceOffspringType ("Deterministic");
-	    eoParamParamType reduceFinalType ("Deterministic");
+	    HowMany surviveParents (0.0);
+	    ParamParamType reduceParentType ("Deterministic");
+	    HowMany surviveOffspring (1.0);
+	    ParamParamType reduceOffspringType ("Deterministic");
+	    ParamParamType reduceFinalType ("Deterministic");
 
 	    // depending on the value entered by the user, change some of the above
 	    double t;
@@ -296,7 +296,7 @@ namespace eo
 	    // ---------- ESPlus
 	    else if (replacementParam.first == std::string("ESPlus"))
 		{
-		    surviveParents = eoHowMany(1.0);
+		    surviveParents = HowMany(1.0);
 		}
 	    // ---------- Generational
 	    else if (replacementParam.first == std::string("Generational"))
@@ -314,7 +314,7 @@ namespace eo
 			}
 		    // by coincidence, the syntax for the EP reducer is the same than here:
 		    reduceFinalType = replacementParam;
-		    surviveParents = eoHowMany(1.0);
+		    surviveParents = HowMany(1.0);
 		}
 	    // ---------- SSGA
 	    else if (replacementParam.first == std::string("SSGA"))
@@ -324,23 +324,23 @@ namespace eo
 			    std::cerr << "WARNING, no parameter passed to SSGA replacement, using 2" << std::endl;
 			    // put back 2 in parameter for consistency (and status file)
 			    replacementParam.second.push_back(std::string("2"));
-			    reduceParentType = eoParamParamType(std::string("DetTour(2)"));
+			    reduceParentType = ParamParamType(std::string("DetTour(2)"));
 			}
 		    else
 			{
 			    t = atof(replacementParam.second[0].c_str());
 			    if (t>=2)
 				{			   // build the appropriate deafult value
-				    reduceParentType = eoParamParamType(std::string("DetTour(") + replacementParam.second[0].c_str() + ")");
+				    reduceParentType = ParamParamType(std::string("DetTour(") + replacementParam.second[0].c_str() + ")");
 				}
 			    else   // check for [0.5,1] will be made in make_general_replacement
 				{			   // build the appropriate deafult value
-				    reduceParentType = eoParamParamType(std::string("StochTour(") + replacementParam.second[0].c_str() + ")");
+				    reduceParentType = ParamParamType(std::string("StochTour(") + replacementParam.second[0].c_str() + ")");
 				}
 			}
 		    // 
-		    surviveParents = eoHowMany(-1);
-		    surviveOffspring = eoHowMany(1);
+		    surviveParents = HowMany(-1);
+		    surviveOffspring = HowMany(1);
 		}
 	    else		       // no replacement recognized
 		{
@@ -356,14 +356,14 @@ namespace eo
 	///////////////////////////////
 	// the general breeder
 	///////////////////////////////
-	eoGeneralBreeder<EOT> *breed = 
-	    new eoGeneralBreeder<EOT>(*select, _op, offspringRateParam.value());
+	GeneralBreeder<EOT> *breed = 
+	    new GeneralBreeder<EOT>(*select, _op, offspringRateParam.value());
 	_state.storeFunctor(breed);
 
 	///////////////////////////////
-	// now the eoEasyEA
+	// now the EasyEA
 	///////////////////////////////
-	eoAlgo<EOT> *algo = new eoEasyEA<EOT>(_continue, _popeval, *breed, *ptReplace);
+	Algo<EOT> *algo = new EasyEA<EOT>(_continue, _popeval, *breed, *ptReplace);
 	_state.storeFunctor(algo);
 	// that's it!
 	return *algo;
@@ -382,9 +382,9 @@ namespace eo
      * is actually templatized here
      */
     template <class EOT>
-    eoAlgo<EOT> & do_make_algo_scalar(eoParser& _parser, eoState& _state, eoEvalFunc<EOT>& _eval, eoContinue<EOT>& _continue, eoGenOp<EOT>& _op)
+    Algo<EOT> & do_make_algo_scalar(Parser& _parser, State& _state, EvalFunc<EOT>& _eval, Continue<EOT>& _continue, GenOp<EOT>& _op)
     {
-	do_make_algo_scalar( _parser, _state, *(new eoPopLoopEval<EOT>(_eval)), _continue, _op); 
+	do_make_algo_scalar( _parser, _state, *(new PopLoopEval<EOT>(_eval)), _continue, _op); 
     }
 
 }

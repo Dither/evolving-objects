@@ -43,9 +43,9 @@
 // The templatized code
 #include <do/make_checkpoint.h>
 // the instanciating EOType(s)
-#include <es/eoEsSimple.h>	   // one Sigma per individual
-#include <es/eoEsStdev.h>	   // one sigmal per object variable
-#include <es/eoEsFull.h>	   // full correlation matrix per indi
+#include <es/EsSimple.h>	   // one Sigma per individual
+#include <es/EsStdev.h>	   // one sigmal per object variable
+#include <es/EsFull.h>	   // full correlation matrix per indi
 
 namespace eo
 {
@@ -54,31 +54,31 @@ namespace eo
 
     // checkpoint
     /////////////
-    eoCheckPoint<eoEsSimple<double> >& make_checkpoint(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoEsSimple<double> >& _eval, eoContinue<eoEsSimple<double> >& _continue)
+    CheckPoint<EsSimple<double> >& make_checkpoint(Parser& _parser, State& _state, EvalFuncCounter<EsSimple<double> >& _eval, Continue<EsSimple<double> >& _continue)
     {
 	return do_make_checkpoint(_parser, _state, _eval, _continue);
     }
-    eoCheckPoint<eoEsSimple<eoMinimizingFitness> >& make_checkpoint(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoEsSimple<eoMinimizingFitness> >& _eval, eoContinue<eoEsSimple<eoMinimizingFitness> >& _continue) 
-    {
-	return do_make_checkpoint(_parser, _state, _eval, _continue);
-    }
-
-    /////////////
-    eoCheckPoint<eoEsStdev<double> >& make_checkpoint(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoEsStdev<double> >& _eval, eoContinue<eoEsStdev<double> >& _continue)
-    {
-	return do_make_checkpoint(_parser, _state, _eval, _continue);
-    }
-    eoCheckPoint<eoEsStdev<eoMinimizingFitness> >& make_checkpoint(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoEsStdev<eoMinimizingFitness> >& _eval, eoContinue<eoEsStdev<eoMinimizingFitness> >& _continue) 
+    CheckPoint<EsSimple<MinimizingFitness> >& make_checkpoint(Parser& _parser, State& _state, EvalFuncCounter<EsSimple<MinimizingFitness> >& _eval, Continue<EsSimple<MinimizingFitness> >& _continue) 
     {
 	return do_make_checkpoint(_parser, _state, _eval, _continue);
     }
 
     /////////////
-    eoCheckPoint<eoEsFull<double> >& make_checkpoint(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoEsFull<double> >& _eval, eoContinue<eoEsFull<double> >& _continue)
+    CheckPoint<EsStdev<double> >& make_checkpoint(Parser& _parser, State& _state, EvalFuncCounter<EsStdev<double> >& _eval, Continue<EsStdev<double> >& _continue)
     {
 	return do_make_checkpoint(_parser, _state, _eval, _continue);
     }
-    eoCheckPoint<eoEsFull<eoMinimizingFitness> >& make_checkpoint(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoEsFull<eoMinimizingFitness> >& _eval, eoContinue<eoEsFull<eoMinimizingFitness> >& _continue) 
+    CheckPoint<EsStdev<MinimizingFitness> >& make_checkpoint(Parser& _parser, State& _state, EvalFuncCounter<EsStdev<MinimizingFitness> >& _eval, Continue<EsStdev<MinimizingFitness> >& _continue) 
+    {
+	return do_make_checkpoint(_parser, _state, _eval, _continue);
+    }
+
+    /////////////
+    CheckPoint<EsFull<double> >& make_checkpoint(Parser& _parser, State& _state, EvalFuncCounter<EsFull<double> >& _eval, Continue<EsFull<double> >& _continue)
+    {
+	return do_make_checkpoint(_parser, _state, _eval, _continue);
+    }
+    CheckPoint<EsFull<MinimizingFitness> >& make_checkpoint(Parser& _parser, State& _state, EvalFuncCounter<EsFull<MinimizingFitness> >& _eval, Continue<EsFull<MinimizingFitness> >& _continue) 
     {
 	return do_make_checkpoint(_parser, _state, _eval, _continue);
     }

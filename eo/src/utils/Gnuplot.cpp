@@ -28,16 +28,16 @@
 #include <sstream>
 #include <stdexcept>
 
-#include "eoGnuplot.h"
+#include "Gnuplot.h"
 
 namespace eo
 {
 
-    unsigned eoGnuplot::numWindow=0;
+    unsigned Gnuplot::numWindow=0;
 
 
 
-    eoGnuplot::eoGnuplot(std::string _title, std::string _extra)
+    Gnuplot::Gnuplot(std::string _title, std::string _extra)
 	: firstTime(true)
     {
 	initGnuPlot(_title, _extra);
@@ -45,7 +45,7 @@ namespace eo
 
 
 
-    eoGnuplot::~eoGnuplot()
+    Gnuplot::~Gnuplot()
     {
 #ifdef HAVE_GNUPLOT
 	if( gpCom ) {
@@ -58,7 +58,7 @@ namespace eo
 
 
 
-    void eoGnuplot::gnuplotCommand(const char *_command)
+    void Gnuplot::gnuplotCommand(const char *_command)
     {
 #ifdef HAVE_GNUPLOT
 	if(gpCom) {
@@ -70,7 +70,7 @@ namespace eo
 
 
 
-    void eoGnuplot::initGnuPlot(std::string _title, std::string _extra)
+    void Gnuplot::initGnuPlot(std::string _title, std::string _extra)
     {
 #ifdef HAVE_GNUPLOT
 	std::ostringstream os;

@@ -1,8 +1,8 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
  
 //-----------------------------------------------------------------------------
-// ParseTreeOp.h : crossover and mutation operator for  the eoParseTree class
-// (c) Maarten Keijzer 2000  for eoSubtreeXOver, eoBranchMutation
+// ParseTreeOp.h : crossover and mutation operator for  the ParseTree class
+// (c) Maarten Keijzer 2000  for SubtreeXOver, eoBranchMutation
 // (c) Jeroen Eggermont 2001 for other mutation operators
 
 /*
@@ -30,34 +30,34 @@
 #define ParseTreeOp_h
 
 #include <EO.h>
-#include <eoOp.h>
+#include <Op.h>
 
-#include <gp/eoParseTree.h>
+#include <gp/ParseTree.h>
 
 namespace eo
 {
 
-    /** eoSubtreeXOver --> subtree xover 
-	\class eoSubtreeXOver eoParseTreeOp.h gp/eoParseTreeOp.h 
+    /** SubtreeXOver --> subtree xover 
+	\class SubtreeXOver ParseTreeOp.h gp/ParseTreeOp.h 
 	\ingroup ParseTree
     */
     template<class FType, class Node>
-    class eoSubtreeXOver: public eoQuadOp< eoParseTree<FType, Node> > {
+    class SubtreeXOver: public QuadOp< ParseTree<FType, Node> > {
     public:
 
-	typedef eoParseTree<FType,Node> EoType;
+	typedef ParseTree<FType,Node> EoType;
 	/**
 	 * Constructor
 	 * @param _max_length the maximum size of an individual
 	 */
-	eoSubtreeXOver( unsigned _max_length)
-	    : eoQuadOp<EoType>(), max_length(_max_length) {};
+	SubtreeXOver( unsigned _max_length)
+	    : QuadOp<EoType>(), max_length(_max_length) {};
 
 	/// the ckassname
-	virtual std::string className() const { return "eoSubtreeXOver"; };
+	virtual std::string className() const { return "SubtreeXOver"; };
 
 	/// Dtor
-	virtual ~eoSubtreeXOver () {};
+	virtual ~SubtreeXOver () {};
 
 	/**
 	 * Perform crossover on two individuals
@@ -83,22 +83,22 @@ namespace eo
     };
 
     /** eoBranchMutation --> replace a subtree with a randomly created subtree 
-	\class eoBranchMutation eoParseTreeOp.h gp/eoParseTreeOp.h
+	\class eoBranchMutation ParseTreeOp.h gp/ParseTreeOp.h
 	\ingroup ParseTree
     */
     template<class FType, class Node>
-    class eoBranchMutation: public eoMonOp< eoParseTree<FType, Node> >
+    class eoBranchMutation: public MonOp< ParseTree<FType, Node> >
     {
     public:
 
-	typedef eoParseTree<FType,Node> EoType;
+	typedef ParseTree<FType,Node> EoType;
 	/**
 	 * Constructor
-	 * @param _init An instantiation of eoGpDepthInitializer
+	 * @param _init An instantiation of GpDepthInitializer
 	 * @param _max_length the maximum size of an individual
 	 */
-	eoBranchMutation(eoInit<EoType>& _init, unsigned _max_length)
-	    : eoMonOp<EoType>(), max_length(_max_length), initializer(_init)
+	eoBranchMutation(Init<EoType>& _init, unsigned _max_length)
+	    : MonOp<EoType>(), max_length(_max_length), initializer(_init)
 	{};
   
 	/// the class name
@@ -130,7 +130,7 @@ namespace eo
     private :
 
 	unsigned max_length;
-	eoInit<EoType>& initializer;
+	Init<EoType>& initializer;
     };
 
     // Additional Mutation operators from 
@@ -139,33 +139,33 @@ namespace eo
     // ISBN: 3-920993-58-6
     // ISBN: 1-55860-510-X
     //
-    // For the eoParseTree class
+    // For the ParseTree class
 
-    /** eoPointMutation --> replace a Node with a Node of the same arity 
-	\class eoPointMutation eoParseTreeOp.h gp/eoParseTreeOp.h	
+    /** PointMutation --> replace a Node with a Node of the same arity 
+	\class PointMutation ParseTreeOp.h gp/ParseTreeOp.h	
 	\ingroup ParseTree
     */
 
     template<class FType, class Node>
-    class eoPointMutation: public eoMonOp< eoParseTree<FType, Node> >
+    class PointMutation: public MonOp< ParseTree<FType, Node> >
     {
     public:
 
-	typedef eoParseTree<FType,Node> EoType;
+	typedef ParseTree<FType,Node> EoType;
 
 	/**
 	 * Constructor
-	 * @param _initializor The std::vector of Nodes given to the eoGpDepthInitializer
+	 * @param _initializor The std::vector of Nodes given to the GpDepthInitializer
 	 */
-	eoPointMutation( std::vector<Node>& _initializor)
-	    : eoMonOp<EoType>(), initializor(_initializor)
+	PointMutation( std::vector<Node>& _initializor)
+	    : MonOp<EoType>(), initializor(_initializor)
 	{};
   
 	/// the class name
-	virtual std::string className() const { return "eoPointMutation"; };
+	virtual std::string className() const { return "PointMutation"; };
 
 	/// Dtor
-	virtual ~eoPointMutation() {};
+	virtual ~PointMutation() {};
 
 	/**
 	 * Mutate an individual
@@ -198,32 +198,32 @@ namespace eo
 
     };
 
-    /** eoExpansionMutation --> replace a terminal with a randomly created subtree 
-	\class eoExpansionMutation eoParseTreeOp.h gp/eoParseTreeOp.h
+    /** ExpansionMutation --> replace a terminal with a randomly created subtree 
+	\class ExpansionMutation ParseTreeOp.h gp/ParseTreeOp.h
 	\ingroup ParseTree
     */
 
     template<class FType, class Node>
-    class eoExpansionMutation: public eoMonOp< eoParseTree<FType, Node> >
+    class ExpansionMutation: public MonOp< ParseTree<FType, Node> >
     {
     public:
 
-	typedef eoParseTree<FType, Node> EoType;
+	typedef ParseTree<FType, Node> EoType;
   
 	/**
 	 * Constructor
-	 * @param _init An instantiation of eoGpDepthInitializer
+	 * @param _init An instantiation of GpDepthInitializer
 	 * @param _max_length the maximum size of an individual
 	 */
-	eoExpansionMutation(eoInit<EoType>& _init, unsigned _max_length)
-	    : eoMonOp<EoType>(), max_length(_max_length), initializer(_init)
+	ExpansionMutation(Init<EoType>& _init, unsigned _max_length)
+	    : MonOp<EoType>(), max_length(_max_length), initializer(_init)
 	{};
   
 	/// The class name
-	virtual std::string className() const { return "eoExpansionMutation"; };
+	virtual std::string className() const { return "ExpansionMutation"; };
 
 	/// Dtor
-	virtual ~eoExpansionMutation() {};
+	virtual ~ExpansionMutation() {};
 	/**
 	 * Mutate an individual
 	 * @param _eo1 The individual that is to be changed
@@ -263,34 +263,34 @@ namespace eo
     private :
 
 	unsigned max_length;
-	eoInit<EoType>& initializer;
+	Init<EoType>& initializer;
     };
 
-    /** eoCollapseSubtree -->  replace a subtree with a randomly chosen terminal
-	\class eoCollapseSubtreeMutation eoParseTreeOp.h gp/eoParseTreeOp.h
+    /** CollapseSubtree -->  replace a subtree with a randomly chosen terminal
+	\class CollapseSubtreeMutation ParseTreeOp.h gp/ParseTreeOp.h
 	\ingroup ParseTree
     */
 
     template<class FType, class Node>
-    class eoCollapseSubtreeMutation: public eoMonOp< eoParseTree<FType, Node> >
+    class CollapseSubtreeMutation: public MonOp< ParseTree<FType, Node> >
     {
     public:
 
-	typedef eoParseTree<FType,Node> EoType;
+	typedef ParseTree<FType,Node> EoType;
 	/**
 	 * Constructor
-	 * @param _init An instantiation of eoGpDepthInitializer
+	 * @param _init An instantiation of GpDepthInitializer
 	 * @param _max_length the maximum size of an individual
 	 */
-	eoCollapseSubtreeMutation(eoInit<EoType>& _init, unsigned _max_length)
-	    : eoMonOp<EoType>(), max_length(_max_length), initializer(_init)
+	CollapseSubtreeMutation(Init<EoType>& _init, unsigned _max_length)
+	    : MonOp<EoType>(), max_length(_max_length), initializer(_init)
 	{};
 
 	/// The class name
-	virtual std::string className() const { return "eoCollapseSubtreeMutation"; };
+	virtual std::string className() const { return "CollapseSubtreeMutation"; };
 
 	/// Dtor
-	virtual ~eoCollapseSubtreeMutation() {};
+	virtual ~CollapseSubtreeMutation() {};
 	/**
 	 * Mutate an individual
 	 * @param _eo1 The individual that is to be changed
@@ -326,34 +326,34 @@ namespace eo
     private :
 
 	unsigned max_length;
-	eoInit<EoType>& initializer;
+	Init<EoType>& initializer;
     };
 
 
-    /** eoHoistMutation -->  replace the individual with one of its subtree's 
-	\class eoHoistMutation eoParseTreeOp.h gp/eoParseTreeOp.h
+    /** HoistMutation -->  replace the individual with one of its subtree's 
+	\class HoistMutation ParseTreeOp.h gp/ParseTreeOp.h
 	\ingroup ParseTree
     */
  
     template<class FType, class Node>
-    class eoHoistMutation: public eoMonOp< eoParseTree<FType, Node> >
+    class HoistMutation: public MonOp< ParseTree<FType, Node> >
     {
     public:
 
-	typedef eoParseTree<FType,Node> EoType;
+	typedef ParseTree<FType,Node> EoType;
 
 	/**
 	 * Constructor
 	 */
-	eoHoistMutation()
-	    : eoMonOp<EoType>()
+	HoistMutation()
+	    : MonOp<EoType>()
 	{};
   
 	/// The class name
-	virtual std::string className() const { return "eoHoistMutation"; };
+	virtual std::string className() const { return "HoistMutation"; };
 
 	/// Dtor
-	virtual ~eoHoistMutation() {};
+	virtual ~HoistMutation() {};
 	/**
 	 * Mutate an individual
 	 * @param _eo1 The individual that is to be changed

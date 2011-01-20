@@ -29,17 +29,17 @@
 #include <iostream>    // std::ostream, std::istream
 #include <string>      // std::string
 
-#include <eoVector.h>
+#include <Vector.h>
 
 namespace eo
 {
 
-    /** eoReal: implementation of simple real-valued chromosome.
-     * based on eoVector class
+    /** Real: implementation of simple real-valued chromosome.
+     * based on Vector class
      *
      * @ingroup Real
      */
-    template <class FitT> class eoReal: public eoVector<FitT, double>
+    template <class FitT> class Real: public Vector<FitT, double>
     {
     public:
 
@@ -48,17 +48,17 @@ namespace eo
 	 * @param size Size of the std::vector
 	 * @param value fill the vector with this value
 	 */
-	eoReal(unsigned size = 0, double value = 0.0):
-	    eoVector<FitT, double>(size, value) {}
+	Real(unsigned size = 0, double value = 0.0):
+	    Vector<FitT, double>(size, value) {}
 
 	/// My class name.
 	virtual std::string className() const
 	{
-	    return "eoReal";
+	    return "Real";
 	}
 
     };
-    /** @example t-eoReal.cpp
+    /** @example t-Real.cpp
      */
 
 }

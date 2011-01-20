@@ -26,7 +26,7 @@
 #define BINARYFLIGHT_H
 
 //-----------------------------------------------------------------------------
-#include <eoFlight.h>
+#include <Flight.h>
 //-----------------------------------------------------------------------------
 
 namespace eo
@@ -38,7 +38,7 @@ namespace eo
      *
      * @ingroup Core
      */
-    template < class POT > class eoBinaryFlight:public eoFlight < POT >{};
+    template < class POT > class BinaryFlight:public Flight < POT >{};
 
 }
 

@@ -7,7 +7,7 @@
 // Printable.cpp
 //-----------------------------------------------------------------------------
 
-#include <eoPrintable.h>
+#include <Printable.h>
 
 namespace eo
 {
@@ -16,7 +16,7 @@ namespace eo
     //Implementation of these objects
     //-----------------------------------------------------------------------------
 
-    std::ostream & operator << ( std::ostream& _os, const eoPrintable& _o ) {
+    std::ostream & operator << ( std::ostream& _os, const Printable& _o ) {
 	_o.printOn(_os);
 	return _os;
     }

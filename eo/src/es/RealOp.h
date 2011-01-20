@@ -29,25 +29,25 @@
 //-----------------------------------------------------------------------------
 
 #include <algorithm>    // swap_ranges
-#include <utils/eoRNG.h>
-#include <es/eoReal.h>
-#include <utils/eoRealVectorBounds.h>
+#include <utils/RNG.h>
+#include <es/Real.h>
+#include <utils/RealVectorBounds.h>
 
 //-----------------------------------------------------------------------------
 
 namespace eo
 {
 
-    /** eoUniformMutation --> changes all values of the std::vector
+    /** UniformMutation --> changes all values of the std::vector
 	by uniform choice with range epsilon
 	with probability p_change per variable
-	\class eoUniformMutation eoRealOp.h Tutorial/eoRealOp.h
+	\class UniformMutation RealOp.h Tutorial/RealOp.h
 	*
 	* @ingroup Real
 	* @ingroup Variators
 	*/
 
-    template<class EOT> class eoUniformMutation: public eoMonOp<EOT>
+    template<class EOT> class UniformMutation: public MonOp<EOT>
     {
     public:
 	/**
@@ -58,17 +58,17 @@ namespace eo
 	 * @param _epsilon the range for uniform nutation
 	 * @param _p_change the probability to change a given coordinate
 	 */
-	eoUniformMutation(const double& _epsilon, const double& _p_change = 1.0):
-	    homogeneous(true), bounds(eoDummyVectorNoBounds), epsilon(1, _epsilon),
+	UniformMutation(const double& _epsilon, const double& _p_change = 1.0):
+	    homogeneous(true), bounds(DummyVectorNoBounds), epsilon(1, _epsilon),
 	    p_change(1, _p_change) {}
 
 	/**
 	 * Constructor with bounds
-	 * @param _bounds an eoRealVectorBounds that contains the bounds
+	 * @param _bounds an RealVectorBounds that contains the bounds
 	 * @param _epsilon the range for uniform mutation - a double to be scaled
 	 * @param _p_change the one probability to change all coordinates
 	 */
-	eoUniformMutation(eoRealVectorBounds & _bounds,
+	UniformMutation(RealVectorBounds & _bounds,
 			  const double& _epsilon, const double& _p_change = 1.0):
 	    homogeneous(false), bounds(_bounds), epsilon(_bounds.size(), _epsilon),
 	    p_change(_bounds.size(), _p_change)
@@ -81,18 +81,18 @@ namespace eo
 
 	/**
 	 * Constructor with bounds
-	 * @param _bounds an eoRealVectorBounds that contains the bounds
+	 * @param _bounds an RealVectorBounds that contains the bounds
 	 * @param _epsilon the VECTOR of ranges for uniform mutation
 	 * @param _p_change the VECTOR of probabilities for each coordinates
 	 */
-	eoUniformMutation(eoRealVectorBounds & _bounds,
+	UniformMutation(RealVectorBounds & _bounds,
 			  const std::vector<double>& _epsilon,
 			  const std::vector<double>& _p_change):
 	    homogeneous(false), bounds(_bounds), epsilon(_epsilon),
 	    p_change(_p_change) {}
 
 	/// The class name.
-	virtual std::string className() const { return "eoUniformMutation"; }
+	virtual std::string className() const { return "UniformMutation"; }
 
 	/**
 	 * Do it!
@@ -114,7 +114,7 @@ namespace eo
 		{
 		    // sanity check ?
 		    if (_eo.size() != bounds.size())
-			throw std::runtime_error("Invalid size of indi in eoUniformMutation");
+			throw std::runtime_error("Invalid size of indi in UniformMutation");
 
 		    for (unsigned lieu=0; lieu<_eo.size(); lieu++)
 			if (rng.flip(p_change[lieu]))
@@ -135,20 +135,20 @@ namespace eo
 
     private:
 	bool homogeneous;   // == no bounds passed in the ctor
-	eoRealVectorBounds & bounds;
+	RealVectorBounds & bounds;
 	std::vector<double> epsilon;	   // the ranges for mutation
 	std::vector<double> p_change;	   // the proba that each variable is modified
     };
 
-    /** eoDetUniformMutation --> changes exactly k values of the std::vector
+    /** DetUniformMutation --> changes exactly k values of the std::vector
 	by uniform choice with range epsilon
-	\class eoDetUniformMutation eoRealOp.h Tutorial/eoRealOp.h
+	\class DetUniformMutation RealOp.h Tutorial/RealOp.h
 	*
 	* @ingroup Real
 	* @ingroup Variators
 	*/
 
-    template<class EOT> class eoDetUniformMutation: public eoMonOp<EOT>
+    template<class EOT> class DetUniformMutation: public MonOp<EOT>
     {
     public:
 	/**
@@ -158,17 +158,17 @@ namespace eo
 	 * @param _epsilon the range for uniform nutation
 	 * @param _no number of coordinate to modify
 	 */
-	eoDetUniformMutation(const double& _epsilon, const unsigned& _no = 1):
-	    homogeneous(true), bounds(eoDummyVectorNoBounds),
+	DetUniformMutation(const double& _epsilon, const unsigned& _no = 1):
+	    homogeneous(true), bounds(DummyVectorNoBounds),
 	    epsilon(1, _epsilon), no(_no) {}
 
 	/**
 	 * Constructor with bounds
-	 * @param _bounds an eoRealVectorBounds that contains the bounds
+	 * @param _bounds an RealVectorBounds that contains the bounds
 	 * @param _epsilon the range for uniform nutation (to be scaled if necessary)
 	 * @param _no number of coordinate to modify
 	 */
-	eoDetUniformMutation(eoRealVectorBounds & _bounds,
+	DetUniformMutation(RealVectorBounds & _bounds,
 			     const double& _epsilon, const unsigned& _no = 1):
 	    homogeneous(false), bounds(_bounds),
 	    epsilon(_bounds.size(), _epsilon), no(_no)
@@ -181,11 +181,11 @@ namespace eo
 
 	/**
 	 * Constructor with bounds and full std::vector of epsilon
-	 * @param _bounds an eoRealVectorBounds that contains the bounds
+	 * @param _bounds an RealVectorBounds that contains the bounds
 	 * @param _epsilon the VECTOR of ranges for uniform mutation
 	 * @param _no number of coordinates to modify
 	 */
-	eoDetUniformMutation(eoRealVectorBounds & _bounds,
+	DetUniformMutation(RealVectorBounds & _bounds,
 			     const std::vector<double>& _epsilon,
 			     const unsigned& _no = 1):
 	    homogeneous(false), bounds(_bounds), epsilon(_epsilon), no(_no)
@@ -197,7 +197,7 @@ namespace eo
 	}
 
 	/// The class name.
-	virtual std::string className() const { return "eoDetUniformMutation"; }
+	virtual std::string className() const { return "DetUniformMutation"; }
 
 	/**
 	 * Do it!
@@ -216,7 +216,7 @@ namespace eo
 		{
 		    // sanity check ?
 		    if (_eo.size() != bounds.size())
-			throw std::runtime_error("Invalid size of indi in eoDetUniformMutation");
+			throw std::runtime_error("Invalid size of indi in DetUniformMutation");
 		    for (unsigned i=0; i<no; i++)
 			{
 			    unsigned lieu = rng.random(_eo.size());
@@ -237,7 +237,7 @@ namespace eo
 
     private:
 	bool homogeneous;   //  == no bounds passed in the ctor
-	eoRealVectorBounds & bounds;
+	RealVectorBounds & bounds;
 	std::vector<double> epsilon;	   // the ranges of mutation
 	unsigned no;
     };
@@ -245,15 +245,15 @@ namespace eo
 
     // two arithmetical crossovers
 
-    /** eoSegmentCrossover --> uniform choice in segment
+    /** SegmentCrossover --> uniform choice in segment
 	== arithmetical with same value along all coordinates
-	\class eoSegmentCrossover eoRealOp.h Tutorial/eoRealOp.h
+	\class SegmentCrossover RealOp.h Tutorial/RealOp.h
 	*
 	* @ingroup Real
 	* @ingroup Variators
 	*/
 
-    template<class EOT> class eoSegmentCrossover: public eoQuadOp<EOT>
+    template<class EOT> class SegmentCrossover: public QuadOp<EOT>
     {
     public:
 	/**
@@ -265,23 +265,23 @@ namespace eo
 	 *               0 == contractive application
 	 *               Must be positive
 	 */
-	eoSegmentCrossover(const double& _alpha = 0.0) :
-	    bounds(eoDummyVectorNoBounds), alpha(_alpha), range(1+2*_alpha) {}
+	SegmentCrossover(const double& _alpha = 0.0) :
+	    bounds(DummyVectorNoBounds), alpha(_alpha), range(1+2*_alpha) {}
 
 	/**
 	 * Constructor with bounds
-	 * @param _bounds an eoRealVectorBounds that contains the bounds
+	 * @param _bounds an RealVectorBounds that contains the bounds
 	 * @param _alpha the amount of exploration OUTSIDE the parents
 	 *               as in BLX-alpha notation (Eshelman and Schaffer)
 	 *               0 == contractive application
 	 *               Must be positive
 	 */
-	eoSegmentCrossover(eoRealVectorBounds & _bounds,
+	SegmentCrossover(RealVectorBounds & _bounds,
 			   const double& _alpha = 0.0) :
 	    bounds(_bounds), alpha(_alpha), range(1+2*_alpha) {}
 
 	/// The class name.
-	virtual std::string className() const { return "eoSegmentCrossover"; }
+	virtual std::string className() const { return "SegmentCrossover"; }
 
 	/**
 	 * segment crossover - modifies both parents
@@ -332,19 +332,19 @@ namespace eo
 	}
 
     protected:
-	eoRealVectorBounds & bounds;
+	RealVectorBounds & bounds;
 	double alpha;
 	double range;			   // == 1+2*alpha
     };
 
-    /** eoHypercubeCrossover --> uniform choice in hypercube
+    /** HypercubeCrossover --> uniform choice in hypercube
 	== arithmetical with different values for each coordinate
-	\class eoArithmeticCrossover eoRealOp.h Tutorial/eoRealOp.h
+	\class ArithmeticCrossover RealOp.h Tutorial/RealOp.h
 	*
 	* @ingroup Real
 	* @ingroup Variators
 	*/
-    template<class EOT> class eoHypercubeCrossover: public eoQuadOp<EOT>
+    template<class EOT> class HypercubeCrossover: public QuadOp<EOT>
     {
     public:
 	/**
@@ -356,8 +356,8 @@ namespace eo
 	 *               0 == contractive application
 	 *               Must be positive
 	 */
-	eoHypercubeCrossover(const double& _alpha = 0.0):
-	    bounds(eoDummyVectorNoBounds), alpha(_alpha), range(1+2*_alpha)
+	HypercubeCrossover(const double& _alpha = 0.0):
+	    bounds(DummyVectorNoBounds), alpha(_alpha), range(1+2*_alpha)
 	{
 	    if (_alpha < 0)
 		throw std::runtime_error("BLX coefficient should be positive");
@@ -365,13 +365,13 @@ namespace eo
 
 	/**
 	 * Constructor with bounds
-	 * @param _bounds an eoRealVectorBounds that contains the bounds
+	 * @param _bounds an RealVectorBounds that contains the bounds
 	 * @param _alpha the amount of exploration OUTSIDE the parents
 	 *               as in BLX-alpha notation (Eshelman and Schaffer)
 	 *               0 == contractive application
 	 *               Must be positive
 	 */
-	eoHypercubeCrossover(eoRealVectorBounds & _bounds,
+	HypercubeCrossover(RealVectorBounds & _bounds,
 			     const double& _alpha = 0.0):
 	    bounds(_bounds), alpha(_alpha), range(1+2*_alpha)
 	{
@@ -380,7 +380,7 @@ namespace eo
 	}
 
 	/// The class name.
-	virtual std::string className() const { return "eoHypercubeCrossover"; }
+	virtual std::string className() const { return "HypercubeCrossover"; }
 
 	/**
 	 * hypercube crossover - modifies both parents
@@ -453,34 +453,34 @@ namespace eo
 	}
 
     protected:
-	eoRealVectorBounds & bounds;
+	RealVectorBounds & bounds;
 	double alpha;
 	double range;			   // == 1+2*alphaMin
     };
 
 
-    /** eoRealUxOver --> Uniform crossover, also termed intermediate crossover
-	\class eoRealUxOver eoRealOp.h Tutorial/eoRealOp.h
+    /** RealUxOver --> Uniform crossover, also termed intermediate crossover
+	\class RealUxOver RealOp.h Tutorial/RealOp.h
 	*
 	* @ingroup Real
 	* @ingroup Variators
 	*/
 
-    template<class EOT> class eoRealUXover: public eoQuadOp<EOT>
+    template<class EOT> class RealUXover: public QuadOp<EOT>
     {
     public:
 	/**
 	 * (Default) Constructor.
 	 * @param _preference bias in the choice (usually, no bias == 0.5)
 	 */
-	eoRealUXover(const float& _preference = 0.5): preference(_preference)
+	RealUXover(const float& _preference = 0.5): preference(_preference)
 	{
 	    if ( (_preference <= 0.0) || (_preference >= 1.0) )
 		std::runtime_error("UxOver --> invalid preference");
 	}
 
 	/// The class name.
-	virtual std::string className() const { return "eoRealUXover"; }
+	virtual std::string className() const { return "RealUXover"; }
 
 	/**
 	 * Uniform crossover for real std::vectors

@@ -54,7 +54,7 @@
 
 #include <iostream>
 
-#include "gp/eoParseTree.h"
+#include "gp/ParseTree.h"
 
 #include "eo"
 
@@ -86,9 +86,9 @@ using namespace std;
 
 
 
-typedef eoParseTree<FitnessType, Node > EoType;
+typedef ParseTree<FitnessType, Node > EoType;
 
-typedef eoPop<EoType> Pop;
+typedef Pop<EoType> Pop;
 
 
 
@@ -122,11 +122,11 @@ int main(int argc, char *argv[])
 
 	 // Create a generation counter
 
-    	eoValueParam<unsigned> generationCounter(0, "Gen.");
+    	ValueParam<unsigned> generationCounter(0, "Gen.");
 
 
 
-    	// Create an incrementor (sub-class of eoUpdater). Note that the
+    	// Create an incrementor (sub-class of Updater). Note that the
 
     	// parameter's value is passed by reference,
 
@@ -134,7 +134,7 @@ int main(int argc, char *argv[])
 
     	// the data in generationCounter will change.
 
-    	eoIncrementor<unsigned> increment(generationCounter.value());
+    	Incrementor<unsigned> increment(generationCounter.value());
 
 
 
@@ -152,7 +152,7 @@ int main(int argc, char *argv[])
 
 	// Depth Initializor, set for Ramped Half and Half Initialization
 
-        eoParseTreeDepthInit<FitnessType, Node> initializer(parameter.InitMaxDepth, initSequence, true, true);
+        ParseTreeDepthInit<FitnessType, Node> initializer(parameter.InitMaxDepth, initSequence, true, true);
 
 
 
@@ -178,7 +178,7 @@ int main(int argc, char *argv[])
 
 
 
-	eoSubtreeXOver<FitnessType, Node>   xover(parameter.MaxSize);
+	SubtreeXOver<FitnessType, Node>   xover(parameter.MaxSize);
 
 
 
@@ -186,13 +186,13 @@ int main(int argc, char *argv[])
 
       eoBranchMutation<FitnessType, Node> mutation(initializer, parameter.MaxSize);
 
-//      eoExpansionMutation<FitnessType, Node> mutation(initializer, parameter.MaxSize);
+//      ExpansionMutation<FitnessType, Node> mutation(initializer, parameter.MaxSize);
 
-//	eoCollapseSubtreeMutation<FitnessType, Node> mutation(initializer, parameter.MaxSize);
+//	CollapseSubtreeMutation<FitnessType, Node> mutation(initializer, parameter.MaxSize);
 
-//	eoPointMutation<FitnessType, Node> mutation(initSequence);
+//	PointMutation<FitnessType, Node> mutation(initSequence);
 
-//	eoHoistMutation<FitnessType, Node> mutation;
+//	HoistMutation<FitnessType, Node> mutation;
 
 
 
@@ -200,7 +200,7 @@ int main(int argc, char *argv[])
 
     	// that performs sequentially crossover and mutation
 
-	eoSGATransform<EoType> transform(xover, parameter.xover_rate, mutation, parameter.mutation_rate);
+	SGATransform<EoType> transform(xover, parameter.xover_rate, mutation, parameter.mutation_rate);
 
 
 
@@ -208,43 +208,43 @@ int main(int argc, char *argv[])
 
 	// in our case 5-tournament selection
 
-    	eoDetTournamentSelect<EoType> selectOne(parameter.tournamentsize);
+    	DetTournamentSelect<EoType> selectOne(parameter.tournamentsize);
 
-	// is now encapsulated in a eoSelectMany
+	// is now encapsulated in a SelectMany
 
-	eoSelectMany<EoType> select(selectOne, parameter.offspring_size, eo_is_an_integer);
+	SelectMany<EoType> select(selectOne, parameter.offspring_size, eo_is_an_integer);
 
 
 
 	// and the generational replacement
 
-    	//eoGenerationalReplacement<EoType> replace;
+    	//GenerationalReplacement<EoType> replace;
 
 	// or the SteadtState replacment
 
-	//eoSSGAWorseReplacement<EoType> replace;
+	//SSGAWorseReplacement<EoType> replace;
 
 	// or comma selection
 
-	eoCommaReplacement<EoType> replace;
+	CommaReplacement<EoType> replace;
 
 
 
     	// Terminators
 
-    	eoGenContinue<EoType> term(parameter.nGenerations);
+    	GenContinue<EoType> term(parameter.nGenerations);
 
 
 
-    	eoCheckPoint<EoType> checkPoint(term);
+    	CheckPoint<EoType> checkPoint(term);
 
 
 
 	// STATISTICS
 
-    	eoAverageStat<EoType>     avg;
+    	AverageStat<EoType>     avg;
 
-    	eoBestFitnessStat<EoType> best;
+    	BestFitnessStat<EoType> best;
 
 
 
@@ -264,7 +264,7 @@ int main(int argc, char *argv[])
 
 #ifdef HAVE_GNUPLOT
 
-	eoGnuplot1DMonitor gnuplotmonitor("gnuplotBestStats");
+	Gnuplot1DMonitor gnuplotmonitor("gnuplotBestStats");
 
   	gnuplotmonitor.add(generationCounter);
 
@@ -272,13 +272,13 @@ int main(int argc, char *argv[])
 
 	// we need to add a empty string variable if we want to seed the second fitness value
 
-	eoValueParam<string> dummy1("", "Smallest Tree Size");
+	ValueParam<string> dummy1("", "Smallest Tree Size");
 
 	gnuplotmonitor.add(dummy1);
 
 
 
-	eoGnuplot1DMonitor gnuplotAvgmonitor("gnuplotAvgStats");
+	Gnuplot1DMonitor gnuplotAvgmonitor("gnuplotAvgStats");
 
 	gnuplotAvgmonitor.add(generationCounter);
 
@@ -286,7 +286,7 @@ int main(int argc, char *argv[])
 
 	// we need to add a empty string variable if we want to seed the second fitness value
 
-	eoValueParam<string> dummy2("", "Average Tree Size");
+	ValueParam<string> dummy2("", "Average Tree Size");
 
 	gnuplotAvgmonitor.add(dummy2);
 
@@ -300,7 +300,7 @@ int main(int argc, char *argv[])
 
 	// GP Generation
 
-	eoEasyEA<EoType> gp(checkPoint, eval, select, transform, replace);
+	EasyEA<EoType> gp(checkPoint, eval, select, transform, replace);
 
 
 

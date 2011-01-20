@@ -27,7 +27,7 @@
 #ifndef _EsFull_h
 #define _EsFull_h
 
-#include <eoVector.h>
+#include <Vector.h>
 
 namespace eo
 {
@@ -40,22 +40,22 @@ namespace eo
     */
 
     template <class Fit>
-    class eoEsFull : public eoVector<Fit, double>
+    class EsFull : public Vector<Fit, double>
     {
     public:
 
-	using eoVector<Fit, double>::size;
+	using Vector<Fit, double>::size;
 
 
 	typedef double Type;
 
-	eoEsFull(void) : eoVector<Fit, double>() {}
+	EsFull(void) : Vector<Fit, double>() {}
 
-	virtual std::string className(void) const { return "eoEsFull"; }
+	virtual std::string className(void) const { return "EsFull"; }
 
 	void printOn(std::ostream& os) const
 	{
-	    eoVector<Fit,double>::printOn(os);
+	    Vector<Fit,double>::printOn(os);
 	    os << ' ';
 	    std::copy(stdevs.begin(), stdevs.end(), std::ostream_iterator<double>(os, " "));
 	    os << ' ';
@@ -65,7 +65,7 @@ namespace eo
 
 	void readFrom(std::istream& is)
 	{
-	    eoVector<Fit,double>::readFrom(is);
+	    Vector<Fit,double>::readFrom(is);
 
 	    stdevs.resize(size());
 

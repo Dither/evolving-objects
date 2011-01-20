@@ -27,8 +27,8 @@
 #ifndef _ScalarFitnessStat_h
 #define _ScalarFitnessStat_h
 
-#include <utils/eoRealVectorBounds.h>
-#include <utils/eoStat.h>
+#include <utils/RealVectorBounds.h>
+#include <utils/Stat.h>
 
 namespace eo
 {
@@ -39,15 +39,15 @@ namespace eo
        @ingroup Stats
     */
     template <class EOT, class FitT = typename EOT::Fitness>
-    class eoScalarFitnessStat : public eoSortedStat<EOT, std::vector<double> >
+    class ScalarFitnessStat : public SortedStat<EOT, std::vector<double> >
     {
     public:
 
-	using eoSortedStat<EOT, std::vector<double> >::value;
+	using SortedStat<EOT, std::vector<double> >::value;
 
-	eoScalarFitnessStat(std::string _description = "FitnessES",
-			    eoRealVectorBounds & _bounds = eoDummyVectorNoBounds)
-	    : eoSortedStat<EOT,  std::vector<double> >(std::vector<double>(0), _description),
+	ScalarFitnessStat(std::string _description = "FitnessES",
+			    RealVectorBounds & _bounds = DummyVectorNoBounds)
+	    : SortedStat<EOT,  std::vector<double> >(std::vector<double>(0), _description),
 	      range(*_bounds[0])
         {}
 
@@ -62,7 +62,7 @@ namespace eo
 	}
 
     private :
-	eoRealBounds & range;
+	RealBounds & range;
     };
 
 }

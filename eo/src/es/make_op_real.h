@@ -28,21 +28,21 @@
 #define _make_op_h
 
 // the operators
-#include <eoOp.h>
-#include <eoGenOp.h>
-#include <eoCloneOps.h>
-#include <eoOpContainer.h>
-// combinations of simple eoOps (eoMonOp and eoQuadOp)
-#include <eoProportionalCombinedOp.h>
+#include <Op.h>
+#include <GenOp.h>
+#include <CloneOps.h>
+#include <OpContainer.h>
+// combinations of simple Ops (MonOp and QuadOp)
+#include <ProportionalCombinedOp.h>
 
 // the specialized Real stuff
-#include <es/eoReal.h>
-#include <es/eoEsChromInit.h>
-#include <es/eoRealOp.h>
-#include <es/eoNormalMutation.h>
+#include <es/Real.h>
+#include <es/EsChromInit.h>
+#include <es/RealOp.h>
+#include <es/NormalMutation.h>
   // also need the parser and param includes
-#include <utils/eoParser.h>
-#include <utils/eoState.h>
+#include <utils/Parser.h>
+#include <utils/State.h>
 
 namespace eo
 {
@@ -52,7 +52,7 @@ namespace eo
      */
 
     /*
-     * This function builds the operators that will be applied to the eoReal
+     * This function builds the operators that will be applied to the Real
      *
      * It uses a parser (to get user parameters) and a state (to store the memory)
      * the last argument is an individual, needed for 2 reasons
@@ -62,7 +62,7 @@ namespace eo
      * This is why the template is the complete EOT even though only the fitness
      * is actually templatized here: the following only applies to bitstrings
      *
-     * Note : the last parameter is an eoInit: if some operator needs some info
+     * Note : the last parameter is an Init: if some operator needs some info
      *        about the gneotypes, the init has it all (e.g. bounds, ...)
      *        Simply do
      *        EOT myEO;
@@ -71,21 +71,21 @@ namespace eo
      */
 
     template <class EOT>
-    eoGenOp<EOT> & do_make_op(eoParser& _parser, eoState& _state, eoRealInitBounded<EOT>& _init)
+    GenOp<EOT> & do_make_op(Parser& _parser, State& _state, RealInitBounded<EOT>& _init)
     {
 	// get std::vector size
 	unsigned vecSize = _init.size();
 
 	// First, decide whether the objective variables are bounded
-	eoValueParam<eoRealVectorBounds>& boundsParam
-	    = _parser.getORcreateParam(eoRealVectorBounds(vecSize,eoDummyRealNoBounds), "objectBounds",
+	ValueParam<RealVectorBounds>& boundsParam
+	    = _parser.getORcreateParam(RealVectorBounds(vecSize,DummyRealNoBounds), "objectBounds",
 				       "Bounds for variables", 'B', "Variation Operators");
 
 	// this is a temporary version(!),
 	// while Maarten codes the full tree-structured general operator input
 	// BTW we must leave that simple version available somehow, as it is the one
 	// that 90% people use!
-	eoValueParam<std::string>& operatorParam
+	ValueParam<std::string>& operatorParam
 	    = _parser.getORcreateParam(std::string("SGA"), "operator",
 				       "Description of the operator (SGA only now)",
 				       'o', "Variation Operators");
@@ -96,10 +96,10 @@ namespace eo
 	// now we read Pcross and Pmut,
 	// the relative weights for all crossovers -> proportional choice
 	// the relative weights for all mutations -> proportional choice
-	// and create the eoGenOp that is exactly
+	// and create the GenOp that is exactly
 	// crossover with pcross + mutation with pmut
 
-	eoValueParam<double>& pCrossParam
+	ValueParam<double>& pCrossParam
 	    = _parser.getORcreateParam(0.6, "pCross",
 				       "Probability of Crossover",
 				       'C', "Variation Operators" );
@@ -107,7 +107,7 @@ namespace eo
 	if ( (pCrossParam.value() < 0) || (pCrossParam.value() > 1) )
 	    throw std::runtime_error("Invalid pCross");
 
-	eoValueParam<double>& pMutParam
+	ValueParam<double>& pMutParam
 	    = _parser.getORcreateParam(0.1, "pMut",
 				       "Probability of Mutation",
 				       'M', "Variation Operators" );
@@ -118,7 +118,7 @@ namespace eo
 	// the crossovers
 	/////////////////
 	// the parameters
-	eoValueParam<double>& alphaParam
+	ValueParam<double>& alphaParam
 	    = _parser.getORcreateParam(double(0.0), "alpha",
 				       "Bound for factor of linear recombinations",
 				       'a', "Variation Operators" );
@@ -127,7 +127,7 @@ namespace eo
 	    throw std::runtime_error("Invalid BLX coefficient alpha");
 
 
-	eoValueParam<double>& segmentRateParam
+	ValueParam<double>& segmentRateParam
 	    = _parser.getORcreateParam(double(1.0), "segmentRate",
 				       "Relative rate for segment crossover",
 				       's', "Variation Operators" );
@@ -135,7 +135,7 @@ namespace eo
 	if ( (segmentRateParam.value() < 0) )
 	    throw std::runtime_error("Invalid segmentRate");
 
-	eoValueParam<double>& hypercubeRateParam
+	ValueParam<double>& hypercubeRateParam
 	    = _parser.getORcreateParam(double(1.0), "hypercubeRate",
 				       "Relative rate for hypercube crossover",
 				       'A', "Variation Operators" );
@@ -143,7 +143,7 @@ namespace eo
 	if ( (hypercubeRateParam.value() < 0) )
 	    throw std::runtime_error("Invalid hypercubeRate");
 
-	eoValueParam<double>& uxoverRateParam
+	ValueParam<double>& uxoverRateParam
 	    = _parser.getORcreateParam(double(1.0), "uxoverRate",
 				       "Relative rate for uniform crossover",
 				       'A', "Variation Operators" );
@@ -160,23 +160,23 @@ namespace eo
 	    }
 
 	// Create the CombinedQuadOp
-	eoPropCombinedQuadOp<EOT> *ptCombinedQuadOp = NULL;
-	eoQuadOp<EOT> *ptQuad = NULL;
+	PropCombinedQuadOp<EOT> *ptCombinedQuadOp = NULL;
+	QuadOp<EOT> *ptQuad = NULL;
 
 	if (bCross)
 	    {
 		// segment crossover for bitstring - pass it the bounds
-		ptQuad = new eoSegmentCrossover<EOT>(boundsParam.value(), alphaParam.value());
+		ptQuad = new SegmentCrossover<EOT>(boundsParam.value(), alphaParam.value());
 		_state.storeFunctor(ptQuad);
-		ptCombinedQuadOp = new eoPropCombinedQuadOp<EOT>(*ptQuad, segmentRateParam.value());
+		ptCombinedQuadOp = new PropCombinedQuadOp<EOT>(*ptQuad, segmentRateParam.value());
 
 		// hypercube crossover
-		ptQuad = new eoHypercubeCrossover<EOT>(boundsParam.value(), alphaParam.value());
+		ptQuad = new HypercubeCrossover<EOT>(boundsParam.value(), alphaParam.value());
 		_state.storeFunctor(ptQuad);
 		ptCombinedQuadOp->add(*ptQuad, hypercubeRateParam.value());
 
 		// uniform crossover
-		ptQuad = new eoRealUXover<EOT>();
+		ptQuad = new RealUXover<EOT>();
 		_state.storeFunctor(ptQuad);
 		ptCombinedQuadOp->add(*ptQuad, uxoverRateParam.value());
 
@@ -187,7 +187,7 @@ namespace eo
 	// the mutations
 	/////////////////
 	// the parameters
-	eoValueParam<double> & epsilonParam
+	ValueParam<double> & epsilonParam
 	    = _parser.getORcreateParam(0.01, "epsilon",
 				       "Half-size of interval for Uniform Mutation",
 				       'e', "Variation Operators" );
@@ -195,7 +195,7 @@ namespace eo
 	if ( (epsilonParam.value() < 0) )
 	    throw std::runtime_error("Invalid epsilon");
 
-	eoValueParam<double> & uniformMutRateParam
+	ValueParam<double> & uniformMutRateParam
 	    = _parser.getORcreateParam(1.0, "uniformMutRate",
 				       "Relative rate for uniform mutation",
 				       'u', "Variation Operators" );
@@ -203,7 +203,7 @@ namespace eo
 	if ( (uniformMutRateParam.value() < 0) )
 	    throw std::runtime_error("Invalid uniformMutRate");
 
-	eoValueParam<double> & detMutRateParam
+	ValueParam<double> & detMutRateParam
 	    = _parser.getORcreateParam(1.0, "detMutRate",
 				       "Relative rate for deterministic uniform mutation",
 				       'd', "Variation Operators" );
@@ -211,19 +211,19 @@ namespace eo
 	if ( (detMutRateParam.value() < 0) )
 	    throw std::runtime_error("Invalid detMutRate");
 
-	eoValueParam<double> & normalMutRateParam
+	ValueParam<double> & normalMutRateParam
 	    = _parser.getORcreateParam(1.0, "normalMutRate",
 				       "Relative rate for Gaussian mutation", 'd', "Variation Operators" );
 	// minimum check
 	if ( (normalMutRateParam.value() < 0) )
 	    throw std::runtime_error("Invalid normalMutRate");
 
-	eoValueParam<double> & sigmaParam
+	ValueParam<double> & sigmaParam
 	    = _parser.getORcreateParam(0.3, "sigma",
 				       "Sigma (fixed) for Gaussian mutation",
 				       's', "Variation Operators" );
 
-	eoValueParam<double> & pNormalParam
+	ValueParam<double> & pNormalParam
 	    = _parser.getORcreateParam(1.0, "pNormal",
 				       "Proba. to change each variable for Gaussian mutation",
 				       's', "Variation Operators" );
@@ -239,31 +239,31 @@ namespace eo
 	    throw std::runtime_error("No operator called in SGA operator definition!!!");
 
 	// Create the CombinedMonOp
-	eoPropCombinedMonOp<EOT> *ptCombinedMonOp = NULL;
-	eoMonOp<EOT> *ptMon = NULL;
+	PropCombinedMonOp<EOT> *ptCombinedMonOp = NULL;
+	MonOp<EOT> *ptMon = NULL;
 
 	if (bMut)
 	    {
 		// uniform mutation on all components:
 		// offspring(i) uniformly chosen in [parent(i)-epsilon, parent(i)+epsilon]
-		ptMon = new eoUniformMutation<EOT>(boundsParam.value(), epsilonParam.value());
+		ptMon = new UniformMutation<EOT>(boundsParam.value(), epsilonParam.value());
 		_state.storeFunctor(ptMon);
 		// create the CombinedMonOp
-		ptCombinedMonOp = new eoPropCombinedMonOp<EOT>(*ptMon, uniformMutRateParam.value());
+		ptCombinedMonOp = new PropCombinedMonOp<EOT>(*ptMon, uniformMutRateParam.value());
 
 		// mutate exactly 1 component (uniformly) per individual
-		ptMon = new eoDetUniformMutation<EOT>(boundsParam.value(), epsilonParam.value());
+		ptMon = new DetUniformMutation<EOT>(boundsParam.value(), epsilonParam.value());
 		_state.storeFunctor(ptMon);
 		ptCombinedMonOp->add(*ptMon, detMutRateParam.value());
 
 		// mutate all component using Gaussian mutation
-		ptMon = new eoNormalVecMutation<EOT>(boundsParam.value(), sigmaParam.value(), pNormalParam.value());
+		ptMon = new NormalVecMutation<EOT>(boundsParam.value(), sigmaParam.value(), pNormalParam.value());
 		_state.storeFunctor(ptMon);
 		ptCombinedMonOp->add(*ptMon, normalMutRateParam.value());
 		_state.storeFunctor(ptCombinedMonOp);
 	    }
 
-	// now build the eoGenOp:
+	// now build the GenOp:
 	// to simulate SGA (crossover with proba pCross + mutation with proba pMut
 	// we must construct
 	//     a sequential combination of
@@ -272,15 +272,15 @@ namespace eo
 	//          with proba pMut, our mutation
 
 	// the crossover - with probability pCross
-	eoProportionalOp<EOT> * cross = new eoProportionalOp<EOT> ;
+	ProportionalOp<EOT> * cross = new ProportionalOp<EOT> ;
 	_state.storeFunctor(cross);
-	ptQuad = new eoQuadCloneOp<EOT>;
+	ptQuad = new QuadCloneOp<EOT>;
 	_state.storeFunctor(ptQuad);
 	cross->add(*ptCombinedQuadOp, pCrossParam.value()); // user crossover
 	cross->add(*ptQuad, 1-pCrossParam.value()); // clone operator
 
 	// now the sequential
-	eoSequentialOp<EOT> & op =  _state.storeFunctor(new eoSequentialOp<EOT>);
+	SequentialOp<EOT> & op =  _state.storeFunctor(new SequentialOp<EOT>);
 	op.add(*cross, 1.0);	 // always crossover (but clone with prob 1-pCross
 	op.add(*ptCombinedMonOp, pMutParam.value());
 

@@ -26,7 +26,7 @@
 #ifndef _Distance_H
 #define _Distance_H
 
-#include <eoFunctor.h>
+#include <Functor.h>
 
 namespace eo
 {
@@ -40,7 +40,7 @@ namespace eo
 	takes 2 things and returns a double
     */
     template< class EOT >
-    class eoDistance : public eoBF<const EOT &, const EOT &, double>
+    class Distance : public BF<const EOT &, const EOT &, double>
     {};
 
 
@@ -49,7 +49,7 @@ namespace eo
 	assumes the 2 things are std::vectors of something that is double-castable
     */
     template< class EOT >
-    class eoQuadDistance : public eoDistance<EOT>
+    class QuadDistance : public Distance<EOT>
     {
     public:
 	double operator()(const EOT & _v1, const EOT & _v2)
@@ -71,7 +71,7 @@ namespace eo
 	For bitstrings, this is the Hamming distance
     */
     template< class EOT >
-    class eoHammingDistance : public eoDistance<EOT>
+    class HammingDistance : public Distance<EOT>
     {
     public:
 	double operator()(const EOT & _v1, const EOT & _v2)
@@ -91,7 +91,7 @@ namespace eo
      * except for some testing
      */
     template< class EOT >
-    class eoFitnessDistance : public eoDistance<EOT>
+    class FitnessDistance : public Distance<EOT>
     {
     public:
 	double operator()(const EOT & _v1, const EOT & _v2)

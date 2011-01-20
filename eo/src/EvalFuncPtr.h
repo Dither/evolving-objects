@@ -28,7 +28,7 @@
 #ifndef EVALFUNCPTR_H
 #define EVALFUNCPTR_H
 
-#include <eoEvalFunc.h>
+#include <EvalFunc.h>
 
 namespace eo
 {
@@ -45,7 +45,7 @@ namespace eo
 #else
     template< class EOT, class FitT = typename EOT::Fitness, class FunctionArg = const EOT& >
 #endif
-    struct eoEvalFuncPtr: public eoEvalFunc<EOT> {
+    struct EvalFuncPtr: public EvalFunc<EOT> {
 
 	/** Applies the function to the chromosome and sets the fitness of the
 	    Chrom. Thus, the evaluation function need not be worried about that.
@@ -53,8 +53,8 @@ namespace eo
 	    argument and returns the fitness
 	    @return the evaluated fitness for that object.
 	*/
-	eoEvalFuncPtr( FitT (* _eval)( FunctionArg ) )
-	: eoEvalFunc<EOT>(), evalFunc( _eval ) {};
+	EvalFuncPtr( FitT (* _eval)( FunctionArg ) )
+	: EvalFunc<EOT>(), evalFunc( _eval ) {};
   
 	/// Effectively applies the evaluation function to an EO 
 	virtual void operator() ( EOT & _eo ) 

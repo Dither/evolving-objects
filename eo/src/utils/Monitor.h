@@ -26,27 +26,27 @@
 
 #include <vector>
 #include <iostream>
-#include <eoFunctor.h>
+#include <Functor.h>
 
 namespace eo
 {
 
     /** @defgroup Monitors Monitoring
      *
-     * Monitors take a set of value parameters (eoValueParam) objects and
+     * Monitors take a set of value parameters (ValueParam) objects and
      * output them on a given stream, file, pipe, etc.
      *
-     * They can be called from within an eoCheckPoint, to print different values
-     * of parameters or of eoStat at each generation.
+     * They can be called from within an CheckPoint, to print different values
+     * of parameters or of Stat at each generation.
      *
-     * @see eoCheckPoint
-     * @see eoStat
+     * @see CheckPoint
+     * @see Stat
      * @ingroup Utilities
      */
 
 
-    class eoParam;
-    template <class EOT> class eoCheckPoint;
+    class Param;
+    template <class EOT> class CheckPoint;
 
     /**
        The abstract monitor class is a std::vector of parameter pointers. Use
@@ -57,7 +57,7 @@ namespace eo
 
        @ingroup Monitors
     */
-    class eoMonitor : public eoF<eoMonitor&>
+    class Monitor : public F<Monitor&>
     {
     public :
 
@@ -67,16 +67,16 @@ namespace eo
 	   Adds a parameter to the monitor. It is virtual so you can do some type checking
 	   in derived classes if you must.
 	*/
-	virtual void add(const eoParam& _param) { vec.push_back(&_param); }
+	virtual void add(const Param& _param) { vec.push_back(&_param); }
 
-	virtual std::string className(void) const { return "eoMonitor"; }
+	virtual std::string className(void) const { return "Monitor"; }
 
 	template <class EOT>
-	eoMonitor& addTo(eoCheckPoint<EOT>& cp) { cp.add(*this); return *this; }
+	Monitor& addTo(CheckPoint<EOT>& cp) { cp.add(*this); return *this; }
 
     protected :
-	typedef std::vector<const eoParam*>::iterator iterator;
-	std::vector<const eoParam*> vec;
+	typedef std::vector<const Param*>::iterator iterator;
+	std::vector<const Param*> vec;
     };
 
 }

@@ -27,7 +27,7 @@
 #ifndef _EsMutationInit_h
 #define _EsMutationInit_h
 
-#include <utils/eoParser.h>
+#include <utils/Parser.h>
 
 namespace eo
 {
@@ -38,7 +38,7 @@ namespace eo
 	@ingroup Variators
 
 	Proxy class that is used for initializing the mutation operator. It provides an
-	interface between eoEsMutate and the abstract parameterLoader. It also provides
+	interface between EsMutate and the abstract parameterLoader. It also provides
 	the names for the parameters in this class as virtual protected member
 	functions.
 
@@ -46,9 +46,9 @@ namespace eo
 	configuration files, you might consider overriding this class to change the
 	names.
 
-	@see eoEsMutate
+	@see EsMutate
     */
-    class eoEsMutationInit
+    class EsMutationInit
     {
     public :
 
@@ -57,13 +57,13 @@ namespace eo
 	    @param _parser Parser to read parameters from.
 	    @param _section Parser section for \f$\tau\f$-parameters.
 	*/
-	eoEsMutationInit(eoParser& _parser,
+	EsMutationInit(Parser& _parser,
 			 std::string _section="ES mutation parameters" ) :
 	    parser(_parser), repSection(_section),
 	    TauLclParam(0), TauGlbParam(0), TauBetaParam(0) {}
 
 	/** Virtual destructor */
-	virtual ~eoEsMutationInit() {}
+	virtual ~EsMutationInit() {}
 
 	/** local tau */
 	double TauLcl(void)
@@ -115,11 +115,11 @@ namespace eo
 
     private:
 
-	eoParser& parser;
+	Parser& parser;
 	std::string repSection;
-	eoValueParam<double>* TauLclParam;
-	eoValueParam<double>* TauGlbParam;
-	eoValueParam<double>* TauBetaParam;
+	ValueParam<double>* TauLclParam;
+	ValueParam<double>* TauGlbParam;
+	ValueParam<double>* TauBetaParam;
     };
 
 }

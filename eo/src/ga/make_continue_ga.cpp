@@ -46,7 +46,7 @@
 // The templatized code
 #include <do/make_continue.h>
 // the instanciating EOType
-#include <ga/eoBit.h>
+#include <ga/Bit.h>
 
 namespace eo
 {
@@ -55,11 +55,11 @@ namespace eo
 
     // continue
     ///////////
-    eoContinue<eoBit<double> >& make_continue(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoBit<double> > & _eval)
+    Continue<Bit<double> >& make_continue(Parser& _parser, State& _state, EvalFuncCounter<Bit<double> > & _eval)
     {
 	return do_make_continue(_parser, _state, _eval);
     }
-    eoContinue<eoBit<eoMinimizingFitness> >& make_continue(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoBit<eoMinimizingFitness> > & _eval)
+    Continue<Bit<MinimizingFitness> >& make_continue(Parser& _parser, State& _state, EvalFuncCounter<Bit<MinimizingFitness> > & _eval)
     {
 	return do_make_continue(_parser, _state, _eval);
     }

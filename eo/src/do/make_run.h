@@ -28,7 +28,7 @@
 #define _make_run_h
 
 // Algorithm (only this one needed)
-#include <eoAlgo.h>
+#include <Algo.h>
 
 namespace eo
 {
@@ -41,7 +41,7 @@ namespace eo
      * @ingroup Builders
      */
     template <class EOT>
-    void do_run(eoAlgo<EOT>& _algo, eoPop<EOT>& _pop)
+    void do_run(Algo<EOT>& _algo, Pop<EOT>& _pop)
     {
 	_algo(_pop);
     }

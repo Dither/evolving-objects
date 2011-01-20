@@ -29,9 +29,9 @@ Authors:
 #include <string>
 #include <iostream>
 
-#include <utils/eoMonitor.h>
-#include <utils/eoLogger.h>
-#include <eoObject.h>
+#include <utils/Monitor.h>
+#include <utils/Logger.h>
+#include <Object.h>
 
 namespace eo
 {
@@ -43,22 +43,22 @@ namespace eo
 
        @ingroup Monitors
     */
-    class eoOStreamMonitor : public eoMonitor
+    class OStreamMonitor : public Monitor
     {
     public :
-	eoOStreamMonitor( std::ostream & _out, bool _verbose=true, std::string _delim = "\t", unsigned int _width=20, char _fill=' ' ) : 
+	OStreamMonitor( std::ostream & _out, bool _verbose=true, std::string _delim = "\t", unsigned int _width=20, char _fill=' ' ) : 
 	    out(_out), delim(_delim), width(_width), fill(_fill), firsttime(true) 
 	{
-	    eo::log << eo::warnings << "WARNING: the use of the verbose parameter in eoOStreamMonitor constructor is deprecated and will be removed in the next release" << std::endl;
+	    log << warnings << "WARNING: the use of the verbose parameter in OStreamMonitor constructor is deprecated and will be removed in the next release" << std::endl;
 	}
 
-	eoOStreamMonitor( std::ostream & _out, std::string _delim = "\t", unsigned int _width=20, char _fill=' ' ) : 
+	OStreamMonitor( std::ostream & _out, std::string _delim = "\t", unsigned int _width=20, char _fill=' ' ) : 
 	    out(_out), delim(_delim), width(_width), fill(_fill), firsttime(true) 
 	{}
 
-	eoMonitor& operator()(void);
+	Monitor& operator()(void);
 
-	virtual std::string className(void) const { return "eoOStreamMonitor"; }
+	virtual std::string className(void) const { return "OStreamMonitor"; }
 
     private :
 	std::ostream & out;

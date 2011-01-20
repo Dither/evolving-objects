@@ -29,11 +29,11 @@
 
 
 //-----------------------------------------------------------------------------
-#include <eoPop.h>
-#include <eoFunctor.h>
-#include <eoMerge.h>
-#include <eoReduce.h>
-#include <utils/eoHowMany.h>
+#include <Pop.h>
+#include <Functor.h>
+#include <Merge.h>
+#include <Reduce.h>
+#include <utils/HowMany.h>
 //-----------------------------------------------------------------------------
 
 namespace eo
@@ -41,12 +41,12 @@ namespace eo
 
     /** 
 	---
-	The eoMergeReduce, combination of eoMerge and eoReduce, can be found 
-	in file eoMergeReduce.h
+	The MergeReduce, combination of Merge and Reduce, can be found 
+	in file MergeReduce.h
 
-	The eoReduceMergeReduce that reduces the parents and the offspring,
+	The ReduceMergeReduce that reduces the parents and the offspring,
 	merges the 2 reduced populations, and eventually reduces that final
-	population, can be found in eoReduceMergeReduce.h
+	population, can be found in ReduceMergeReduce.h
 
 	LOG
 	---
@@ -58,24 +58,24 @@ namespace eo
 	eoNoReplacement that did nothing, relying on the algo to swap popualtions).
 	MS 12/12/2000
 
-	@see eoMerge, eoReduce, eoMergeReduce, eoReduceMerge 
+	@see Merge, Reduce, MergeReduce, ReduceMerge 
 
-	@class eoReplacement,                    base (pure abstract) class
-	@class eoGenerationalReplacement,        as it says ...
-	@class eoWeakElitistReplacement          a wrapper to add elitism
+	@class Replacement,                    base (pure abstract) class
+	@class GenerationalReplacement,        as it says ...
+	@class WeakElitistReplacement          a wrapper to add elitism
 
     */
 
     /** The base class for all replacement functors.
 
-	NOTE: two eoPop as arguments
+	NOTE: two Pop as arguments
 	the resulting population should be in the first argument (replace
 	parents by offspring)! The second argument can contain any rubbish 
 
 	@ingroup Replacors
     */
     template<class EOT>
-    class eoReplacement : public eoBF<eoPop<EOT>&, eoPop<EOT>&, void>
+    class Replacement : public BF<Pop<EOT>&, Pop<EOT>&, void>
     {};
 
     /**
@@ -84,18 +84,18 @@ namespace eo
        @ingroup Replacors
     */
     template <class EOT>
-    class eoGenerationalReplacement : public eoReplacement<EOT>
+    class GenerationalReplacement : public Replacement<EOT>
     {
     public :
 	/// swap
-	void operator()(eoPop<EOT>& _parents, eoPop<EOT>& _offspring)
+	void operator()(Pop<EOT>& _parents, Pop<EOT>& _offspring)
 	{
 	    _parents.swap(_offspring);
 	}
     };
 
     /** 
-	eoWeakElitistReplacement: a wrapper for other replacement procedures. 
+	WeakElitistReplacement: a wrapper for other replacement procedures. 
 	Copies in the new pop the best individual from the old pop, 
 	AFTER normal replacement, if the best of the new pop is worse than the best 
 	of the old pop. Removes the worse individual from the new pop.
@@ -104,28 +104,28 @@ namespace eo
 	@ingroup Replacors
     */
     template <class EOT>
-    class eoWeakElitistReplacement : public eoReplacement<EOT>
+    class WeakElitistReplacement : public Replacement<EOT>
     {
     public :
 	typedef typename EOT::Fitness Fitness;
 
-	// Ctor, takes an eoReplacement
-	eoWeakElitistReplacement(eoReplacement<EOT> & _replace) :
+	// Ctor, takes an Replacement
+	WeakElitistReplacement(Replacement<EOT> & _replace) :
 	    replace(_replace) {}
 
 	/// do replacement
-	void operator()(eoPop<EOT>& _pop, eoPop<EOT>& _offspring)
+	void operator()(Pop<EOT>& _pop, Pop<EOT>& _offspring)
 	{
 	    const EOT oldChamp = _pop.best_element();
 	    replace(_pop, _offspring);	   // "normal" replacement, parents are the new
 	    if (_pop.best_element() < oldChamp) // need to do something
 		{
-		    typename eoPop<EOT>::iterator itPoorGuy = _pop.it_worse_element();
+		    typename Pop<EOT>::iterator itPoorGuy = _pop.it_worse_element();
 		    (*itPoorGuy) = oldChamp;
 		}
 	}
     private:
-	eoReplacement<EOT> & replace;
+	Replacement<EOT> & replace;
     };
 
 }

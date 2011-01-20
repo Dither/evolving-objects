@@ -27,10 +27,10 @@
 #ifndef _CheckPoint_h
 #define _CheckPoint_h
 
-#include <eoContinue.h>
-#include <utils/eoUpdater.h>
-#include <utils/eoMonitor.h>
-#include <utils/eoStat.h>
+#include <Continue.h>
+#include <utils/Updater.h>
+#include <utils/Monitor.h>
+#include <utils/Stat.h>
 
 namespace eo
 {
@@ -40,11 +40,11 @@ namespace eo
      * Checkpoints are supposed to be called perodically (for instance at each generation) and
      * will call every functors you put in them.
      *
-     * Use them with eoStats, eoUpdater and eoMonitor to get statistics at each generation.
+     * Use them with Stats, Updater and Monitor to get statistics at each generation.
      *
-     * @see eoStat
-     * @see eoMonitor
-     * @see eoUpdater
+     * @see Stat
+     * @see Monitor
+     * @see Updater
      *
      * Example of a test program using checkpointing:
      * @include t-eoCheckpointing.cpp
@@ -54,48 +54,48 @@ namespace eo
      * @{
      */
 
-    /** eoCheckPoint is a container class.
+    /** CheckPoint is a container class.
 	It contains std::vectors of (pointers to) 
-	eoContinue    (modif. MS July 16. 2002)
-	eoStats, eoUpdater and eoMonitor
-	it is an eoContinue, so its operator() will be called every generation - 
-	and will return the contained-combined-eoContinue result
+	Continue    (modif. MS July 16. 2002)
+	Stats, Updater and Monitor
+	it is an Continue, so its operator() will be called every generation - 
+	and will return the contained-combined-Continue result
 	but before that it will call in turn every single 
 	{statistics, updaters, monitors} that it has been given,
 	and after that, if stopping, all lastCall methods of the above.
     */
     template <class EOT>
-    class eoCheckPoint : public eoContinue<EOT>
+    class CheckPoint : public Continue<EOT>
     {
     public :
 
-	eoCheckPoint(eoContinue<EOT>& _cont) 
+	CheckPoint(Continue<EOT>& _cont) 
 	{
 	    continuators.push_back(&_cont);
 	}
 
-	bool operator()(const eoPop<EOT>& _pop);
+	bool operator()(const Pop<EOT>& _pop);
 
-	void add(eoContinue<EOT>& _cont) { continuators.push_back(&_cont); }
-	void add(eoSortedStatBase<EOT>& _stat) { sorted.push_back(&_stat); }
-	void add(eoStatBase<EOT>& _stat) { stats.push_back(&_stat); }
-	void add(eoMonitor& _mon)        { monitors.push_back(&_mon); }
-	void add(eoUpdater& _upd)        { updaters.push_back(&_upd); }
+	void add(Continue<EOT>& _cont) { continuators.push_back(&_cont); }
+	void add(SortedStatBase<EOT>& _stat) { sorted.push_back(&_stat); }
+	void add(StatBase<EOT>& _stat) { stats.push_back(&_stat); }
+	void add(Monitor& _mon)        { monitors.push_back(&_mon); }
+	void add(Updater& _upd)        { updaters.push_back(&_upd); }
 
-	virtual std::string className(void) const { return "eoCheckPoint"; }
+	virtual std::string className(void) const { return "CheckPoint"; }
 	std::string allClassNames() const ;
 
     private :
 
-	std::vector<eoContinue<EOT>*>    continuators;
-	std::vector<eoSortedStatBase<EOT>*>    sorted;
-	std::vector<eoStatBase<EOT>*>    stats;
-	std::vector<eoMonitor*> monitors;
-	std::vector<eoUpdater*> updaters;
+	std::vector<Continue<EOT>*>    continuators;
+	std::vector<SortedStatBase<EOT>*>    sorted;
+	std::vector<StatBase<EOT>*>    stats;
+	std::vector<Monitor*> monitors;
+	std::vector<Updater*> updaters;
     };
 
     template <class EOT>
-    bool eoCheckPoint<EOT>::operator()(const eoPop<EOT>& _pop)
+    bool CheckPoint<EOT>::operator()(const Pop<EOT>& _pop)
     {
 	unsigned i;
 
@@ -149,7 +149,7 @@ namespace eo
      *  of data separated with "\n" (for debugging)
      */
     template <class EOT>
-    std::string eoCheckPoint<EOT>::allClassNames() const
+    std::string CheckPoint<EOT>::allClassNames() const
     {
 	unsigned i;
 	std::string s = "\n" + className() + "\n";

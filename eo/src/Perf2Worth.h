@@ -27,9 +27,9 @@
 #ifndef Perf2Worth_h
 #define Perf2Worth_h
 
-#include <utils/eoParam.h>
-#include <eoPop.h>
-#include <eoFunctor.h>
+#include <utils/Param.h>
+#include <Pop.h>
+#include <Functor.h>
 
 #include <algorithm>
 #include <vector>
@@ -40,26 +40,26 @@ namespace eo
 
     /** @brief Base class to transform raw fitnesses into fitness for selection
 
-	@see eoSelectFromWorth
+	@see SelectFromWorth
 
 	@ingroup Selectors
 	@ingroup Utilities
     */
     template <class EOT, class WorthT = double>
-    class eoPerf2Worth : public eoUF<const eoPop<EOT>&, void>, public eoValueParam<std::vector<WorthT> >
+    class Perf2Worth : public UF<const Pop<EOT>&, void>, public ValueParam<std::vector<WorthT> >
     {
     public:
 
-	using eoValueParam<std::vector<WorthT> >::value;
+	using ValueParam<std::vector<WorthT> >::value;
 
 	/** @brief default constructor */
-	eoPerf2Worth(std::string _description = "Worths")
-	    : eoValueParam<std::vector<WorthT> >(std::vector<WorthT>(0), _description)
+	Perf2Worth(std::string _description = "Worths")
+	    : ValueParam<std::vector<WorthT> >(std::vector<WorthT>(0), _description)
         {}
 
 	/** Sort population according to worth, will keep the worths and
 	    fitness_cache in sync with the population. */
-	virtual void sort_pop(eoPop<EOT>& _pop)
+	virtual void sort_pop(Pop<EOT>& _pop)
 	{ // start with a std::vector of indices
 	    std::vector<unsigned> indices(_pop.size());
 
@@ -71,7 +71,7 @@ namespace eo
 
 	    std::sort(indices.begin(), indices.end(), compare_worth(value()));
 
-	    eoPop<EOT>      tmp_pop;
+	    Pop<EOT>      tmp_pop;
 	    tmp_pop.resize(_pop.size());
 	    std::vector<WorthT>  tmp_worths(value().size());
 
@@ -103,7 +103,7 @@ namespace eo
 
 
 
-	virtual void resize(eoPop<EOT>& _pop, unsigned sz) {
+	virtual void resize(Pop<EOT>& _pop, unsigned sz) {
 	    _pop.resize(sz);
 	    value().resize(sz);
 	};
@@ -116,13 +116,13 @@ namespace eo
        @ingroup Utilities
     */
     template <class EOT, class WorthT = typename EOT::Fitness>
-    class eoPerf2WorthCached : public eoPerf2Worth<EOT, WorthT>
+    class Perf2WorthCached : public Perf2Worth<EOT, WorthT>
     {
     public:
 
-	using eoPerf2Worth<EOT, WorthT>::value;
+	using Perf2Worth<EOT, WorthT>::value;
 
-	eoPerf2WorthCached(std::string _description = "Worths") : eoPerf2Worth<EOT, WorthT>(_description) {}
+	Perf2WorthCached(std::string _description = "Worths") : Perf2Worth<EOT, WorthT>(_description) {}
 
 
 	/**
@@ -130,7 +130,7 @@ namespace eo
 	   calculate_worths when one of the fitnesses has changed. It is not virtual, but derived classes
 	   can remove the fitness caching trough the third template element
 	*/
-	void operator()(const eoPop<EOT>& _pop)
+	void operator()(const Pop<EOT>& _pop)
 	{
 	    unsigned i;
 	    if (fitness_cache.size() == _pop.size())
@@ -164,12 +164,12 @@ namespace eo
 	}
 
 	/** The actual virtual function the derived classes should implement*/
-	virtual void calculate_worths(const eoPop<EOT>& _pop) = 0;
+	virtual void calculate_worths(const Pop<EOT>& _pop) = 0;
 
 	/**
 	   Sort population according to worth, will keep the worths and fitness_cache in sync with the population.
 	*/
-	virtual void sort_pop(eoPop<EOT>& _pop)
+	virtual void sort_pop(Pop<EOT>& _pop)
 	{ // start with a std::vector of indices
 	    std::vector<unsigned> indices(_pop.size());
 
@@ -181,7 +181,7 @@ namespace eo
 
 	    std::sort(indices.begin(), indices.end(), compare_worth(value()));
 
-	    eoPop<EOT>      tmp_pop;
+	    Pop<EOT>      tmp_pop;
 	    tmp_pop.resize(_pop.size());
 	    std::vector<WorthT>  tmp_worths(value().size());
 
@@ -220,7 +220,7 @@ namespace eo
 	    const std::vector<WorthT>& worths;
 	};
 
-	virtual void resize(eoPop<EOT>& _pop, unsigned sz)
+	virtual void resize(Pop<EOT>& _pop, unsigned sz)
 	{
 	    _pop.resize(sz);
 	    value().resize(sz);
@@ -238,14 +238,14 @@ namespace eo
 	@ingroup Utilities
     */
     template <class EOT>
-    class eoNoPerf2Worth : public eoPerf2Worth<EOT, typename EOT::Fitness>
+    class NoPerf2Worth : public Perf2Worth<EOT, typename EOT::Fitness>
     {
     public:
 
-	using eoValueParam< EOT >::value;
+	using ValueParam< EOT >::value;
 
 	// default behaviour, just copy fitnesses
-	void operator()(const eoPop<EOT>& _pop) {
+	void operator()(const Pop<EOT>& _pop) {
 	    unsigned i;
 	    value().resize(_pop.size());
 	    for (i = 0; i < _pop.size(); ++i)

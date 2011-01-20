@@ -27,7 +27,7 @@
 #ifndef _STLFunctor_H
 #define _STLFunctor_H
 
-#include "eoFunctor.h"
+#include "Functor.h"
 
 namespace eo
 {
@@ -37,21 +37,21 @@ namespace eo
      */
 
     /**
-       Generic set of classes that wrap an eoF, eoUF or eoBF so that they have the
+       Generic set of classes that wrap an eoF, UF or BF so that they have the
        copy semantics the STL functions usually require (i.e. they can be passed
        by value, rather than the EO standard pass by reference).
 
-       The family consists of eoSTLF, eoSTLUF, eoSTLBF that modify eoF, eoUF and eoBF
+       The family consists of STLF, STLUF, STLBF that modify eoF, UF and BF
        respectively
     */
     template <class R>
-    class eoSTLF
+    class STLF
     {
     public:
 
 	typedef R result_type;
 
-	eoSTLF(eoF<R>& _f) : f(_f) {}
+	STLF(F<R>& _f) : f(_f) {}
 
 	R operator()(void)
 	{
@@ -60,32 +60,32 @@ namespace eo
 
     private :
 
-	eoF<R>& f;
+	F<R>& f;
     };
 
 #ifdef _MSVC
     /// specialization of void for MSVC users, unfortunately only works for eoF,
     /// as MSVC does not support partial specialization either
     template <>
-    void eoSTLF<void>::operator()(void)
+    void STLF<void>::operator()(void)
     {
 	f();
     }
 #endif
 
     /**
-       Generic set of classes that wrap an eoF, eoUF or eoBF so that they have the
+       Generic set of classes that wrap an eoF, UF or BF so that they have the
        copy semantics the STL functions usually require (i.e. they can be passed
        by value, rather than the EO standard pass by reference).
 
-       The family consists of eoSTLF, eoSTLUF, eoSTLBF that modify eoF, eoUF and eoBF
+       The family consists of STLF, STLUF, STLBF that modify eoF, UF and BF
        respectively
     */
     template <class A1, class R>
-    class eoSTLUF : public std::unary_function<A1, R>
+    class STLUF : public std::unary_function<A1, R>
     {
     public:
-	eoSTLUF(eoUF<A1,R>& _f) : f(_f) {}
+	STLUF(UF<A1,R>& _f) : f(_f) {}
 
 	R operator()(A1 a)
 	{
@@ -93,22 +93,22 @@ namespace eo
 	}
 
     private:
-	eoUF<A1, R>& f;
+	UF<A1, R>& f;
     };
 
     /**
-       Generic set of classes that wrap an eoF, eoUF or eoBF so that they have the
+       Generic set of classes that wrap an eoF, UF or BF so that they have the
        copy semantics the STL functions usually require (i.e. they can be passed
        by value, rather than the EO standard pass by reference).
 
-       The family consists of eoSTLF, eoSTLUF, eoSTLBF that modify eoF, eoUF and eoBF
+       The family consists of STLF, STLUF, STLBF that modify eoF, UF and BF
        respectively
     */
     template <class A1, class A2, class R>
-    class eoSTLBF : public std::binary_function<A1, A2, R>
+    class STLBF : public std::binary_function<A1, A2, R>
     {
     public:
-	eoSTLBF(eoUF<A1,R>& _f) : f(_f) {}
+	STLBF(UF<A1,R>& _f) : f(_f) {}
 
 	R operator()(A1 a1, A2 a2)
 	{
@@ -117,7 +117,7 @@ namespace eo
 
     private:
 
-	eoBF<A1, A2, R>& f;
+	BF<A1, A2, R>& f;
     };
 
     //! @todo: put automated wrappers here...

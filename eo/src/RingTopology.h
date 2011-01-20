@@ -29,8 +29,8 @@
 #define RINGTOPOLOGY_H_
 
 //-----------------------------------------------------------------------------
-#include <eoTopology.h>
-#include <eoSocialNeighborhood.h>
+#include <Topology.h>
+#include <SocialNeighborhood.h>
 //-----------------------------------------------------------------------------
 
 namespace eo
@@ -44,7 +44,7 @@ namespace eo
      *
      * @ingroup Selectors
      */
-    template < class POT > class eoRingTopology:public eoTopology <POT>
+    template < class POT > class RingTopology:public Topology <POT>
     {
 
     public:
@@ -53,7 +53,7 @@ namespace eo
 	 * The only Ctor. 
 	 * @param _neighborhoodSize - The size of each neighborhood.
 	 */
-	eoRingTopology (unsigned _neighborhoodSize):neighborhoodSize (_neighborhoodSize),isSetup(false){}
+	RingTopology (unsigned _neighborhoodSize):neighborhoodSize (_neighborhoodSize),isSetup(false){}
 
 
 	/**
@@ -62,7 +62,7 @@ namespace eo
 	 * @param _pop - The population used to build the only neighborhood.
 	 * @return
 	 */
-	void setup(const eoPop<POT> & _pop)
+	void setup(const Pop<POT> & _pop)
 	{
 	    if (!isSetup){
 
@@ -70,7 +70,7 @@ namespace eo
 		int k = neighborhoodSize/2;
 		for (unsigned i=0;i < _pop.size();i++)
 		    {
-			eoSocialNeighborhood<POT> currentNghd;
+			SocialNeighborhood<POT> currentNghd;
 			currentNghd.best(_pop[i]);
 			for (unsigned j=0; j < neighborhoodSize; j++)
 			    {
@@ -87,7 +87,7 @@ namespace eo
 		    // Should activate this part ?
 		    /*
 		      std::string s;
-		      s.append (" Linear topology already setup in eoRingTopology");
+		      s.append (" Linear topology already setup in RingTopology");
 		      throw std::runtime_error (s);
 		    */
 		}
@@ -184,12 +184,12 @@ namespace eo
 
 
     protected:
-	std::vector<eoSocialNeighborhood<POT> >  neighborhoods;
+	std::vector<SocialNeighborhood<POT> >  neighborhoods;
 	unsigned neighborhoodSize; 
 	bool isSetup;
     };
 
-    /** @example t-eoRingTopology.cpp
+    /** @example t-RingTopology.cpp
      */
 
 }

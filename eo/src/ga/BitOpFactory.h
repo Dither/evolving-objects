@@ -25,8 +25,8 @@
 #ifndef _BITOPFACTORY_H
 #define _BITOPFACTORY_H
 
-#include <eoFactory.h>
-#include <ga/eoBitOp.h>
+#include <Factory.h>
+#include <ga/BitOp.h>
 
 //-----------------------------------------------------------------------------
 
@@ -36,12 +36,12 @@ namespace eo
     /** EO Factory. An instance of the factory class to create operators that act
 	on bitstring chromosomes. Only those chromosomes can instantiate the operators
 	that are created here
-	@see eoSelect
+	@see Select
 
 	@ingroup Variators
     */
     template< class EOT>
-    class eoBitOpFactory: public eoFactory<EOT>
+    class BitOpFactory: public Factory<EOT>
     {
 
     public:
@@ -49,10 +49,10 @@ namespace eo
 	/// @name ctors and dtors
 	//{@
 	/// constructor
-	eoBitOpFactory( ) {};
+	BitOpFactory( ) {};
 
 	/// destructor
-	virtual ~eoBitOpFactory() {};
+	virtual ~BitOpFactory() {};
 	//@}
 
 	/** Another factory method: creates an object from an std::istream, reading from
@@ -65,98 +65,98 @@ namespace eo
 	    @param _is an stream from where a single line will be read
 	    @throw runtime_std::exception if the object type is not known
 	*/
-	virtual eoOp<EOT>* make(std::istream& _is)
+	virtual Op<EOT>* make(std::istream& _is)
 	{
-	    eoOp<EOT> * opPtr = NULL;
+	    Op<EOT> * opPtr = NULL;
 	    try {
-		opPtr = eoFactory<EOT>::make( _is );
+		opPtr = Factory<EOT>::make( _is );
 	    } catch ( const std::string& objectTypeStr ) {
-		if ( objectTypeStr == "eoBinBitFlip" ) {
-		    opPtr = new eoOneBitFlip<EOT>( );
+		if ( objectTypeStr == "BinBitFlip" ) {
+		    opPtr = new OneBitFlip<EOT>( );
 		} 
 		// handles old operator names as well as new ones
-		if ( objectTypeStr == "eoOneBitFlip" ) {
-		    opPtr = new eoOneBitFlip<EOT>( );
+		if ( objectTypeStr == "OneBitFlip" ) {
+		    opPtr = new OneBitFlip<EOT>( );
 		} 
 
 		// Standard BitFilp Mutation
-		if ( objectTypeStr == "eoBinMutation" ) {
+		if ( objectTypeStr == "BinMutation" ) {
 		    float rate;
 		    _is >> rate;
-		    opPtr = new eoBitMutation<EOT>( rate );
+		    opPtr = new BitMutation<EOT>( rate );
 		} 
-		if ( objectTypeStr == "eoBitMutation" ) {
+		if ( objectTypeStr == "BitMutation" ) {
 		    float rate;
 		    _is >> rate;
-		    opPtr = new eoBitMutation<EOT>( rate );
+		    opPtr = new BitMutation<EOT>( rate );
 		} 
 
 		// Bit inversion
-		if ( objectTypeStr == "eoBinInversion" ) {
-		    opPtr = new eoBitInversion<EOT>( );
+		if ( objectTypeStr == "BinInversion" ) {
+		    opPtr = new BitInversion<EOT>( );
 		}
-		if ( objectTypeStr == "eoBitInversion" ) {
-		    opPtr = new eoBitInversion<EOT>( );
+		if ( objectTypeStr == "BitInversion" ) {
+		    opPtr = new BitInversion<EOT>( );
 		}
 
 		// Next binary value
-		if ( objectTypeStr == "eoBinNext" ) {
-		    opPtr = new eoBitNext<EOT>( );
+		if ( objectTypeStr == "BinNext" ) {
+		    opPtr = new BitNext<EOT>( );
 		}
-		if ( objectTypeStr == "eoBitNext" ) {
-		    opPtr = new eoBitNext<EOT>( );
+		if ( objectTypeStr == "BitNext" ) {
+		    opPtr = new BitNext<EOT>( );
 		}
 
 		// Previous binary value
-		if ( objectTypeStr == "eoBinPrev" ) {
-		    opPtr = new eoBitPrev<EOT>( );
+		if ( objectTypeStr == "BinPrev" ) {
+		    opPtr = new BitPrev<EOT>( );
 		}
-		if ( objectTypeStr == "eoBitPrev" ) {
-		    opPtr = new eoBitPrev<EOT>( );
+		if ( objectTypeStr == "BitPrev" ) {
+		    opPtr = new BitPrev<EOT>( );
 		}
 
 		// 1 point Xover
-		if ( objectTypeStr == "eoBinCrossover" ) {
-		    opPtr = new eo1PtBitXover<EOT>( );
+		if ( objectTypeStr == "BinCrossover" ) {
+		    opPtr = new 1PtBitXover<EOT>( );
 		}
-		if ( objectTypeStr == "eo1PtBitXover" ) {
-		    opPtr = new eo1PtBitXover<EOT>( );
+		if ( objectTypeStr == "1PtBitXover" ) {
+		    opPtr = new 1PtBitXover<EOT>( );
 		}
 
 		// Npts Xover
-		if ( objectTypeStr == "eoBinNxOver" ) {
+		if ( objectTypeStr == "BinNxOver" ) {
 		    unsigned nPoints;
 		    _is >> nPoints;
-		    opPtr = new eoNPtsBitXover<EOT>( nPoints );
+		    opPtr = new NPtsBitXover<EOT>( nPoints );
 		}
-		if ( objectTypeStr == "eoNPtsBitXover" ) {
+		if ( objectTypeStr == "NPtsBitXover" ) {
 		    unsigned nPoints;
 		    _is >> nPoints;
-		    opPtr = new eoNPtsBitXover<EOT>( nPoints );
+		    opPtr = new NPtsBitXover<EOT>( nPoints );
 		}
 
 		// Gene Xover (obsolete)
-		if ( objectTypeStr == "eoBinGxOver" ) {
+		if ( objectTypeStr == "BinGxOver" ) {
 		    unsigned geneSize, nPoints;
 		    _is >> geneSize >> nPoints;
-		    opPtr = new eoBitGxOver<EOT>( geneSize, nPoints );
+		    opPtr = new BitGxOver<EOT>( geneSize, nPoints );
 		}
-		if ( objectTypeStr == "eoBitGxOver" ) {
+		if ( objectTypeStr == "BitGxOver" ) {
 		    unsigned geneSize, nPoints;
 		    _is >> geneSize >> nPoints;
-		    opPtr = new eoBitGxOver<EOT>( geneSize, nPoints );
+		    opPtr = new BitGxOver<EOT>( geneSize, nPoints );
 		}
 
 		// Uniform Xover
-		if ( objectTypeStr == "eoBinUxOver" ) {
+		if ( objectTypeStr == "BinUxOver" ) {
 		    float rate;
 		    _is >> rate;
-		    opPtr = new eoUBitXover<EOT>( rate );
+		    opPtr = new UBitXover<EOT>( rate );
 		}
-		if ( objectTypeStr == "eoUBitXover" ) {
+		if ( objectTypeStr == "UBitXover" ) {
 		    float rate;
 		    _is >> rate;
-		    opPtr = new eoUBitXover<EOT>( rate );
+		    opPtr = new UBitXover<EOT>( rate );
 		}
 
 		// nothing read!

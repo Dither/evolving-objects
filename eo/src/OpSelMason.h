@@ -24,7 +24,7 @@
 #ifndef _OPSELMASON_H
 #define _OPSELMASON_H
 
-#include <eoOpFactory.h>	// for eoFactory and eoOpFactory
+#include <OpFactory.h>	// for Factory and OpFactory
 
 #include <map>
 
@@ -36,20 +36,20 @@ namespace eo
 
 	@ingroup Utilities
     */
-    template<class eoClass>
-    class eoOpSelMason: public eoFactory<eoOpSelector<eoClass> > {
+    template<class Class>
+    class OpSelMason: public Factory<OpSelector<Class> > {
 
     public:
-	typedef std::vector<eoOp<eoClass>* > vOpP;
-	typedef map<eoOpSelector<eoClass>*, vOpP > MEV;
+	typedef std::vector<Op<Class>* > vOpP;
+	typedef map<OpSelector<Class>*, vOpP > MEV;
 
 	/// @name ctors and dtors
 	//{@
 	/// constructor
-	eoOpSelMason( eoOpFactory<eoClass>& _opFact): operatorFactory( _opFact ) {};
+	OpSelMason( OpFactory<Class>& _opFact): operatorFactory( _opFact ) {};
 
 	/// destructor
-	virtual ~eoOpSelMason() {};
+	virtual ~OpSelMason() {};
 	//@}
 
 	/** Factory methods: creates an object from an std::istream, reading from
@@ -63,14 +63,14 @@ namespace eo
 	    since the built object can´t do it itself. The objects built must be destroyed
 	    from outside, using the "destroy" method
 	*/
-	virtual eoOpSelector<eoClass>* make(std::istream& _is) {
+	virtual OpSelector<Class>* make(std::istream& _is) {
 
 	    std::string opSelName;
 	    _is >> opSelName;
-	    eoOpSelector<eoClass>* opSelectorP;
+	    OpSelector<Class>* opSelectorP;
 	    // Build the operator selector
-	    if ( opSelName == "eoProportionalOpSel" ) {
-		opSelectorP = new eoProportionalOpSel<eoClass>();
+	    if ( opSelName == "ProportionalOpSel" ) {
+		opSelectorP = new ProportionalOpSel<Class>();
 	    }
 
 	    // Temp std::vector for storing pointers
@@ -80,7 +80,7 @@ namespace eo
 		float rate;
 		_is >> rate;
 		if ( _is ) {
-		    eoOp<eoClass>* op = operatorFactory.make( _is );	// This reads the rest of the line
+		    Op<Class>* op = operatorFactory.make( _is );	// This reads the rest of the line
 		    // Add the operators to the selector, don´t pay attention to the IDs
 		    opSelectorP->addOp( *op, rate );
 		    // Keep it in the store, to destroy later
@@ -94,16 +94,16 @@ namespace eo
 	    return opSelectorP;
 	};
 
-	///@name eoObject methods
+	///@name Object methods
 	//@{
 	/** Return the class id */
-	virtual std::string className() const { return "eoOpSelMason"; }
+	virtual std::string className() const { return "OpSelMason"; }
 
 	//@}
 
     private:
-	map<eoOpSelector<eoClass>*,std::vector<eoOp<eoClass>* > > allocMap;
-	eoOpFactory<eoClass>& operatorFactory;
+	map<OpSelector<Class>*,std::vector<Op<Class>* > > allocMap;
+	OpFactory<Class>& operatorFactory;
     };
 
 }

@@ -32,32 +32,32 @@
 namespace eo
 {
 
-    class eoFunctorBase;
+    class FunctorBase;
 
     /**
-       eoFunctorStore is a class that stores functors that are allocated on the
+       FunctorStore is a class that stores functors that are allocated on the
        heap. This class can be used in factories to store allocated memory for
        dynamically created functors.
 
        @ingroup Utilities
     */
-    class eoFunctorStore
+    class FunctorStore
     {
     public:
 
 	/// Default Ctor
-	eoFunctorStore() {}
+	FunctorStore() {}
 
 	// virtual destructor so we don't need to define it in derived classes
-	virtual ~eoFunctorStore();
+	virtual ~FunctorStore();
 
-	/// Add an eoFunctorBase to the store
+	/// Add an FunctorBase to the store
 	template <class Functor>
 	Functor& storeFunctor(Functor* r)
         {
             // If the compiler complains about the following line,
             // check if you really are giving it a pointer to an
-            // eoFunctorBase derived object
+            // FunctorBase derived object
             vec.push_back(r);
             return *r;
         }
@@ -65,12 +65,12 @@ namespace eo
     private :
 
 	/** no copying allowed */
-	eoFunctorStore(const eoFunctorStore&);
+	FunctorStore(const FunctorStore&);
 
 	/** no assignment allowed */
-	eoFunctorStore operator=(const eoFunctorStore&);
+	FunctorStore operator=(const FunctorStore&);
 
-	std::vector<eoFunctorBase*> vec;
+	std::vector<FunctorBase*> vec;
     };
 
 }

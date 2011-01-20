@@ -46,9 +46,9 @@
 // The templatized code
 #include <do/make_run.h>
 // the instanciating EOType
-#include <ga/eoBit.h>
+#include <ga/Bit.h>
 // the instanciating fitnesses
-#include <eoScalarFitness.h>
+#include <ScalarFitness.h>
 
 namespace eo
 {
@@ -57,12 +57,12 @@ namespace eo
 
     // run
     /////////
-    void run_ea(eoAlgo<eoBit<double> >& _ga, eoPop<eoBit<double> >& _pop)
+    void run_ea(Algo<Bit<double> >& _ga, Pop<Bit<double> >& _pop)
     {
 	do_run(_ga, _pop);
     }
 
-    void run_ea(eoAlgo<eoBit<eoMinimizingFitness> >& _ga, eoPop<eoBit<eoMinimizingFitness> >& _pop)
+    void run_ea(Algo<Bit<MinimizingFitness> >& _ga, Pop<Bit<MinimizingFitness> >& _pop)
     {
 	do_run(_ga, _pop);
     }

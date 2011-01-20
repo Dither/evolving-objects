@@ -29,8 +29,8 @@
 
 #include <EO.h>
 #include <algorithm>
-#include <eoPop.h>
-#include <eoPerf2Worth.h>
+#include <Pop.h>
+#include <Perf2Worth.h>
 #include <cassert>
 
 namespace eo
@@ -42,17 +42,17 @@ namespace eo
        the bits.
     */
     template <class EOT>
-    class eoNDSorting : public eoPerf2WorthCached<EOT, double>
+    class NDSorting : public Perf2WorthCached<EOT, double>
     {
     public :
 
-	using eoPerf2WorthCached<EOT, double>::value;
-	eoNDSorting(bool nasty_flag_ = false)
+	using Perf2WorthCached<EOT, double>::value;
+	NDSorting(bool nasty_flag_ = false)
 	    : nasty_declone_flag_that_only_is_implemented_for_two_objectives(nasty_flag_)
         {}
 
 
-	eoNDSorting()
+	NDSorting()
 	    : nasty_declone_flag_that_only_is_implemented_for_two_objectives(false)
         {}
 
@@ -60,9 +60,9 @@ namespace eo
 	    Implement to create your own nondominated sorting algorithm. The size of the returned std::vector
 	    should be equal to the size of the current_front.
 	*/
-	virtual std::vector<double> niche_penalty(const std::vector<unsigned>& current_front, const eoPop<EOT>& _pop) = 0;
+	virtual std::vector<double> niche_penalty(const std::vector<unsigned>& current_front, const Pop<EOT>& _pop) = 0;
 
-	void calculate_worths(const eoPop<EOT>& _pop)
+	void calculate_worths(const Pop<EOT>& _pop)
 	{
 	    // resize the worths beforehand
 	    value().resize(_pop.size());
@@ -99,7 +99,7 @@ namespace eo
 	public: unsigned index;
 	};
 
-	void one_objective(const eoPop<EOT>& _pop)
+	void one_objective(const Pop<EOT>& _pop)
 	{
 	    unsigned i;
 	    std::vector<DummyEO> tmp_pop;
@@ -140,7 +140,7 @@ namespace eo
 	 * penalty
 	 */
 
-	void two_objectives(const eoPop<EOT>& _pop)
+	void two_objectives(const Pop<EOT>& _pop)
 	{
 	    unsigned i;
 	    typedef typename EOT::Fitness::fitness_traits traits;
@@ -225,7 +225,7 @@ namespace eo
 		    // Check whether the derived class was nice
 		    if (niche_count.size() != fronts[i].size())
 			{
-			    throw std::logic_error("eoNDSorting: niche and front should have the same size");
+			    throw std::logic_error("NDSorting: niche and front should have the same size");
 			}
 
 		    double max_niche = *std::max_element(niche_count.begin(), niche_count.end());
@@ -244,7 +244,7 @@ namespace eo
 	class Sorter
 	{
 	public:
-	    Sorter(const eoPop<EOT>& _pop) : pop(_pop) {}
+	    Sorter(const Pop<EOT>& _pop) : pop(_pop) {}
 
 	    bool operator()(unsigned i, unsigned j) const
 	    {
@@ -269,10 +269,10 @@ namespace eo
 		return diff < 0.;
 	    }
 
-	    const eoPop<EOT>& pop;
+	    const Pop<EOT>& pop;
 	};
 
-	void m_objectives(const eoPop<EOT>& _pop)
+	void m_objectives(const Pop<EOT>& _pop)
 	{
 	    unsigned i;
 
@@ -325,7 +325,7 @@ namespace eo
 		    // Check whether the derived class was nice
 		    if (niche_count.size() != current_front.size())
 			{
-			    throw std::logic_error("eoNDSorting: niche and front should have the same size");
+			    throw std::logic_error("NDSorting: niche and front should have the same size");
 			}
 
 		    double max_niche = *std::max_element(niche_count.begin(), niche_count.end());
@@ -380,12 +380,12 @@ namespace eo
        The original Non Dominated Sorting algorithm from Srinivas and Deb
     */
     template <class EOT>
-    class eoNDSorting_I : public eoNDSorting<EOT>
+    class NDSorting_I : public NDSorting<EOT>
     {
     public :
-	eoNDSorting_I(double _nicheSize, bool nasty_flag_ = false) : eoNDSorting<EOT>(nasty_flag_), nicheSize(_nicheSize) {}
+	NDSorting_I(double _nicheSize, bool nasty_flag_ = false) : NDSorting<EOT>(nasty_flag_), nicheSize(_nicheSize) {}
 
-	std::vector<double> niche_penalty(const std::vector<unsigned>& current_front, const eoPop<EOT>& _pop)
+	std::vector<double> niche_penalty(const std::vector<unsigned>& current_front, const Pop<EOT>& _pop)
 	{
 	    std::vector<double> niche_count(current_front.size(), 0.);
 
@@ -434,11 +434,11 @@ namespace eo
 	is life, sigh
     */
     template <class EOT>
-    class eoNDSorting_II : public eoNDSorting<EOT>
+    class NDSorting_II : public NDSorting<EOT>
     {
     public:
 
-	eoNDSorting_II(bool nasty_flag_ = false) : eoNDSorting<EOT>(nasty_flag_) {}
+	NDSorting_II(bool nasty_flag_ = false) : NDSorting<EOT>(nasty_flag_) {}
 
 	typedef std::pair<double, unsigned> double_index_pair;
 
@@ -452,7 +452,7 @@ namespace eo
 	};
 
 	/// _cf points into the elements that consist of the current front
-	std::vector<double> niche_penalty(const std::vector<unsigned>& _cf, const eoPop<EOT>& _pop)
+	std::vector<double> niche_penalty(const std::vector<unsigned>& _cf, const Pop<EOT>& _pop)
 	{
 	    typedef typename EOT::Fitness::fitness_traits traits;
 	    unsigned i;

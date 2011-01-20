@@ -10,16 +10,16 @@
 #include <ctime>
 #include <sstream>
 
-#include "eoRealBounds.h"
-#include "eoRealVectorBounds.h"
+#include "RealBounds.h"
+#include "RealVectorBounds.h"
 
 namespace eo
 {
 
     // the global dummy bounds
     // (used for unbounded variables when bounds are required)
-    eoRealNoBounds eoDummyRealNoBounds;
-    eoRealVectorNoBounds eoDummyVectorNoBounds(0);
+    RealNoBounds DummyRealNoBounds;
+    RealVectorNoBounds DummyVectorNoBounds(0);
 
     ///////////// helper read functions - could be somewhere else
 
@@ -50,8 +50,8 @@ namespace eo
     }
 
     // need to rewrite copy ctor and assignement operator because of ownedBounds
-    eoRealVectorBounds::eoRealVectorBounds(const eoRealVectorBounds & _b):
-	eoRealBaseVectorBounds(_b), eoPersistent()
+    RealVectorBounds::RealVectorBounds(const RealVectorBounds & _b):
+	RealBaseVectorBounds(_b), Persistent()
     {
 	factor = _b.factor;
 	ownedBounds = _b.ownedBounds;
@@ -62,9 +62,9 @@ namespace eo
     }
 
 
-    // the readFrom method of eoRealVectorNoBounds:
+    // the readFrom method of RealVectorNoBounds:
     // only calls the readFrom(string) - for param reading
-    void eoRealVectorBounds::readFrom(std::istream& _is)
+    void RealVectorBounds::readFrom(std::istream& _is)
     {
 	std::string value;
 	_is >> value;
@@ -72,7 +72,7 @@ namespace eo
 	return;
     }
 
-    void eoRealVectorBounds::readFrom(std::string _value)
+    void RealVectorBounds::readFrom(std::string _value)
     {
 	// keep track of old size - to adjust in the end
 	unsigned oldSize = size();
@@ -146,16 +146,16 @@ namespace eo
 			maxBound = read_double(sMaxBounds);
 		    }
 
-		// now create the eoRealBounds objects
-		eoRealBounds *ptBounds;
+		// now create the RealBounds objects
+		RealBounds *ptBounds;
 		if (minBounded && maxBounded)
-		    ptBounds = new eoRealInterval(minBound, maxBound);
+		    ptBounds = new RealInterval(minBound, maxBound);
 		else if (!minBounded && !maxBounded)	// no bound at all
-		    ptBounds = new eoRealNoBounds;
+		    ptBounds = new RealNoBounds;
 		else if (!minBounded && maxBounded)
-		    ptBounds = new eoRealAboveBound(maxBound);
+		    ptBounds = new RealAboveBound(maxBound);
 		else if (minBounded && !maxBounded)
-		    ptBounds = new eoRealBelowBound(minBound);
+		    ptBounds = new RealBelowBound(minBound);
 		// store it for memory management
 		ownedBounds.push_back(ptBounds);
 		// push the count
@@ -169,13 +169,13 @@ namespace eo
     }
 
     /** Eventually increases the size by duplicating last bound */
-    void eoRealVectorBounds::adjust_size(unsigned _dim)
+    void RealVectorBounds::adjust_size(unsigned _dim)
     {
 	if ( size() < _dim )
 	    {
 		// duplicate last bound
 		unsigned missing = _dim-size();
-		eoRealBounds * ptBounds = back();
+		RealBounds * ptBounds = back();
 		for (unsigned i=0; i<missing; i++)
 		    push_back(ptBounds);
 		// update last factor (warning: can be > 1 already!)
@@ -183,28 +183,28 @@ namespace eo
 	    }
     }
 
-    /** the constructor for eoGeneralRealBound - from a string
-     *  very similar to the eoRealVectorBounds::readFrom above
+    /** the constructor for GeneralRealBound - from a string
+     *  very similar to the RealVectorBounds::readFrom above
      *  but was written much later so the readFrom does not call this one
      *  as it should do
      */
-    eoRealBounds* eoGeneralRealBounds::getBoundsFromString(std::string _value)
+    RealBounds* GeneralRealBounds::getBoundsFromString(std::string _value)
     {
 	// now read
 	std::string delim(",; ");
 	std::string beginOrClose("[(])");
 	if (!remove_leading(_value, delim)) // only delimiters were left
-	    throw std::runtime_error("Syntax error in eoGeneralRealBounds Ctor");
+	    throw std::runtime_error("Syntax error in GeneralRealBounds Ctor");
 
 	// look for opening char
 	size_t posDeb = _value.find_first_of(beginOrClose);	// allow ]a,b]
 	if (posDeb >= _value.size())	// nothing left to read
-	    throw std::runtime_error("Syntax error in eoGeneralRealBounds Ctor");
+	    throw std::runtime_error("Syntax error in GeneralRealBounds Ctor");
 
 	// ending char: next {}() after posDeb
 	size_t posFin = _value.find_first_of(beginOrClose,posDeb+1);
 	if (posFin >= _value.size())	// not found
-	    throw std::runtime_error("Syntax error in eoGeneralRealBounds Ctor");
+	    throw std::runtime_error("Syntax error in GeneralRealBounds Ctor");
 
 	// the bounds
 	std::string sBounds = _value.substr(posDeb+1, posFin-posDeb-1);
@@ -214,7 +214,7 @@ namespace eo
 	remove_leading(sBounds, delim);
 	size_t posDelim = sBounds.find_first_of(delim);
 	if (posDelim >= sBounds.size())
-	    throw std::runtime_error("Syntax error in eoGeneralRealBounds Ctor");
+	    throw std::runtime_error("Syntax error in GeneralRealBounds Ctor");
 
 	bool minBounded=false, maxBounded=false;
 	double minBound=0, maxBound=0;
@@ -243,20 +243,20 @@ namespace eo
 		maxBound = read_double(sMaxBounds);
 	    }
 
-	// now create the embedded eoRealBounds object
-	eoRealBounds * locBound;
+	// now create the embedded RealBounds object
+	RealBounds * locBound;
 	if (minBounded && maxBounded)
 	    {
 		if (maxBound <= minBound)
-		    throw std::runtime_error("Syntax error in eoGeneralRealBounds Ctor");
-		locBound = new eoRealInterval(minBound, maxBound);
+		    throw std::runtime_error("Syntax error in GeneralRealBounds Ctor");
+		locBound = new RealInterval(minBound, maxBound);
 	    }
 	else if (!minBounded && !maxBounded)	// no bound at all
-	    locBound = new eoRealNoBounds;
+	    locBound = new RealNoBounds;
 	else if (!minBounded && maxBounded)
-	    locBound = new eoRealAboveBound(maxBound);
+	    locBound = new RealAboveBound(maxBound);
 	else if (minBounded && !maxBounded)
-	    locBound = new eoRealBelowBound(minBound);
+	    locBound = new RealBelowBound(minBound);
 	return locBound;
     }
 

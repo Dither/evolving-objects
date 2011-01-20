@@ -28,21 +28,21 @@
 #define _TimeCounter_h
 
 #include <time.h>
-#include <utils/eoStat.h>
+#include <utils/Stat.h>
 
 namespace eo
 {
 
     /**
-       An eoStat that simply gives the user time since first generation
-       It has to be tempatized by EOT because it must be an eoStat
+       An Stat that simply gives the user time since first generation
+       It has to be tempatized by EOT because it must be an Stat
 
        @ingroup Stats
     */
-    class eoTimeCounter : public eoUpdater, public eoValueParam<double>
+    class TimeCounter : public Updater, public ValueParam<double>
     {
     public:
-	eoTimeCounter() : eoValueParam<double>(0.0, "Time") // : firstTime(true)  
+	TimeCounter() : ValueParam<double>(0.0, "Time") // : firstTime(true)  
 	{
 	    start = time(NULL);
 	}

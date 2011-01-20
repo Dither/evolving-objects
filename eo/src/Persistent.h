@@ -32,7 +32,7 @@
 #include <iostream>  // std::istream, std::ostream
 #include <string>    // para std::string
 
-#include "eoPrintable.h"
+#include "Printable.h"
 
 namespace eo
 {
@@ -44,13 +44,13 @@ namespace eo
 
     /**
        An persistent object that knows how to write (through functions inherited from
-       #eoPrintable#) and read itself
+       #Printable#) and read itself
     */
-    class eoPersistent: public eoPrintable
+    class Persistent: public Printable
     {
     public:
 	/// Virtual dtor. They are needed in virtual class hierarchies.
-	virtual ~eoPersistent() {}
+	virtual ~Persistent() {}
   
 	/**
 	 * Read object.
@@ -62,7 +62,7 @@ namespace eo
     };
 
     ///Standard input for all objects in the EO hierarchy
-    std::istream & operator >> ( std::istream& _is, eoPersistent& _o );
+    std::istream & operator >> ( std::istream& _is, Persistent& _o );
 
 }
 

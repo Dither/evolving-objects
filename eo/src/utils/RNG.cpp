@@ -4,17 +4,17 @@
 #endif
 
 #include <ctime>
-#include "eoRNG.h"
+#include "RNG.h"
 
 namespace eo
 {
 
     // initialize static constants
-    const uint32_t eoRng::K(0x9908B0DFU);
-    const int eoRng::M(397);
-    const int eoRng::N(624);
+    const uint32_t Rng::K(0x9908B0DFU);
+    const int Rng::M(397);
+    const int Rng::N(624);
 
     // global random number generator object
-    eoRng rng(static_cast<uint32_t>(time(0)));
+    Rng rng(static_cast<uint32_t>(time(0)));
 
 }

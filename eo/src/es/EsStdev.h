@@ -23,7 +23,7 @@ Contact: http://eodev.sourceforge.net
 #ifndef _EsStdev_h
 #define _EsStdev_h
 
-#include <eoVector.h>
+#include <Vector.h>
 
 namespace eo
 {
@@ -36,21 +36,21 @@ namespace eo
     @ingroup Real
 */
     template <class Fit>
-    class eoEsStdev : public eoVector<Fit, double>
+    class EsStdev : public Vector<Fit, double>
     {
     public:
 
-	using eoVector<Fit, double>::size;
+	using Vector<Fit, double>::size;
 
 	typedef double Type;
 
-	eoEsStdev(void) : eoVector<Fit, double>() {}
+	EsStdev(void) : Vector<Fit, double>() {}
 
-	virtual std::string className(void) const { return "eoEsStdev"; }
+	virtual std::string className(void) const { return "EsStdev"; }
 
 	void printOn(std::ostream& os) const
 	    {
-		eoVector<Fit,double>::printOn(os);
+		Vector<Fit,double>::printOn(os);
 		os << ' ';
 		std::copy(stdevs.begin(), stdevs.end(), std::ostream_iterator<double>(os, " "));
 		os << ' ';
@@ -58,7 +58,7 @@ namespace eo
 
 	void readFrom(std::istream& is)
 	    {
-		eoVector<Fit,double>::readFrom(is);
+		Vector<Fit,double>::readFrom(is);
 		stdevs.resize(size());
 		unsigned i;
 		for (i = 0; i < size(); ++i)

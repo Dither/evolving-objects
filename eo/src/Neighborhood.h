@@ -34,7 +34,7 @@ namespace eo
      *
      * @ingroup Selectors
      */
-    template < class POT > class eoNeighborhood
+    template < class POT > class Neighborhood
     {
     public:
 
@@ -51,7 +51,7 @@ namespace eo
 	virtual void best(POT _particle)=0;
     
 	/// Virtual dtor
-  	virtual ~eoNeighborhood() {};
+  	virtual ~Neighborhood() {};
 
     };
 

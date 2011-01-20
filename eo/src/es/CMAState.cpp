@@ -56,7 +56,7 @@
 #include <iostream>
 #include <cassert>
 
-#include <utils/eoRNG.h>
+#include <utils/RNG.h>
 
 #include <es/CMAState.h>
 #include <es/CMAParams.h>

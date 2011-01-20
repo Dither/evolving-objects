@@ -40,7 +40,7 @@
 #include <iostream>
 #include <string>
 
-#include "eoVector.h"
+#include "Vector.h"
 
 namespace eo
 {
@@ -57,32 +57,32 @@ Example of a complete test program that use various bitstrings operators:
 
 /** Implementation of bitstring chromosome.
 
-@class eoBit eoBit.h ga/eoBit.h
+@class Bit Bit.h ga/Bit.h
 @ingroup bitstring
 
 Based on STL's std::vector<bool> specialization.
 */
-    template <class FitT> class eoBit: public eoVector<FitT, bool>
+    template <class FitT> class Bit: public Vector<FitT, bool>
     {
     public:
 
-	using eoVector< FitT, bool >::begin;
-	using eoVector< FitT, bool >::end;
-	using eoVector< FitT, bool >::resize;
-	using eoVector< FitT, bool >::size;
+	using Vector< FitT, bool >::begin;
+	using Vector< FitT, bool >::end;
+	using Vector< FitT, bool >::resize;
+	using Vector< FitT, bool >::size;
 
 	/**
 	* (Default) Constructor.
 	* @param size Size of the binary std::string.
 	* @param value Default value.
 	*/
-	eoBit(unsigned size = 0, bool value = false):
-	    eoVector<FitT, bool>(size, value) {}
+	Bit(unsigned size = 0, bool value = false):
+	    Vector<FitT, bool>(size, value) {}
 
 	/// My class name.
 	virtual std::string className() const
 	    {
-		return "eoBit";
+		return "Bit";
 	    }
 
 	/**

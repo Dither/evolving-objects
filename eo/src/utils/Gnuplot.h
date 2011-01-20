@@ -33,14 +33,14 @@ namespace eo
 /** Base class for calls to gnuplot
 
     This class is the abstract class that will be used by further gnuplot
-    calls to plots what is already written by some eoMonitor into a file
+    calls to plots what is already written by some Monitor into a file
 
     @author Marc Schoenauer
     @version 0.0 (2001)
 
     @ingroup Monitors
 */
-    class eoGnuplot
+    class Gnuplot
     {
     public:
 
@@ -49,17 +49,17 @@ namespace eo
 	    @param _title Title for gnuplot window.
 	    @param _extra Extra parameters to gnuplot (default to none: "").
 	*/
-	eoGnuplot(std::string _title, std::string _extra = std::string(""));
+	Gnuplot(std::string _title, std::string _extra = std::string(""));
 
 	/** Destructor
 
 	    Close the gnuplot windows if pipe was correctly opened
 	*/
-	virtual ~eoGnuplot();
+	virtual ~Gnuplot();
 
 	/** Class name */
 	virtual std::string className() const
-	    { return "eoGnuplot"; }
+	    { return "Gnuplot"; }
 
 	/** Send command to gnuplot */
 	void gnuplotCommand(const char * _command);

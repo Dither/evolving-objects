@@ -38,10 +38,10 @@
 #include <vector>
 #include <string>
 
-#include <eoScalarFitnessAssembled.h>
+#include <ScalarFitnessAssembled.h>
 #include <utils/selectors.h>
 #include <EO.h>
-#include <eoEvalFuncCounter.h>
+#include <EvalFuncCounter.h>
 #include <utils/checkpointing>
 
 namespace eo
@@ -52,13 +52,13 @@ namespace eo
     bool testDirRes(std::string _dirName, bool _erase);
     /////////////////// The checkpoint and other I/O //////////////
 
-    /** Of course, Fitness needs to be an eoScalarFitnessAssembled!!! 
+    /** Of course, Fitness needs to be an ScalarFitnessAssembled!!! 
      *
      *
      * @ingroup Builders
      * */
     template <class EOT>
-    eoCheckPoint<EOT>& do_make_checkpoint_assembled(eoParser& _parser, eoState& _state, eoEvalFuncCounter<EOT>& _eval, eoContinue<EOT>& _continue)
+    CheckPoint<EOT>& do_make_checkpoint_assembled(Parser& _parser, State& _state, EvalFuncCounter<EOT>& _eval, Continue<EOT>& _continue)
     {
 
 	// SOME PARSER PARAMETERS
@@ -76,28 +76,28 @@ namespace eo
 						  "Print statistics file",
 						  '\0', "Output").value();
 
-	eoValueParam<unsigned>& saveFrequencyParam
+	ValueParam<unsigned>& saveFrequencyParam
 	    = _parser.getORcreateParam(unsigned(0), "saveFrequency",
 				       "Save every F generation (0 = only final state, absent = never)",
 				       '\0', "Persistence" );
 
 	testDirRes(dirName, erase); // TRUE
 
-	// CREATE CHECKPOINT FROM eoContinue
+	// CREATE CHECKPOINT FROM Continue
 	// ---------------------------------
-	eoCheckPoint<EOT> *checkpoint = new eoCheckPoint<EOT>(_continue);
+	CheckPoint<EOT> *checkpoint = new CheckPoint<EOT>(_continue);
 	_state.storeFunctor(checkpoint);
 
 	// GENERATIONS
 	// -----------
-	eoIncrementorParam<unsigned> *generationCounter = new eoIncrementorParam<unsigned>("Gen.");
+	IncrementorParam<unsigned> *generationCounter = new IncrementorParam<unsigned>("Gen.");
 	_state.storeFunctor(generationCounter);
 	checkpoint->add(*generationCounter);
 
 	// TIME
 	// ----
-	eoTimeCounter * tCounter = NULL;
-	tCounter = new eoTimeCounter;
+	TimeCounter * tCounter = NULL;
+	tCounter = new TimeCounter;
 	_state.storeFunctor(tCounter);
 	checkpoint->add(*tCounter);
 
@@ -113,26 +113,26 @@ namespace eo
 	// ---------------------------
 
 	// average vals
-	std::vector<eoAssembledFitnessAverageStat<EOT>* > avgvals( nTerms );
+	std::vector<AssembledFitnessAverageStat<EOT>* > avgvals( nTerms );
 	for (unsigned i=0; i < nTerms; ++i){
 	    std::string descr = "Avg. of " + fitness_descriptions[i];
-	    avgvals[i] = new eoAssembledFitnessAverageStat<EOT>(i, descr);
+	    avgvals[i] = new AssembledFitnessAverageStat<EOT>(i, descr);
 	    _state.storeFunctor( avgvals[i] );
 	    checkpoint->add( *avgvals[i] );
 	}
 
 	// best vals
-	std::vector<eoAssembledFitnessBestStat<EOT>* > bestvals( nTerms );
+	std::vector<AssembledFitnessBestStat<EOT>* > bestvals( nTerms );
 	for (unsigned j=0; j < nTerms; ++j){
 	    std::string descr = fitness_descriptions[j] + " of best ind.";
-	    bestvals[j] = new eoAssembledFitnessBestStat<EOT>(j, descr);
+	    bestvals[j] = new AssembledFitnessBestStat<EOT>(j, descr);
 	    _state.storeFunctor( bestvals[j] );
 	    checkpoint->add( *bestvals[j] );
 	}
 
 	// STDOUT
 	// ------
-	eoStdoutMonitor *monitor = new eoStdoutMonitor(false);
+	StdoutMonitor *monitor = new StdoutMonitor(false);
 	_state.storeFunctor(monitor);
 	checkpoint->add(*monitor);
 	monitor->add(*generationCounter);
@@ -152,22 +152,22 @@ namespace eo
 	    std::string stmp;
 
 	    // Histogramm of the different fitness vals
-	    eoScalarFitnessStat<EOT> *fitStat = new eoScalarFitnessStat<EOT>;
+	    ScalarFitnessStat<EOT> *fitStat = new ScalarFitnessStat<EOT>;
 	    _state.storeFunctor(fitStat);
 	    checkpoint->add(*fitStat);
 #ifdef HAVE_GNUPLOT
 	    // a gnuplot-based monitor for snapshots: needs a dir name
-	    eoGnuplot1DSnapshot *fitSnapshot = new eoGnuplot1DSnapshot(dirName);
+	    Gnuplot1DSnapshot *fitSnapshot = new Gnuplot1DSnapshot(dirName);
 	    _state.storeFunctor(fitSnapshot);
 	    // add any stat that is a vector<double> to it
 	    fitSnapshot->add(*fitStat);
 	    // and of course add it to the checkpoint
 	    checkpoint->add(*fitSnapshot);
 
-	    std::vector<eoGnuplot1DMonitor*> gnumonitors(nTerms, NULL );
+	    std::vector<Gnuplot1DMonitor*> gnumonitors(nTerms, NULL );
 	    for (unsigned k=0; k < nTerms; ++k){
 		stmp = dirName + "/gnuplot_" + fitness_descriptions[k] + ".xg";
-		gnumonitors[k] = new eoGnuplot1DMonitor(stmp,true);
+		gnumonitors[k] = new Gnuplot1DMonitor(stmp,true);
 		_state.storeFunctor(gnumonitors[k]);
 		checkpoint->add(*gnumonitors[k]);
 		gnumonitors[k]->add(*generationCounter);
@@ -180,8 +180,8 @@ namespace eo
 	// WRITE STUFF TO FILE
 	// -------------------
 	if( printFile ){
-	    std::string stmp2 = dirName + "/eoStatistics.sav";
-	    eoFileMonitor *fileMonitor = new eoFileMonitor(stmp2);
+	    std::string stmp2 = dirName + "/Statistics.sav";
+	    FileMonitor *fileMonitor = new FileMonitor(stmp2);
 	    _state.storeFunctor(fileMonitor);
 	    checkpoint->add(*fileMonitor);
 	    fileMonitor->add(*generationCounter);
@@ -203,7 +203,7 @@ namespace eo
 
 	    unsigned freq = (saveFrequencyParam.value() > 0 ? saveFrequencyParam.value() : UINT_MAX );
 	    std::string stmp = dirName + "/generations";
-	    eoCountedStateSaver *stateSaver1 = new eoCountedStateSaver(freq, _state, stmp);
+	    CountedStateSaver *stateSaver1 = new CountedStateSaver(freq, _state, stmp);
 	    _state.storeFunctor(stateSaver1);
 	    checkpoint->add(*stateSaver1);
 	}

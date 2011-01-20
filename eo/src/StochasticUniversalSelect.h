@@ -29,31 +29,31 @@
 
 //-----------------------------------------------------------------------------
 
-#include <utils/eoRNG.h>
-#include <eoSelectOne.h>
+#include <utils/RNG.h>
+#include <SelectOne.h>
 #include <utils/selectors.h>
-#include <eoPop.h>
+#include <Pop.h>
 
 namespace eo
 {
 
-    /** eoStochasticUniversalSelect: select an individual proportional to her stored fitness
-	value, but in contrast with eoStochasticUniversalSelect, get rid of most finite sampling effects
+    /** StochasticUniversalSelect: select an individual proportional to her stored fitness
+	value, but in contrast with StochasticUniversalSelect, get rid of most finite sampling effects
 	by doing all selections in one go, using a single random number.
 
 	@ingroup Selectors
     */
-    template <class EOT> class eoStochasticUniversalSelect: public eoSelectOne<EOT>
+    template <class EOT> class StochasticUniversalSelect: public SelectOne<EOT>
     {
     public:
 	/// Sanity check
-	eoStochasticUniversalSelect(const eoPop<EOT>& pop = eoPop<EOT>())
+	StochasticUniversalSelect(const Pop<EOT>& pop = Pop<EOT>())
 	{
 	    if (minimizing_fitness<EOT>())
-		throw std::logic_error("eoStochasticUniversalSelect: minimizing fitness");
+		throw std::logic_error("StochasticUniversalSelect: minimizing fitness");
 	}
 
-	void setup(const eoPop<EOT>& _pop)
+	void setup(const Pop<EOT>& _pop)
 	{
 	    if (_pop.size() == 0) return;
 
@@ -93,7 +93,7 @@ namespace eo
 
 	/** do the selection,
 	 */
-	const EOT& operator()(const eoPop<EOT>& _pop)
+	const EOT& operator()(const Pop<EOT>& _pop)
 	{
 	    if (indices.empty()) setup(_pop);
 
@@ -107,7 +107,7 @@ namespace eo
 	typedef std::vector<unsigned> IndexVec;
 	IndexVec indices;
     };
-    /** @example t-eoRoulette.cpp
+    /** @example t-Roulette.cpp
      */
 
 }

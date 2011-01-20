@@ -30,7 +30,7 @@
 #endif 
 
 /** This file contains ***INSTANCIATED DEFINITIONS*** of select/replace fns
- * of the library for evolution of ***eoReal*** inside EO.
+ * of the library for evolution of ***Real*** inside EO.
  * It should be included in the file that calls any of the corresponding fns
  * Compiling this file allows one to generate part of the library (i.e. object
  * files that you just need to link with your own main and fitness code).
@@ -43,7 +43,7 @@
 // The templatized code
 #include <do/make_algo_scalar.h>
 // the instanciating EOType
-#include <es/eoReal.h>
+#include <es/Real.h>
 
 namespace eo
 {
@@ -52,12 +52,12 @@ namespace eo
 
     // Algo
     ///////
-    eoAlgo<eoReal<double> >&  make_algo_scalar(eoParser& _parser, eoState& _state, eoEvalFunc<eoReal<double> >& _eval, eoContinue<eoReal<double> >& _continue, eoGenOp<eoReal<double> >& _op, eoDistance<eoReal<double> >* _dist)
+    Algo<Real<double> >&  make_algo_scalar(Parser& _parser, State& _state, EvalFunc<Real<double> >& _eval, Continue<Real<double> >& _continue, GenOp<Real<double> >& _op, Distance<Real<double> >* _dist)
     {
 	return do_make_algo_scalar(_parser, _state, _eval, _continue, _op, _dist);
     }
 
-    eoAlgo<eoReal<eoMinimizingFitness> >&  make_algo_scalar(eoParser& _parser, eoState& _state, eoEvalFunc<eoReal<eoMinimizingFitness> >& _eval, eoContinue<eoReal<eoMinimizingFitness> >& _continue, eoGenOp<eoReal<eoMinimizingFitness> >& _op, eoDistance<eoReal<eoMinimizingFitness> >* _dist)
+    Algo<Real<MinimizingFitness> >&  make_algo_scalar(Parser& _parser, State& _state, EvalFunc<Real<MinimizingFitness> >& _eval, Continue<Real<MinimizingFitness> >& _continue, GenOp<Real<MinimizingFitness> >& _op, Distance<Real<MinimizingFitness> >* _dist)
     {
 	return do_make_algo_scalar(_parser, _state, _eval, _continue, _op, _dist);
     }

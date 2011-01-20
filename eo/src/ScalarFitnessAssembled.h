@@ -43,11 +43,11 @@ namespace eo
      * @{
      */
 
-    //! Defines properties of eoScalarFitnessAssembled.
+    //! Defines properties of ScalarFitnessAssembled.
     /*! Properties that are hold in this traits class:
       - std::vector<std::string> to hold descriptions of the different fitness terms
     */
-    class eoScalarFitnessAssembledTraits{
+    class ScalarFitnessAssembledTraits{
 
     public:
 
@@ -80,21 +80,21 @@ namespace eo
     private:
 	static std::vector<std::string> TermDescriptions;
     };
-    /** @example t-eoFitnessAssembled.cpp
+    /** @example t-FitnessAssembled.cpp
      */
 
     //! Implements fitness as std::vector, storing all values that might occur during fitness assembly
     /*! Properties:
       - Wraps a scalar fitness values such as a double or int, with the option of
       maximizing (using less<ScalarType>) or minimizing (using greater<ScalarType>).
-      - Stores all kinda different values met during fitness assembly, to be defined in eoEvalFunc.
+      - Stores all kinda different values met during fitness assembly, to be defined in EvalFunc.
       - It overrides operator<() to use the Compare template argument.
       - Suitable constructors and assignments and casts are defined to work
       with this quantity as if it were a ScalarType.
       - Global fitness value is stored as first element in the vector
     */
     template <class ScalarType, class Compare, class FitnessTraits >
-    class eoScalarFitnessAssembled : public std::vector<ScalarType> {
+    class ScalarFitnessAssembled : public std::vector<ScalarType> {
 
     public:
 
@@ -107,12 +107,12 @@ namespace eo
 	typedef typename baseVector::size_type size_type;
 
 	// Basic constructors and assignments
-	eoScalarFitnessAssembled()
+	ScalarFitnessAssembled()
 	    : baseVector( FitnessTraits::size() ),
 	      feasible(true), failed(false), msg("")
 	{}
 
-	eoScalarFitnessAssembled( size_type _n,
+	ScalarFitnessAssembled( size_type _n,
 				  const ScalarType& _val,
 				  const std::string& _descr="Unnamed variable" )
 	    : baseVector(_n, _val),
@@ -122,14 +122,14 @@ namespace eo
 		FitnessTraits::resize(_n, _descr);
 	}
 
-	eoScalarFitnessAssembled( const eoScalarFitnessAssembled& other)
+	ScalarFitnessAssembled( const ScalarFitnessAssembled& other)
 	    : baseVector( other ),
 	      feasible(other.feasible),
 	      failed(other.failed),
 	      msg(other.msg)
 	{}
 
-	eoScalarFitnessAssembled& operator=( const eoScalarFitnessAssembled& other) {
+	ScalarFitnessAssembled& operator=( const ScalarFitnessAssembled& other) {
 	    baseVector::operator=( other );
 	    feasible = other.feasible;
 	    failed = other.failed;
@@ -138,12 +138,12 @@ namespace eo
 	}
 
 	// Constructors and assignments to work with scalar type
-	eoScalarFitnessAssembled( const ScalarType& v )
+	ScalarFitnessAssembled( const ScalarType& v )
 	    : baseVector( 1, v ),
 	      feasible(true), failed(false), msg("")
 	{}
 
-	eoScalarFitnessAssembled& operator=( const ScalarType& v ) {
+	ScalarFitnessAssembled& operator=( const ScalarType& v ) {
 
 	    if( empty() )
 		push_back( v );
@@ -219,7 +219,7 @@ namespace eo
 	}
 
 	//! Comparison, using less by default
-	bool operator<(const eoScalarFitnessAssembled& other) const{
+	bool operator<(const ScalarFitnessAssembled& other) const{
 	    if ( empty() || other.empty() )
 		return false;
 	    else
@@ -228,22 +228,22 @@ namespace eo
 
 	//! Comparison with ScalarTypes. Explicit definition needed to compile with VS 8.0
 	bool operator<(ScalarType x) const{
-	    eoScalarFitnessAssembled ScalarFitness(x);
+	    ScalarFitnessAssembled ScalarFitness(x);
 	    return this->operator<(ScalarFitness);
 	}
   
 	// implementation of the other operators
-	bool operator>( const eoScalarFitnessAssembled<ScalarType, Compare, FitnessTraits>& y ) const  { return y < *this; }
+	bool operator>( const ScalarFitnessAssembled<ScalarType, Compare, FitnessTraits>& y ) const  { return y < *this; }
 
 	// implementation of the other operators
-	bool operator<=( const eoScalarFitnessAssembled<ScalarType, Compare, FitnessTraits>& y ) const { return !(*this > y); }
+	bool operator<=( const ScalarFitnessAssembled<ScalarType, Compare, FitnessTraits>& y ) const { return !(*this > y); }
 
 	// implementation of the other operators
-	bool operator>=(const eoScalarFitnessAssembled<ScalarType, Compare, FitnessTraits>& y ) const { return !(*this < y); }
+	bool operator>=(const ScalarFitnessAssembled<ScalarType, Compare, FitnessTraits>& y ) const { return !(*this < y); }
 
     };
     /** 
-     * @example t-eoFitnessAssembledEA.cpp
+     * @example t-FitnessAssembledEA.cpp
      */
 
 
@@ -253,11 +253,11 @@ namespace eo
        fitness values (doubles) to be equivalent with Maximizing Fitness, and
        comparing with less is the default behaviour.
     */
-    typedef eoScalarFitnessAssembled<double, std::less<double>, eoScalarFitnessAssembledTraits >    eoAssembledMaximizingFitness;
-    typedef eoScalarFitnessAssembled<double, std::greater<double>, eoScalarFitnessAssembledTraits > eoAssembledMinimizingFitness;
+    typedef ScalarFitnessAssembled<double, std::less<double>, ScalarFitnessAssembledTraits >    AssembledMaximizingFitness;
+    typedef ScalarFitnessAssembled<double, std::greater<double>, ScalarFitnessAssembledTraits > AssembledMinimizingFitness;
 
     template <class F, class Cmp, class FitnessTraits>
-    std::ostream& operator<<(std::ostream& os, const eoScalarFitnessAssembled<F, Cmp, FitnessTraits>& f)
+    std::ostream& operator<<(std::ostream& os, const ScalarFitnessAssembled<F, Cmp, FitnessTraits>& f)
     {
 	for (unsigned i=0; i < f.size(); ++i)
 	    os << f[i] << " ";
@@ -269,7 +269,7 @@ namespace eo
     }
 
     template <class F, class Cmp, class FitnessTraits>
-    std::istream& operator>>(std::istream& is, eoScalarFitnessAssembled<F, Cmp, FitnessTraits>& f)
+    std::istream& operator>>(std::istream& is, ScalarFitnessAssembled<F, Cmp, FitnessTraits>& f)
     {
 	for (unsigned i=0; i < f.size(); ++i){
 	    F value;

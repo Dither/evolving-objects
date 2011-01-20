@@ -25,8 +25,8 @@
 #ifndef _ALGO_H
 #define _ALGO_H
 
-#include <eoPop.h>                   // for population
-#include <eoFunctor.h>
+#include <Pop.h>                   // for population
+#include <Functor.h>
 
 namespace eo
 {
@@ -38,7 +38,7 @@ namespace eo
        problem as arguments, and iteratively modify them with the help of operators.
 
        Generally, an EO object is built by assembling together @ref Operators in an algorithm instance,
-       and then calling the algorithm's operator() on an initial population (an eoPop). The algorithm will then
+       and then calling the algorithm's operator() on an initial population (an Pop). The algorithm will then
        manipulate the solutions within the population to search for the problem's optimum.
     */
 
@@ -52,7 +52,7 @@ namespace eo
        @ingroup Algorithms
     */
     template< class EOT >
-    class eoAlgo : public eoUF<eoPop<EOT>&, void>
+    class Algo : public UF<Pop<EOT>&, void>
     {};
 
 }

@@ -17,7 +17,7 @@
 namespace eo
 {
 
-    class eoParser;
+    class Parser;
 
     class CMAParams
     {
@@ -25,7 +25,7 @@ namespace eo
     public:
 
 	CMAParams() { /* Call this and all values need to be set by hand */ }
-	CMAParams(eoParser& parser, unsigned dimensionality = 0); // 0 dimensionality -> user needs to set it
+	CMAParams(Parser& parser, unsigned dimensionality = 0); // 0 dimensionality -> user needs to set it
 
 	void defaults(unsigned n_, unsigned maxgen_); /* apply all defaults using n and maxgen */
 

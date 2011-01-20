@@ -24,8 +24,8 @@
 #ifndef _CMABREED_H
 #define _CMABREED_H
 
-#include <eoBreed.h>
-#include <eoVector.h>
+#include <Breed.h>
+#include <Vector.h>
 #include <es/CMAState.h>
 
 #include <algorithm>
@@ -35,22 +35,22 @@ namespace eo
 
     /// @todo handle bounds
     template <class FitT>
-    class eoCMABreed : public eoBreed< eoVector<FitT, double> > {
+    class CMABreed : public Breed< Vector<FitT, double> > {
     
 	eo::CMAState& state;
 	unsigned lambda;
     
-	typedef eoVector<FitT, double> EOT;
+	typedef Vector<FitT, double> EOT;
     
     public:
-	eoCMABreed(eo::CMAState& state_, unsigned lambda_) : state(state_), lambda(lambda_) {}
+	CMABreed(eo::CMAState& state_, unsigned lambda_) : state(state_), lambda(lambda_) {}
     
-	void operator()(const eoPop<EOT>& parents, eoPop<EOT>& offspring) {
+	void operator()(const Pop<EOT>& parents, Pop<EOT>& offspring) {
 	
 	    // two temporary arrays of pointers to store the sorted population
 	    std::vector<const EOT*> sorted(parents.size());
 	
-	    // mu stores population as vector (instead of eoPop)
+	    // mu stores population as vector (instead of Pop)
 	    std::vector<const std::vector<double>* > mu(parents.size());
 	
 	    parents.sort(sorted);

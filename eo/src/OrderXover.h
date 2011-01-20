@@ -9,8 +9,8 @@
 //-----------------------------------------------------------------------------
 
 #include <algorithm>
-#include <utils/eoRNG.h>
-#include <eoInit.h> 
+#include <utils/RNG.h>
+#include <Init.h> 
 
 namespace eo
 {
@@ -26,11 +26,11 @@ namespace eo
      *
      * @ingroup Variators
      */
-    template<class Chrom> class eoOrderXover: public eoQuadOp<Chrom>
+    template<class Chrom> class OrderXover: public QuadOp<Chrom>
     {
     public:
 	/// The class name.
-	virtual std::string className() const { return "eoOrderXover"; }
+	virtual std::string className() const { return "OrderXover"; }
 
 	/**
 	 * @return true if the chromosome has changed
@@ -90,7 +90,7 @@ namespace eo
 	 	
     };
 
-    /** @example t-eoOrderXover.cpp
+    /** @example t-OrderXover.cpp
      */
 
 }

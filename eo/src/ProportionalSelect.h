@@ -29,15 +29,15 @@
 
 //-----------------------------------------------------------------------------
 
-#include <utils/eoRNG.h>
+#include <utils/RNG.h>
 #include <utils/selectors.h>
-#include <eoSelectOne.h>
-#include <eoPop.h>
+#include <SelectOne.h>
+#include <Pop.h>
 
 namespace eo
 {
 
-    /** eoProportionalSelect: select an individual proportional to her stored fitness
+    /** ProportionalSelect: select an individual proportional to her stored fitness
 	value 
     
 	Changed the algorithm to make use of a cumulative array of fitness scores, 
@@ -45,17 +45,17 @@ namespace eo
 
 	@ingroup Selectors
     */
-    template <class EOT> class eoProportionalSelect: public eoSelectOne<EOT> 
+    template <class EOT> class ProportionalSelect: public SelectOne<EOT> 
     {
     public:
 	/// Sanity check
-	eoProportionalSelect(const eoPop<EOT>& pop = eoPop<EOT>()) 
+	ProportionalSelect(const Pop<EOT>& pop = Pop<EOT>()) 
 	{
 	    if (minimizing_fitness<EOT>())
-		throw std::logic_error("eoProportionalSelect: minimizing fitness");
+		throw std::logic_error("ProportionalSelect: minimizing fitness");
 	}
 
-	void setup(const eoPop<EOT>& _pop)
+	void setup(const Pop<EOT>& _pop)
 	{
 	    if (_pop.size() == 0) return;
       
@@ -70,7 +70,7 @@ namespace eo
     
 	/** do the selection,  
 	 */
-	const EOT& operator()(const eoPop<EOT>& _pop) 
+	const EOT& operator()(const Pop<EOT>& _pop) 
 	{
 	    if (cumulative.size() == 0) setup(_pop);
       
@@ -85,7 +85,7 @@ namespace eo
 	FitVec cumulative;
     };
 
-    /** @example t-eoRoulette.cpp
+    /** @example t-Roulette.cpp
      */
 
 }

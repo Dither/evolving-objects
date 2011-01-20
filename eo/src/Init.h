@@ -29,9 +29,9 @@
 
 #include <algorithm>
 
-#include <eoOp.h>
-#include <eoSTLFunctor.h>
-#include <utils/eoRndGenerators.h>
+#include <Op.h>
+#include <STLFunctor.h>
+#include <utils/RndGenerators.h>
 #include <utils/rnd_generators.h>  // for shuffle method
 
 namespace eo
@@ -46,33 +46,33 @@ namespace eo
     /** @{*/
     /**
        Base (name) class for Initialization of chromosomes, used in a population
-       contructor. It is derived from eoMonOp, so it can be used
+       contructor. It is derived from MonOp, so it can be used
        inside the algorithm as well.
 
-       @see eoPop
+       @see Pop
     */
     template <class EOT>
-    class eoInit : public eoUF<EOT&, void>
+    class Init : public UF<EOT&, void>
     {
     public:
 
-	/** className: Mandatory because of eoCombinedInit. 
+	/** className: Mandatory because of CombinedInit. 
 	    SHould be pure virtual, but then we should go over the whole
 	    * code to write the method for all derived classes ... MS 16/7/04 */
-	virtual std::string className(void) const { return "eoInit"; }
+	virtual std::string className(void) const { return "Init"; }
     };
 
-    /** turning an eoInit into a generator 
-     * probably we should only use genrators - and suppress eoInit ???
+    /** turning an Init into a generator 
+     * probably we should only use genrators - and suppress Init ???
      * MS - July 2001
      */
     template <class EOT>
-    class eoInitGenerator :  public eoF<EOT>
+    class InitGenerator :  public F<EOT>
     {
     public:
 
-	/** Ctor from a plain eoInit */
-	eoInitGenerator(eoInit<EOT> & _init):init(_init) {}
+	/** Ctor from a plain Init */
+	InitGenerator(Init<EOT> & _init):init(_init) {}
 
 	virtual EOT operator()()
 	{
@@ -81,20 +81,20 @@ namespace eo
 	    return (p);
 	}
     private:
-	eoInit<EOT> & init;
+	Init<EOT> & init;
     };
 
     /**
        Initializer for fixed length representations with a single type
     */
     template <class EOT>
-    class eoInitFixedLength: public eoInit<EOT>
+    class InitFixedLength: public Init<EOT>
     {
     public:
 
 	typedef typename EOT::AtomType AtomType;
 
-        eoInitFixedLength(unsigned _combien, eoRndGenerator<AtomType>& _generator)
+        InitFixedLength(unsigned _combien, RndGenerator<AtomType>& _generator)
             : combien(_combien), generator(_generator) {}
 
         virtual void operator()(EOT& chrom)
@@ -106,35 +106,35 @@ namespace eo
 
     private :
         unsigned combien;
-        /// generic wrapper for eoFunctor (s), to make them have the function-pointer style copy semantics
-        eoSTLF<AtomType> generator;
+        /// generic wrapper for Functor (s), to make them have the function-pointer style copy semantics
+        STLF<AtomType> generator;
     };
 
     /**
        Initializer for variable length representations with a single type
     */
     template <class EOT>
-    class eoInitVariableLength: public eoInit<EOT>
+    class InitVariableLength: public Init<EOT>
     {
     public:
 	typedef typename EOT::AtomType AtomType; 
 
 	//   /** Ctor from a generator */
-	//   eoInitVariableLength(unsigned _minSize, unsigned _maxSize, eoF<typename EOT::AtomType> & _generator = Gen())
+	//   InitVariableLength(unsigned _minSize, unsigned _maxSize, F<typename EOT::AtomType> & _generator = Gen())
 	//     : offset(_minSize), extent(_maxSize - _minSize), 
-	// 			 repGenerator( eoInitGenerator<typename EOT::AtomType>(*(new eoInit<EOT>)) ), 
+	// 			 repGenerator( InitGenerator<typename EOT::AtomType>(*(new Init<EOT>)) ), 
 	// 			 generator(_generator)
 	//   {
 	//     if (_minSize >= _maxSize)
-	//       throw std::logic_error("eoInitVariableLength: minSize larger or equal to maxSize");
+	//       throw std::logic_error("InitVariableLength: minSize larger or equal to maxSize");
 	//   }
 
-	/** Ctor from an eoInit */
-	eoInitVariableLength(unsigned _minSize, unsigned _maxSize, eoInit<AtomType> & _init)
+	/** Ctor from an Init */
+	InitVariableLength(unsigned _minSize, unsigned _maxSize, Init<AtomType> & _init)
 	    : offset(_minSize), extent(_maxSize - _minSize), init(_init)
 	{
 	    if (_minSize >= _maxSize)
-		throw std::logic_error("eoInitVariableLength: minSize larger or equal to maxSize");
+		throw std::logic_error("InitVariableLength: minSize larger or equal to maxSize");
 	}
 
 
@@ -148,12 +148,12 @@ namespace eo
 	}
 
 	// accessor to the atom initializer (needed by operator constructs sometimes)
-	eoInit<AtomType> & atomInit() {return init;}
+	Init<AtomType> & atomInit() {return init;}
 
     private :
 	unsigned offset;
 	unsigned extent;
-	eoInit<AtomType> & init;
+	Init<AtomType> & init;
     };
 
 
@@ -161,13 +161,13 @@ namespace eo
        Initializer for permutation (integer-based) representations.
     */
     template <class EOT>
-    class eoInitPermutation: public eoInit<EOT>
+    class InitPermutation: public Init<EOT>
     {
     public:
 
 	typedef typename EOT::AtomType AtomType;
 
-        eoInitPermutation(unsigned _chromSize, unsigned _startFrom=0)
+        InitPermutation(unsigned _chromSize, unsigned _startFrom=0)
             : chromSize(_chromSize), startFrom(_startFrom){}
 
         virtual void operator()(EOT& chrom)
@@ -185,22 +185,22 @@ namespace eo
         unsigned startFrom;
         UF_random_generator<unsigned int> gen;
     };
-    /** @example t-eoInitPermutation.cpp
+    /** @example t-InitPermutation.cpp
      */
 
 
     /**
-       eoInitAdaptor changes the place in the hierarchy
-       from eoInit to eoMonOp. This is mainly a type conversion,
+       InitAdaptor changes the place in the hierarchy
+       from Init to MonOp. This is mainly a type conversion,
        nothing else
     
-       @see eoInit, eoMonOp
+       @see Init, MonOp
     */
     template <class EOT>
-    class eoInitAdaptor : public eoMonOp<EOT>
+    class InitAdaptor : public MonOp<EOT>
     {
     public :
-        eoInitAdaptor(eoInit<EOT>& _init) : init(_init) {}
+        InitAdaptor(Init<EOT>& _init) : init(_init) {}
 
         bool operator()(EOT& _eot)
         {
@@ -209,7 +209,7 @@ namespace eo
         }
     private :
 
-        eoInit<EOT>& init;
+        Init<EOT>& init;
     };
 
 }

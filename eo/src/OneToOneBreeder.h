@@ -28,20 +28,20 @@
 
 //-----------------------------------------------------------------------------
 
-#include <eoOp.h>
-#include <eoGenOp.h>
-#include <eoPopulator.h>
-#include <eoSelectOne.h>
-#include <eoSequentialSelect.h>
-#include <eoBreed.h>
-#include <eoEvalFunc.h>
-#include <eoPopulator.h>
-#include <utils/eoHowMany.h>
+#include <Op.h>
+#include <GenOp.h>
+#include <Populator.h>
+#include <SelectOne.h>
+#include <SequentialSelect.h>
+#include <Breed.h>
+#include <EvalFunc.h>
+#include <Populator.h>
+#include <utils/HowMany.h>
 
 namespace eo
 {
 
-    /** eoOneToOneBreeder: transforms a population using 
+    /** OneToOneBreeder: transforms a population using 
      *   - an operator that MODIFIES only one parent from the populator
      *     (though it can use any number aside) and thus generates ONE offspring)
      *   - a local replacement between the parent and its offspring
@@ -52,20 +52,20 @@ namespace eo
      *  @ingroup Combination
      */
     template<class EOT>
-    class eoOneToOneBreeder: public eoBreed<EOT>
+    class OneToOneBreeder: public Breed<EOT>
     {
     public:
 	/** Ctor:
 	 * @param _op       a general operator (must MODIFY only ONE parent)
-	 * @param _eval     an eoEvalFunc to evaluate the offspring 
+	 * @param _eval     an EvalFunc to evaluate the offspring 
 	 * @param _pReplace probability that the best of parent/offspring wins [1]
-	 * @param _howMany  eoHowMany offpsring to generate [100%]
+	 * @param _howMany  HowMany offpsring to generate [100%]
 	 */
-	eoOneToOneBreeder(
-			  eoGenOp<EOT>& _op,
-			  eoEvalFunc<EOT> & _eval, 
+	OneToOneBreeder(
+			  GenOp<EOT>& _op,
+			  EvalFunc<EOT> & _eval, 
 			  double _pReplace = 1.0,
-			  eoHowMany _howMany = eoHowMany(1.0) ) :
+			  HowMany _howMany = HowMany(1.0) ) :
 	    op(_op), eval(_eval), select( false ), 
 	    pReplace(_pReplace), howMany(_howMany) {}
 
@@ -77,12 +77,12 @@ namespace eo
 	 * @param _parents the initial population
 	 * @param _offspring the resulting population (content -if any- is lost)
 	 */
-	void operator()(const eoPop<EOT>& _parents, eoPop<EOT>& _offspring)
+	void operator()(const Pop<EOT>& _parents, Pop<EOT>& _offspring)
 	{
 	    unsigned target = howMany(_parents.size());
       
 	    _offspring.clear();
-	    eoSelectivePopulator<EOT> popit(_parents, _offspring, select);
+	    SelectivePopulator<EOT> popit(_parents, _offspring, select);
       
 	    for (unsigned iParent=0; iParent<target; iParent++)
 		{
@@ -98,7 +98,7 @@ namespace eo
 		    // check: only one offspring?
 		    unsigned posEnd = popit.tellp();
 		    if (posEnd != pos)
-			throw std::runtime_error("Operator can only generate a SINGLE offspring in eoOneToOneBreeder");
+			throw std::runtime_error("Operator can only generate a SINGLE offspring in OneToOneBreeder");
 
 		    // do the tournament between parent and offspring
 		    eval(leOffspring);  // first need to evaluate the offspring
@@ -111,14 +111,14 @@ namespace eo
 	}
 
 	/// The class name.
-	virtual std::string className() const { return "eoOneToOneBreeder"; }
+	virtual std::string className() const { return "OneToOneBreeder"; }
 
     private:
-	eoGenOp<EOT>& op;
-	eoEvalFunc<EOT> & eval;
-	eoSequentialSelect<EOT> select;
+	GenOp<EOT>& op;
+	EvalFunc<EOT> & eval;
+	SequentialSelect<EOT> select;
 	double pReplace;
-	eoHowMany howMany;
+	HowMany howMany;
     };
 
 }

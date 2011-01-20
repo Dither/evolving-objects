@@ -27,39 +27,39 @@
 #ifndef _make_algo_scalar_h
 #define _make_algo_scalar_h
 
-#include <utils/eoData.h>     // for eo_is_a_rate
+#include <utils/Data.h>     // for eo_is_a_rate
 // everything tha's needed for the algorithms - SCALAR fitness
 
 // Selection
-// the eoSelectOne's
-#include <eoRandomSelect.h>
-#include <eoSequentialSelect.h>
-#include <eoDetTournamentSelect.h>
-#include <eoProportionalSelect.h>
-#include <eoFitnessScalingSelect.h>
-#include <eoRankingSelect.h>
-#include <eoStochTournamentSelect.h>
-#include <eoSharingSelect.h>
-#include <utils/eoDistance.h>
+// the SelectOne's
+#include <RandomSelect.h>
+#include <SequentialSelect.h>
+#include <DetTournamentSelect.h>
+#include <ProportionalSelect.h>
+#include <FitnessScalingSelect.h>
+#include <RankingSelect.h>
+#include <StochTournamentSelect.h>
+#include <SharingSelect.h>
+#include <utils/Distance.h>
 
 // Breeders
-#include <eoGeneralBreeder.h>
+#include <GeneralBreeder.h>
 
 // Replacement
-// #include <eoReplacement.h>
-#include <eoMergeReduce.h>
-#include <eoReduceMerge.h>
-#include <eoSurviveAndDie.h>
+// #include <Replacement.h>
+#include <MergeReduce.h>
+#include <ReduceMerge.h>
+#include <SurviveAndDie.h>
 
 // distance
-#include <utils/eoDistance.h>
+#include <utils/Distance.h>
 
 // Algorithm (only this one needed)
-#include <eoEasyEA.h>
+#include <EasyEA.h>
 
   // also need the parser and param includes
-#include <utils/eoParser.h>
-#include <utils/eoState.h>
+#include <utils/Parser.h>
+#include <utils/State.h>
 
 namespace eo
 {
@@ -79,7 +79,7 @@ namespace eo
      * @ingroup Builders
      */
     template <class EOT>
-    eoAlgo<EOT> & do_make_algo_scalar(eoParser& _parser, eoState& _state, eoEvalFunc<EOT>& _eval, eoContinue<EOT>& _continue, eoGenOp<EOT>& _op, eoDistance<EOT> * _dist = NULL)
+    Algo<EOT> & do_make_algo_scalar(Parser& _parser, State& _state, EvalFunc<EOT>& _eval, Continue<EOT>& _continue, GenOp<EOT>& _op, Distance<EOT> * _dist = NULL)
     {
 	// the selection : help and comment depend on whether or not a distance is passed
 	std::string comment;
@@ -88,11 +88,11 @@ namespace eo
 	else
 	    comment = "Selection: DetTour(T), StochTour(t), Roulette, Ranking(p,e), Sharing(sigma_share) or Sequential(ordered/unordered)";
 
-	eoValueParam<eoParamParamType>& selectionParam = _parser.createParam(eoParamParamType("DetTour(2)"), "selection", comment, 'S', "Evolution Engine");
+	ValueParam<ParamParamType>& selectionParam = _parser.createParam(ParamParamType("DetTour(2)"), "selection", comment, 'S', "Evolution Engine");
 
-	eoParamParamType & ppSelect = selectionParam.value(); // std::pair<std::string,std::vector<std::string> >
+	ParamParamType & ppSelect = selectionParam.value(); // std::pair<std::string,std::vector<std::string> >
 
-	eoSelectOne<EOT>* select ;
+	SelectOne<EOT>* select ;
 	if (ppSelect.first == std::string("DetTour")) 
 	    {
 		unsigned detSize;
@@ -106,7 +106,7 @@ namespace eo
 		    }
 		else	  // parameter passed by user as DetTour(T)
 		    detSize = atoi(ppSelect.second[0].c_str());
-		select = new eoDetTournamentSelect<EOT>(detSize);
+		select = new DetTournamentSelect<EOT>(detSize);
 	    }
 	else if (ppSelect.first == std::string("Sharing")) 
 	    {
@@ -123,7 +123,7 @@ namespace eo
 		    nicheSize = atof(ppSelect.second[0].c_str());
 		if (_dist == NULL)		   // no distance
 		    throw std::runtime_error("You didn't specify a distance when calling make_algo_scalar and using sharing");
-		select = new eoSharingSelect<EOT>(nicheSize, *_dist);
+		select = new SharingSelect<EOT>(nicheSize, *_dist);
 	    }
 	else if (ppSelect.first == std::string("StochTour"))
 	    {
@@ -138,7 +138,7 @@ namespace eo
 		else	  // parameter passed by user as DetTour(T)
 		    p = atof(ppSelect.second[0].c_str());
       
-		select = new eoStochTournamentSelect<EOT>(p);
+		select = new StochTournamentSelect<EOT>(p);
 	    }
 	else if (ppSelect.first == std::string("Ranking"))
 	    {
@@ -181,8 +181,8 @@ namespace eo
 			ppSelect.second[1] = (std::string("1"));
 		    }
 		// now we're OK
-		eoPerf2Worth<EOT> & p2w = _state.storeFunctor( new eoRanking<EOT>(p,e) );
-		select = new eoRouletteWorthSelect<EOT>(p2w);
+		Perf2Worth<EOT> & p2w = _state.storeFunctor( new Ranking<EOT>(p,e) );
+		select = new RouletteWorthSelect<EOT>(p2w);
 	    }
 	else if (ppSelect.first == std::string("Sequential")) // one after the other
 	    {
@@ -195,15 +195,15 @@ namespace eo
 		    }
 		else
 		    b = !(ppSelect.second[0] == std::string("unordered"));
-		select = new eoSequentialSelect<EOT>(b);
+		select = new SequentialSelect<EOT>(b);
 	    }
 	else if (ppSelect.first == std::string("Roulette")) // no argument (yet)
 	    {
-		select = new eoProportionalSelect<EOT>;
+		select = new ProportionalSelect<EOT>;
 	    }
 	else if (ppSelect.first == std::string("Random")) // no argument
 	    {
-		select = new eoRandomSelect<EOT>;
+		select = new RandomSelect<EOT>;
 	    }
 	else
 	    {
@@ -214,21 +214,21 @@ namespace eo
 	_state.storeFunctor(select);
 
 	// the number of offspring 
-	eoValueParam<eoHowMany>& offspringRateParam =  _parser.createParam(eoHowMany(1.0), "nbOffspring", "Nb of offspring (percentage or absolute)", 'O', "Evolution Engine");
+	ValueParam<HowMany>& offspringRateParam =  _parser.createParam(HowMany(1.0), "nbOffspring", "Nb of offspring (percentage or absolute)", 'O', "Evolution Engine");
 
 	// the replacement
-	eoValueParam<eoParamParamType>& replacementParam = _parser.createParam(eoParamParamType("Comma"), "replacement", "Replacement: Comma, Plus or EPTour(T), SSGAWorst, SSGADet(T), SSGAStoch(t)", 'R', "Evolution Engine");
+	ValueParam<ParamParamType>& replacementParam = _parser.createParam(ParamParamType("Comma"), "replacement", "Replacement: Comma, Plus or EPTour(T), SSGAWorst, SSGADet(T), SSGAStoch(t)", 'R', "Evolution Engine");
 
-	eoParamParamType & ppReplace = replacementParam.value(); // std::pair<std::string,std::vector<std::string> >
+	ParamParamType & ppReplace = replacementParam.value(); // std::pair<std::string,std::vector<std::string> >
 
-	eoReplacement<EOT>* replace ;
+	Replacement<EOT>* replace ;
 	if (ppReplace.first == std::string("Comma")) // Comma == generational
 	    {
-		replace = new eoCommaReplacement<EOT>;
+		replace = new CommaReplacement<EOT>;
 	    }
 	else if (ppReplace.first == std::string("Plus"))
 	    {
-		replace = new eoPlusReplacement<EOT>;
+		replace = new PlusReplacement<EOT>;
 	    }
 	else if (ppReplace.first == std::string("EPTour"))
 	    {
@@ -244,11 +244,11 @@ namespace eo
 		else	  // parameter passed by user as EPTour(T)
 		    detSize = atoi(ppSelect.second[0].c_str());
 
-		replace = new eoEPReplacement<EOT>(detSize);
+		replace = new EPReplacement<EOT>(detSize);
 	    }
 	else if (ppReplace.first == std::string("SSGAWorst"))
 	    {
-		replace = new eoSSGAWorseReplacement<EOT>;
+		replace = new SSGAWorseReplacement<EOT>;
 	    }
 	else if (ppReplace.first == std::string("SSGADet"))
 	    {
@@ -264,7 +264,7 @@ namespace eo
 		else	  // parameter passed by user as SSGADet(T)
 		    detSize = atoi(ppSelect.second[0].c_str());
       
-		replace = new eoSSGADetTournamentReplacement<EOT>(detSize);
+		replace = new SSGADetTournamentReplacement<EOT>(detSize);
 	    }
 	else if (ppReplace.first == std::string("SSGAStoch"))
 	    {
@@ -279,7 +279,7 @@ namespace eo
 		else	  // parameter passed by user as SSGADet(T)
 		    p = atof(ppSelect.second[0].c_str());
       
-		replace = new eoSSGAStochTournamentReplacement<EOT>(p);
+		replace = new SSGAStochTournamentReplacement<EOT>(p);
 	    }
 	else
 	    {
@@ -290,21 +290,21 @@ namespace eo
 	_state.storeFunctor(replace);
 
 	// adding weak elitism
-	eoValueParam<bool>& weakElitismParam =  _parser.createParam(false, "weakElitism", "Old best parent replaces new worst offspring *if necessary*", 'w', "Evolution Engine");
+	ValueParam<bool>& weakElitismParam =  _parser.createParam(false, "weakElitism", "Old best parent replaces new worst offspring *if necessary*", 'w', "Evolution Engine");
 	if (weakElitismParam.value())
 	    {
-		eoReplacement<EOT> *replaceTmp = replace;
-		replace = new eoWeakElitistReplacement<EOT>(*replaceTmp);
+		Replacement<EOT> *replaceTmp = replace;
+		replace = new WeakElitistReplacement<EOT>(*replaceTmp);
 		_state.storeFunctor(replace);
 	    }      
 
 	// the general breeder
-	eoGeneralBreeder<EOT> *breed = 
-	    new eoGeneralBreeder<EOT>(*select, _op, offspringRateParam.value());
+	GeneralBreeder<EOT> *breed = 
+	    new GeneralBreeder<EOT>(*select, _op, offspringRateParam.value());
 	_state.storeFunctor(breed);
 
-	// now the eoEasyEA
-	eoAlgo<EOT> *algo = new eoEasyEA<EOT>(_continue, _eval, *breed, *replace);
+	// now the EasyEA
+	Algo<EOT> *algo = new EasyEA<EOT>(_continue, _eval, *breed, *replace);
 	_state.storeFunctor(algo);
 	// that's it!
 	return *algo;

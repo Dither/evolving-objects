@@ -28,7 +28,7 @@ Contact: http://eodev.sourceforge.net
 
 /** Init functions
 
-    This file contains ***INSTANCIATED DEFINITIONS*** of eoReal Init fns
+    This file contains ***INSTANCIATED DEFINITIONS*** of Real Init fns
     It should be included in the file that calls any of the corresponding
     fns Compiling this file allows one to generate part of the library
     (i.e. object files that you just need to link with your own main and
@@ -41,7 +41,7 @@ Contact: http://eodev.sourceforge.net
     It is instanciated in src/es/make_genotype_real.cpp - and incorporated
     in the ga/libga.a
 
-    It returns an eoInit<EOT> that can later be used to initialize the
+    It returns an Init<EOT> that can later be used to initialize the
     population (see make_pop.h).
 
     It uses a parser (to get user parameters) and a state (to store the
@@ -60,54 +60,54 @@ namespace eo
 {
 
 /// The following function merely call the templatized do_* functions
-    eoRealInitBounded<eoEsSimple<double> >& make_genotype(eoParser& _parser,
-							  eoState& _state,
-							  eoEsSimple<double> _eo)
+    RealInitBounded<EsSimple<double> >& make_genotype(Parser& _parser,
+							  State& _state,
+							  EsSimple<double> _eo)
     {
 	return do_make_genotype(_parser, _state, _eo);
     }
 
 
 
-    eoRealInitBounded<eoEsSimple<eoMinimizingFitness> >& make_genotype(eoParser& _parser,
-								       eoState& _state,
-								       eoEsSimple<eoMinimizingFitness> _eo)
+    RealInitBounded<EsSimple<MinimizingFitness> >& make_genotype(Parser& _parser,
+								       State& _state,
+								       EsSimple<MinimizingFitness> _eo)
     {
 	return do_make_genotype(_parser, _state, _eo);
     }
 
 
 
-    eoRealInitBounded<eoEsStdev<double> >& make_genotype(eoParser& _parser,
-							 eoState& _state,
-							 eoEsStdev<double> _eo)
+    RealInitBounded<EsStdev<double> >& make_genotype(Parser& _parser,
+							 State& _state,
+							 EsStdev<double> _eo)
     {
 	return do_make_genotype(_parser, _state, _eo);
     }
 
 
 
-    eoRealInitBounded<eoEsStdev<eoMinimizingFitness> >& make_genotype(eoParser& _parser,
-								      eoState& _state,
-								      eoEsStdev<eoMinimizingFitness> _eo)
+    RealInitBounded<EsStdev<MinimizingFitness> >& make_genotype(Parser& _parser,
+								      State& _state,
+								      EsStdev<MinimizingFitness> _eo)
     {
 	return do_make_genotype(_parser, _state, _eo);
     }
 
 
 
-    eoRealInitBounded<eoEsFull<double> > & make_genotype(eoParser& _parser,
-							 eoState& _state,
-							 eoEsFull<double> _eo)
+    RealInitBounded<EsFull<double> > & make_genotype(Parser& _parser,
+							 State& _state,
+							 EsFull<double> _eo)
     {
 	return do_make_genotype(_parser, _state, _eo);
     }
 
 
 
-    eoRealInitBounded<eoEsFull<eoMinimizingFitness> >& make_genotype(eoParser& _parser,
-								     eoState& _state,
-								     eoEsFull<eoMinimizingFitness> _eo)
+    RealInitBounded<EsFull<MinimizingFitness> >& make_genotype(Parser& _parser,
+								     State& _state,
+								     EsFull<MinimizingFitness> _eo)
     {
 	return do_make_genotype(_parser, _state, _eo);
     }

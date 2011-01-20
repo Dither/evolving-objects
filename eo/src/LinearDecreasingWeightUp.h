@@ -26,7 +26,7 @@
 #define LINEARDECREASINGWEIGHTUP_H
 
 //-----------------------------------------------------------------------------
-#include <eoWeightUpdater.h>
+#include <WeightUpdater.h>
 //-----------------------------------------------------------------------------
 
 namespace eo
@@ -42,18 +42,18 @@ namespace eo
      *
      *  @ingroup Variators
      */
-    template <class WeightType, class StopCriteriaType> class eoLinearDecreasingWeightUp:public eoWeightUpdater<WeightType>
+    template <class WeightType, class StopCriteriaType> class LinearDecreasingWeightUp:public WeightUpdater<WeightType>
     {
     public:
 
 	/**
 	 * Ctor
 	 */
-	eoLinearDecreasingWeightUp(
+	LinearDecreasingWeightUp(
 				   const StopCriteriaType & _stop,
 				   const WeightType  & _initialValue,
 				   const WeightType & _finalValue,
-				   eoValueParam<StopCriteriaType> &  _counter):
+				   ValueParam<StopCriteriaType> &  _counter):
             stop(_stop),
             initialValue(_initialValue),
             finalValue(_finalValue),
@@ -71,7 +71,7 @@ namespace eo
     protected:
 	const StopCriteriaType & stop;
 	const WeightType & initialValue,finalValue;
-	eoValueParam<StopCriteriaType> & counter; // a counter of the number of past events (should say "generations")
+	ValueParam<StopCriteriaType> & counter; // a counter of the number of past events (should say "generations")
     };
 
 }

@@ -26,7 +26,7 @@
 #define WEIGHTUPDATER_H
 
 //-----------------------------------------------------------------------------
-#include <eoFunctor.h>
+#include <Functor.h>
 //-----------------------------------------------------------------------------
 
 namespace eo
@@ -34,11 +34,11 @@ namespace eo
 
     /**
      * Abstract class for (inertia) weight updater (particle swarm optimization).
-     * Used inside classes extending eoVelocity.
+     * Used inside classes extending Velocity.
      *
      * @ingroup Core
      */
-    template < class WeightType > class eoWeightUpdater: public eoUF < WeightType &, void > {};
+    template < class WeightType > class WeightUpdater: public UF < WeightType &, void > {};
 
 }
 

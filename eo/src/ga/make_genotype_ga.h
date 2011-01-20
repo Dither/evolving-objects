@@ -27,11 +27,11 @@
 #ifndef _make_genotype_h
 #define _make_genotype_h
 
-#include <ga/eoBit.h>
-#include <eoInit.h>
+#include <ga/Bit.h>
+#include <Init.h>
   // also need the parser and param includes
-#include <utils/eoParser.h>
-#include <utils/eoState.h>
+#include <utils/Parser.h>
+#include <utils/State.h>
 
 namespace eo
 {
@@ -48,7 +48,7 @@ namespace eo
      *
      * It is instanciated in ga/ga.cpp - and incorporated in the ga/libga.a
      *
-     * It returns an eoInit<eoBit<FitT> > tha can later be used to initialize 
+     * It returns an Init<Bit<FitT> > tha can later be used to initialize 
      * the population (see make_pop.h).
      *
      * It uses a parser (to get user parameters) and a state (to store the memory)
@@ -62,7 +62,7 @@ namespace eo
      * @ingroup Builders
      */
     template <class EOT>
-    eoInit<EOT> & do_make_genotype(eoParser& _parser, eoState& _state, EOT)
+    Init<EOT> & do_make_genotype(Parser& _parser, State& _state, EOT)
     {
 	// for bitstring, only thing needed is the size
 	// but it might have been already read in the definition fo the performance
@@ -70,9 +70,9 @@ namespace eo
 
 	// Then we can built a bitstring random initializer
 	// based on boolean_generator class (see utils/rnd_generator.h)
-	eoBooleanGenerator * gen = new eoBooleanGenerator;
+	BooleanGenerator * gen = new BooleanGenerator;
 	_state.storeFunctor(gen);
-	eoInitFixedLength<EOT>* init = new eoInitFixedLength<EOT>(theSize, *gen);
+	InitFixedLength<EOT>* init = new InitFixedLength<EOT>(theSize, *gen);
 	// store in state
 	_state.storeFunctor(init);
 	return *init;

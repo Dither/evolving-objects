@@ -28,13 +28,13 @@
 #define _IntBounds_h
 
 #include <stdexcept>		   // std::exceptions!
-#include <utils/eoRNG.h>
+#include <utils/RNG.h>
 
 namespace eo
 {
 
     /**
-       \class eoIntBounds eoIntBounds.h es/eoIntBounds.h
+       \class IntBounds IntBounds.h es/IntBounds.h
        \ingroup Real
        \ingroup Bounds
 
@@ -42,7 +42,7 @@ namespace eo
 
        Scalar type:
        ------------
-       Basic class is eoIntBounds, a pure virtual.
+       Basic class is IntBounds, a pure virtual.
 
        The following pure virtual methods are to be used in mutations:
        - void foldsInBounds(long int &) that folds any value that falls out of 
@@ -62,18 +62,18 @@ namespace eo
        (if possible, i.e. if bounded) in the interval.
 
        Derived class are 
-       eoIntInterval that holds a minimum and maximum value, 
-       eoIntNoBounds the "unbounded bounds" (-infinity, +infinity)
-       eoIntBelowBound the half-bounded interval [min, +infinity)
-       eoIntAboveBound the   half-bounded interval (-infinity, max]
+       IntInterval that holds a minimum and maximum value, 
+       IntNoBounds the "unbounded bounds" (-infinity, +infinity)
+       IntBelowBound the half-bounded interval [min, +infinity)
+       IntAboveBound the   half-bounded interval (-infinity, max]
 
        THis file also contains the declaration of *the* global object that
        is the unbounded bound
     */
-    class eoIntBounds : public eoPersistent
+    class IntBounds : public Persistent
     { 
     public:
-	virtual ~eoIntBounds(){}
+	virtual ~IntBounds(){}
 
 	/** Self-Test: true if ***both*** a min and a max
 	 */
@@ -139,11 +139,11 @@ namespace eo
 	 * uses same naming convention than eo::rng
 	 * std::exception if unbounded
 	 */
-	virtual double uniform(eoRng & _rng = eo::rng)  const = 0;
-	virtual long int random(eoRng & _rng = eo::rng)  const = 0;
+	virtual double uniform(Rng & _rng = rng)  const = 0;
+	virtual long int random(Rng & _rng = rng)  const = 0;
 
 	/** for memory managements - ugly */
-	virtual eoIntBounds * dup()  const = 0;
+	virtual IntBounds * dup()  const = 0;
     };
 
     /** A default class for unbounded variables
@@ -151,10 +151,10 @@ namespace eo
      * @ingroup Real
      * @ingroup Bounds
      */
-    class eoIntNoBounds : public eoIntBounds
+    class IntNoBounds : public IntBounds
     {
     public:
-	virtual ~eoIntNoBounds(){}
+	virtual ~IntNoBounds(){}
 
 	virtual bool isBounded(void)  const {return false;}
 	virtual bool hasNoBoundAtAll(void) const  {return true;}
@@ -166,43 +166,43 @@ namespace eo
 
 	virtual long int minimum() const
 	{
-	    throw std::logic_error("Trying to get minimum of unbounded eoIntBounds");
+	    throw std::logic_error("Trying to get minimum of unbounded IntBounds");
 	}
 	virtual long int maximum() const 
 	{
-	    throw std::logic_error("Trying to get maximum of unbounded eoIntBounds");
+	    throw std::logic_error("Trying to get maximum of unbounded IntBounds");
 	}
 	virtual long int range() const 
 	{
-	    throw std::logic_error("Trying to get range of unbounded eoIntBounds");
+	    throw std::logic_error("Trying to get range of unbounded IntBounds");
 	}
 
-	virtual double uniform(eoRng & _rng = eo::rng) const
+	virtual double uniform(Rng & _rng = rng) const
 	{
 	    (void)_rng;
 
-	    throw std::logic_error("Trying to generate uniform values in unbounded eoIntBounds");
+	    throw std::logic_error("Trying to generate uniform values in unbounded IntBounds");
 	}
 
-	virtual long int random(eoRng & _rng = eo::rng) const
+	virtual long int random(Rng & _rng = rng) const
 	{
 	    (void)_rng;
 
-	    throw std::logic_error("Trying to generate uniform values in unbounded eoIntBounds");
+	    throw std::logic_error("Trying to generate uniform values in unbounded IntBounds");
 	}
 
-	// methods from eoPersistent
+	// methods from Persistent
 	/**
 	 * Read object.
 	 * @param _is A std::istream.
 	 * but reading should not be done here, because of bound problems
-	 * see eoIntVectorBounds
+	 * see IntVectorBounds
 	 */
 	virtual void readFrom(std::istream& _is)
 	{
 	    (void)_is;
 
-	    throw std::runtime_error("Should not use eoIntBounds::readFrom");
+	    throw std::runtime_error("Should not use IntBounds::readFrom");
 	}
 
 	/**
@@ -215,39 +215,39 @@ namespace eo
 	}
 
 	/** for memory managements - ugly */
-	virtual eoIntBounds * dup() const 
+	virtual IntBounds * dup() const 
 	{
-	    return new eoIntNoBounds(*this);
+	    return new IntNoBounds(*this);
 	}
 
     };
 
-    /** one object for all - see eoIntBounds.cpp
+    /** one object for all - see IntBounds.cpp
      *
      * @ingroup Real
      * @ingroup Bounds
      */
-    extern eoIntNoBounds eoDummyIntNoBounds;
+    extern IntNoBounds DummyIntNoBounds;
 
     /**
-     * fully bounded eoIntBound == interval
+     * fully bounded IntBound == interval
      *
      * @ingroup Real
      * @ingroup Bounds
      */
-    class eoIntInterval : public eoIntBounds
+    class IntInterval : public IntBounds
     {
     public :
-	virtual ~eoIntInterval(){}
+	virtual ~IntInterval(){}
   
 	/** 
 	    Simple bounds = minimum and maximum (allowed)
 	*/
-	eoIntInterval(long int _min=0, long int _max=1) : 
+	IntInterval(long int _min=0, long int _max=1) : 
 	    repMinimum(_min), repMaximum(_max), repRange(_max-_min) 
 	{
 	    if (repRange<=0)
-		throw std::logic_error("Void range in eoIntBounds");
+		throw std::logic_error("Void range in IntBounds");
 	}
 
 	// accessors  
@@ -261,12 +261,12 @@ namespace eo
 	virtual bool isMinBounded(void)  const {return true;}
 	virtual bool isMaxBounded(void)  const {return true;}
 
-	virtual double uniform(eoRng & _rng = eo::rng) const 
+	virtual double uniform(Rng & _rng = rng) const 
 	{
 	    return repMinimum + _rng.uniform(repRange);
 	}  
 
-	virtual long int random(eoRng & _rng = eo::rng) const 
+	virtual long int random(Rng & _rng = rng) const 
 	{
 	    return repMinimum + _rng.random(repRange);
 	}  
@@ -320,18 +320,18 @@ namespace eo
 	    return;
 	}
 
-	// methods from eoPersistent
+	// methods from Persistent
 	/**
 	 * Read object.
 	 * @param _is A std::istream.
 	 * but reading should not be done here, because of bound problems
-	 * see eoIntVectorBounds
+	 * see IntVectorBounds
 	 */
 	virtual void readFrom(std::istream& _is)
 	{
 	    (void)_is;
 
-	    throw std::runtime_error("Should not use eoIntInterval::readFrom");
+	    throw std::runtime_error("Should not use IntInterval::readFrom");
 	}
 
 	/**
@@ -344,9 +344,9 @@ namespace eo
 	}
 
 	/** for memory managements - ugly */
-	virtual eoIntBounds * dup() const 
+	virtual IntBounds * dup() const 
 	{
-	    return new eoIntInterval(*this);
+	    return new IntInterval(*this);
 	}
 
     private :
@@ -356,19 +356,19 @@ namespace eo
     };
 
     /**
-     * an eoIntBound bounded from below only
+     * an IntBound bounded from below only
      *
      * @ingroup Real
      * @ingroup Bounds
      */
-    class eoIntBelowBound : public eoIntBounds
+    class IntBelowBound : public IntBounds
     {
     public :
-	virtual ~eoIntBelowBound(){}  
+	virtual ~IntBelowBound(){}  
 	/** 
 	    Simple bounds = minimum
 	*/
-	eoIntBelowBound(long int _min=0) : 
+	IntBelowBound(long int _min=0) : 
 	    repMinimum(_min)
 	{}
 
@@ -377,25 +377,25 @@ namespace eo
 
 	virtual long int maximum() const 
 	{
-	    throw std::logic_error("Trying to get maximum of eoIntBelowBound");
+	    throw std::logic_error("Trying to get maximum of IntBelowBound");
 	}
 	virtual long int range() const 
 	{
-	    throw std::logic_error("Trying to get range of eoIntBelowBound");
+	    throw std::logic_error("Trying to get range of IntBelowBound");
 	}
 
-	virtual double uniform(eoRng & _rng = eo::rng) const
+	virtual double uniform(Rng & _rng = rng) const
 	{
 	    (void)_rng;
 
-	    throw std::logic_error("Trying to generate uniform values in eoIntBelowBound");
+	    throw std::logic_error("Trying to generate uniform values in IntBelowBound");
 	}
 
-	virtual long int random(eoRng & _rng = eo::rng) const
+	virtual long int random(Rng & _rng = rng) const
 	{
 	    (void)_rng;
 
-	    throw std::logic_error("Trying to generate uniform values in eoIntBelowBound");
+	    throw std::logic_error("Trying to generate uniform values in IntBelowBound");
 	}
 
 	// description
@@ -429,18 +429,18 @@ namespace eo
 	    return;
 	}
 
-	// methods from eoPersistent
+	// methods from Persistent
 	/**
 	 * Read object.
 	 * @param _is A std::istream.
 	 * but reading should not be done here, because of bound problems
-	 * see eoIntVectorBounds
+	 * see IntVectorBounds
 	 */
 	virtual void readFrom(std::istream& _is)
 	{
 	    (void)_is;
 
-	    throw std::runtime_error("Should not use eoIntBelowBound::readFrom");
+	    throw std::runtime_error("Should not use IntBelowBound::readFrom");
 	}
 
 	/**
@@ -453,9 +453,9 @@ namespace eo
 	}
 
 	/** for memory managements - ugly */
-	virtual eoIntBounds * dup() const 
+	virtual IntBounds * dup() const 
 	{
-	    return new eoIntBelowBound(*this);
+	    return new IntBelowBound(*this);
 	}
 
     private :
@@ -463,20 +463,20 @@ namespace eo
     };
 
     /**
-       An eoIntBound bounded from above only
+       An IntBound bounded from above only
        *
        * @ingroup Real
        * @ingroup Bounds
        */
-    class eoIntAboveBound : public eoIntBounds
+    class IntAboveBound : public IntBounds
     {
     public :
-	virtual ~eoIntAboveBound(){}
+	virtual ~IntAboveBound(){}
   
 	/** 
 	    Simple bounds = minimum
 	*/
-	eoIntAboveBound(long int _max=0) : 
+	IntAboveBound(long int _max=0) : 
 	    repMaximum(_max)
 	{}
 
@@ -485,25 +485,25 @@ namespace eo
 
 	virtual long int minimum() const 
 	{
-	    throw std::logic_error("Trying to get minimum of eoIntAboveBound");
+	    throw std::logic_error("Trying to get minimum of IntAboveBound");
 	}
 	virtual long int range() const 
 	{
-	    throw std::logic_error("Trying to get range of eoIntAboveBound");
+	    throw std::logic_error("Trying to get range of IntAboveBound");
 	}
 
-	virtual double uniform(eoRng & _rng = eo::rng) const
+	virtual double uniform(Rng & _rng = rng) const
 	{
 	    (void)_rng;
 
-	    throw std::logic_error("Trying to generate uniform values in eoIntAboveBound");
+	    throw std::logic_error("Trying to generate uniform values in IntAboveBound");
 	}
 
-	virtual long int random(eoRng & _rng = eo::rng) const
+	virtual long int random(Rng & _rng = rng) const
 	{
 	    (void)_rng;
 
-	    throw std::logic_error("Trying to generate uniform values in eoIntAboveBound");
+	    throw std::logic_error("Trying to generate uniform values in IntAboveBound");
 	}
 
 	// description
@@ -537,18 +537,18 @@ namespace eo
 	    return;
 	}
 
-	// methods from eoPersistent
+	// methods from Persistent
 	/**
 	 * Read object.
 	 * @param _is A std::istream.
 	 * but reading should not be done here, because of bound problems
-	 * see eoIntVectorBounds
+	 * see IntVectorBounds
 	 */
 	virtual void readFrom(std::istream& _is)
 	{
 	    (void)_is;
 
-	    throw std::runtime_error("Should not use eoIntAboveBound::readFrom");
+	    throw std::runtime_error("Should not use IntAboveBound::readFrom");
 	}
 
 	/**
@@ -561,9 +561,9 @@ namespace eo
 	}
 
 	/** for memory managements - ugly */
-	virtual eoIntBounds * dup() const 
+	virtual IntBounds * dup() const 
 	{
-	    return new eoIntAboveBound(*this);
+	    return new IntAboveBound(*this);
 	}
 
     private :
@@ -572,23 +572,23 @@ namespace eo
 
     //////////////////////// tentative for a general BOUND class that is constructed from a string
 
-    /** A class that encapsulate all possible eoIntBounds.
+    /** A class that encapsulate all possible IntBounds.
      *  Mandatory in order to read through the parser
      *
      * @ingroup Real
      * @ingroup Bounds
      */
-    class eoGeneralIntBounds : public eoIntBounds
+    class GeneralIntBounds : public IntBounds
     {
     public:
 	/** Ctor: from a string, chooses the type of bound */
-	eoGeneralIntBounds(std::string _s = "[-infinity,+infinity]")
+	GeneralIntBounds(std::string _s = "[-infinity,+infinity]")
 	{
 	    repBound = getBoundsFromString(_s);
 	}
 
 	/** Need a Cpy Ctor because we are allocating memory */
-	eoGeneralIntBounds(const eoGeneralIntBounds & _b) : eoIntBounds(_b)
+	GeneralIntBounds(const GeneralIntBounds & _b) : IntBounds(_b)
 	{
 	    // replicate the embedded bound (I'm pretty sure there is another
 	    // way to do that !!!
@@ -596,21 +596,21 @@ namespace eo
 	    bool minBounded = _b.isMinBounded();
 	    bool maxBounded = _b.isMaxBounded();
 	    long int minimum, maximum;
-	    const eoIntBounds & bb = _b.theBounds();
+	    const IntBounds & bb = _b.theBounds();
 	    if (minBounded) minimum = bb.minimum();
 	    if (maxBounded) maximum = bb.maximum();
 
 	    if (minBounded && maxBounded)
-		repBound = new eoIntInterval(minimum, maximum);
+		repBound = new IntInterval(minimum, maximum);
 	    else if (!minBounded && !maxBounded)	// no bound at all
-		repBound = new eoIntNoBounds;
+		repBound = new IntNoBounds;
 	    else if (!minBounded && maxBounded)
-		repBound = new eoIntAboveBound(maximum);
+		repBound = new IntAboveBound(maximum);
 	    else if (minBounded && !maxBounded)
-		repBound = new eoIntBelowBound(minimum);
+		repBound = new IntBelowBound(minimum);
 	}
 
-	eoGeneralIntBounds& operator=(const eoGeneralIntBounds& _b)
+	GeneralIntBounds& operator=(const GeneralIntBounds& _b)
 	{
 	    // replicate the embedded bound (I'm pretty sure there is another
 	    // way to do that !!!
@@ -618,7 +618,7 @@ namespace eo
 	    bool minBounded = _b.isMinBounded();
 	    bool maxBounded = _b.isMaxBounded();
 	    long int minimum, maximum;
-	    const eoIntBounds & bb = _b.theBounds();
+	    const IntBounds & bb = _b.theBounds();
 	    if (minBounded) minimum = bb.minimum();
 	    if (maxBounded) maximum = bb.maximum();
 
@@ -627,19 +627,19 @@ namespace eo
 		delete repBound;
 	    // now reallocate
 	    if (minBounded && maxBounded)
-		repBound = new eoIntInterval(minimum, maximum);
+		repBound = new IntInterval(minimum, maximum);
 	    else if (!minBounded && !maxBounded)	// no bound at all
-		repBound = new eoIntNoBounds;
+		repBound = new IntNoBounds;
 	    else if (!minBounded && maxBounded)
-		repBound = new eoIntAboveBound(maximum);
+		repBound = new IntAboveBound(maximum);
 	    else if (minBounded && !maxBounded)
-		repBound = new eoIntBelowBound(minimum);
+		repBound = new IntBelowBound(minimum);
 	    return (*this);
 	}
 
 
 	/** Need a Dtor because we allocate an actual bound  */
-	~eoGeneralIntBounds()
+	~GeneralIntBounds()
 	{
 	    delete repBound;
 	}
@@ -690,18 +690,18 @@ namespace eo
 	/** random generator of uniform doubles in bounds
 	 * std::exception if unbounded
 	 */
-	virtual double uniform(eoRng & _rng = eo::rng)  const {(void)_rng; return repBound->uniform();}
+	virtual double uniform(Rng & _rng = rng)  const {(void)_rng; return repBound->uniform();}
 
 	/** random generator of uniform ints in bounds
 	 * std::exception if unbounded
 	 */
-	virtual long int random(eoRng & _rng = eo::rng)  const {(void)_rng; return repBound->random();}
+	virtual long int random(Rng & _rng = rng)  const {(void)_rng; return repBound->random();}
 
 	/** for memory managements - ugly */
-	virtual eoIntBounds * dup() const  {return repBound->dup();}
+	virtual IntBounds * dup() const  {return repBound->dup();}
 
 	/** for efficiency, it's better to use the embedded boud directly */
-	const eoIntBounds & theBounds()  const { return *repBound;} 
+	const IntBounds & theBounds()  const { return *repBound;} 
 
 	/** don't forget the printOn method - 
 	 * again that of the embedded bound
@@ -723,9 +723,9 @@ namespace eo
 
     private:
 	// reading from a string
-	eoIntBounds * getBoundsFromString(std::string);
+	IntBounds * getBoundsFromString(std::string);
 
-	eoIntBounds * repBound;
+	IntBounds * repBound;
     };
 
 }

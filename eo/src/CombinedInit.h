@@ -28,34 +28,34 @@
 namespace eo
 {
 
-#include <eoInit.h>
+#include <Init.h>
 
     /** 
-	Combined INIT: a proportional recombination of eoInit objects
+	Combined INIT: a proportional recombination of Init objects
 
 	@ingroup Initializators
     */
     template< class EOT>
-    class eoCombinedInit: public eoInit<EOT> {
+    class CombinedInit: public Init<EOT> {
     public:
 
-	/** Ctor, make sure that at least one eoInit is present */
-	eoCombinedInit( eoInit<EOT>& _init, double _rate)
-	    : eoInit<EOT> ()
+	/** Ctor, make sure that at least one Init is present */
+	CombinedInit( Init<EOT>& _init, double _rate)
+	    : Init<EOT> ()
 	{
 	    initializers.push_back(&_init);
 	    rates.push_back(_rate);
 	}
 
-	void add(eoInit<EOT> & _init, double _rate, bool _verbose)
+	void add(Init<EOT> & _init, double _rate, bool _verbose)
 	{
-	    eo::log << eo::warnings << "WARNING: the use of the verbose parameter in eoCombinedInit::add is deprecated and will be removed in the next release." << std::endl;
+	    eo::log << eo::warnings << "WARNING: the use of the verbose parameter in CombinedInit::add is deprecated and will be removed in the next release." << std::endl;
 	    add( _init, _rate );
 	}
   
 	/** The usual method to add objects to the combination
 	 */
-	void add(eoInit<EOT> & _init, double _rate)
+	void add(Init<EOT> & _init, double _rate)
 	{
 	    initializers.push_back(&_init);
 	    rates.push_back(_rate);
@@ -85,10 +85,10 @@ namespace eo
 	    return;
 	}
 
-	virtual std::string className(void) const { return "eoCombinedInit"; }
+	virtual std::string className(void) const { return "CombinedInit"; }
 
     private:
-	std::vector<eoInit<EOT>*> initializers;
+	std::vector<Init<EOT>*> initializers;
 	std::vector<double> rates;
     };
 

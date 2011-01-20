@@ -27,27 +27,27 @@
 #ifndef _SGAGenOp_h
 #define _SGAGenOp_h
 
-#include "eoGenOp.h"
-#include "eoInvalidateOps.h"
+#include "GenOp.h"
+#include "InvalidateOps.h"
 
 namespace eo
 {
 
     ///////////////////////////////////////////////////////////////////////////////
-    // class eoSGAGenOp
+    // class SGAGenOp
     ///////////////////////////////////////////////////////////////////////////////
 
     /** 
-     * eoSGAGenOp (for Simple GA) mimicks the usual crossover with proba pCross + 
-     * mutation with proba pMut inside an eoGeneralOp
-     * It does it exactly as class eoSGATransform, i.e. only accepts 
+     * SGAGenOp (for Simple GA) mimicks the usual crossover with proba pCross + 
+     * mutation with proba pMut inside an GeneralOp
+     * It does it exactly as class SGATransform, i.e. only accepts 
      *    quadratic crossover and unary mutation
      * It was introduced for didactic reasons, but seems to be popular :-)
      *
      * @ingroup Combination
      */
     template<class EOT> 
-    class eoSGAGenOp : public eoGenOp<EOT>
+    class SGAGenOp : public GenOp<EOT>
     {
     public:
     
@@ -55,8 +55,8 @@ namespace eo
 	 * Builds the sequential op that first applies a proportional choice
 	 * between the crossover and nothing (cloning), then the mutation
 	 */
-	eoSGAGenOp(eoQuadOp<EOT>& _cross, double _pCross, 
-		   eoMonOp<EOT>& _mut, double _pMut)
+	SGAGenOp(QuadOp<EOT>& _cross, double _pCross, 
+		   MonOp<EOT>& _mut, double _pMut)
 	    : cross(_cross),
 	      pCross(_pCross),
 	      mut(_mut), 
@@ -72,25 +72,25 @@ namespace eo
 	}
   
 	/** do the job: delegate to op */
-	virtual void apply(eoPopulator<EOT>& _pop)
+	virtual void apply(Populator<EOT>& _pop)
 	{
 	    op.apply(_pop);
 	}
 
-	/** inherited from eoGenOp */
+	/** inherited from GenOp */
 	virtual unsigned max_production(void) {return 2;}
 
-	virtual std::string className() const {return "eoSGAGenOp";}
+	virtual std::string className() const {return "SGAGenOp";}
 
 
     private:
-	eoQuadOp<EOT> &cross;   // eoInvalidateXXX take the boolean output
+	QuadOp<EOT> &cross;   // InvalidateXXX take the boolean output
 	double pCross;
-	eoMonOp<EOT> & mut;      // of the XXX op and invalidate the EOT
+	MonOp<EOT> & mut;      // of the XXX op and invalidate the EOT
 	double pMut;
-	eoProportionalOp<EOT> propOp;
-	eoQuadCloneOp<EOT> quadClone;
-	eoSequentialOp<EOT> op;
+	ProportionalOp<EOT> propOp;
+	QuadCloneOp<EOT> quadClone;
+	SequentialOp<EOT> op;
     };
 
 }

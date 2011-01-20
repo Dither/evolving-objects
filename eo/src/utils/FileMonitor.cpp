@@ -7,15 +7,15 @@
 #include <fstream>
 #include <stdexcept>
 
-#include <utils/eoFileMonitor.h>
+#include <utils/FileMonitor.h>
 #include <utils/compatibility.h>
-#include <utils/eoParam.h>
+#include <utils/Param.h>
 
 namespace eo
 {
     using namespace std;
 
-    void eoFileMonitor::printHeader(std::ostream& os)
+    void FileMonitor::printHeader(std::ostream& os)
     {
 	iterator it = vec.begin();
 
@@ -25,27 +25,27 @@ namespace eo
 
 	for (; it != vec.end(); ++it)
 	    {
-		// use the longName of the eoParam for the header
+		// use the longName of the Param for the header
 		os << delim.c_str() << (*it)->longName();
 	    }
 	os << std::endl;
     }
 
-    void eoFileMonitor::printHeader()
+    void FileMonitor::printHeader()
     {
 	// create file
 	ofstream os(filename.c_str());
 
 	if (!os)
 	    {
-		string str = "eoFileMonitor could not open: " + filename;
+		string str = "FileMonitor could not open: " + filename;
 		throw runtime_error(str);
 	    }
 
 	printHeader(os);
     }
 
-    eoMonitor& eoFileMonitor::operator()(void)
+    Monitor& FileMonitor::operator()(void)
     {
 	ofstream os(filename.c_str(),
 		    overwrite ?
@@ -56,7 +56,7 @@ namespace eo
 
 	if (!os)
 	    {
-		string str = "eoFileMonitor could not write to: " + filename;
+		string str = "FileMonitor could not write to: " + filename;
 		throw runtime_error(str);
 	    }
 
@@ -73,7 +73,7 @@ namespace eo
 	return operator()(os);
     }
 
-    eoMonitor& eoFileMonitor::operator()(std::ostream& os)
+    Monitor& FileMonitor::operator()(std::ostream& os)
     {
 	iterator it = vec.begin();
 

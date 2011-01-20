@@ -9,20 +9,20 @@
 #include <iomanip>
 #include <ios>
 
-#include <utils/eoOStreamMonitor.h>
+#include <utils/OStreamMonitor.h>
 #include <utils/compatibility.h>
-#include <utils/eoParam.h>
-#include <eoLogger.h>
+#include <utils/Param.h>
+#include <Logger.h>
 
 namespace eo
 {
 
     //using namespace std;
 
-    eoMonitor& eoOStreamMonitor::operator()(void)
+    Monitor& OStreamMonitor::operator()(void)
     {
 	if (!out) {
-	    std::string str = "eoOStreamMonitor: Could not write to the ooutput stream";
+	    std::string str = "OStreamMonitor: Could not write to the ooutput stream";
 	    throw std::runtime_error(str);
 	}
 

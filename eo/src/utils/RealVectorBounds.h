@@ -28,52 +28,52 @@
 #define _RealVectorBounds_h
 
 #include <stdexcept>		   // std::exceptions!
-#include <utils/eoRNG.h>
-#include <utils/eoRealBounds.h>
+#include <utils/RNG.h>
+#include <utils/RealBounds.h>
 
 namespace eo
 {
 
     /**
-       Vector type for bounds (see eoRealBounds.h for scalar types)
+       Vector type for bounds (see RealBounds.h for scalar types)
        ------------
-       Class eoRealVectorBounds implements the std::vectorized version:
-       it is basically a std::vector of eoRealBounds * and forwards all request
+       Class RealVectorBounds implements the std::vectorized version:
+       it is basically a std::vector of RealBounds * and forwards all request
        to the elements of the std::vector.
 
-       This file also contains the global variables and eoDummyVectorNoBounds
+       This file also contains the global variables and DummyVectorNoBounds
        that are used as defaults in ctors (i.e. when no
        bounds are given, it is assumed unbounded values)
 
        THe 2 main classes defined here are
 
-       eoRealBaseVectorBounds, base class that handles all useful functions
-       eoRealVectorBounds which derives from the preceding *and* eoPersistent
+       RealBaseVectorBounds, base class that handles all useful functions
+       RealVectorBounds which derives from the preceding *and* Persistent
        and also has a mechanism for memory handling of the pointers
        it has to allocate
 
        @ingroup Bounds
     */
-    class eoRealBaseVectorBounds : public std::vector<eoRealBounds *>
+    class RealBaseVectorBounds : public std::vector<RealBounds *>
     {
     public:
 	// virtual desctructor (to avoid warning?)
-	virtual ~eoRealBaseVectorBounds(){}
+	virtual ~RealBaseVectorBounds(){}
 
 	/** Default Ctor.
 	 */
-	eoRealBaseVectorBounds() : std::vector<eoRealBounds *>(0) {}
+	RealBaseVectorBounds() : std::vector<RealBounds *>(0) {}
 
-	/** Ctor: same bounds for everybody, given as an eoRealBounds
+	/** Ctor: same bounds for everybody, given as an RealBounds
 	 */
-	eoRealBaseVectorBounds(unsigned _dim, eoRealBounds & _bounds) :
-	    std::vector<eoRealBounds *>(_dim, &_bounds)
+	RealBaseVectorBounds(unsigned _dim, RealBounds & _bounds) :
+	    std::vector<RealBounds *>(_dim, &_bounds)
 	{}
 
 	/** Ctor, particular case of dim-2
 	 */
-	eoRealBaseVectorBounds(eoRealBounds & _xbounds, eoRealBounds & _ybounds) : 
-	    std::vector<eoRealBounds *>(0)
+	RealBaseVectorBounds(RealBounds & _xbounds, RealBounds & _ybounds) : 
+	    std::vector<RealBounds *>(0)
 	{
 	    push_back( &_xbounds);
 	    push_back( &_ybounds);
@@ -188,7 +188,7 @@ namespace eo
 	/** Generates a random number in i_th range
 	 *  An std::exception will be raised if one of the component is unbounded
 	 */
-	virtual double uniform(unsigned _i, eoRng & _rng = eo::rng)
+	virtual double uniform(unsigned _i, Rng & _rng = rng)
 	{
 	    (void)_rng;
 
@@ -199,7 +199,7 @@ namespace eo
 	/** fills a std::vector with uniformly chosen variables in bounds
 	 *  An std::exception will be raised if one of the component is unbounded
 	 */
-	void uniform(std::vector<double> & _v, eoRng & _rng = eo::rng)
+	void uniform(std::vector<double> & _v, Rng & _rng = rng)
 	{
 	    _v.resize(size());
 	    for (unsigned i=0; i<size(); i++)
@@ -228,33 +228,33 @@ namespace eo
 
      @ingroup Bounds
     */
-    class eoRealVectorBounds : public eoRealBaseVectorBounds, public eoPersistent
+    class RealVectorBounds : public RealBaseVectorBounds, public Persistent
     {
     public:
 	/** Default Ctor will call base class default ctor
 	 */
-	eoRealVectorBounds():eoRealBaseVectorBounds() {}
+	RealVectorBounds():RealBaseVectorBounds() {}
 
-	/** Ctor: same bounds for everybody, given as an eoRealBounds
+	/** Ctor: same bounds for everybody, given as an RealBounds
 	 */
-	eoRealVectorBounds(unsigned _dim, eoRealBounds & _bounds) :
-	    eoRealBaseVectorBounds(_dim, _bounds), factor(1,_dim), ownedBounds(0)
+	RealVectorBounds(unsigned _dim, RealBounds & _bounds) :
+	    RealBaseVectorBounds(_dim, _bounds), factor(1,_dim), ownedBounds(0)
 	{}
 
 	/** Ctor, particular case of dim-2
 	 */
-	eoRealVectorBounds(eoRealBounds & _xbounds, eoRealBounds & _ybounds) :
-	    eoRealBaseVectorBounds(_xbounds, _ybounds), factor(2,1), ownedBounds(0)
+	RealVectorBounds(RealBounds & _xbounds, RealBounds & _ybounds) :
+	    RealBaseVectorBounds(_xbounds, _ybounds), factor(2,1), ownedBounds(0)
 	{}
 
 	/** Simple bounds = minimum and maximum (allowed)
 	 */
-	eoRealVectorBounds(unsigned _dim, double _min, double _max) :
-	    eoRealBaseVectorBounds(), factor(1, _dim), ownedBounds(0)
+	RealVectorBounds(unsigned _dim, double _min, double _max) :
+	    RealBaseVectorBounds(), factor(1, _dim), ownedBounds(0)
 	{
 	    if (_max-_min<=0)
-		throw std::logic_error("Void range in eoRealVectorBounds");
-	    eoRealBounds *ptBounds = new eoRealInterval(_min, _max);
+		throw std::logic_error("Void range in RealVectorBounds");
+	    RealBounds *ptBounds = new RealInterval(_min, _max);
 	    // handle memory once
 	    ownedBounds.push_back(ptBounds);
 	    // same bound for everyone
@@ -264,16 +264,16 @@ namespace eo
 
 	/** Ctor: different bounds for different variables, std::vectors of double
 	 */
-	eoRealVectorBounds(std::vector<double> _min, std::vector<double> _max) :
+	RealVectorBounds(std::vector<double> _min, std::vector<double> _max) :
 	    factor(_min.size(), 1), ownedBounds(0)
 	{
 	    if (_max.size() != _min.size())
-		throw std::logic_error("Dimensions don't match in eoRealVectorBounds");
+		throw std::logic_error("Dimensions don't match in RealVectorBounds");
 	    // the bounds
-	    eoRealBounds *ptBounds;
+	    RealBounds *ptBounds;
 	    for (unsigned i=0; i<_min.size(); i++)
 		{
-		    ptBounds = new eoRealInterval(_min[i], _max[i]);
+		    ptBounds = new RealInterval(_min[i], _max[i]);
 		    ownedBounds.push_back(ptBounds);
 		    push_back(ptBounds);
 		}
@@ -282,13 +282,13 @@ namespace eo
 	/** Ctor from a std::string
 	 * and don't worry, the readFrom(std::string) starts by setting everything to 0!
 	 */
-	eoRealVectorBounds(std::string _s) : eoRealBaseVectorBounds()
+	RealVectorBounds(std::string _s) : RealBaseVectorBounds()
 	{
 	    readFrom(_s);
 	}
 
 	/** Dtor: destroy all ownedBounds - BUG ???*/
-	virtual ~eoRealVectorBounds()
+	virtual ~RealVectorBounds()
 	{
 	    //     std::cout << "Dtor, avec size = " << ownedBounds.size() << std::endl;
 	    //     for (unsigned i = 0; i < ownedBounds.size(); ++i)
@@ -298,7 +298,7 @@ namespace eo
 	}
 
 
-	// methods from eoPersistent
+	// methods from Persistent
 	/**
 	 * Read object from a stream
 	 * only calls the readFrom(std::string) - for param reading
@@ -337,34 +337,34 @@ namespace eo
 
 	/** need to rewrite copy ctor and assignement operator
 	 *  because of ownedBounds */
-	eoRealVectorBounds(const eoRealVectorBounds &);
+	RealVectorBounds(const RealVectorBounds &);
 
     private:// WARNING: there is no reason for both std::vector below
         //to be synchronized in any manner
 	std::vector<unsigned int> factor;	   // std::list of nb of "grouped" bounds
-	std::vector<eoRealBounds *> ownedBounds;
+	std::vector<RealBounds *> ownedBounds;
 	// keep this one private
-	eoRealVectorBounds& operator=(const eoRealVectorBounds&);
+	RealVectorBounds& operator=(const RealVectorBounds&);
     };
 
     //////////////////////////////////////////////////////////////
-    /** the dummy unbounded eoRealVectorBounds: usefull if you don't need bounds!
+    /** the dummy unbounded RealVectorBounds: usefull if you don't need bounds!
      * everything is inlined.
-     * Warning: we do need this class, and not only a std::vector<eoRealNoBounds *>
+     * Warning: we do need this class, and not only a std::vector<RealNoBounds *>
 
      @ingroup Bounds
     */
-    class eoRealVectorNoBounds: public eoRealVectorBounds
+    class RealVectorNoBounds: public RealVectorBounds
     {
     public:
 	// virtual desctructor (to avoid warning?)
-	virtual ~eoRealVectorNoBounds(){}
+	virtual ~RealVectorNoBounds(){}
 
 	/**
 	 * Ctor: nothing to do, but beware of dimension: call base class ctor
 	 */
-	eoRealVectorNoBounds(unsigned _dim) :
-	    eoRealVectorBounds( (_dim?_dim:1), eoDummyRealNoBounds)
+	RealVectorNoBounds(unsigned _dim) :
+	    RealVectorBounds( (_dim?_dim:1), DummyRealNoBounds)
 	{}
 
 	virtual bool isBounded(unsigned)  {return false;}
@@ -388,44 +388,44 @@ namespace eo
 	// accessors
 	virtual double minimum(unsigned)
 	{
-	    throw std::logic_error("Trying to get minimum of eoRealVectorNoBounds");
+	    throw std::logic_error("Trying to get minimum of RealVectorNoBounds");
 	}
 	virtual double maximum(unsigned)
 	{
-	    throw std::logic_error("Trying to get maximum of eoRealVectorNoBounds");
+	    throw std::logic_error("Trying to get maximum of RealVectorNoBounds");
 	}
 	virtual double range(unsigned)
 	{
-	    throw std::logic_error("Trying to get range of eoRealVectorNoBounds");
+	    throw std::logic_error("Trying to get range of RealVectorNoBounds");
 	}
 
 	virtual double averageRange()
 	{
-	    throw std::logic_error("Trying to get average range of eoRealVectorNoBounds");
+	    throw std::logic_error("Trying to get average range of RealVectorNoBounds");
 	}
 
 	// random generators
-	virtual double uniform(unsigned, eoRng & _rng = eo::rng)
+	virtual double uniform(unsigned, Rng & _rng = rng)
 	{
 	    (void)_rng;
 
-	    throw std::logic_error("No uniform distribution on eoRealVectorNoBounds");
+	    throw std::logic_error("No uniform distribution on RealVectorNoBounds");
 	}
 
 	// fills a std::vector with uniformly chosen variables in bounds
-	void uniform(std::vector<double> &, eoRng & _rng = eo::rng)
+	void uniform(std::vector<double> &, Rng & _rng = rng)
 	{
 	    (void)_rng;
 
-	    throw std::logic_error("No uniform distribution on eoRealVectorNoBounds");
+	    throw std::logic_error("No uniform distribution on RealVectorNoBounds");
 	}
 
     };
 
-    /** one object for all - see eoRealBounds.cpp
+    /** one object for all - see RealBounds.cpp
 	@ingroup Bounds
     */
-    extern eoRealVectorNoBounds eoDummyVectorNoBounds;
+    extern RealVectorNoBounds DummyVectorNoBounds;
 
 }
 

@@ -28,16 +28,16 @@
 
 #include <sstream>
 
-#include "utils/eoGnuplot1DMonitor.h"
-#include "utils/eoParam.h"
+#include "utils/Gnuplot1DMonitor.h"
+#include "utils/Param.h"
 
 namespace eo
 {
 
-    eoMonitor& eoGnuplot1DMonitor::operator() (void)
+    Monitor& Gnuplot1DMonitor::operator() (void)
     {
-	// update file using the eoFileMonitor
-	eoFileMonitor::operator()();
+	// update file using the FileMonitor
+	FileMonitor::operator()();
 #ifdef HAVE_GNUPLOT
 	// sends plot order to gnuplot
 	// assumes successive plots will have same nb of columns!!!
@@ -58,7 +58,7 @@ namespace eo
 
 
 
-    void eoGnuplot1DMonitor::FirstPlot()
+    void Gnuplot1DMonitor::FirstPlot()
     {
 	if (this->vec.size() < 2)
 	{

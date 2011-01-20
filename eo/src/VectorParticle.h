@@ -41,7 +41,7 @@ namespace eo
      * tree templates arguments are required: the fitness type (which is also the type of the
      * particle's best fitness), the position type and the velocity type.
      */
-    template < class FitT, class PositionType, class VelocityType > class eoVectorParticle:public PO < FitT >,
+    template < class FitT, class PositionType, class VelocityType > class VectorParticle:public PO < FitT >,
 											   public std::vector <
 	PositionType >
     {
@@ -72,7 +72,7 @@ namespace eo
 	 *  @param _velocity
 	 *  @param _bestPositions
 	 */
-	eoVectorParticle (unsigned _size = 0,PositionType _position = PositionType (), VelocityType _velocity = VelocityType (), PositionType _bestPositions = PositionType ()):PO < FitT > (),std::vector < PositionType > (_size, _position), bestPositions (_size, _bestPositions), velocities (_size,
+	VectorParticle (unsigned _size = 0,PositionType _position = PositionType (), VelocityType _velocity = VelocityType (), PositionType _bestPositions = PositionType ()):PO < FitT > (),std::vector < PositionType > (_size, _position), bestPositions (_size, _bestPositions), velocities (_size,
 																																				   _velocity)
 	{
 	}
@@ -86,8 +86,8 @@ namespace eo
 	    if (_v.size () != size ())	// safety check
 		{
 		    if (size ())		// NOT an initial empty std::vector
-			eo::log << eo::warnings <<
-			    "Warning: Changing position size in eoVectorParticle assignation"
+			log << warnings <<
+			    "Warning: Changing position size in VectorParticle assignation"
 				<< std::endl;
 		    resize (_v.size ());
 		}
@@ -128,7 +128,7 @@ namespace eo
 	}
     
 	/// to avoid conflicts between EA and PSO
-	bool operator<(const eoVectorParticle<FitT, PositionType, VelocityType >& _eo) const
+	bool operator<(const VectorParticle<FitT, PositionType, VelocityType >& _eo) const
         {
 	    if (_eo.best() > this->best())
 		return true;

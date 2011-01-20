@@ -26,7 +26,7 @@
 #define _PSO_H
 
 //-----------------------------------------------------------------------------
-#include <eoAlgo.h>
+#include <Algo.h>
 //-----------------------------------------------------------------------------
 
 namespace eo
@@ -40,7 +40,7 @@ namespace eo
 
        @ingroup Algorithms
     */
-    template < class POT > class eoPSO:public eoAlgo < POT >{};
+    template < class POT > class PSO:public Algo < POT >{};
 
 }
 

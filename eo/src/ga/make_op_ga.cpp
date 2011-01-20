@@ -53,12 +53,12 @@ namespace eo
 
     // oeprators
     ////////////
-    eoGenOp<eoBit<double> >&  make_op(eoParser& _parser, eoState& _state, eoInit<eoBit<double> >& _init)
+    GenOp<Bit<double> >&  make_op(Parser& _parser, State& _state, Init<Bit<double> >& _init)
     {
 	return do_make_op(_parser, _state, _init);
     }
 
-    eoGenOp<eoBit<eoMinimizingFitness> >&  make_op(eoParser& _parser, eoState& _state, eoInit<eoBit<eoMinimizingFitness> >& _init)
+    GenOp<Bit<MinimizingFitness> >&  make_op(Parser& _parser, State& _state, Init<Bit<MinimizingFitness> >& _init)
     {
 	return do_make_op(_parser, _state, _init);
     }

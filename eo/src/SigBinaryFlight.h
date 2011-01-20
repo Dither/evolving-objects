@@ -27,7 +27,7 @@
 #define SIGBINARYFLIGHT_H
 
 //-----------------------------------------------------------------------------
-#include <eoBinaryFlight.h>
+#include <BinaryFlight.h>
 //-----------------------------------------------------------------------------
 
 namespace eo
@@ -43,7 +43,7 @@ namespace eo
      *
      * 	@ingroup Variators
      */
-    template < class POT > class eoSigBinaryFlight:public eoBinaryFlight < POT >
+    template < class POT > class SigBinaryFlight:public BinaryFlight < POT >
     {
 
     public:
@@ -51,8 +51,8 @@ namespace eo
 	/**
 	 * Constructor.
 	 */
-	eoSigBinaryFlight (){slope = 1;}
-	eoSigBinaryFlight (unsigned _slope){slope = _slope;}
+	SigBinaryFlight (){slope = 1;}
+	SigBinaryFlight (unsigned _slope){slope = _slope;}
 
 
 	/**

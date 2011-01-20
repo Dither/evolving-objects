@@ -3,14 +3,14 @@
 #pragma warning(disable:4786)
 #endif
 
-#include <eoFunctorStore.h>
-#include <eoFunctor.h>
+#include <FunctorStore.h>
+#include <Functor.h>
 
 namespace eo
 {
 
     /// clears the memory
-    eoFunctorStore::~eoFunctorStore()
+    FunctorStore::~FunctorStore()
     {
 	for(size_t i = 0; i < vec.size(); ++i) {
 	    delete vec[i];

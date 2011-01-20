@@ -27,7 +27,7 @@
 #ifndef _InvalidateOps_h
 #define _InvalidateOps_h
 
-#include <eoOp.h>
+#include <Op.h>
 
 namespace eo
 {
@@ -38,8 +38,8 @@ namespace eo
 	that is defined to work on a generic datatype. This functor will then check
 	the return type of the operator and invalidate the fitness of the individual.
 
-	This functor is used in algorithms that work with straight eoMonOp, eoBinOp
-	or eoQuadOp operators, for instance eoSGA. Note that eoGenOp derived operators
+	This functor is used in algorithms that work with straight MonOp, BinOp
+	or QuadOp operators, for instance SGA. Note that GenOp derived operators
 	generally do invalidate the fitness of the objects they have changed.
 
 	Return value means "Has_Changed" and not "Needs_To_Be_Invalidated"
@@ -47,10 +47,10 @@ namespace eo
     */
 
     template <class EOT>
-    class eoInvalidateMonOp : public eoMonOp<EOT>
+    class InvalidateMonOp : public MonOp<EOT>
     {
     public:
-	eoInvalidateMonOp(eoMonOp<EOT>& _op) : op(_op) {}
+	InvalidateMonOp(MonOp<EOT>& _op) : op(_op) {}
 
 	bool operator()(EOT& _eo)
 	{
@@ -64,7 +64,7 @@ namespace eo
 	}
 
     private:
-	eoMonOp<EOT>& op;
+	MonOp<EOT>& op;
     };
 
     /**
@@ -72,8 +72,8 @@ namespace eo
        that is defined to work on a generic datatype. This functor will then check
        the return type of the operator and invalidate the fitness of the individual.
 
-       This functor is used in algorithms that work with straight eoMonOp, eoBinOp
-       or eoQuadOp operators, for instance eoSGA. Note that eoGenOp derived operators
+       This functor is used in algorithms that work with straight MonOp, BinOp
+       or QuadOp operators, for instance SGA. Note that GenOp derived operators
        generally do invalidate the fitness of the objects they have changed.
 
        Return value means "Has_Changed" and not "Needs_To_Be_Invalidated"
@@ -81,10 +81,10 @@ namespace eo
     */
 
     template <class EOT>
-    class eoInvalidateBinOp : public eoBinOp<EOT>
+    class InvalidateBinOp : public BinOp<EOT>
     {
     public:
-	eoInvalidateBinOp(eoBinOp<EOT>& _op) : op(_op) {}
+	InvalidateBinOp(BinOp<EOT>& _op) : op(_op) {}
 
 	bool operator()(EOT& _eo, const EOT& _eo2)
 	{
@@ -98,7 +98,7 @@ namespace eo
 	}
 
     private:
-	eoBinOp<EOT>& op;
+	BinOp<EOT>& op;
     };
 
     /**
@@ -106,8 +106,8 @@ namespace eo
        that is defined to work on a generic datatype. This functor will then check
        the return type of the operator and invalidate the fitness of the individual.
 
-       This functor is used in algorithms that work with straight eoMonOp, eoBinOp
-       or eoQuadOp operators, for instance eoSGA. Note that eoGenOp derived operators
+       This functor is used in algorithms that work with straight MonOp, BinOp
+       or QuadOp operators, for instance SGA. Note that GenOp derived operators
        generally do invalidate the fitness of the objects they have changed.
 
        Return value means "Has_Changed" and not "Needs_To_Be_Invalidated"
@@ -115,10 +115,10 @@ namespace eo
     */
 
     template <class EOT>
-    class eoInvalidateQuadOp : public eoQuadOp<EOT>
+    class InvalidateQuadOp : public QuadOp<EOT>
     {
     public:
-	eoInvalidateQuadOp(eoQuadOp<EOT>& _op) : op(_op) {}
+	InvalidateQuadOp(QuadOp<EOT>& _op) : op(_op) {}
 
 	bool operator()(EOT& _eo1, EOT& _eo2)
 	{
@@ -132,7 +132,7 @@ namespace eo
 	}
 
     private:
-	eoQuadOp<EOT>& op;
+	QuadOp<EOT>& op;
     };
 
 }

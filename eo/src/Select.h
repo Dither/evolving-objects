@@ -26,23 +26,23 @@
 #define _Select_h
 
 //-----------------------------------------------------------------------------
-#include <eoPop.h>
+#include <Pop.h>
 //-----------------------------------------------------------------------------
 
 namespace eo
 {
 
     /** 
-	eoSelect selects a number of individuals from the first argument and
+	Select selects a number of individuals from the first argument and
 	puts it in the second. To emphasize that it should not try to enlarge
-	the population, the second argument is an eoPopRange, a simple struct
+	the population, the second argument is an PopRange, a simple struct
 	that holds a begin and end iterator to the population
 
 	@ingroup Core
 	@ingroup Selectors
     */
     template<class EOT>
-    class eoSelect : public eoBF<const eoPop<EOT>&, eoPop<EOT>&, void>
+    class Select : public BF<const Pop<EOT>&, Pop<EOT>&, void>
     {};
 
 }

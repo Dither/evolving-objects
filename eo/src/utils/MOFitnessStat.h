@@ -27,7 +27,7 @@
 #ifndef _FitnessStat_h
 #define _FitnessStat_h
 
-#include <utils/eoStat.h>
+#include <utils/Stat.h>
 
 namespace eo
 {
@@ -36,14 +36,14 @@ namespace eo
        The fitnesses of a whole population, as a vector
     */
     template <class EOT, class FitT = typename EOT::Fitness>
-    class eoFitnessStat : public eoSortedStat<EOT, std::vector<FitT> >
+    class FitnessStat : public SortedStat<EOT, std::vector<FitT> >
     {
     public :
 
-	using eoSortedStat<EOT, std::vector<FitT> >::value;
+	using SortedStat<EOT, std::vector<FitT> >::value;
 
-	eoFitnessStat(std::string _description = "AllFitnesses") :
-	    eoSortedStat<EOT,std::vector<FitT> >(std::vector<FitT>(0), _description) {}
+	FitnessStat(std::string _description = "AllFitnesses") :
+	    SortedStat<EOT,std::vector<FitT> >(std::vector<FitT>(0), _description) {}
 
 	virtual void operator()(const std::vector<const EOT*>& _popPters)
 	{
@@ -61,21 +61,21 @@ namespace eo
     // The follownig is needed to avoid some bug in Visual Studio 6.0
     typedef double PartFitDefault;
     template <class EOT, class PartFitT = PartFitDefault>
-    class eoMOFitnessStat : public eoSortedStat<EOT, std::vector<PartFitT> >
+    class MOFitnessStat : public SortedStat<EOT, std::vector<PartFitT> >
 #else
     template <class EOT, class PartFitT = double>
-    class eoMOFitnessStat : public eoSortedStat<EOT, std::vector<PartFitT> >
+    class MOFitnessStat : public SortedStat<EOT, std::vector<PartFitT> >
 #endif
 
     {
     public:
 
-	using eoSortedStat<EOT, std::vector<PartFitT> >::value;
+	using SortedStat<EOT, std::vector<PartFitT> >::value;
 
 	/** Ctor: say what component you want
 	 */
-	eoMOFitnessStat(unsigned _objective, std::string _description = "MO-Fitness") :
-	    eoSortedStat<EOT,  std::vector<PartFitT> >(std::vector<PartFitT>(0), _description),
+	MOFitnessStat(unsigned _objective, std::string _description = "MO-Fitness") :
+	    SortedStat<EOT,  std::vector<PartFitT> >(std::vector<PartFitT>(0), _description),
 	    objective(_objective) {}
 
 	virtual void operator()(const std::vector<const EOT*>& _popPters)

@@ -29,30 +29,30 @@
 
 //-----------------------------------------------------------------------------
 
+#include <SelectFromWorth.h>
+#include <LinearFitScaling.h>
+
 namespace eo
 {
 
-#include <eoSelectFromWorth.h>
-#include <eoLinearFitScaling.h>
-
-    /** eoFitnessScalingSelect: select an individual proportional to the 
+    /** FitnessScalingSelect: select an individual proportional to the
      *  linearly scaled fitness that is computed by the private
-     *  eoLinearFitScaling object
+     *  LinearFitScaling object
      *
      *  @ingroup Selectors
      */
-    template <class EOT> 
-    class eoFitnessScalingSelect:  public eoRouletteWorthSelect<EOT, double> 
+    template <class EOT>
+    class FitnessScalingSelect:  public RouletteWorthSelect<EOT, double>
     {
     public:
 	/** Ctor:
 	 *  @param _p the selective pressure, should be in [1,2] (2 is the default)
 	 */
-	eoFitnessScalingSelect(double _p = 2.0): 
-	    eoRouletteWorthSelect<EOT, double>(scaling), scaling(_p) {}
+	FitnessScalingSelect(double _p = 2.0):
+	    RouletteWorthSelect<EOT, double>(scaling), scaling(_p) {}
 
     private :
-	eoLinearFitScaling<EOT> scaling;	   // derived from eoPerf2Worth
+	LinearFitScaling<EOT> scaling;	   // derived from Perf2Worth
     };
 
 }

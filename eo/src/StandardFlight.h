@@ -26,19 +26,19 @@
 #define STANDARDFLIGHT_H
 
 //-----------------------------------------------------------------------------
-#include <eoFlight.h>
+#include <Flight.h>
 //-----------------------------------------------------------------------------
 
 namespace eo
 {
 
-    /** Standard flight for particle swarm optimization. Derivated from abstract eoFlight,
+    /** Standard flight for particle swarm optimization. Derivated from abstract Flight,
      *   just adds the velocities to the current position of the particle
      *   and invalidates its fitness
      *
      *   @ingroup Variators
      */
-    template < class POT > class eoStandardFlight:public eoFlight < POT >
+    template < class POT > class StandardFlight:public Flight < POT >
     {
 
     public:
@@ -52,14 +52,14 @@ namespace eo
 	/** Constructor without bounds.
 	 * 
 	 */
-	eoStandardFlight ():bnds (*(new eoRealVectorNoBounds(0))){}
+	StandardFlight ():bnds (*(new RealVectorNoBounds(0))){}
 
 
-	/** Constructor for continuous flight with real bounds: expects a eoRealVectorBounds object for bound
+	/** Constructor for continuous flight with real bounds: expects a RealVectorBounds object for bound
 	 *   control.
-	 * @param _bounds - An eoRealVectorBounds
+	 * @param _bounds - An RealVectorBounds
 	 */
-	eoStandardFlight (eoRealVectorBounds & _bounds):bnds (_bounds){}
+	StandardFlight (RealVectorBounds & _bounds):bnds (_bounds){}
 
 
 	/** Constructor for continuous flight with real bounds: expects a min and a
@@ -69,7 +69,7 @@ namespace eo
 	 * @param _min - The lower bound to use for all the positions
 	 * @param _max - The upper bound to use for all the positions
 	 */
-	eoStandardFlight (const unsigned _dim,const double & _min,const double & _max ):bnds (*(new eoRealVectorBounds(_dim,_min,_max))){}
+	StandardFlight (const unsigned _dim,const double & _min,const double & _max ):bnds (*(new RealVectorBounds(_dim,_min,_max))){}
 
 
 	/**
@@ -101,7 +101,7 @@ namespace eo
 	}
 
     protected:
-	eoRealVectorBounds & bnds;
+	RealVectorBounds & bnds;
     };
 
 }

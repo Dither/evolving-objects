@@ -28,8 +28,8 @@
 
 #include <algorithm>
 
-#include <eoInit.h>
-#include <eoPop.h>
+#include <Init.h>
+#include <Pop.h>
 
 namespace eo
 {
@@ -38,17 +38,17 @@ namespace eo
      * Abstract class for Distribution Evolution Algorithms within EO:
      *    the distribution itself
      *
-     * It basically IS AN eoInit -  operator()(EOT &) generates new indis
+     * It basically IS AN Init -  operator()(EOT &) generates new indis
      *
-     * The instances will probably be eoValueParam of some kind
-     *    see eoPBILDistrib.h
+     * The instances will probably be ValueParam of some kind
+     *    see PBILDistrib.h
      *
      *  @ingroup Core
      */
 
     template <class EOT>
-    class eoDistribution :  public eoInit<EOT>, 
-			    public eoPersistent, public eoObject
+    class Distribution :  public Init<EOT>, 
+			    public Persistent, public Object
     {
     public:
 	virtual void operator()(EOT &) = 0; // DO NOT FORGET TO INVALIDATE the EOT

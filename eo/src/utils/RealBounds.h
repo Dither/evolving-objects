@@ -28,7 +28,7 @@
 #define _RealBounds_h
 
 #include <stdexcept>		   // std::exceptions!
-#include <utils/eoRNG.h>
+#include <utils/RNG.h>
 
 namespace eo
 {
@@ -38,9 +38,9 @@ namespace eo
 
        Set of classes related to continuous black-box optimization problems.
 
-       Here are several examples of test programs using eoReal, eoEsSimple, eoEsStdev or eoEsFull to build an Evoution Strategies algorithm:
-       @include t-eoESAll.cpp
-       @include t-eoESFull.cpp
+       Here are several examples of test programs using Real, EsSimple, EsStdev or EsFull to build an Evoution Strategies algorithm:
+       @include t-ESAll.cpp
+       @include t-ESFull.cpp
 
        @ingroup Representations
 
@@ -48,14 +48,14 @@ namespace eo
 
 
     /**
-       \class eoRealBounds eoRealBounds.h es/eoRealBounds.h
+       \class RealBounds RealBounds.h es/RealBounds.h
        \ingroup Real
 
        Defines bound classes for real numbers.
 
        Scalar type:
        ------------
-       Basic class is eoRealBounds, a pure virtual.
+       Basic class is RealBounds, a pure virtual.
 
        The following pure virtual methods are to be used in mutations:
        - void foldsInBounds(double &) that folds any value that falls out of 
@@ -75,20 +75,20 @@ namespace eo
        (if possible, i.e. if bounded) in the interval.
 
        Derived class are 
-       eoRealInterval that holds a minimum and maximum value, 
-       eoRealNoBounds the "unbounded bounds" (-infinity, +infinity)
-       eoRealBelowBound the half-bounded interval [min, +infinity)
-       eoRealAboveBound the   half-bounded interval (-infinity, max]
+       RealInterval that holds a minimum and maximum value, 
+       RealNoBounds the "unbounded bounds" (-infinity, +infinity)
+       RealBelowBound the half-bounded interval [min, +infinity)
+       RealAboveBound the   half-bounded interval (-infinity, max]
 
        THis file also contains the declaration of *the* global object that
        is the unbounded bound
 
        @ingroup Bounds
     */
-    class eoRealBounds : public eoPersistent
+    class RealBounds : public Persistent
     { 
     public:
-	virtual ~eoRealBounds(){}
+	virtual ~RealBounds(){}
 
 	/** Self-Test: true if ***both*** a min and a max
 	 */
@@ -135,20 +135,20 @@ namespace eo
 	/** random generator of uniform numbers in bounds
 	 * std::exception if unbounded
 	 */
-	virtual double uniform(eoRng & _rng = eo::rng)  const = 0;
+	virtual double uniform(Rng & _rng = rng)  const = 0;
 
 	/** for memory managements - ugly */
-	virtual eoRealBounds * dup()  const = 0;
+	virtual RealBounds * dup()  const = 0;
     };
 
     /** A default class for unbounded variables
 
 	@ingroup Bounds
     */
-    class eoRealNoBounds : public eoRealBounds
+    class RealNoBounds : public RealBounds
     {
     public:
-	virtual ~eoRealNoBounds(){}
+	virtual ~RealNoBounds(){}
 
 	virtual bool isBounded(void)  const {return false;}
 	virtual bool hasNoBoundAtAll(void) const  {return true;}
@@ -160,36 +160,36 @@ namespace eo
 
 	virtual double minimum() const
 	{
-	    throw std::logic_error("Trying to get minimum of unbounded eoRealBounds");
+	    throw std::logic_error("Trying to get minimum of unbounded RealBounds");
 	}
 	virtual double maximum() const 
 	{
-	    throw std::logic_error("Trying to get maximum of unbounded eoRealBounds");
+	    throw std::logic_error("Trying to get maximum of unbounded RealBounds");
 	}
 	virtual double range() const 
 	{
-	    throw std::logic_error("Trying to get range of unbounded eoRealBounds");
+	    throw std::logic_error("Trying to get range of unbounded RealBounds");
 	}
 
-	virtual double uniform(eoRng & _rng = eo::rng) const 
+	virtual double uniform(Rng & _rng = rng) const
 	{
 	    (void)_rng;
 
-	    throw std::logic_error("Trying to generate uniform values in unbounded eoRealBounds");
+	    throw std::logic_error("Trying to generate uniform values in unbounded RealBounds");
 	}
 
-	// methods from eoPersistent
+	// methods from Persistent
 	/**
 	 * Read object.
 	 * @param _is A std::istream.
 	 * but reading should not be done here, because of bound problems
-	 * see eoRealVectorBounds
+	 * see RealVectorBounds
 	 */
 	virtual void readFrom(std::istream& _is)
 	{
 	    (void)_is;
 
-	    throw std::runtime_error("Should not use eoRealBounds::readFrom");
+	    throw std::runtime_error("Should not use RealBounds::readFrom");
 	}
 
 	/**
@@ -202,36 +202,36 @@ namespace eo
 	}
 
 	/** for memory managements - ugly */
-	virtual eoRealBounds * dup() const 
+	virtual RealBounds * dup() const 
 	{
-	    return new eoRealNoBounds(*this);
+	    return new RealNoBounds(*this);
 	}
 
     };
 
-    /** one object for all - see eoRealBounds.cpp
+    /** one object for all - see RealBounds.cpp
 	@ingroup Bounds
     */
-    extern eoRealNoBounds eoDummyRealNoBounds;
+    extern RealNoBounds DummyRealNoBounds;
 
     /**
-     * fully bounded eoRealBound == interval
+     * fully bounded RealBound == interval
 
      @ingroup Bounds
     */
-    class eoRealInterval : public eoRealBounds
+    class RealInterval : public RealBounds
     {
     public :
-	virtual ~eoRealInterval(){}
+	virtual ~RealInterval(){}
   
 	/** 
 	    Simple bounds = minimum and maximum (allowed)
 	*/
-	eoRealInterval(double _min=0, double _max=1) : 
+	RealInterval(double _min=0, double _max=1) : 
 	    repMinimum(_min), repMaximum(_max), repRange(_max-_min) 
 	{
 	    if (repRange<=0)
-		throw std::logic_error("Void range in eoRealBounds");
+		throw std::logic_error("Void range in RealBounds");
 	}
 
 	// accessors  
@@ -245,7 +245,7 @@ namespace eo
 	virtual bool isMinBounded(void)  const {return true;}
 	virtual bool isMaxBounded(void)  const {return true;}
 
-	virtual double uniform(eoRng & _rng = eo::rng) const 
+	virtual double uniform(Rng & _rng = rng) const 
 	{
 	    return repMinimum + _rng.uniform(repRange);
 	}  
@@ -299,18 +299,18 @@ namespace eo
 	    return;
 	}
 
-	// methods from eoPersistent
+	// methods from Persistent
 	/**
 	 * Read object.
 	 * @param _is A std::istream.
 	 * but reading should not be done here, because of bound problems
-	 * see eoRealVectorBounds
+	 * see RealVectorBounds
 	 */
 	virtual void readFrom(std::istream& _is)
 	{
 	    (void)_is;
 
-	    throw std::runtime_error("Should not use eoRealInterval::readFrom");
+	    throw std::runtime_error("Should not use RealInterval::readFrom");
 	}
 
 	/**
@@ -323,9 +323,9 @@ namespace eo
 	}
 
 	/** for memory managements - ugly */
-	virtual eoRealBounds * dup() const 
+	virtual RealBounds * dup() const 
 	{
-	    return new eoRealInterval(*this);
+	    return new RealInterval(*this);
 	}
 
     private :
@@ -335,18 +335,18 @@ namespace eo
     };
 
     /**
-     * an eoRealBound bounded from below only
+     * an RealBound bounded from below only
 
      @ingroup Bounds
     */
-    class eoRealBelowBound : public eoRealBounds
+    class RealBelowBound : public RealBounds
     {
     public :
-	virtual ~eoRealBelowBound(){}  
+	virtual ~RealBelowBound(){}  
 	/** 
 	    Simple bounds = minimum
 	*/
-	eoRealBelowBound(double _min=0) : 
+	RealBelowBound(double _min=0) : 
 	    repMinimum(_min)
 	{}
 
@@ -355,19 +355,19 @@ namespace eo
 
 	virtual double maximum() const 
 	{
-	    throw std::logic_error("Trying to get maximum of eoRealBelowBound");
+	    throw std::logic_error("Trying to get maximum of RealBelowBound");
 	}
 	virtual double range() const 
 	{
-	    throw std::logic_error("Trying to get range of eoRealBelowBound");
+	    throw std::logic_error("Trying to get range of RealBelowBound");
 	}
 
 	// random generators
-	virtual double uniform(eoRng & _rng = eo::rng) const
+	virtual double uniform(Rng & _rng = rng) const
 	{
 	    (void)_rng;
 
-	    throw std::logic_error("Trying to generate uniform values in eoRealBelowBound");
+	    throw std::logic_error("Trying to generate uniform values in RealBelowBound");
 	}
 
 	// description
@@ -401,18 +401,18 @@ namespace eo
 	    return;
 	}
 
-	// methods from eoPersistent
+	// methods from Persistent
 	/**
 	 * Read object.
 	 * @param _is A std::istream.
 	 * but reading should not be done here, because of bound problems
-	 * see eoRealVectorBounds
+	 * see RealVectorBounds
 	 */
 	virtual void readFrom(std::istream& _is) 
 	{
 	    (void)_is;
 
-	    throw std::runtime_error("Should not use eoRealBelowBound::readFrom");
+	    throw std::runtime_error("Should not use RealBelowBound::readFrom");
 	}
 
 	/**
@@ -425,9 +425,9 @@ namespace eo
 	}
 
 	/** for memory managements - ugly */
-	virtual eoRealBounds * dup() const 
+	virtual RealBounds * dup() const 
 	{
-	    return new eoRealBelowBound(*this);
+	    return new RealBelowBound(*this);
 	}
 
     private :
@@ -435,17 +435,17 @@ namespace eo
     };
 
     /**
-       An eoRealBound bounded from above only
+       An RealBound bounded from above only
     */
-    class eoRealAboveBound : public eoRealBounds
+    class RealAboveBound : public RealBounds
     {
     public :
-	virtual ~eoRealAboveBound(){}
+	virtual ~RealAboveBound(){}
   
 	/** 
 	    Simple bounds = minimum
 	*/
-	eoRealAboveBound(double _max=0) : 
+	RealAboveBound(double _max=0) : 
 	    repMaximum(_max)
 	{}
 
@@ -454,19 +454,19 @@ namespace eo
 
 	virtual double minimum() const 
 	{
-	    throw std::logic_error("Trying to get minimum of eoRealAboveBound");
+	    throw std::logic_error("Trying to get minimum of RealAboveBound");
 	}
 	virtual double range() const 
 	{
-	    throw std::logic_error("Trying to get range of eoRealAboveBound");
+	    throw std::logic_error("Trying to get range of RealAboveBound");
 	}
 
 	// random generators
-	virtual double uniform(eoRng & _rng = eo::rng) const
+	virtual double uniform(Rng & _rng = rng) const
 	{
 	    (void)_rng;
 
-	    throw std::logic_error("Trying to generate uniform values in eoRealAboveBound");
+	    throw std::logic_error("Trying to generate uniform values in RealAboveBound");
 	}
 
 	// description
@@ -500,18 +500,18 @@ namespace eo
 	    return;
 	}
 
-	// methods from eoPersistent
+	// methods from Persistent
 	/**
 	 * Read object.
 	 * @param _is A std::istream.
 	 * but reading should not be done here, because of bound problems
-	 * see eoRealVectorBounds
+	 * see RealVectorBounds
 	 */
 	virtual void readFrom(std::istream& _is)
 	{
 	    (void)_is;
 
-	    throw std::runtime_error("Should not use eoRealAboveBound::readFrom");
+	    throw std::runtime_error("Should not use RealAboveBound::readFrom");
 	}
 
 	/**
@@ -524,9 +524,9 @@ namespace eo
 	}
 
 	/** for memory managements - ugly */
-	virtual eoRealBounds * dup() const 
+	virtual RealBounds * dup() const 
 	{
-	    return new eoRealAboveBound(*this);
+	    return new RealAboveBound(*this);
 	}
 
     private :
@@ -535,22 +535,22 @@ namespace eo
 
     //////////////////////// tentative for a general BOUND class that is constructed from a string
 
-    /** A class that encapsulate all possible eoIntBounds.
+    /** A class that encapsulate all possible IntBounds.
      *  Mandatory in order to read through the parser
 
      @ingroup Bounds
     */
-    class eoGeneralRealBounds : public eoRealBounds
+    class GeneralRealBounds : public RealBounds
     {
     public:
 	/** Ctor: from a string, chooses the type of bound */
-	eoGeneralRealBounds(std::string _s = "[-infinity,+infinity]")
+	GeneralRealBounds(std::string _s = "[-infinity,+infinity]")
 	{
 	    repBound = getBoundsFromString(_s);
 	}
 
 	/** Need a Cpy Ctor because we are allocating memory */
-	eoGeneralRealBounds(const eoGeneralRealBounds & _b):eoRealBounds(_b)
+	GeneralRealBounds(const GeneralRealBounds & _b):RealBounds(_b)
 	{
 	    // replicate the embedded bound (I'm pretty sure there is another
 	    // way to do that !!!
@@ -558,21 +558,21 @@ namespace eo
 	    bool minBounded = _b.isMinBounded();
 	    bool maxBounded = _b.isMaxBounded();
 	    double minimum, maximum;
-	    const eoRealBounds & bb = _b.theBounds();
+	    const RealBounds & bb = _b.theBounds();
 	    if (minBounded) minimum = bb.minimum();
 	    if (maxBounded) maximum = bb.maximum();
 
 	    if (minBounded && maxBounded)
-		repBound = new eoRealInterval(minimum, maximum);
+		repBound = new RealInterval(minimum, maximum);
 	    else if (!minBounded && !maxBounded)	// no bound at all
-		repBound = new eoRealNoBounds;
+		repBound = new RealNoBounds;
 	    else if (!minBounded && maxBounded)
-		repBound = new eoRealAboveBound(maximum);
+		repBound = new RealAboveBound(maximum);
 	    else if (minBounded && !maxBounded)
-		repBound = new eoRealBelowBound(minimum);
+		repBound = new RealBelowBound(minimum);
 	}
 
-	eoGeneralRealBounds& operator=(const eoGeneralRealBounds& _b)
+	GeneralRealBounds& operator=(const GeneralRealBounds& _b)
 	{
 	    // replicate the embedded bound (I'm pretty sure there is another
 	    // way to do that !!!
@@ -580,7 +580,7 @@ namespace eo
 	    bool minBounded = _b.isMinBounded();
 	    bool maxBounded = _b.isMaxBounded();
 	    double minimum, maximum;
-	    const eoRealBounds & bb = _b.theBounds();
+	    const RealBounds & bb = _b.theBounds();
 	    if (minBounded) minimum = bb.minimum();
 	    if (maxBounded) maximum = bb.maximum();
 
@@ -589,19 +589,19 @@ namespace eo
 		delete repBound;
 	    // now reallocate
 	    if (minBounded && maxBounded)
-		repBound = new eoRealInterval(minimum, maximum);
+		repBound = new RealInterval(minimum, maximum);
 	    else if (!minBounded && !maxBounded)	// no bound at all
-		repBound = new eoRealNoBounds;
+		repBound = new RealNoBounds;
 	    else if (!minBounded && maxBounded)
-		repBound = new eoRealAboveBound(maximum);
+		repBound = new RealAboveBound(maximum);
 	    else if (minBounded && !maxBounded)
-		repBound = new eoRealBelowBound(minimum);
+		repBound = new RealBelowBound(minimum);
 	    return (*this);
 	}
 
 
 	/** Need a Dtor because we allocate an actual bound  */
-	~eoGeneralRealBounds()
+	~GeneralRealBounds()
 	{
 	    delete repBound;
 	}
@@ -652,13 +652,13 @@ namespace eo
 	/** random generator of uniform numbers in bounds
 	 * std::exception if unbounded
 	 */
-	virtual double uniform(eoRng & _rng = eo::rng)  const {(void)_rng; return repBound->uniform();}
+	virtual double uniform(Rng & _rng = rng)  const {(void)_rng; return repBound->uniform();}
 
 	/** for memory managements - ugly */
-	virtual eoRealBounds * dup() const  {return repBound->dup();}
+	virtual RealBounds * dup() const  {return repBound->dup();}
 
 	/** for efficiency, it's better to use the embedded boud directly */
-	const eoRealBounds & theBounds()  const { return *repBound;} 
+	const RealBounds & theBounds()  const { return *repBound;} 
 
 	/** don't forget the printOn method - 
 	 * again that of the embedded bound
@@ -680,9 +680,9 @@ namespace eo
 
     private:
 	// reading from a string
-	eoRealBounds * getBoundsFromString(std::string);
+	RealBounds * getBoundsFromString(std::string);
 
-	eoRealBounds * repBound;
+	RealBounds * repBound;
     };
 
 }

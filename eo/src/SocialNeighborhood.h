@@ -26,24 +26,24 @@
 #define SOCIALNEIGHBORHOOD_H_
 
 //-----------------------------------------------------------------------------
-#include <eoNeighborhood.h>
+#include <Neighborhood.h>
 //-----------------------------------------------------------------------------
 
 namespace eo
 {
 
     /**
-     *  Derivated from eoNeighborhood. Just takes relationships into account.
+     *  Derivated from Neighborhood. Just takes relationships into account.
      * The neighborhood is defined as a list of indices corresponding to particles.
      * Also contains ONE particle considered as the best of the neighborhood.
      *
      * @ingroup Selectors
      */
-    template < class POT > class eoSocialNeighborhood : public eoNeighborhood<POT>
+    template < class POT > class SocialNeighborhood : public Neighborhood<POT>
     {
     public:
 
-	eoSocialNeighborhood(){}
+	SocialNeighborhood(){}
 
 	/**
 	 * Put a particle (identified by its indice in its population) in the neighborhood.
@@ -96,7 +96,7 @@ namespace eo
 		return indicesList[_index];
 	    else{
 		std::string s;
-		s.append (" Invalid indice in eoSocialNeighborhood ");
+		s.append (" Invalid indice in SocialNeighborhood ");
 		throw std::runtime_error (s);
 	    }
 	}

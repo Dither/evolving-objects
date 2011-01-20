@@ -31,8 +31,8 @@
 #include <fstream>
 #include <stdexcept>
 
-#include "utils/eoMonitor.h"
-#include "eoObject.h"
+#include "utils/Monitor.h"
+#include "Object.h"
 
 namespace eo
 {
@@ -45,7 +45,7 @@ namespace eo
 	@version MS 25/11/00
 	@ingroup Monitors
     */
-    class eoFileMonitor : public eoMonitor
+    class FileMonitor : public Monitor
     {
     public :
 
@@ -54,12 +54,12 @@ namespace eo
 	 * Try to create the file in writing mode, erasing it if asked.
 	 *
 	 * @param _filename complete filename to write to
-	 * @param _delim delimiter string to use between each item of the registered vector (e.g. of eoStats)
+	 * @param _delim delimiter string to use between each item of the registered vector (e.g. of Stats)
 	 * @param _keep_existing if true, overwrite any existing file with the same name prior to any output
-	 * @param _header print the header (with the descriptions of registered eoStats) at the beginning of the file (WARNING: true will discards header printing)
+	 * @param _header print the header (with the descriptions of registered Stats) at the beginning of the file (WARNING: true will discards header printing)
 	 * @param _overwrite if true, overwrite the existing file
 	 */
-	eoFileMonitor(
+	FileMonitor(
 		      std::string _filename, 
 		      std::string _delim = " ", 
 		      bool _keep_existing = false, 
@@ -77,19 +77,19 @@ namespace eo
 		std::ofstream os (filename.c_str ());
 
 		if (!os) {
-		    std::string str = "Error, eoFileMonitor could not open: " + filename;
+		    std::string str = "Error, FileMonitor could not open: " + filename;
 		    throw std::runtime_error (str);
 		}
 	    } // if ! keep
 	}
 
 	//! Called first, try to open the file in append mode and write the header if asked
-	virtual eoMonitor& operator()(void);
+	virtual Monitor& operator()(void);
 
 	/*! Main call, normally called at each generation. 
 	  Write the content of the registered vector into the file, each item being separated by delim
 	*/
-	virtual eoMonitor& operator()(std::ostream& os);
+	virtual Monitor& operator()(std::ostream& os);
 
 	//! Try to open the file, and then call printHeader(file)
 	void printHeader(void);

@@ -27,20 +27,20 @@
 
 
 //-----------------------------------------------------------------------------
-#include <eoPop.h>
+#include <Pop.h>
 //-----------------------------------------------------------------------------
 
 namespace eo
 {
 
     /** 
-	eoTransform transforms a population by applying genetic operators on it.
+	Transform transforms a population by applying genetic operators on it.
 
 	@ingroup Combination
 	@ingroup Core
     */
     template<class EOT>
-    class eoTransform : public eoUF<eoPop<EOT>&, void>
+    class Transform : public UF<Pop<EOT>&, void>
     {};
 
 }

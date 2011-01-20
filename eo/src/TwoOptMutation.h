@@ -37,17 +37,17 @@ namespace eo
     *
     * @ingroup Variators
     */
-    template<class EOT> class eoTwoOptMutation: public eoMonOp<EOT>
+    template<class EOT> class TwoOptMutation: public MonOp<EOT>
     {
     public:
 
 	typedef typename EOT::AtomType GeneType;
 
 	/// CTor
-	eoTwoOptMutation(){}
+	TwoOptMutation(){}
 
 	/// The class name.
-	virtual std::string className() const { return "eoTwoOptMutation"; }
+	virtual std::string className() const { return "TwoOptMutation"; }
 
 	/**
 	*
@@ -71,7 +71,7 @@ namespace eo
 	}
 
     };
-    /** @example t-eoTwoOptMutation.cpp
+    /** @example t-TwoOptMutation.cpp
     */
 
 }

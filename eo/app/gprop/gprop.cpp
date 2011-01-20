@@ -23,12 +23,12 @@ mlp::set train, validate, test;
 // parameters
 //-----------------------------------------------------------------------------
 
-eoValueParam<unsigned> pop_size(10, "pop_size", "population size", 'p');
-eoValueParam<unsigned> generations(10, "generations", "number of generation", 'g');
-eoValueParam<double> mut_rate(0.25, "mut_rate", "mutation rate", 'm');
-eoValueParam<double> xover_rate(0.25, "xover_rate", "default crossover rate", 'x');
-eoValueParam<string> file("", "file", "common start of patterns filenames *.trn *.val and *.tst", 'f');
-eoValueParam<unsigned> hiddenp(0, "hidden", "number of neurons in hidden layer", 'd');
+eo::ValueParam<unsigned> pop_size(10, "pop_size", "population size", 'p');
+eo::ValueParam<unsigned> generations(10, "generations", "number of generation", 'g');
+eo::ValueParam<double> mut_rate(0.25, "mut_rate", "mutation rate", 'm');
+eo::ValueParam<double> xover_rate(0.25, "xover_rate", "default crossover rate", 'x');
+eo::ValueParam<string> file("", "file", "common start of patterns filenames *.trn *.val and *.tst", 'f');
+eo::ValueParam<unsigned> hiddenp(0, "hidden", "number of neurons in hidden layer", 'd');
 
 //-----------------------------------------------------------------------------
 // auxiliar functions
@@ -64,33 +64,33 @@ int main(int argc, char** argv)
 
 void arg(int argc, char** argv)
 {
-  eoParser parser(argc, argv);
+    eo::Parser parser(argc, argv);
 
-  parser.processParam(pop_size,    "genetic operators");
-  parser.processParam(generations, "genetic operators");
-  parser.processParam(mut_rate,    "genetic operators");
-  parser.processParam(xover_rate,  "genetic operators");
-  parser.processParam(file,        "files");
-  parser.processParam(hiddenp,     "genetic operators");
+    parser.processParam(pop_size,    "genetic operators");
+    parser.processParam(generations, "genetic operators");
+    parser.processParam(mut_rate,    "genetic operators");
+    parser.processParam(xover_rate,  "genetic operators");
+    parser.processParam(file,        "files");
+    parser.processParam(hiddenp,     "genetic operators");
 
-  if (parser.userNeedsHelp())
-    {
-      parser.printHelp(cout);
-      exit(EXIT_SUCCESS);
-    }
+    if (parser.userNeedsHelp())
+	{
+	    parser.printHelp(cout);
+	    exit(EXIT_SUCCESS);
+	}
 
-  load_file(train, "trn");
-  load_file(validate, "val");
-  load_file(test, "tst");
+    load_file(train, "trn");
+    load_file(validate, "val");
+    load_file(test, "tst");
 
-  phenotype::trn_max = train.size();
-  phenotype::val_max = validate.size();
-  phenotype::tst_max = test.size();
+    phenotype::trn_max = train.size();
+    phenotype::val_max = validate.size();
+    phenotype::tst_max = test.size();
 
-  in = train.front().input.size();
-  out = train.front().output.size();
-  gprop_use_datasets(&train, &validate, &test);
-  hidden = hiddenp.value();
+    in = train.front().input.size();
+    out = train.front().output.size();
+    gprop_use_datasets(&train, &validate, &test);
+    hidden = hiddenp.value();
 }
 
 //-----------------------------------------------------------------------------
@@ -119,49 +119,49 @@ void load_file(mlp::set& set, const string& ext)
 
 void ga()
 {
-  // create population
-  eoInitChrom init;
-  eoPop<Chrom> pop(pop_size.value(), init);
+    // create population
+    eo::InitChrom init;
+    eo::Pop<Chrom> pop(pop_size.value(), init);
 
-  // evaluate population
-  eoEvalFuncPtr<Chrom> evaluator(eoChromEvaluator);
-  apply<Chrom>(evaluator, pop);
+    // evaluate population
+    eo::EvalFuncPtr<Chrom> evaluator(eoChromEvaluator);
+    eo::apply<Chrom>(evaluator, pop);
 
-  // selector
-  eoStochTournamentSelect<Chrom> select;
+    // selector
+    eo::StochTournamentSelect<Chrom> select;
 
-  // genetic operators
-  eoChromMutation mutation;
-  eoChromXover xover;
+    // genetic operators
+    eo::ChromMutation mutation;
+    eo::ChromXover xover;
 
-  // stop condition
-  eoGenContinue<Chrom> continuator1(generations.value());
-  phenotype p; p.val_ok = validate.size() - 1; p.mse_error = 0;
-  eoFitContinue<Chrom> continuator2(p);
-  eoCombinedContinue<Chrom> continuator(continuator1, continuator2);
+    // stop condition
+    eo::GenContinue<Chrom> continuator1(generations.value());
+    phenotype p; p.val_ok = validate.size() - 1; p.mse_error = 0;
+    eo::FitContinue<Chrom> continuator2(p);
+    eo::CombinedContinue<Chrom> continuator(continuator1, continuator2);
 
-  // checkpoint
-  eoCheckPoint<Chrom> checkpoint(continuator);
+    // checkpoint
+    eo::CheckPoint<Chrom> checkpoint(continuator);
 
-  // monitor
-  eoStdoutMonitor monitor;
-  checkpoint.add(monitor);
+    // monitor
+    eo::StdoutMonitor monitor;
+    checkpoint.add(monitor);
 
-  // statistics
-  eoBestFitnessStat<Chrom> stats;
-  checkpoint.add(stats);
-  monitor.add(stats);
+    // statistics
+    eo::BestFitnessStat<Chrom> stats;
+    checkpoint.add(stats);
+    monitor.add(stats);
 
-  // genetic algorithm
-  eoSGA<Chrom> sga(select,
-		   xover, xover_rate.value(),
-		   mutation, mut_rate.value(),
-		   evaluator,
-		   checkpoint);
+    // genetic algorithm
+    eo::SGA<Chrom> sga(select,
+		       xover, xover_rate.value(),
+		       mutation, mut_rate.value(),
+		       evaluator,
+		       checkpoint);
 
-  sga(pop);
+    sga(pop);
 
-  cout << "best: " << *max_element(pop.begin(), pop.end()) << endl;
+    cout << "best: " << *max_element(pop.begin(), pop.end()) << endl;
 }
 
 //-----------------------------------------------------------------------------

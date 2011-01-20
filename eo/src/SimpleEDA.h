@@ -29,10 +29,10 @@
 //-----------------------------------------------------------------------------
 
 #include <apply.h>
-#include <eoEDA.h>
-#include <eoContinue.h>
-#include <eoDistribUpdater.h>
-#include <eoEvalFunc.h>
+#include <EDA.h>
+#include <Continue.h>
+#include <DistribUpdater.h>
+#include <EvalFunc.h>
 
 namespace eo
 {
@@ -48,17 +48,17 @@ namespace eo
      *  @ingroup Algorithms
      */
 
-    template<class EOT> class eoSimpleEDA: public eoEDA<EOT>
+    template<class EOT> class SimpleEDA: public EDA<EOT>
     {
     public:
 
-	/** Ctor from an eoDistribUpdater,
-	 *  plus an eoEval and eoContinue of course.
+	/** Ctor from an DistribUpdater,
+	 *  plus an Eval and Continue of course.
 	 */
-	eoSimpleEDA(eoDistribUpdater<EOT>& _update,
-		    eoEvalFunc<EOT>& _eval,
+	SimpleEDA(DistribUpdater<EOT>& _update,
+		    EvalFunc<EOT>& _eval,
 		    unsigned _popSize, 
-		    eoContinue<EOT>& _continuator
+		    Continue<EOT>& _continuator
 		    ) : 
 	    update(_update),
 	    eval(_eval),
@@ -71,9 +71,9 @@ namespace eo
 	 *    evaluate pop, 
 	 *    update distrib
 	 */
-	virtual void operator()(eoDistribution<EOT>& _distrib)
+	virtual void operator()(Distribution<EOT>& _distrib)
 	{
-	    eoPop<EOT> pop(popSize, _distrib);
+	    Pop<EOT> pop(popSize, _distrib);
 	    do
 		{
 		    try
@@ -88,20 +88,20 @@ namespace eo
 		    catch (std::exception& e)
 			{
 			    std::string s = e.what();
-			    s.append( " in eoSimpleEDA");
+			    s.append( " in SimpleEDA");
 			    throw std::runtime_error( s );
 			}
 		} while ( continuator( pop ) );
 	}
 
     private:
-	eoDistribUpdater<EOT> & update;
+	DistribUpdater<EOT> & update;
 
-	eoEvalFunc<EOT>&          eval;
+	EvalFunc<EOT>&          eval;
   
 	unsigned                  popSize;
 
-	eoContinue<EOT>&          continuator;
+	Continue<EOT>&          continuator;
     };
 
     //-----------------------------------------------------------------------------

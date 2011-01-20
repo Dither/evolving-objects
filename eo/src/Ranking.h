@@ -27,12 +27,12 @@
 #ifndef Ranking_h
 #define Ranking_h
 
-#include <eoPerf2Worth.h>
+#include <Perf2Worth.h>
 
 namespace eo
 {
 
-    /** An instance of eoPerfFromWorth
+    /** An instance of PerfFromWorth
      *  COmputes the ranked fitness: fitnesses range in [m,M]
      *  with m=2-pressure/popSize and M=pressure/popSize.
      *  in between, the progression depstd::ends on exponent (linear if 1).
@@ -40,36 +40,36 @@ namespace eo
      *  @ingroup Selectors
      */
     template <class EOT>
-    class eoRanking : public eoPerf2Worth<EOT> // false: do not cache fitness
+    class Ranking : public Perf2Worth<EOT> // false: do not cache fitness
     {
     public:
 
-	using eoPerf2Worth<EOT>::value;
+	using Perf2Worth<EOT>::value;
 
 	/* Ctor:
 	   @param _p selective pressure (in (1,2]
 	   @param _e exponent (1 == linear)
 	*/
-	eoRanking(double _p=2.0, double _e=1.0):
+	Ranking(double _p=2.0, double _e=1.0):
 	    pressure(_p), exponent(_e) {}
 
 	/* helper function: finds index in _pop of _eo, an EOT * */
-	int lookfor(const EOT *_eo, const eoPop<EOT>& _pop)
+	int lookfor(const EOT *_eo, const Pop<EOT>& _pop)
 	{
-	    typename eoPop<EOT>::const_iterator it;
+	    typename Pop<EOT>::const_iterator it;
 	    for (it=_pop.begin(); it<_pop.end(); it++)
 		{
 		    if (_eo == &(*it))
 			return it-_pop.begin();
 		}
-	    throw std::runtime_error("Not found in eoLinearRanking");
+	    throw std::runtime_error("Not found in LinearRanking");
 	}
 
 	/* COmputes the ranked fitness: fitnesses range in [m,M]
 	   with m=2-pressure/popSize and M=pressure/popSize.
 	   in between, the progression depstd::ends on exponent (linear if 1).
 	*/
-	virtual void operator()(const eoPop<EOT>& _pop)
+	virtual void operator()(const Pop<EOT>& _pop)
 	{
 	    std::vector<const EOT *> rank;
 	    _pop.sort(rank);
@@ -79,7 +79,7 @@ namespace eo
 	    if (pSize <= 1)
 		throw std::runtime_error("Cannot do ranking with population of size <= 1");
 
-	    // value() refers to the std::vector of worthes (we're in an eoParamvalue)
+	    // value() refers to the std::vector of worthes (we're in an Paramvalue)
 	    value().resize(pSize);
 
 	    double beta = (2-pressure)/pSize;

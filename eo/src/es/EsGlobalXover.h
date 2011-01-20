@@ -26,15 +26,15 @@
 #ifndef _EsGlobalXover_H
 #define _EsGlobalXover_H
 
-#include <utils/eoRNG.h>
+#include <utils/RNG.h>
 
-#include <es/eoEsSimple.h>
-#include <es/eoEsStdev.h>
-#include <es/eoEsFull.h>
+#include <es/EsSimple.h>
+#include <es/EsStdev.h>
+#include <es/EsFull.h>
 
-#include <eoGenOp.h>
+#include <GenOp.h>
 // needs a selector - here random
-#include <eoRandomSelect.h>
+#include <RandomSelect.h>
 
 namespace eo
 {
@@ -47,7 +47,7 @@ namespace eo
      *  @ingroup Variators
      */
     template<class EOT>
-    class eoEsGlobalXover: public eoGenOp<EOT>
+    class EsGlobalXover: public GenOp<EOT>
     {
     public:
 	typedef typename EOT::Fitness FitT;
@@ -55,11 +55,11 @@ namespace eo
 	/**
 	 * (Default) Constructor.
 	 */
-	eoEsGlobalXover(eoBinOp<double> & _crossObj, eoBinOp<double> & _crossMut) :
+	EsGlobalXover(BinOp<double> & _crossObj, BinOp<double> & _crossMut) :
 	    crossObj(_crossObj), crossMut(_crossMut) {}
 
 	/// The class name. Used to display statistics
-	virtual std::string className() const { return "eoEsGlobalXover"; }
+	virtual std::string className() const { return "EsGlobalXover"; }
 
 	/// The TOTAL number of offspring (here = nb of parents modified in place)
 	unsigned max_production(void) { return 1; }
@@ -70,7 +70,7 @@ namespace eo
 	 *
 	 * @param _plop a POPULATOR (not a simple population)
 	 */
-	void apply(eoPopulator<EOT>& _plop)
+	void apply(Populator<EOT>& _plop)
 	{
 	    // First, select as many parents as you will have offspring
 	    EOT& parent = *_plop; // select the first parent
@@ -79,11 +79,11 @@ namespace eo
 	    for (unsigned i=0; i<parent.size(); i++)
 		{
 		    // get extra parents - use private selector
-		    // _plop.source() is the eoPop<EOT> used by _plop to get parents
+		    // _plop.source() is the Pop<EOT> used by _plop to get parents
 		    const EOT& realParent1 = sel(_plop.source());
 		    const EOT& realParent2 = sel(_plop.source());
 		    parent[i] = realParent1[i];
-		    crossObj(parent[i], realParent2[i]); // apply eoBinOp
+		    crossObj(parent[i], realParent2[i]); // apply BinOp
 		}
 	    // then the self-adaptation parameters
 	    cross_self_adapt(parent, _plop.source());
@@ -95,36 +95,36 @@ namespace eo
 
 	/** Method for cross self-adaptation parameters
 
-	    Specialization for eoEsSimple.
+	    Specialization for EsSimple.
 	*/
-	void cross_self_adapt(eoEsSimple<FitT> & _parent, const eoPop<eoEsSimple<FitT> >& _pop)
+	void cross_self_adapt(EsSimple<FitT> & _parent, const Pop<EsSimple<FitT> >& _pop)
 	{
 	    const EOT& realParent1 = sel(_pop);
 	    const EOT& realParent2 = sel(_pop);
 	    _parent.stdev = realParent1.stdev;
-	    crossMut(_parent.stdev, realParent2.stdev); // apply eoBinOp
+	    crossMut(_parent.stdev, realParent2.stdev); // apply BinOp
 	}
 
 	/** Method for cross self-adaptation parameters
 
-	    Specialization for eoEsStdev.
+	    Specialization for EsStdev.
 	*/
-	void cross_self_adapt(eoEsStdev<FitT> & _parent, const eoPop<eoEsStdev<FitT> >& _pop)
+	void cross_self_adapt(EsStdev<FitT> & _parent, const Pop<EsStdev<FitT> >& _pop)
 	{
 	    for (unsigned i=0; i<_parent.size(); i++)
 		{
 		    const EOT& realParent1 = sel(_pop);
 		    const EOT& realParent2 = sel(_pop);
 		    _parent.stdevs[i] = realParent1.stdevs[i];
-		    crossMut(_parent.stdevs[i], realParent2.stdevs[i]); // apply eoBinOp
+		    crossMut(_parent.stdevs[i], realParent2.stdevs[i]); // apply BinOp
 		}
 	}
 
 	/** Method for cross self-adaptation parameters
 
-	    Specialization for eoEsFull.
+	    Specialization for EsFull.
 	*/
-	void cross_self_adapt(eoEsFull<FitT> & _parent, const eoPop<eoEsFull<FitT> >& _pop)
+	void cross_self_adapt(EsFull<FitT> & _parent, const Pop<EsFull<FitT> >& _pop)
 	{
 	    unsigned i;
 	    // the StDev
@@ -133,7 +133,7 @@ namespace eo
 		    const EOT& realParent1 = sel(_pop);
 		    const EOT& realParent2 = sel(_pop);
 		    _parent.stdevs[i] = realParent1.stdevs[i];
-		    crossMut(_parent.stdevs[i], realParent2.stdevs[i]); // apply eoBinOp
+		    crossMut(_parent.stdevs[i], realParent2.stdevs[i]); // apply BinOp
 		}
 	    // the roataion angles
 	    for (i=0; i<_parent.correlations.size(); i++)
@@ -141,15 +141,15 @@ namespace eo
 		    const EOT& realParent1 = sel(_pop);
 		    const EOT& realParent2 = sel(_pop);
 		    _parent.correlations[i] = realParent1.correlations[i];
-		    crossMut(_parent.correlations[i], realParent2.correlations[i]); // apply eoBinOp
+		    crossMut(_parent.correlations[i], realParent2.correlations[i]); // apply BinOp
 		}
 
 	}
 
 	// the data
-	eoRandomSelect<EOT> sel;
-	eoBinOp<double> & crossObj;
-	eoBinOp<double> & crossMut;
+	RandomSelect<EOT> sel;
+	BinOp<double> & crossObj;
+	BinOp<double> & crossMut;
     };
 
 }

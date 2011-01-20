@@ -43,9 +43,9 @@
 // The templatized code
 #include <do/make_algo_scalar.h>
 // the instanciating EOType(s)
-#include <es/eoEsSimple.h>	   // one Sigma per individual
-#include <es/eoEsStdev.h>	   // one sigmal per object variable
-#include <es/eoEsFull.h>	   // full correlation matrix per indi
+#include <es/EsSimple.h>	   // one Sigma per individual
+#include <es/EsStdev.h>	   // one sigmal per object variable
+#include <es/EsFull.h>	   // full correlation matrix per indi
 
 namespace eo
 {
@@ -54,34 +54,34 @@ namespace eo
 
     // Algo
     ///////
-    eoAlgo<eoEsSimple<double> >&  make_algo_scalar(eoParser& _parser, eoState& _state, eoEvalFunc<eoEsSimple<double> >& _eval, eoContinue<eoEsSimple<double> >& _continue, eoGenOp<eoEsSimple<double> >& _op, eoDistance<eoEsSimple<double> >* _dist)
+    Algo<EsSimple<double> >&  make_algo_scalar(Parser& _parser, State& _state, EvalFunc<EsSimple<double> >& _eval, Continue<EsSimple<double> >& _continue, GenOp<EsSimple<double> >& _op, Distance<EsSimple<double> >* _dist)
     {
 	return do_make_algo_scalar(_parser, _state, _eval, _continue, _op);
     }
 
-    eoAlgo<eoEsSimple<eoMinimizingFitness> >&  make_algo_scalar(eoParser& _parser, eoState& _state, eoEvalFunc<eoEsSimple<eoMinimizingFitness> >& _eval, eoContinue<eoEsSimple<eoMinimizingFitness> >& _continue, eoGenOp<eoEsSimple<eoMinimizingFitness> >& _op, eoDistance<eoEsSimple<eoMinimizingFitness> >* _dist)
+    Algo<EsSimple<MinimizingFitness> >&  make_algo_scalar(Parser& _parser, State& _state, EvalFunc<EsSimple<MinimizingFitness> >& _eval, Continue<EsSimple<MinimizingFitness> >& _continue, GenOp<EsSimple<MinimizingFitness> >& _op, Distance<EsSimple<MinimizingFitness> >* _dist)
     {
 	return do_make_algo_scalar(_parser, _state, _eval, _continue, _op);
     }
 
     //////////////
-    eoAlgo<eoEsStdev<double> >&  make_algo_scalar(eoParser& _parser, eoState& _state, eoEvalFunc<eoEsStdev<double> >& _eval, eoContinue<eoEsStdev<double> >& _continue, eoGenOp<eoEsStdev<double> >& _op, eoDistance<eoEsStdev<double> >* _dist)
+    Algo<EsStdev<double> >&  make_algo_scalar(Parser& _parser, State& _state, EvalFunc<EsStdev<double> >& _eval, Continue<EsStdev<double> >& _continue, GenOp<EsStdev<double> >& _op, Distance<EsStdev<double> >* _dist)
     {
 	return do_make_algo_scalar(_parser, _state, _eval, _continue, _op);
     }
 
-    eoAlgo<eoEsStdev<eoMinimizingFitness> >&  make_algo_scalar(eoParser& _parser, eoState& _state, eoEvalFunc<eoEsStdev<eoMinimizingFitness> >& _eval, eoContinue<eoEsStdev<eoMinimizingFitness> >& _continue, eoGenOp<eoEsStdev<eoMinimizingFitness> >& _op, eoDistance<eoEsStdev<eoMinimizingFitness> >* _dist)
+    Algo<EsStdev<MinimizingFitness> >&  make_algo_scalar(Parser& _parser, State& _state, EvalFunc<EsStdev<MinimizingFitness> >& _eval, Continue<EsStdev<MinimizingFitness> >& _continue, GenOp<EsStdev<MinimizingFitness> >& _op, Distance<EsStdev<MinimizingFitness> >* _dist)
     {
 	return do_make_algo_scalar(_parser, _state, _eval, _continue, _op);
     }
 
     ///////////////
-    eoAlgo<eoEsFull<double> >&  make_algo_scalar(eoParser& _parser, eoState& _state, eoEvalFunc<eoEsFull<double> >& _eval, eoContinue<eoEsFull<double> >& _continue, eoGenOp<eoEsFull<double> >& _op, eoDistance<eoEsFull<double> >* _dist)
+    Algo<EsFull<double> >&  make_algo_scalar(Parser& _parser, State& _state, EvalFunc<EsFull<double> >& _eval, Continue<EsFull<double> >& _continue, GenOp<EsFull<double> >& _op, Distance<EsFull<double> >* _dist)
     {
 	return do_make_algo_scalar(_parser, _state, _eval, _continue, _op);
     }
 
-    eoAlgo<eoEsFull<eoMinimizingFitness> >&  make_algo_scalar(eoParser& _parser, eoState& _state, eoEvalFunc<eoEsFull<eoMinimizingFitness> >& _eval, eoContinue<eoEsFull<eoMinimizingFitness> >& _continue, eoGenOp<eoEsFull<eoMinimizingFitness> >& _op, eoDistance<eoEsFull<eoMinimizingFitness> >* _dist)
+    Algo<EsFull<MinimizingFitness> >&  make_algo_scalar(Parser& _parser, State& _state, EvalFunc<EsFull<MinimizingFitness> >& _eval, Continue<EsFull<MinimizingFitness> >& _continue, GenOp<EsFull<MinimizingFitness> >& _op, Distance<EsFull<MinimizingFitness> >* _dist)
     {
 	return do_make_algo_scalar(_parser, _state, _eval, _continue, _op);
     }

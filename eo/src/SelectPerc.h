@@ -27,16 +27,16 @@
 
 
 //-----------------------------------------------------------------------------
-#include <eoSelect.h>
-#include <eoSelectOne.h>
+#include <Select.h>
+#include <SelectOne.h>
 #include <math.h>
 //-----------------------------------------------------------------------------
 
 namespace eo
 {
 
-    /** eoSelectPerc selects many individuals using eoSelectOne as it's 
-	mechanism. Therefore eoSelectPerc needs an eoSelectOne in its ctor
+    /** SelectPerc selects many individuals using SelectOne as it's 
+	mechanism. Therefore SelectPerc needs an SelectOne in its ctor
 
 	It will select floor(rate*pop.size()) individuals and pushes them to
 	the back of the destination population.
@@ -44,20 +44,20 @@ namespace eo
 	@ingroup Selectors
     */
     template<class EOT>
-    class eoSelectPerc : public eoSelect<EOT>
+    class SelectPerc : public Select<EOT>
     {
     public:
 	/// init
-	eoSelectPerc(eoSelectOne<EOT>& _select, float _rate = 1.0) 
+	SelectPerc(SelectOne<EOT>& _select, float _rate = 1.0) 
 	    : select(_select), rate(_rate) {}
 
 	/**
 	   The implementation selects a percentage 
 
 	   @param _source the source population
-	   @param _dest  the resulting population (size of this population is the number of times eoSelectOne is called. It empties the destination and adds the selection into it)
+	   @param _dest  the resulting population (size of this population is the number of times SelectOne is called. It empties the destination and adds the selection into it)
 	*/
-	virtual void operator()(const eoPop<EOT>& _source, eoPop<EOT>& _dest)
+	virtual void operator()(const Pop<EOT>& _source, Pop<EOT>& _dest)
 	{
 	    size_t target = static_cast<size_t>(floor(rate * _source.size()));
     
@@ -70,7 +70,7 @@ namespace eo
 	}
   
     private :
-	eoSelectOne<EOT>& select;
+	SelectOne<EOT>& select;
 	float rate;
     };
 

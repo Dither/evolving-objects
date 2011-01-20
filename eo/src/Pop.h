@@ -31,9 +31,9 @@
 #include <vector>
 
 // EO includes
-#include <eoOp.h> // for eoInit
-#include <eoPersistent.h>
-#include <eoInit.h>
+#include <Op.h> // for Init
+#include <Persistent.h>
+#include <Init.h>
 #include <utils/rnd_generators.h>  // for shuffle method
 
 namespace eo
@@ -48,14 +48,14 @@ namespace eo
      * interface be provided.
      *
      * The template can be instantiated with anything that accepts a "size" 
-     * and eoInit derived object. in the ctor. 
+     * and Init derived object. in the ctor. 
      * EOT must also have a copy ctor, since temporaries are created and then
-     * passed to the eoInit object
+     * passed to the Init object
      *
      * @ingroup Core
      */
     template<class EOT>
-    class eoPop: public std::vector<EOT>, public eoObject, public eoPersistent
+    class Pop: public std::vector<EOT>, public Object, public Persistent
     {
     public:
 
@@ -73,14 +73,14 @@ namespace eo
 
 	/** Default ctor. Creates empty pop
 	 */
-	eoPop()	  : std::vector<EOT>(), eoObject(), eoPersistent() {};
+	Pop()	  : std::vector<EOT>(), Object(), Persistent() {};
 
 	/** Ctor for the initialization of chromosomes
 
 	    @param _popSize total population size
-	    @param _chromInit Initialization routine, produces EO's, needs to be an eoInit 
+	    @param _chromInit Initialization routine, produces EO's, needs to be an Init 
 	*/
-	eoPop( unsigned _popSize, eoInit<EOT>& _chromInit )
+	Pop( unsigned _popSize, Init<EOT>& _chromInit )
 	    : std::vector<EOT>()
 	{
 	    resize(_popSize);
@@ -94,9 +94,9 @@ namespace eo
 	    Can be used to initialize it pop is empty 
 
 	    @param _newPopSize total population size
-	    @param _chromInit Initialization routine, produces EO's, needs to be an eoInit 
+	    @param _chromInit Initialization routine, produces EO's, needs to be an Init 
 	*/
-	void append( unsigned _newPopSize, eoInit<EOT>& _chromInit )
+	void append( unsigned _newPopSize, Init<EOT>& _chromInit )
 	{
 	    unsigned oldSize = size();
 	    if (_newPopSize < oldSize)
@@ -117,12 +117,12 @@ namespace eo
 	    each element should be in different lines
 	    @param _is the stream
 	*/
-	eoPop( std::istream& _is ) :std::vector<EOT>() {
+	Pop( std::istream& _is ) :std::vector<EOT>() {
 	    readFrom( _is );
 	}
 
 	/** Empty Dtor */
-	virtual ~eoPop() {}
+	virtual ~Pop() {}
 
 
 	/// helper struct for getting a pointer
@@ -184,15 +184,15 @@ namespace eo
 
 	/** returns an iterator to the best individual DOES NOT MOVE ANYBODY */
 #if defined(__CUDACC__)
-	eoPop<EOT>::iterator it_best_element()
+	Pop<EOT>::iterator it_best_element()
 	{
-	    eoPop<EOT>:: iterator it = std::max_element(begin(), end());
+	    Pop<EOT>:: iterator it = std::max_element(begin(), end());
 	    return it;
 	}
 #else
-	typename eoPop<EOT>::iterator it_best_element()
+	typename Pop<EOT>::iterator it_best_element()
 	{
-	    typename eoPop<EOT>::iterator it = std::max_element(begin(), end());
+	    typename Pop<EOT>::iterator it = std::max_element(begin(), end());
 	    return it;
 	}
 #endif
@@ -201,9 +201,9 @@ namespace eo
 	const EOT & best_element() const
 	{
 #if defined(__CUDACC__)
-	    eoPop<EOT>::const_iterator it = std::max_element(begin(), end());
+	    Pop<EOT>::const_iterator it = std::max_element(begin(), end());
 #else
-	    typename eoPop<EOT>::const_iterator it = std::max_element(begin(), end());
+	    typename Pop<EOT>::const_iterator it = std::max_element(begin(), end());
 #endif
 	    return (*it);
 	}
@@ -212,24 +212,24 @@ namespace eo
 	const EOT & worse_element() const
 	{
 #if defined(__CUDACC__)
-	    eoPop<EOT>::const_iterator it = std::min_element(begin(), end());
+	    Pop<EOT>::const_iterator it = std::min_element(begin(), end());
 #else
-	    typename eoPop<EOT>::const_iterator it = std::min_element(begin(), end());
+	    typename Pop<EOT>::const_iterator it = std::min_element(begin(), end());
 #endif
 	    return (*it);
 	}
 
 	/** returns an iterator to the worse individual DOES NOT MOVE ANYBODY */
 #if defined(__CUDACC__)
-	eoPop<EOT>::iterator it_worse_element()
+	Pop<EOT>::iterator it_worse_element()
 	{
-	    eoPop<EOT>::iterator it = std::min_element(begin(), end());
+	    Pop<EOT>::iterator it = std::min_element(begin(), end());
 	    return it;
 	}
 #else
-	typename eoPop<EOT>::iterator it_worse_element()
+	typename Pop<EOT>::iterator it_worse_element()
 	{
-	    typename eoPop<EOT>::iterator it = std::min_element(begin(), end());
+	    typename Pop<EOT>::iterator it = std::min_element(begin(), end());
 	    return it;
 	}
 #endif
@@ -239,16 +239,16 @@ namespace eo
 	   than the nth individual. INDIVIDUALS ARE MOVED AROUND in the pop.
 	*/
 #if defined(__CUDACC__)
-	eoPop<EOT>::iterator nth_element(int nth)
+	Pop<EOT>::iterator nth_element(int nth)
 	{
-	    eoPop<EOT>::iterator it = begin() + nth;
+	    Pop<EOT>::iterator it = begin() + nth;
 	    std::nth_element(begin(), it, end(), std::greater<EOT>());
 	    return it;
 	}
 #else
-	typename eoPop<EOT>::iterator nth_element(int nth)
+	typename Pop<EOT>::iterator nth_element(int nth)
 	{
-	    typename eoPop<EOT>::iterator it = begin() + nth;
+	    typename Pop<EOT>::iterator it = begin() + nth;
 	    std::nth_element(begin(), it, end(), std::greater<EOT>());
 	    return it;
 	}
@@ -282,7 +282,7 @@ namespace eo
 	}
 
 	/** does STL swap with other pop */
-	void swap(eoPop<EOT>& other)
+	void swap(Pop<EOT>& other)
 	{
 	    std::swap(static_cast<std::vector<EOT>& >(*this), static_cast<std::vector<EOT>& >(other));
 	}
@@ -313,7 +313,7 @@ namespace eo
 	    std::copy( begin(), end(), std::ostream_iterator<EOT>( _os, "\n") );
 	}
 
-	/** @name Methods from eoObject	*/
+	/** @name Methods from Object	*/
 	//@{
 	/**
 	 * Read object. The EOT class must have a ctor from a stream;
@@ -331,10 +331,10 @@ namespace eo
 	    }
 	}
 
-	/** Inherited from eoObject. Returns the class name.
-	    @see eoObject
+	/** Inherited from Object. Returns the class name.
+	    @see Object
 	*/
-	virtual std::string className() const {return "eoPop";};
+	virtual std::string className() const {return "Pop";};
 	//@}
 
 	virtual void invalidate()

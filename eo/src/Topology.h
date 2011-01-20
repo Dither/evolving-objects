@@ -27,7 +27,7 @@
 #define TOPOLOGY_H_
 
 //-----------------------------------------------------------------------------
-#include <eoNeighborhood.h>
+#include <Neighborhood.h>
 //-----------------------------------------------------------------------------
 
 namespace eo
@@ -41,14 +41,14 @@ namespace eo
      * @ingroup Selectors
      * @ingroup Core
      */
-    template < class POT > class eoTopology:public eoPop < POT >
+    template < class POT > class Topology:public Pop < POT >
     {
     public:
 
 	/**
 	 * Builds the neighborhoods contained in the topology.
 	 */
-	virtual void setup(const eoPop<POT> &)=0;
+	virtual void setup(const Pop<POT> &)=0;
 
 	/**
 	 * Updates the neighborhood of the given particle and its indice in the population
@@ -59,7 +59,7 @@ namespace eo
 	/**
 	 * Updates the neighborhood of the given particle thanks to a whole population (used for distributed or synchronous PSO)
 	 */
-	virtual void updateNeighborhood(eoPop < POT > &_pop)
+	virtual void updateNeighborhood(Pop < POT > &_pop)
 	{
 	    for (unsigned i = 0; i < _pop.size (); i++)
 		updateNeighborhood(_pop[i],i);

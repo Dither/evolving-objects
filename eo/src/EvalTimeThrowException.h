@@ -26,23 +26,23 @@ Johann Dréo <johann.dreo@thalesgroup.com>
 
 #include <ctime>
 
-#include <eoExceptions.h>
+#include <Exceptions.h>
 
 namespace eo
 {
 
     /** Check at each evaluation if a given tie contract has been reached.
      *
-     * Throw an eoMaxTimeException if the given max time has been reached.
+     * Throw an MaxTimeException if the given max time has been reached.
      * Usefull if you want to end the search independently of generations.
      *
      * @ingroup Evaluation
      */
     template< class EOT >
-    class eoEvalTimeThrowException : public eoEvalFuncCounter< EOT >
+    class EvalTimeThrowException : public EvalFuncCounter< EOT >
     {
     public:
-	eoEvalTimeThrowException( eoEvalFunc<EOT> & func, time_t max ) : _max(max), _start( std::time(NULL) ), eoEvalFuncCounter<EOT>( func, "Eval.") {}
+	EvalTimeThrowException( EvalFunc<EOT> & func, time_t max ) : _max(max), _start( std::time(NULL) ), EvalFuncCounter<EOT>( func, "Eval.") {}
 
 	virtual void operator() ( EOT & eo )
 	{
@@ -51,7 +51,7 @@ namespace eo
 		time_t elapsed = static_cast<time_t>( std::difftime( std::time(NULL) , _start ) );
 
 		if( elapsed >= _max ) {
-		    throw eoMaxTimeException(elapsed);
+		    throw MaxTimeException(elapsed);
 		} else {
 		    func(eo);
 		}

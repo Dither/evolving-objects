@@ -1,3 +1,6 @@
+#ifndef _checkpointing
+#define _checkpointing
+
 #include <utils/Parser.h>
 #include <utils/State.h>
 #include <utils/Updater.h>
@@ -18,5 +21,16 @@
 #include <utils/PopStat.h>
 #include <utils/TimeCounter.h>
 
-// and make_help - any better suggestion to include it?
-void make_help(eoParser & _parser);
+namespace eo
+{
+
+    // and make_help - any better suggestion to include it?
+    void make_help(Parser & _parser);
+
+}
+
+#endif // !_checkpointing
+
+// Local Variables:
+// mode: C++
+// End:

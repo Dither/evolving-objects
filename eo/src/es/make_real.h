@@ -44,18 +44,18 @@
 #ifndef real_h
 #define real_h
 
-#include <eoAlgo.h>
-#include <eoScalarFitness.h>
-#include <utils/eoParser.h>
-#include <eoEvalFuncPtr.h>
-#include <eoEvalFuncCounter.h>
-#include <utils/eoCheckPoint.h>
-#include <eoGenOp.h>
-#include <eoPop.h>
-#include <utils/eoDistance.h>
+#include <Algo.h>
+#include <ScalarFitness.h>
+#include <utils/Parser.h>
+#include <EvalFuncPtr.h>
+#include <EvalFuncCounter.h>
+#include <utils/CheckPoint.h>
+#include <GenOp.h>
+#include <Pop.h>
+#include <utils/Distance.h>
 
-#include <es/eoRealInitBounded.h>
-#include <es/eoReal.h>
+#include <es/RealInitBounded.h>
+#include <es/Real.h>
 
 namespace eo
 {
@@ -68,43 +68,43 @@ namespace eo
      * @{
      */
     // the genotypes 
-    eoRealInitBounded<eoReal<double> > & make_genotype(eoParser& _parser, eoState& _state, eoReal<double> _eo);
-    eoRealInitBounded<eoReal<eoMinimizingFitness> > & make_genotype(eoParser& _parser, eoState& _state, eoReal<eoMinimizingFitness> _eo);
+    RealInitBounded<Real<double> > & make_genotype(Parser& _parser, State& _state, Real<double> _eo);
+    RealInitBounded<Real<MinimizingFitness> > & make_genotype(Parser& _parser, State& _state, Real<MinimizingFitness> _eo);
 
     // the operators
-    eoGenOp<eoReal<double> >&  make_op(eoParser& _parser, eoState& _state, eoRealInitBounded<eoReal<double> >& _init);
-    eoGenOp<eoReal<eoMinimizingFitness> >&  make_op(eoParser& _parser, eoState& _state, eoRealInitBounded<eoReal<eoMinimizingFitness> >& _init);
+    GenOp<Real<double> >&  make_op(Parser& _parser, State& _state, RealInitBounded<Real<double> >& _init);
+    GenOp<Real<MinimizingFitness> >&  make_op(Parser& _parser, State& _state, RealInitBounded<Real<MinimizingFitness> >& _init);
 
     //Representation INdependent
     ////////////////////////////
     // you don't need to modify that part even if you use your own representation
 
     // init pop
-    eoPop<eoReal<double> >&  make_pop(eoParser& _parser, eoState& _state, eoInit<eoReal<double> >&);
-    eoPop<eoReal<eoMinimizingFitness> >&  make_pop(eoParser& _parser, eoState& _state, eoInit<eoReal<eoMinimizingFitness> >&);
+    Pop<Real<double> >&  make_pop(Parser& _parser, State& _state, Init<Real<double> >&);
+    Pop<Real<MinimizingFitness> >&  make_pop(Parser& _parser, State& _state, Init<Real<MinimizingFitness> >&);
 
     // the continue's
-    eoContinue<eoReal<double> >& make_continue(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoReal<double> > & _eval);
-    eoContinue<eoReal<eoMinimizingFitness> >& make_continue(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoReal<eoMinimizingFitness> > & _eval);
+    Continue<Real<double> >& make_continue(Parser& _parser, State& _state, EvalFuncCounter<Real<double> > & _eval);
+    Continue<Real<MinimizingFitness> >& make_continue(Parser& _parser, State& _state, EvalFuncCounter<Real<MinimizingFitness> > & _eval);
 
     // the checkpoint
-    eoCheckPoint<eoReal<double> >& make_checkpoint(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoReal<double> >& _eval, eoContinue<eoReal<double> >& _continue);
-    eoCheckPoint<eoReal<eoMinimizingFitness> >& make_checkpoint(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoReal<eoMinimizingFitness> >& _eval, eoContinue<eoReal<eoMinimizingFitness> >& _continue);
+    CheckPoint<Real<double> >& make_checkpoint(Parser& _parser, State& _state, EvalFuncCounter<Real<double> >& _eval, Continue<Real<double> >& _continue);
+    CheckPoint<Real<MinimizingFitness> >& make_checkpoint(Parser& _parser, State& _state, EvalFuncCounter<Real<MinimizingFitness> >& _eval, Continue<Real<MinimizingFitness> >& _continue);
 
 
     // the algo
-    eoAlgo<eoReal<double> >&  make_algo_scalar(eoParser& _parser, eoState& _state, eoEvalFunc<eoReal<double> >& _eval, eoContinue<eoReal<double> >& _ccontinue, eoGenOp<eoReal<double> >& _op, eoDistance<eoReal<double> >* _dist = NULL);
+    Algo<Real<double> >&  make_algo_scalar(Parser& _parser, State& _state, EvalFunc<Real<double> >& _eval, Continue<Real<double> >& _ccontinue, GenOp<Real<double> >& _op, Distance<Real<double> >* _dist = NULL);
 
-    eoAlgo<eoReal<eoMinimizingFitness> >&  make_algo_scalar(eoParser& _parser, eoState& _state, eoEvalFunc<eoReal<eoMinimizingFitness> >& _eval, eoContinue<eoReal<eoMinimizingFitness> >& _ccontinue, eoGenOp<eoReal<eoMinimizingFitness> >& _op, eoDistance<eoReal<eoMinimizingFitness> >* _dist = NULL);
+    Algo<Real<MinimizingFitness> >&  make_algo_scalar(Parser& _parser, State& _state, EvalFunc<Real<MinimizingFitness> >& _eval, Continue<Real<MinimizingFitness> >& _ccontinue, GenOp<Real<MinimizingFitness> >& _op, Distance<Real<MinimizingFitness> >* _dist = NULL);
 
     // run
-    void run_ea(eoAlgo<eoReal<double> >& _ga, eoPop<eoReal<double> >& _pop);
-    void run_ea(eoAlgo<eoReal<eoMinimizingFitness> >& _ga, eoPop<eoReal<eoMinimizingFitness> >& _pop);
+    void run_ea(Algo<Real<double> >& _ga, Pop<Real<double> >& _pop);
+    void run_ea(Algo<Real<MinimizingFitness> >& _ga, Pop<Real<MinimizingFitness> >& _pop);
 
     // end of parameter input (+ .status + help)
     // that one is not templatized
     // Because of that, the source is in src/utils dir
-    void make_help(eoParser & _parser);
+    void make_help(Parser & _parser);
 
     /** @} */
 

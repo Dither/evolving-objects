@@ -28,8 +28,8 @@
 //-----------------------------------------------------------------------------
 
 #include <stdexcept>       // std::runtime_error
-#include <eoObject.h>      // eoObject
-#include <eoPersistent.h>  // eoPersistent
+#include <Object.h>      // Object
+#include <Persistent.h>  // Persistent
 
 namespace eo
 {
@@ -43,17 +43,17 @@ namespace eo
     */
 
     /** EO is the base class for objects with a fitness.
- 
+
 	Those evolvable objects are the subjects of
 	evolution. EOs have only got a fitness, which at the same time needs to be
 	only an object with the operation less than (<) defined. Fitness says how
 	good is the object; evolution or change of these objects is left to the
-	genetic operators. 
-    
+	genetic operators.
+
 	A fitness less than another means a worse fitness, in
 	whatever the context; thus, fitness is always maximized; although it can
-	be minimized with a proper definition of the < operator. 
-    
+	be minimized with a proper definition of the < operator.
+
 	A fitness can be invalid if undefined, trying to read an invalid fitness will raise an error.
 	@ref Operators that effectively modify EO objects must invalidate them.
 
@@ -61,7 +61,7 @@ namespace eo
 
 	@example t-eo.cpp
     */
-    template<class F = double> class EO: public eoObject, public eoPersistent
+    template<class F = double> class EO: public Object, public Persistent
     {
     public:
 	typedef F Fitness;
@@ -109,7 +109,7 @@ namespace eo
 	bool operator<(const EO& _eo2) const { return fitness() < _eo2.fitness(); }
 	bool operator>(const EO& _eo2) const { return !(fitness() <= _eo2.fitness()); }
 
-	/// Methods inherited from eoObject
+	/// Methods inherited from Object
 	//@{
 
 	/** Return the class id.
@@ -126,9 +126,9 @@ namespace eo
 	 * @throw runtime_std::exception If a valid object can't be read.
 	 */
 	virtual void readFrom(std::istream& _is) {
-     
+
 	    // the new version of the reafFrom function.
-	    // It can distinguish between valid and invalid fitness values. 
+	    // It can distinguish between valid and invalid fitness values.
 	    std::string fitness_str;
 	    int pos = _is.tellg();
 	    _is >> fitness_str;
@@ -160,7 +160,7 @@ namespace eo
 		{
 		    _os << repFitness << ' ';
 		}
-	      
+
 	}
 
 	//@}

@@ -33,117 +33,117 @@
 #endif
 
 // general purpose
-#include <utils/eoData.h>
-#include <eoObject.h>
-#include <eoPrintable.h>
-#include <eoPersistent.h>
-#include <eoScalarFitness.h>
-#include <eoDualFitness.h>
+#include <utils/Data.h>
+#include <Object.h>
+#include <Printable.h>
+#include <Persistent.h>
+#include <ScalarFitness.h>
+#include <DualFitness.h>
 #include <EO.h>
 
 #include <utils/rnd_generators.h>
-#include <eoFunctor.h>
+#include <Functor.h>
 #include <apply.h>
 
 // eo's
-#include <eoVector.h>
+#include <Vector.h>
 
-#include <other/eoString.h>
+#include <other/String.h>
 
-#include <utils/eoRndGenerators.h>
-#include <eoInit.h>
-#include <utils/eoUniformInit.h>
+#include <utils/RndGenerators.h>
+#include <Init.h>
+#include <utils/UniformInit.h>
 
 // the variation operators
-#include <eoOp.h>
-#include <eoGenOp.h>
-#include <eoCloneOps.h>
-#include <eoOpContainer.h>
+#include <Op.h>
+#include <GenOp.h>
+#include <CloneOps.h>
+#include <OpContainer.h>
 // combinations of simple eoOps (eoMonOp and eoQuadOp)
-#include <eoProportionalCombinedOp.h>
+#include <ProportionalCombinedOp.h>
 // didactic (mimics SGA-like variation into an eoGenOp)
 // calls crossover and mutation sequentially,
 // with their respective mutation rates
-#include <eoSGAGenOp.h>
+#include <SGAGenOp.h>
 // its dual: crossover, mutation (and copy) - proportional choice
 // w.r.t. given relative weights
-#include <eoPropGAGenOp.h>
+#include <PropGAGenOp.h>
 
 // population
-#include <eoPop.h>
+#include <Pop.h>
 
 // Evaluation functions (all include eoEvalFunc.h)
-#include <eoPopEvalFunc.h>
-#include <eoEvalFuncPtr.h>
-#include <eoEvalCounterThrowException.h>
-#include <eoEvalTimeThrowException.h>
-#include <eoEvalUserTimeThrowException.h>
+#include <PopEvalFunc.h>
+#include <EvalFuncPtr.h>
+#include <EvalCounterThrowException.h>
+#include <EvalTimeThrowException.h>
+#include <EvalUserTimeThrowException.h>
 
 // Continuators - all include eoContinue.h
-#include <eoCombinedContinue.h>
-#include <eoGenContinue.h>
-#include <eoSteadyFitContinue.h>
-#include <eoEvalContinue.h>
-#include <eoFitContinue.h>
-#include <eoPeriodicContinue.h>
-#include <eoTimeContinue.h> // added th T.Legrand
+#include <CombinedContinue.h>
+#include <GenContinue.h>
+#include <SteadyFitContinue.h>
+#include <EvalContinue.h>
+#include <FitContinue.h>
+#include <PeriodicContinue.h>
+#include <TimeContinue.h> // added th T.Legrand
 #ifndef _MSC_VER
-#include <eoCtrlCContinue.h>  // CtrlC handling (using 2 global variables!)
+#include <CtrlCContinue.h>  // CtrlC handling (using 2 global variables!)
 #endif
 // Selection
 // the eoSelectOne's
-#include <eoRandomSelect.h>
-#include <eoSequentialSelect.h>
-#include <eoDetTournamentSelect.h>
-#include <eoProportionalSelect.h>
-#include <eoFitnessScalingSelect.h> // also contains eoLinearFitScaling.h
-#include <eoRankingSelect.h>
-#include <eoStochTournamentSelect.h>
-#include <eoSharingSelect.h>
+#include <RandomSelect.h>
+#include <SequentialSelect.h>
+#include <DetTournamentSelect.h>
+#include <ProportionalSelect.h>
+#include <FitnessScalingSelect.h> // also contains eoLinearFitScaling.h
+#include <RankingSelect.h>
+#include <StochTournamentSelect.h>
+#include <SharingSelect.h>
 // Embedding truncation selection
-#include <eoTruncatedSelectOne.h>
+#include <TruncatedSelectOne.h>
 
 // the batch selection - from an eoSelectOne
-#include <eoSelectPerc.h>
-#include <eoSelectNumber.h>
-#include <eoSelectMany.h>
-#include <eoTruncatedSelectMany.h>
+#include <SelectPerc.h>
+#include <SelectNumber.h>
+#include <SelectMany.h>
+#include <TruncatedSelectMany.h>
 
 // other batch selections
 // DetSelect can also be obtained as eoSequentialSelect, an eoSelectOne
 // (using setup and an index)
-#include <eoDetSelect.h>
+#include <DetSelect.h>
 
 // Breeders
-#include <eoGeneralBreeder.h>	// applies one eoGenOp, stop on offspring count
-// #include <eoOneToOneBreeder.h>	// parent + SINGLE offspring compete (e.g. DE) - not ready yet...
+#include <GeneralBreeder.h>	// applies one eoGenOp, stop on offspring count
+// #include <OneToOneBreeder.h>	// parent + SINGLE offspring compete (e.g. DE) - not ready yet...
 
 // Replacement
-// #include <eoReplacement.h>
-#include <eoMergeReduce.h>
-#include <eoReduceMerge.h>
-#include <eoSurviveAndDie.h>
+// #include <Replacement.h>
+#include <MergeReduce.h>
+#include <ReduceMerge.h>
+#include <SurviveAndDie.h>
 
 // a simple transformer
-#include <eoSGATransform.h>
+#include <SGATransform.h>
 
 // Perf2Worth stuff - includes eoSelectFromWorth.h
-#include <eoNDSorting.h>
+#include <NDSorting.h>
 
 
 // Algorithms
-#include <eoEasyEA.h>
-#include <eoSGA.h>
-// #include <eoEvolutionStrategy.h>   removed for a while - until eoGenOp is done
+#include <EasyEA.h>
+#include <SGA.h>
+// #include <EvolutionStrategy.h>   removed for a while - until eoGenOp is done
 
 // Utils
 #include <utils/checkpointing>
-#include <utils/eoRealVectorBounds.h> // includes eoRealBounds.h
-#include <utils/eoIntBounds.h>        // no eoIntVectorBounds
+#include <utils/RealVectorBounds.h> // includes eoRealBounds.h
+#include <utils/IntBounds.h>        // no eoIntVectorBounds
 
 // aliens
 #include <other/external_eo>
-#include <eoCounter.h>
+#include <Counter.h>
 
 
 //-----------------------------------------------------------------------------
@@ -154,52 +154,52 @@
 
 // basic particle definitions
 #include <PO.h>
-#include <eoVectorParticle.h>
-#include <eoBitParticle.h>
-#include <eoRealParticle.h>
+#include <VectorParticle.h>
+#include <BitParticle.h>
+#include <RealParticle.h>
 
 // initialization
-#include <eoParticleBestInit.h>
-#include <eoInitializer.h>
+#include <ParticleBestInit.h>
+#include <Initializer.h>
 
 // velocities
-#include <eoVelocity.h>
-#include <eoStandardVelocity.h>
-#include <eoExtendedVelocity.h>
-#include <eoIntegerVelocity.h>
-#include <eoConstrictedVelocity.h>
-#include <eoFixedInertiaWeightedVelocity.h>
-#include <eoVariableInertiaWeightedVelocity.h>
-#include <eoConstrictedVariableWeightVelocity.h>
+#include <Velocity.h>
+#include <StandardVelocity.h>
+#include <ExtendedVelocity.h>
+#include <IntegerVelocity.h>
+#include <ConstrictedVelocity.h>
+#include <FixedInertiaWeightedVelocity.h>
+#include <VariableInertiaWeightedVelocity.h>
+#include <ConstrictedVariableWeightVelocity.h>
 
 // flights
-#include <eoFlight.h>
-#include <eoStandardFlight.h>
-#include <eoVelocityInit.h>
-#include <eoBinaryFlight.h>
-#include <eoSigBinaryFlight.h>
+#include <Flight.h>
+#include <StandardFlight.h>
+#include <VelocityInit.h>
+#include <BinaryFlight.h>
+#include <SigBinaryFlight.h>
 
 // topologies
-#include <eoTopology.h>
-#include <eoStarTopology.h>
-#include <eoLinearTopology.h>
-#include <eoRingTopology.h>
-#include <eoNeighborhood.h>
-#include <eoSocialNeighborhood.h>
+#include <Topology.h>
+#include <StarTopology.h>
+#include <LinearTopology.h>
+#include <RingTopology.h>
+#include <Neighborhood.h>
+#include <SocialNeighborhood.h>
 
 // PS algorithms
-#include <eoPSO.h>
-#include <eoEasyPSO.h>
-#include <eoSyncEasyPSO.h>
+#include <PSO.h>
+#include <EasyPSO.h>
+#include <SyncEasyPSO.h>
 
 // utils
-#include <eoRealBoundModifier.h>
-#include <eoRandomRealWeightUp.h>
-#include <eoWeightUpdater.h>
-#include <eoLinearDecreasingWeightUp.h>
-#include <eoGaussRealWeightUp.h>
+#include <RealBoundModifier.h>
+#include <RandomRealWeightUp.h>
+#include <WeightUpdater.h>
+#include <LinearDecreasingWeightUp.h>
+#include <GaussRealWeightUp.h>
 
-#include <utils/eoParserLogger.h>
+#include <utils/ParserLogger.h>
 
 //-----------------------------------------------------------------------------
 

@@ -26,7 +26,7 @@ Old contact: todos@geneura.ugr.es, http://geneura.ugr.es
 #include <vector>
 #include <iterator>
 #include <EO.h>
-#include <utils/eoLogger.h>
+#include <utils/Logger.h>
 
 namespace eo
 {
@@ -52,7 +52,7 @@ std::vector<>), copy ctor,
 
 */
     template <class FitT, class GeneType>
-    class eoVector : public EO<FitT>, public std::vector<GeneType>
+    class Vector : public EO<FitT>, public std::vector<GeneType>
     {
     public:
 
@@ -71,13 +71,13 @@ std::vector<>), copy ctor,
 	@param _size Length of vector (default is 0)
 	@param _value Initial value of all elements (default is default value of type GeneType)
 	*/
-	eoVector(unsigned _size = 0, GeneType _value = GeneType())
+	Vector(unsigned _size = 0, GeneType _value = GeneType())
 	    : EO<FitT>(), std::vector<GeneType>(_size, _value)
 	    {}
 
 	/// copy ctor abstracting from the FitT
 	template <class OtherFitnessType>
-	eoVector(const eoVector<OtherFitnessType, GeneType>& _vec) : std::vector<GeneType>(_vec)
+	Vector(const Vector<OtherFitnessType, GeneType>& _vec) : std::vector<GeneType>(_vec)
 	    {}
 
 	// we can't have a Ctor from a std::vector, it would create ambiguity
@@ -87,7 +87,7 @@ std::vector<>), copy ctor,
 		if (_v.size() != size())	   // safety check
 		{
 		    if (size())		   // NOT an initial empty std::vector
-			eo::log << eo::warnings << "Warning: Changing size in eoVector assignation" << std::endl;
+			log << warnings << "Warning: Changing size in Vector assignation" << std::endl;
 		    resize(_v.size());
 		}
 
@@ -96,7 +96,7 @@ std::vector<>), copy ctor,
 	    }
 
 	/// to avoid conflicts between EO::operator< and std::vector<GeneType>::operator<
-	bool operator<(const eoVector<FitT, GeneType>& _eo) const
+	bool operator<(const Vector<FitT, GeneType>& _eo) const
 	    {
 		return EO<FitT>::operator<(_eo);
 	    }
@@ -131,7 +131,7 @@ std::vector<>), copy ctor,
 		}
 	    }
     };
-/** @example t-eoVector.cpp
+/** @example t-Vector.cpp
 */
 
 /** Less than
@@ -140,7 +140,7 @@ This is impemented to avoid conflicts between EO::operator< and
 std::vector<GeneType>::operator<
 */
     template <class FitT, class GeneType>
-    bool operator<(const eoVector<FitT, GeneType>& _eo1, const eoVector<FitT, GeneType>& _eo2)
+    bool operator<(const Vector<FitT, GeneType>& _eo1, const Vector<FitT, GeneType>& _eo2)
     {
 	return _eo1.operator<(_eo2);
     }
@@ -152,7 +152,7 @@ This is impemented to avoid conflicts between EO::operator> and
 std::vector<GeneType>::operator>
 */
     template <class FitT, class GeneType>
-    bool operator>(const eoVector<FitT, GeneType>& _eo1, const eoVector<FitT, GeneType>& _eo2)
+    bool operator>(const Vector<FitT, GeneType>& _eo1, const Vector<FitT, GeneType>& _eo2)
     {
 	return _eo1.operator>(_eo2);
     }

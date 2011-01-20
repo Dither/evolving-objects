@@ -30,14 +30,14 @@
 #define _ESMUTATE_H
 
 #include <cmath>
-#include <eoInit.h>
-#include <eoOp.h>
-#include <es/eoEsMutationInit.h>
-#include <es/eoEsSimple.h>
-#include <es/eoEsStdev.h>
-#include <es/eoEsFull.h>
-#include <utils/eoRealBounds.h>
-#include <utils/eoRNG.h>
+#include <Init.h>
+#include <Op.h>
+#include <es/EsMutationInit.h>
+#include <es/EsSimple.h>
+#include <es/EsStdev.h>
+#include <es/EsFull.h>
+#include <utils/RealBounds.h>
+#include <utils/RNG.h>
 
 #ifndef M_PI
 #define M_PI 3.1415926535897932384626433832795
@@ -51,17 +51,17 @@ namespace eo
 	@ingroup Real
 	@ingroup Variators
 
-	Obviously, valid only for eoES*. It is currently valid for three types
+	Obviously, valid only for ES*. It is currently valid for three types
 	of ES chromosomes:
-	- eoEsSimple:   Exactly one stdandard-deviation
-	- eoEsStdev:    As many standard deviations as object variables
-	- eoEsFull:     The whole guacemole: correlations, stdevs and object variables
+	- EsSimple:   Exactly one stdandard-deviation
+	- EsStdev:    As many standard deviations as object variables
+	- EsFull:     The whole guacemole: correlations, stdevs and object variables
 
-	Each of these three variant has it's own operator() in eoEsMutate and
+	Each of these three variant has it's own operator() in EsMutate and
 	intialization is also split into three cases (that share some commonalities)
     */
     template <class EOT>
-    class eoEsMutate : public eoMonOp< EOT >
+    class EsMutate : public MonOp< EOT >
     {
     public:
 
@@ -72,33 +72,33 @@ namespace eo
 	/** Initialization.
 
 	    @param _init Proxy class for initializating the three parameters
-	    eoEsMutate needs
+	    EsMutate needs
 	    @param _bounds Bounds for the objective variables
 	*/
-	eoEsMutate(eoEsMutationInit& _init, eoRealVectorBounds& _bounds) : bounds(_bounds)
+	EsMutate(EsMutationInit& _init, RealVectorBounds& _bounds) : bounds(_bounds)
 	{
 	    init(EOT(), _init); // initialize on actual type used
 	}
 
 
 	/** @brief Virtual Destructor */
-	virtual ~eoEsMutate() {};
+	virtual ~EsMutate() {};
 
 
 	/** Classname.
 
-	    Inherited from eoObject @see eoObject
+	    Inherited from Object @see Object
 
 	    @return Name of class.
 	*/
-	virtual std::string className() const {return "eoESMutate";};
+	virtual std::string className() const {return "ESMutate";};
 
 
-	/** Mutate eoEsSimple
+	/** Mutate EsSimple
 
 	    @param _eo Individual to mutate.
 	*/
-	virtual bool operator()( eoEsSimple<FitT>& _eo)
+	virtual bool operator()( EsSimple<FitT>& _eo)
         {
             _eo.stdev *= exp(TauLcl * rng.normal());
             if (_eo.stdev < stdev_eps)
@@ -129,7 +129,7 @@ namespace eo
 	    Schwefel 1977: Numerische Optimierung von Computer-Modellen mittels der
 	    Evolutionsstrategie, pp. 165 ff.
 	*/
-	virtual bool operator()( eoEsStdev<FitT>& _eo )
+	virtual bool operator()( EsStdev<FitT>& _eo )
         {
             double global = TauGlb * rng.normal();
             for (unsigned i = 0; i < _eo.size(); i++)
@@ -160,10 +160,10 @@ namespace eo
 	    - G. Rudolph: Globale Optimierung mit parallelen Evolutionsstrategien,
 	    Diploma Thesis, University of Dortmund, 1990.
 	*/
-	virtual bool operator()( eoEsFull<FitT> & _eo )
+	virtual bool operator()( EsFull<FitT> & _eo )
 	// Code originally from Thomas Bäck
         {
-            // First: mutate standard deviations (as for eoEsStdev<FitT>).
+            // First: mutate standard deviations (as for EsStdev<FitT>).
             double global = TauGlb * rng.normal();
             unsigned i;
             for (i = 0; i < _eo.size(); i++)
@@ -216,12 +216,12 @@ namespace eo
     private :
 
 	/** Initialization of simple ES */
-	void init(eoEsSimple<FitT>, eoEsMutationInit& _init)
+	void init(EsSimple<FitT>, EsMutationInit& _init)
 	{
 	    unsigned size = bounds.size();
 	    TauLcl = _init.TauLcl();
 	    TauLcl /= sqrt(2*(double) size);
-	    std::cout << "Init<eoEsSimple>: tau local " << TauLcl << std::endl;
+	    std::cout << "Init<EsSimple>: tau local " << TauLcl << std::endl;
 	}
 
 
@@ -229,7 +229,7 @@ namespace eo
 
 	    @overload
 	*/
-	void init(eoEsStdev<FitT>, eoEsMutationInit& _init)
+	void init(EsStdev<FitT>, EsMutationInit& _init)
 	{
 	    unsigned size = bounds.size();
 	    TauLcl = _init.TauLcl();
@@ -245,11 +245,11 @@ namespace eo
 
 	    @overload
 	*/
-	void init(eoEsFull<FitT>, eoEsMutationInit& _init)
+	void init(EsFull<FitT>, EsMutationInit& _init)
 	{
-	    init(eoEsStdev<FitT>(), _init);
+	    init(EsStdev<FitT>(), _init);
 	    TauBeta = _init.TauBeta();
-	    std::cout << "Init<eoEsFull>: tau local " << TauLcl << " et global " << TauGlb << std::endl;
+	    std::cout << "Init<EsFull>: tau local " << TauLcl << " et global " << TauGlb << std::endl;
 	}
 
 
@@ -263,7 +263,7 @@ namespace eo
 	double TauBeta;
 
 	/** Bounds of parameters */
-	eoRealVectorBounds& bounds;
+	RealVectorBounds& bounds;
 
 	/** Minimum stdev.
 
@@ -285,7 +285,7 @@ namespace eo
 
     // Minimum value of stdevs, see declaration for details.
     template <class EOT>
-    const double eoEsMutate<EOT>::stdev_eps = 1.0e-40;
+    const double EsMutate<EOT>::stdev_eps = 1.0e-40;
 
 }
 

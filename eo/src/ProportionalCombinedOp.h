@@ -24,12 +24,12 @@
 #ifndef _CombinedOp_H
 #define _CombinedOp_H
 
-#include <eoObject.h>
-#include <eoPrintable.h>
-#include <eoFunctor.h>
-#include <eoOp.h>
-#include <utils/eoRNG.h>
-#include <utils/eoLogger.h>
+#include <Object.h>
+#include <Printable.h>
+#include <Functor.h>
+#include <Op.h>
+#include <utils/RNG.h>
+#include <utils/Logger.h>
 
 namespace eo
 {
@@ -53,7 +53,7 @@ namespace eo
 
 	Combination of same-type Genetic Operators.
 
-	This files contains the classes eoPropCombinedXXXOp (XXX in {Mon, Bin, Quad})
+	This files contains the classes PropCombinedXXXOp (XXX in {Mon, Bin, Quad})
 	that allow to use more than a single operator of a specific class
 	into an algorithm, chosing by a roulette wheel based on user-defined rates
 
@@ -66,31 +66,31 @@ namespace eo
     //// combined MonOp
     //////////////////////////////////////////////////////
 
-    /** eoMonOp is the monary operator: genetic operator that takes only one EO
+    /** MonOp is the monary operator: genetic operator that takes only one EO
 
      * now accepts generic operators
      */
 
     template <class EOT>
-    class eoPropCombinedMonOp: public eoMonOp<EOT>
+    class PropCombinedMonOp: public MonOp<EOT>
     {
     public:
 	/// Ctor from a "true" operator
-	eoPropCombinedMonOp(eoMonOp<EOT> & _first, const double _rate)
+	PropCombinedMonOp(MonOp<EOT> & _first, const double _rate)
 	{
 	    ops.push_back(&_first);
 	    rates.push_back(_rate);
 	}
 
-	virtual std::string className() const { return "eoPropCombinedMonOp"; }
+	virtual std::string className() const { return "PropCombinedMonOp"; }
 
-	virtual void add(eoMonOp<EOT> & _op, const double _rate, bool _verbose=false)
+	virtual void add(MonOp<EOT> & _op, const double _rate, bool _verbose=false)
 	{
 	    ops.push_back(&_op);
 	    rates.push_back(_rate);
 	    // compute the relative rates in percent - to warn the user!
 	    if (_verbose)
-		printOn( eo::log << eo::logging );
+		printOn( log << logging );
 	}
 
 	// outputs the operators and percentages
@@ -111,7 +111,7 @@ namespace eo
 	    return (*ops[what])(_indi);		   // apply it
 	}
     protected:
-	std::vector<eoMonOp<EOT>*> ops;
+	std::vector<MonOp<EOT>*> ops;
 	std::vector<double> rates;
     };
 
@@ -123,19 +123,19 @@ namespace eo
      *  operator() has two operands, only the first one can be modified
      */
     template <class EOT>
-    class eoPropCombinedBinOp: public eoBinOp<EOT>
+    class PropCombinedBinOp: public BinOp<EOT>
     {
     public:
 	/// Ctor
-	eoPropCombinedBinOp(eoBinOp<EOT> & _first, const double _rate)
+	PropCombinedBinOp(BinOp<EOT> & _first, const double _rate)
 	{
 	    ops.push_back(&_first);
 	    rates.push_back(_rate);
 	}
 
-	virtual std::string className() const { return "eoPropCombinedBinOp"; }
+	virtual std::string className() const { return "PropCombinedBinOp"; }
 
-	virtual void add(eoBinOp<EOT> & _op, const double _rate, bool _verbose=false)
+	virtual void add(BinOp<EOT> & _op, const double _rate, bool _verbose=false)
 	{
 	    ops.push_back(&_op);
 	    rates.push_back(_rate);
@@ -146,9 +146,9 @@ namespace eo
 		    unsigned i;
 		    for (i=0; i<ops.size(); i++)
 			total += rates[i];
-		    eo::log << eo::logging << "In " << className() << std::endl ;
+		    log << logging << "In " << className() << std::endl ;
 		    for (i=0; i<ops.size(); i++)
-			eo::log << eo::logging << ops[i]->className() << " with rate " << 100*rates[i]/total << " %" << std::endl;
+			log << logging << ops[i]->className() << " with rate " << 100*rates[i]/total << " %" << std::endl;
 		}
 	}
 
@@ -158,7 +158,7 @@ namespace eo
 	    return (*ops[what])(_indi1, _indi2);		   // apply it
 	}
     private:
-	std::vector<eoBinOp<EOT>*> ops;
+	std::vector<BinOp<EOT>*> ops;
 	std::vector<double> rates;
     };
 
@@ -167,7 +167,7 @@ namespace eo
     //// combined QuadOp
     //////////////////////////////////////////////////////
 
-    /** Quad genetic operator: subclasses eoOp, and defines basically the
+    /** Quad genetic operator: subclasses Op, and defines basically the
 	operator() with two operands, both can be modified.
     */
     /** Combined quad genetic operator:
@@ -177,31 +177,31 @@ namespace eo
      * the corresponding "true" operator
      */
     template <class EOT>
-    class eoPropCombinedQuadOp: public eoQuadOp<EOT>
+    class PropCombinedQuadOp: public QuadOp<EOT>
     {
     public:
 	/// Ctor from a true operator
-	eoPropCombinedQuadOp(eoQuadOp<EOT> & _first, const double _rate)
+	PropCombinedQuadOp(QuadOp<EOT> & _first, const double _rate)
 	{
 	    ops.push_back(&_first);
 	    rates.push_back(_rate);
 	}
 
-	virtual std::string className() const { return "eoPropCombinedQuadOp"; }
+	virtual std::string className() const { return "PropCombinedQuadOp"; }
 
-	virtual void add(eoQuadOp<EOT> & _op, const double _rate, bool _verbose)
+	virtual void add(QuadOp<EOT> & _op, const double _rate, bool _verbose)
 	{
-	    eo::log << eo::warnings << "WARNING: the use of the verbose parameter in eoPropCombinedQuadOp::add is deprecated and will be removed in the next release." << std::endl;
+	    log << warnings << "WARNING: the use of the verbose parameter in PropCombinedQuadOp::add is deprecated and will be removed in the next release." << std::endl;
 	    add(_op,_rate);
 	}
 
 	// addition of a true operator
-	virtual void add(eoQuadOp<EOT> & _op, const double _rate)
+	virtual void add(QuadOp<EOT> & _op, const double _rate)
 	{
 	    ops.push_back(&_op);
 	    rates.push_back(_rate);
 	    // compute the relative rates in percent - to warn the user!
-	    printOn( eo::log << eo::logging );
+	    printOn( log << logging );
 	}
 
 	// outputs the operators and percentages
@@ -222,13 +222,13 @@ namespace eo
 	    return (*ops[what])(_indi1, _indi2);		   // apply it
 	}
     private:
-	std::vector<eoQuadOp<EOT>*> ops;
+	std::vector<QuadOp<EOT>*> ops;
 	std::vector<double> rates;
     };
 
 }
 
-// for General Ops, it's another story - see eoOpContainer
+// for General Ops, it's another story - see OpContainer
 #endif
 
 /** @} */

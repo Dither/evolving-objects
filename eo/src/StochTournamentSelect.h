@@ -27,24 +27,24 @@
 
 #include <functional>
 #include <numeric>           // accumulate
-#include <eoSelectOne.h>     // eoSelectOne
+#include <SelectOne.h>     // SelectOne
 #include <utils/selectors.h> // stochastic_tournament
 
 namespace eo
 {
 
-    /** eoStochTournamentSelect: a selection method that selects ONE individual by
+    /** StochTournamentSelect: a selection method that selects ONE individual by
 	binary stochastic tournament 
 	-MS- 24/10/99 
  
 	@ingroup Selectors
     */
-    template <class EOT> class eoStochTournamentSelect: public eoSelectOne<EOT>
+    template <class EOT> class StochTournamentSelect: public SelectOne<EOT>
     {
     public:
 
 	///
-	eoStochTournamentSelect(double _Trate = 1.0 ) : eoSelectOne<EOT>(), Trate(_Trate) 
+	StochTournamentSelect(double _Trate = 1.0 ) : SelectOne<EOT>(), Trate(_Trate) 
 	{
 	    // consistency checks
 	    if (Trate < 0.5) {
@@ -58,7 +58,7 @@ namespace eo
 	}
   
 	/** Perform the stochastic tournament  */
-	virtual const EOT& operator()(const eoPop<EOT>& pop) 
+	virtual const EOT& operator()(const Pop<EOT>& pop) 
 	{
 	    return stochastic_tournament(pop, Trate);
 	}

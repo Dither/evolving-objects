@@ -1,8 +1,8 @@
 #ifndef EvalFuncCounterBounder_H
 #define EvalFuncCounterBounder_H
 
-#include <eoEvalFunc.h>
-#include <utils/eoParam.h>
+#include <EvalFunc.h>
+#include <utils/Param.h>
 
 namespace eo
 {
@@ -11,18 +11,18 @@ namespace eo
      * @{
      */
 
-    /** The exception raised by eoEvalFuncCounterBounder 
+    /** The exception raised by EvalFuncCounterBounder 
      * when the maximum number of allowed evaluations is reached.
      */
-    class eoEvalFuncCounterBounderException : public std::exception
+    class EvalFuncCounterBounderException : public std::exception
     {
     public:
-	eoEvalFuncCounterBounderException(unsigned long threshold) : _threshold(threshold){}
+	EvalFuncCounterBounderException(unsigned long threshold) : _threshold(threshold){}
 
 	const char* what() const throw()
 	{
 	    std::ostringstream ss;
-	    ss << "STOP in eoEvalFuncCounterBounderException: the maximum number of evaluation has been reached (" << _threshold << ").";
+	    ss << "STOP in EvalFuncCounterBounderException: the maximum number of evaluation has been reached (" << _threshold << ").";
 	    return ss.str().c_str();
 	}
 
@@ -30,7 +30,7 @@ namespace eo
 	unsigned long _threshold;
     };
 
-    /** Counts the number of evaluations actually performed and throw an eoEvalFuncCounterBounderException
+    /** Counts the number of evaluations actually performed and throw an EvalFuncCounterBounderException
      * when the maximum number of allowed evaluations is reached.
      *
      * This eval counter permits to stop a search during a generation, without waiting for a continue to be
@@ -38,14 +38,14 @@ namespace eo
      * but want to stop after 95 evaluations.
      */
     template < typename EOT >
-    class eoEvalFuncCounterBounder : public eoEvalFuncCounter< EOT >
+    class EvalFuncCounterBounder : public EvalFuncCounter< EOT >
     {
     public :
-	eoEvalFuncCounterBounder(eoEvalFunc<EOT>& func, unsigned long threshold, std::string name = "Eval. ")
-	    : eoEvalFuncCounter< EOT >( func, name ), _threshold( threshold )
+	EvalFuncCounterBounder(EvalFunc<EOT>& func, unsigned long threshold, std::string name = "Eval. ")
+	    : EvalFuncCounter< EOT >( func, name ), _threshold( threshold )
 	{}
 
-	using eoEvalFuncCounter< EOT >::value;
+	using EvalFuncCounter< EOT >::value;
 
 	virtual void operator()(EOT& eo)
 	{
@@ -55,7 +55,7 @@ namespace eo
 
 		    if (_threshold > 0 && value() >= _threshold)
 			{
-			    throw eoEvalFuncCounterBounderException(_threshold);
+			    throw EvalFuncCounterBounderException(_threshold);
 			}
 
 		    func(eo);

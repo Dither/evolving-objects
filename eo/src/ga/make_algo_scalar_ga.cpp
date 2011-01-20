@@ -46,7 +46,7 @@
 // The templatized code
 #include <do/make_algo_scalar.h>
 // the instanciating EOType
-#include <ga/eoBit.h>
+#include <ga/Bit.h>
 
 namespace eo
 {
@@ -55,12 +55,12 @@ namespace eo
 
     // Algo
     ///////
-    eoAlgo<eoBit<double> >&  make_algo_scalar(eoParser& _parser, eoState& _state, eoEvalFunc<eoBit<double> >& _eval, eoContinue<eoBit<double> >& _continue, eoGenOp<eoBit<double> >& _op, eoDistance<eoBit<double> >* _dist)
+    Algo<Bit<double> >&  make_algo_scalar(Parser& _parser, State& _state, EvalFunc<Bit<double> >& _eval, Continue<Bit<double> >& _continue, GenOp<Bit<double> >& _op, Distance<Bit<double> >* _dist)
     {
 	return do_make_algo_scalar(_parser, _state, _eval, _continue, _op, _dist);
     }
 
-    eoAlgo<eoBit<eoMinimizingFitness> >&  make_algo_scalar(eoParser& _parser, eoState& _state, eoEvalFunc<eoBit<eoMinimizingFitness> >& _eval, eoContinue<eoBit<eoMinimizingFitness> >& _continue, eoGenOp<eoBit<eoMinimizingFitness> >& _op, eoDistance<eoBit<eoMinimizingFitness> >* _dist)
+    Algo<Bit<MinimizingFitness> >&  make_algo_scalar(Parser& _parser, State& _state, EvalFunc<Bit<MinimizingFitness> >& _eval, Continue<Bit<MinimizingFitness> >& _continue, GenOp<Bit<MinimizingFitness> >& _op, Distance<Bit<MinimizingFitness> >* _dist)
     {
 	return do_make_algo_scalar(_parser, _state, _eval, _continue, _op, _dist);
     }

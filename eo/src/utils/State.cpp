@@ -10,9 +10,9 @@
 #include <fstream>
 #include <sstream>
 
-#include "eoState.h"
-#include "eoObject.h"
-#include "eoPersistent.h"
+#include "State.h"
+#include "Object.h"
+#include "Persistent.h"
 
 namespace eo
 {
@@ -48,7 +48,7 @@ namespace eo
 	return true;
     }
 
-    eoState::~eoState(void)
+    State::~State(void)
     {
 	for (unsigned i = 0; i < ownedObjects.size(); ++i)
 	    {
@@ -56,9 +56,9 @@ namespace eo
 	    }
     }
 
-    void eoState::registerObject(eoPersistent& registrant)
+    void State::registerObject(Persistent& registrant)
     {
-	string name = createObjectName(dynamic_cast<eoObject*>(&registrant));
+	string name = createObjectName(dynamic_cast<Object*>(&registrant));
 
 	pair<ObjectMap::iterator,bool> res = objectMap.insert(make_pair(name, &registrant));
 
@@ -72,7 +72,7 @@ namespace eo
 	    }
     }
 
-    void eoState::load(const string& _filename)
+    void State::load(const string& _filename)
     {
 	ifstream is (_filename.c_str());
 
@@ -85,7 +85,7 @@ namespace eo
 	load(is);
     }
 
-    void eoState::load(std::istream& is)
+    void State::load(std::istream& is)
     {
 	string str;
 	string name;
@@ -116,7 +116,7 @@ namespace eo
 			else
 			    {
 
-				eoPersistent* object = it->second;
+				Persistent* object = it->second;
 
 				// now we have the object, get lines, remove comments etc.
 
@@ -146,7 +146,7 @@ namespace eo
 
     }
 
-    void eoState::save(const string& filename) const
+    void State::save(const string& filename) const
     { // saves in order of insertion
 	ofstream os(filename.c_str());
 
@@ -159,7 +159,7 @@ namespace eo
 	save(os);
     }
 
-    void eoState::save(std::ostream& os) const
+    void State::save(std::ostream& os) const
     { // saves in order of insertion
 	for (vector<ObjectMap::iterator>::const_iterator it = creationOrder.begin(); it != creationOrder.end(); ++it)
 	    {
@@ -169,7 +169,7 @@ namespace eo
 	    }
     }
 
-    string eoState::createObjectName(eoObject* obj)
+    string State::createObjectName(Object* obj)
     {
 	if (obj == 0)
 	    {

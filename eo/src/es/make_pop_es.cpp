@@ -43,9 +43,9 @@
 // The templatized code
 #include <do/make_pop.h>
 // the instanciating EOType(s)
-#include <es/eoEsSimple.h>	   // one Sigma per individual
-#include <es/eoEsStdev.h>	   // one sigmal per object variable
-#include <es/eoEsFull.h>	   // full correlation matrix per indi
+#include <es/EsSimple.h>	   // one Sigma per individual
+#include <es/EsStdev.h>	   // one sigmal per object variable
+#include <es/EsFull.h>	   // full correlation matrix per indi
 
 namespace eo
 {
@@ -54,34 +54,34 @@ namespace eo
 
     // Init POP
     ///////////
-    eoPop<eoEsSimple<double> >&  make_pop(eoParser& _parser, eoState& _state, eoInit<eoEsSimple<double> > & _init)
+    Pop<EsSimple<double> >&  make_pop(Parser& _parser, State& _state, Init<EsSimple<double> > & _init)
     {
 	return do_make_pop(_parser, _state, _init);
     }
 
-    eoPop<eoEsSimple<eoMinimizingFitness> >&  make_pop(eoParser& _parser, eoState& _state, eoInit<eoEsSimple<eoMinimizingFitness> > & _init)
-    {
-	return do_make_pop(_parser, _state, _init);
-    }
-
-    ///////////
-    eoPop<eoEsStdev<double> >&  make_pop(eoParser& _parser, eoState& _state, eoInit<eoEsStdev<double> > & _init)
-    {
-	return do_make_pop(_parser, _state, _init);
-    }
-
-    eoPop<eoEsStdev<eoMinimizingFitness> >&  make_pop(eoParser& _parser, eoState& _state, eoInit<eoEsStdev<eoMinimizingFitness> > & _init)
+    Pop<EsSimple<MinimizingFitness> >&  make_pop(Parser& _parser, State& _state, Init<EsSimple<MinimizingFitness> > & _init)
     {
 	return do_make_pop(_parser, _state, _init);
     }
 
     ///////////
-    eoPop<eoEsFull<double> >&  make_pop(eoParser& _parser, eoState& _state, eoInit<eoEsFull<double> > & _init)
+    Pop<EsStdev<double> >&  make_pop(Parser& _parser, State& _state, Init<EsStdev<double> > & _init)
     {
 	return do_make_pop(_parser, _state, _init);
     }
 
-    eoPop<eoEsFull<eoMinimizingFitness> >&  make_pop(eoParser& _parser, eoState& _state, eoInit<eoEsFull<eoMinimizingFitness> > & _init)
+    Pop<EsStdev<MinimizingFitness> >&  make_pop(Parser& _parser, State& _state, Init<EsStdev<MinimizingFitness> > & _init)
+    {
+	return do_make_pop(_parser, _state, _init);
+    }
+
+    ///////////
+    Pop<EsFull<double> >&  make_pop(Parser& _parser, State& _state, Init<EsFull<double> > & _init)
+    {
+	return do_make_pop(_parser, _state, _init);
+    }
+
+    Pop<EsFull<MinimizingFitness> >&  make_pop(Parser& _parser, State& _state, Init<EsFull<MinimizingFitness> > & _init)
     {
 	return do_make_pop(_parser, _state, _init);
     }

@@ -37,7 +37,7 @@ namespace eo
 {
 
     //-----------------------------------------------------------------------------
-    // eoString
+    // String
     //-----------------------------------------------------------------------------
 
     /** Adaptor that turns an STL std::string into an EO 
@@ -46,7 +46,7 @@ namespace eo
 	@ingroup Utilities
     */
     template <class fitnessT >
-    class eoString: public EO<fitnessT>, public std::string
+    class String: public EO<fitnessT>, public std::string
     {
     public:
 
@@ -58,7 +58,7 @@ namespace eo
 	/// Canonical part of the objects: several ctors, copy ctor, dtor and assignment operator
 	//@{
 	/// ctor
-	eoString( const std::string& _str ="" )
+	String( const std::string& _str ="" )
 	    : std::string( _str ) {};
 
 	/// printing...
@@ -71,14 +71,14 @@ namespace eo
 
 	}
 
-	/** @name Methods from eoObject
+	/** @name Methods from Object
 	    readFrom and printOn are directly inherited from eo1d
 	*/
 	//@{
-	/** Inherited from eoObject
-	    @see eoObject
+	/** Inherited from Object
+	    @see Object
 	*/
-	virtual std::string className() const {return "eoString";};
+	virtual std::string className() const {return "String";};
 	//@}
 
 

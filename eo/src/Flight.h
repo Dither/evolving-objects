@@ -26,26 +26,26 @@
 #define FLIGHT_H
 
 //-----------------------------------------------------------------------------
-#include <eoFunctor.h>
-#include <utils/eoRealVectorBounds.h>
+#include <Functor.h>
+#include <utils/RealVectorBounds.h>
 //-----------------------------------------------------------------------------
 
 namespace eo
 {
 
     /** Abstract class for particle swarm optimization flight.
-     * All the flights must derivated from eoFlight.
+     * All the flights must derivated from Flight.
      *
      * @ingroup Variators
      */
-    template < class POT > class eoFlight:public eoUF < POT &, void >
+    template < class POT > class Flight:public UF < POT &, void >
     {
     public:
 
 	/**
 	 * Apply the flight to a whole population.
 	 */
-	virtual void apply (eoPop < POT > &_pop)
+	virtual void apply (Pop < POT > &_pop)
 	{
 	    for (unsigned i = 0; i < _pop.size (); i++)
 		{

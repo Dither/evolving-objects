@@ -43,7 +43,7 @@
 // The templatized code
 #include <do/make_continue.h>
 // the instanciating EOType
-#include <es/eoReal.h>
+#include <es/Real.h>
 
 namespace eo
 {
@@ -52,11 +52,11 @@ namespace eo
 
     // continue
     ///////////
-    eoContinue<eoReal<double> >& make_continue(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoReal<double> > & _eval)
+    Continue<Real<double> >& make_continue(Parser& _parser, State& _state, EvalFuncCounter<Real<double> > & _eval)
     {
 	return do_make_continue(_parser, _state, _eval);
     }
-    eoContinue<eoReal<eoMinimizingFitness> >& make_continue(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoReal<eoMinimizingFitness> > & _eval)
+    Continue<Real<MinimizingFitness> >& make_continue(Parser& _parser, State& _state, EvalFuncCounter<Real<MinimizingFitness> > & _eval)
     {
 	return do_make_continue(_parser, _state, _eval);
     }

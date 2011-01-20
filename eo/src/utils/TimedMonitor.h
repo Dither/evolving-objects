@@ -30,8 +30,8 @@
 #include <ctime>
 #include <string>
 
-#include <utils/eoMonitor.h>
-#include <eoObject.h>
+#include <utils/Monitor.h>
+#include <Object.h>
 
 namespace eo
 {
@@ -42,7 +42,7 @@ namespace eo
 
        @ingroup Monitors
     */
-    class eoTimedMonitor : public eoMonitor
+    class TimedMonitor : public Monitor
     {
     public:
 
@@ -51,9 +51,9 @@ namespace eo
 	    No negative time can be specified, use 0 if you want it to fire "always".
 	    @param seconds_ Specify time limit (s).
 	*/
-	eoTimedMonitor(unsigned seconds_) : last_tick(0), seconds(seconds_) {}
+	TimedMonitor(unsigned seconds_) : last_tick(0), seconds(seconds_) {}
 
-	eoMonitor& operator()(void) {
+	Monitor& operator()(void) {
 	    bool monitor = false;
 	    if (last_tick == 0) {
 		monitor = true;
@@ -75,9 +75,9 @@ namespace eo
 	    return *this;
 	}
 
-	void add(eoMonitor& mon) { monitors.push_back(&mon); }
+	void add(Monitor& mon) { monitors.push_back(&mon); }
 
-	virtual std::string className(void) const { return "eoTimedMonitor"; }
+	virtual std::string className(void) const { return "TimedMonitor"; }
 
     private:
 
@@ -85,7 +85,7 @@ namespace eo
 
 	unsigned seconds;
 
-	std::vector<eoMonitor*> monitors;
+	std::vector<Monitor*> monitors;
     };
 
 }

@@ -26,26 +26,26 @@
 #define _BITPARTICLE_H
 
 
-#include <eoVectorParticle.h>
+#include <VectorParticle.h>
 
 namespace eo
 {
 
-    /** eoBitParticle: Implementation of a bit-coded particle (swarm optimization).
+    /** BitParticle: Implementation of a bit-coded particle (swarm optimization).
      *  Positions and best positions are 0 or 1 but the velocity is a vector of double.
      *
      *  @ingroup Bitstring
      */
-    template < class FitT> class eoBitParticle: public eoVectorParticle<FitT,bool,double>
+    template < class FitT> class BitParticle: public VectorParticle<FitT,bool,double>
 
     {
     public:
 
-	eoBitParticle(unsigned size = 0, bool positions = 0,double velocities = 0.0,bool bestPositions = 0): eoVectorParticle<FitT, bool,double> (size, positions,velocities,bestPositions) {}
+	BitParticle(unsigned size = 0, bool positions = 0,double velocities = 0.0,bool bestPositions = 0): VectorParticle<FitT, bool,double> (size, positions,velocities,bestPositions) {}
 
 	virtual std::string className() const
 	{
-	    return "eoBitParticle";
+	    return "BitParticle";
 	}
     };
 

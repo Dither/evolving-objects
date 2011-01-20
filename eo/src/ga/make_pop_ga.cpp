@@ -44,7 +44,7 @@
 // The templatized code
 #include <do/make_pop.h>
 // the instanciating EOType
-#include <ga/eoBit.h>
+#include <ga/Bit.h>
 
 namespace eo
 {
@@ -53,12 +53,12 @@ namespace eo
 
     // Init POP
     ///////////
-    eoPop<eoBit<double> >&  make_pop(eoParser& _parser, eoState& _state, eoInit<eoBit<double> > & _init)
+    Pop<Bit<double> >&  make_pop(Parser& _parser, State& _state, Init<Bit<double> > & _init)
     {
 	return do_make_pop(_parser, _state, _init);
     }
 
-    eoPop<eoBit<eoMinimizingFitness> >&  make_pop(eoParser& _parser, eoState& _state, eoInit<eoBit<eoMinimizingFitness> > & _init)
+    Pop<Bit<MinimizingFitness> >&  make_pop(Parser& _parser, State& _state, Init<Bit<MinimizingFitness> > & _init)
     {
 	return do_make_pop(_parser, _state, _init);
     }

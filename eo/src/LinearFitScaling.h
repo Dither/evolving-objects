@@ -27,44 +27,44 @@
 #ifndef LinearFitScaling_h
 #define LinearFitScaling_h
 
-#include <eoSelectFromWorth.h>
-#include <eoPerf2Worth.h>
+#include <SelectFromWorth.h>
+#include <Perf2Worth.h>
 
 namespace eo
 {
 
-    /** An instance of eoPerf2Worth
+    /** An instance of Perf2Worth
      *  COmputes the linearly scaled fitnesses
      *  with given selective pressure
      *  Pselect(Best) == pressure/sizePop
      *  Pselect(average) == 1.0/sizePop
      *  truncate negative values to 0 -
      *
-     * to be used within an eoSelectFromWorth object
+     * to be used within an SelectFromWorth object
      *
      * @ingroup Selectors
      */
     template <class EOT>
-    class eoLinearFitScaling : public eoPerf2Worth<EOT> // false: do not cache fitness
+    class LinearFitScaling : public Perf2Worth<EOT> // false: do not cache fitness
     {
     public:
 
-	using eoPerf2Worth<EOT>::value;
+	using Perf2Worth<EOT>::value;
 
 	/* Ctor:
 	   @param _p selective pressure (in (1,2])
 	   @param _e exponent (1 == linear)
 	*/
-	eoLinearFitScaling(double _p=2.0)
+	LinearFitScaling(double _p=2.0)
 	    : pressure(_p) {}
 
 	/* COmputes the ranked fitness: fitnesses range in [m,M]
 	   with m=2-pressure/popSize and M=pressure/popSize.
 	   in between, the progression depends on exponent (linear if 1).
 	*/
-	virtual void operator()(const eoPop<EOT>& _pop) {
+	virtual void operator()(const Pop<EOT>& _pop) {
 	    unsigned pSize =_pop.size();
-	    // value() refers to the vector of worthes (we're in an eoParamvalue)
+	    // value() refers to the vector of worthes (we're in an Paramvalue)
 	    value().resize(pSize);
 
 	    // best and worse fitnesses

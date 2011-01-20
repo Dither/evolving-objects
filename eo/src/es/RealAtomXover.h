@@ -31,36 +31,36 @@
 #ifndef _RealAtomXover_H
 #define _RealAtomXover_H
 
-#include <utils/eoRNG.h>
+#include <utils/RNG.h>
 
-#include <eoOp.h>
+#include <Op.h>
 
 namespace eo
 {
 
-    /** 
+    /**
 	Discrete crossover == exchange of values
 	*
 	* @ingroup Real
 	* @ingroup Variators
 	*/
-    class eoDoubleExchange: public eoBinOp<double>
+    class DoubleExchange: public BinOp<double>
     {
     public:
 	/**
 	 * (Default) Constructor.
 	 */
-	eoDoubleExchange() {}
+	DoubleExchange() {}
 
 	/// The class name. Used to display statistics
-	virtual std::string className() const { return "eoDoubleExchange"; }
+	virtual std::string className() const { return "DoubleExchange"; }
 
 	/**
 	   Exchanges or not the values
 	*/
-	bool operator()(double& r1, const double& r2) 
+	bool operator()(double& r1, const double& r2)
 	{
-	    if (eo::rng.flip())
+	    if (rng.flip())
 		if (r1 != r2)	   // if r1 == r2 you must return false
 		    {
 			r1 = r2;
@@ -68,7 +68,7 @@ namespace eo
 		    }
 	    return false;
 	}
-  
+
     };
 
     /** 
@@ -77,27 +77,27 @@ namespace eo
 	* @ingroup Real
 	* @ingroup Variators
 	*/
-    class eoDoubleIntermediate: public eoBinOp<double>
+    class DoubleIntermediate: public BinOp<double>
     {
     public:
 	/**
 	 * (Default) Constructor.
 	 */
-	eoDoubleIntermediate() {}
+	DoubleIntermediate() {}
 
 	/// The class name. Used to display statistics
-	virtual std::string className() const { return "eoDoubleIntermediate"; }
+	virtual std::string className() const { return "DoubleIntermediate"; }
 
 	/**
 	   Linear combination of both parents
 	*/
-	bool operator()(double& r1, const double& r2) 
+	bool operator()(double& r1, const double& r2)
 	{
-	    double alpha = eo::rng.uniform();
+	    double alpha = rng.uniform();
 	    r1 = alpha * r2 + (1-alpha) * r1;
 	    return true;
 	}
-  
+
     };
 
 }

@@ -27,35 +27,35 @@
 #ifndef _make_general_replacement_h
 #define _make_general_replacement_h
 
-#include <utils/eoData.h>     // for eo_is_a_rate
+#include <utils/Data.h>     // for eo_is_a_rate
 
 // Replacement
-#include <eoReduceMergeReduce.h>
+#include <ReduceMergeReduce.h>
 
 // also need the parser and param includes
-#include <utils/eoParser.h>
-#include <utils/eoState.h>
+#include <utils/Parser.h>
+#include <utils/State.h>
 
 namespace eo
 {
 
     /** a helper function that decodes a parameter read by the parser into an
-     * eoReduce<EOT> & (allocates the pointer and stores it into an eoState)
+     * Reduce<EOT> & (allocates the pointer and stores it into an State)
      *
      * @ingroup Builders
      */
     template <class EOT>
-    eoReduce<EOT> & decode_reduce(eoParamParamType & _ppReduce, eoState & _state)
+    Reduce<EOT> & decode_reduce(ParamParamType & _ppReduce, State & _state)
     {
 	unsigned int detSize;
-	eoReduce<EOT> * ptReduce;
+	Reduce<EOT> * ptReduce;
 
 	// ---------- Deterministic
 	if ( (_ppReduce.first == std::string("Deterministic")) || 
 	     (_ppReduce.first == std::string("Sequential")) 
 	     )
 	    {
-		ptReduce = new eoTruncate<EOT>;
+		ptReduce = new Truncate<EOT>;
 	    }
 	// ---------- EP
 	else if (_ppReduce.first == std::string("EP"))
@@ -69,7 +69,7 @@ namespace eo
 		    }
 		else	  // parameter passed by user as EP(T)
 		    detSize = atoi(_ppReduce.second[0].c_str());
-		ptReduce = new eoEPReduce<EOT>(detSize);
+		ptReduce = new EPReduce<EOT>(detSize);
 	    }
 	// ---------- DetTour
 	else if (_ppReduce.first == std::string("DetTour"))
@@ -83,7 +83,7 @@ namespace eo
 		    }
 		else	  // parameter passed by user as DetTour(T)
 		    detSize = atoi(_ppReduce.second[0].c_str());
-		ptReduce = new eoDetTournamentTruncate<EOT>(detSize);
+		ptReduce = new DetTournamentTruncate<EOT>(detSize);
 	    }
 	else if (_ppReduce.first == std::string("StochTour"))
 	    {
@@ -102,13 +102,13 @@ namespace eo
 			    throw std::runtime_error("Stochastic tournament size should be in [0.5,1]");
 		    }
       
-		ptReduce = new eoStochTournamentTruncate<EOT>(p);
+		ptReduce = new StochTournamentTruncate<EOT>(p);
 	    }
 	else if ( (_ppReduce.first == std::string("Uniform")) || 
 		  (_ppReduce.first == std::string("Random"))
 		  )
 	    {
-		ptReduce = new eoRandomReduce<EOT>;
+		ptReduce = new RandomReduce<EOT>;
 	    }
 	else // no known reduction entered
 	    {
@@ -120,32 +120,32 @@ namespace eo
     }
 
     /** Helper function that creates a replacement from the class 
-     * eoReduceMergeReduce using 6 parameters 
-     *      (after the usual eoState and eoParser)
+     * ReduceMergeReduce using 6 parameters 
+     *      (after the usual State and Parser)
      * 
-     *  eoHowMany _elite              the number of elite parents (0 = no elitism)
+     *  HowMany _elite              the number of elite parents (0 = no elitism)
      *       see below
      *  bool _strongElitism           if elite > 0, std::string elitism or weak elitism
      *       strong = elite parents survive, whatever the offspring
      *       weak - elite patents compete AFTER replacement with best offspring
-     *  eoHowMany _surviveParents     number of parents after parents recuction
-     *  eoParamParamType & _reduceParentType      how the parents are reduced
-     *  eoHowMany _surviveOffspring   number of offspring after offspring recuction
-     *  eoParamParamType & _reduceOffspringType   how the offspring are reduced
-     *  eoParamParamType & _reduceFinalType       how the final population is reduced to initial population size
+     *  HowMany _surviveParents     number of parents after parents recuction
+     *  ParamParamType & _reduceParentType      how the parents are reduced
+     *  HowMany _surviveOffspring   number of offspring after offspring recuction
+     *  ParamParamType & _reduceOffspringType   how the offspring are reduced
+     *  ParamParamType & _reduceFinalType       how the final population is reduced to initial population size
      *
      * @ingroup Builders
      */
     template <class EOT>
-    eoReplacement<EOT> & make_general_replacement(
-						  eoParser& _parser, eoState& _state, 
-						  eoHowMany _elite = eoHowMany(0), 
+    Replacement<EOT> & make_general_replacement(
+						  Parser& _parser, State& _state, 
+						  HowMany _elite = HowMany(0), 
 						  bool _strongElitism = false,
-						  eoHowMany _surviveParents = eoHowMany(0.0),
-						  eoParamParamType & _reduceParentType = eoParamParamType("Deterministic"),
-						  eoHowMany _surviveOffspring = eoHowMany(1.0),
-						  eoParamParamType & _reduceOffspringType = eoParamParamType("Deterministic"),
-						  eoParamParamType & _reduceFinalType  = eoParamParamType("Deterministic")
+						  HowMany _surviveParents = HowMany(0.0),
+						  ParamParamType & _reduceParentType = ParamParamType("Deterministic"),
+						  HowMany _surviveOffspring = HowMany(1.0),
+						  ParamParamType & _reduceOffspringType = ParamParamType("Deterministic"),
+						  ParamParamType & _reduceFinalType  = ParamParamType("Deterministic")
 						  )
     {
 	/////////////////////////////////////////////////////
@@ -153,30 +153,30 @@ namespace eo
 	/////////////////////////////////////////////////////
 
 	// Elitism
-	eoHowMany elite =  _parser.createParam(_elite, "elite", "Nb of elite parents (percentage or absolute)", '\0', "Evolution Engine / Replacement").value();
+	HowMany elite =  _parser.createParam(_elite, "elite", "Nb of elite parents (percentage or absolute)", '\0', "Evolution Engine / Replacement").value();
 
 	bool strongElitism = _parser.createParam(_strongElitism,"eliteType", "Strong (true) or weak (false) elitism (set elite to 0 for none)", '\0', "Evolution Engine / Replacement").value();
 
 	// reduce the parents
-	eoHowMany surviveParents =  _parser.createParam(_surviveParents, "surviveParents", "Nb of surviving parents (percentage or absolute)", '\0', "Evolution Engine / Replacement").value();
+	HowMany surviveParents =  _parser.createParam(_surviveParents, "surviveParents", "Nb of surviving parents (percentage or absolute)", '\0', "Evolution Engine / Replacement").value();
   
-	eoParamParamType & reduceParentType = _parser.createParam(_reduceParentType, "reduceParents", "Parents reducer: Deterministic, EP(T), DetTour(T), StochTour(t), Uniform", '\0', "Evolution Engine / Replacement").value();
+	ParamParamType & reduceParentType = _parser.createParam(_reduceParentType, "reduceParents", "Parents reducer: Deterministic, EP(T), DetTour(T), StochTour(t), Uniform", '\0', "Evolution Engine / Replacement").value();
 
-	eoReduce<EOT> & reduceParent = decode_reduce<EOT>(reduceParentType, _state);
+	Reduce<EOT> & reduceParent = decode_reduce<EOT>(reduceParentType, _state);
 
 	// reduce the offspring
-	eoHowMany surviveOffspring =  _parser.createParam(_surviveOffspring, "surviveOffspring", "Nb of surviving offspring (percentage or absolute)", '\0', "Evolution Engine / Replacement").value();
+	HowMany surviveOffspring =  _parser.createParam(_surviveOffspring, "surviveOffspring", "Nb of surviving offspring (percentage or absolute)", '\0', "Evolution Engine / Replacement").value();
   
-	eoParamParamType & reduceOffspringType = _parser.createParam(_reduceOffspringType, "reduceOffspring", "Offspring reducer: Deterministic, EP(T), DetTour(T), StochTour(t), Uniform", '\0', "Evolution Engine / Replacement").value();
+	ParamParamType & reduceOffspringType = _parser.createParam(_reduceOffspringType, "reduceOffspring", "Offspring reducer: Deterministic, EP(T), DetTour(T), StochTour(t), Uniform", '\0', "Evolution Engine / Replacement").value();
 
-	eoReduce<EOT> & reduceOffspring = decode_reduce<EOT>(reduceOffspringType, _state);
+	Reduce<EOT> & reduceOffspring = decode_reduce<EOT>(reduceOffspringType, _state);
 
-	eoParamParamType & reduceFinalType = _parser.createParam(_reduceFinalType, "reduceFinal", "Final reducer: Deterministic, EP(T), DetTour(T), StochTour(t), Uniform", '\0', "Evolution Engine / Replacement").value();
+	ParamParamType & reduceFinalType = _parser.createParam(_reduceFinalType, "reduceFinal", "Final reducer: Deterministic, EP(T), DetTour(T), StochTour(t), Uniform", '\0', "Evolution Engine / Replacement").value();
 
-	eoReduce<EOT> & reduceFinal = decode_reduce<EOT>(reduceFinalType, _state);
+	Reduce<EOT> & reduceFinal = decode_reduce<EOT>(reduceFinalType, _state);
 
 	// now the replacement itself
-	eoReduceMergeReduce<EOT> *ptReplace = new eoReduceMergeReduce<EOT>(elite, strongElitism, surviveParents, reduceParent, surviveOffspring, reduceOffspring, reduceFinal);
+	ReduceMergeReduce<EOT> *ptReplace = new ReduceMergeReduce<EOT>(elite, strongElitism, surviveParents, reduceParent, surviveOffspring, reduceOffspring, reduceFinal);
 	_state.storeFunctor(ptReplace);
 
 	// that's it!

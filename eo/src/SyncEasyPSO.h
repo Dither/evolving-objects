@@ -26,11 +26,11 @@
 #define _SYNCEASYPSO_H
 
 //-----------------------------------------------------------------------------
-#include <eoContinue.h>
-#include <eoPopEvalFunc.h>
-#include <eoPSO.h>
-#include <eoVelocity.h>
-#include <eoFlight.h>
+#include <Continue.h>
+#include <PopEvalFunc.h>
+#include <PSO.h>
+#include <Velocity.h>
+#include <Flight.h>
 //-----------------------------------------------------------------------------
 
 namespace eo
@@ -49,24 +49,24 @@ namespace eo
      *
      *   @ingroup Algorithms
      */
-    template < class POT > class eoSyncEasyPSO:public eoPSO < POT >
+    template < class POT > class SyncEasyPSO:public PSO < POT >
     {
     public:
 
 	/** Full constructor
-	 * @param _init - An eoInitializerBase that initializes the topology, velocity, best particle(s)
-	 * @param _continuator - An eoContinue that manages the stopping criterion and the checkpointing system
-	 * @param _eval - An eoEvalFunc: the evaluation performer
-	 * @param _velocity - An eoVelocity that defines how to compute the velocities
-	 * @param _flight - An eoFlight that defines how to make the particle flying: that means how 
+	 * @param _init - An InitializerBase that initializes the topology, velocity, best particle(s)
+	 * @param _continuator - An Continue that manages the stopping criterion and the checkpointing system
+	 * @param _eval - An EvalFunc: the evaluation performer
+	 * @param _velocity - An Velocity that defines how to compute the velocities
+	 * @param _flight - An Flight that defines how to make the particle flying: that means how 
 	 * to modify the positions according to the velocities
 	 */
-	eoSyncEasyPSO (
-		       eoInitializerBase <POT> &_init,
-		       eoContinue < POT > &_continuator,
-		       eoEvalFunc < POT > &_eval,
-		       eoVelocity < POT > &_velocity,
-		       eoFlight < POT > &_flight):
+	SyncEasyPSO (
+		       InitializerBase <POT> &_init,
+		       Continue < POT > &_continuator,
+		       EvalFunc < POT > &_eval,
+		       Velocity < POT > &_velocity,
+		       Flight < POT > &_flight):
             init(_init),
             continuator (_continuator),
             eval (_eval),
@@ -77,17 +77,17 @@ namespace eo
 	{}
 
 
-	/** Constructor without eoFlight. For special cases when the flight is performed withing the velocity.
-	 * @param _init - An eoInitializerBase that initializes the topology, velocity, best particle(s)
-	 * @param _continuator - An eoContinue that manages the stopping criterion and the checkpointing system
-	 * @param _eval - An eoEvalFunc: the evaluation performer
-	 * @param _velocity - An eoVelocity that defines how to compute the velocities
+	/** Constructor without Flight. For special cases when the flight is performed withing the velocity.
+	 * @param _init - An InitializerBase that initializes the topology, velocity, best particle(s)
+	 * @param _continuator - An Continue that manages the stopping criterion and the checkpointing system
+	 * @param _eval - An EvalFunc: the evaluation performer
+	 * @param _velocity - An Velocity that defines how to compute the velocities
 	 */
-	eoSyncEasyPSO (
-		       eoInitializerBase <POT> &_init,
-		       eoContinue < POT > &_continuator,
-		       eoEvalFunc < POT > &_eval,
-		       eoVelocity < POT > &_velocity):
+	SyncEasyPSO (
+		       InitializerBase <POT> &_init,
+		       Continue < POT > &_continuator,
+		       EvalFunc < POT > &_eval,
+		       Velocity < POT > &_velocity):
             init(_init),
             continuator (_continuator),
             eval (_eval),
@@ -98,18 +98,18 @@ namespace eo
 	{}
 
 	/** Full constructor - Can be used in parallel
-	 * @param _init - An eoInitializerBase that initializes the topology, velocity, best particle(s)
-	 * @param _continuator - An eoContinue that manages the stopping criterion and the checkpointing system
-	 * @param _eval - An eoPopEvalFunc
-	 * @param _velocity - An eoVelocity that defines how to compute the velocities
-	 * @param _flight - An eoFlight
+	 * @param _init - An InitializerBase that initializes the topology, velocity, best particle(s)
+	 * @param _continuator - An Continue that manages the stopping criterion and the checkpointing system
+	 * @param _eval - An PopEvalFunc
+	 * @param _velocity - An Velocity that defines how to compute the velocities
+	 * @param _flight - An Flight
 	 */
-	eoSyncEasyPSO (
-		       eoInitializerBase <POT> &_init,
-		       eoContinue < POT > &_continuator,
-		       eoPopEvalFunc < POT > &_eval,
-		       eoVelocity < POT > &_velocity,
-		       eoFlight <POT> &_flight):
+	SyncEasyPSO (
+		       InitializerBase <POT> &_init,
+		       Continue < POT > &_continuator,
+		       PopEvalFunc < POT > &_eval,
+		       Velocity < POT > &_velocity,
+		       Flight <POT> &_flight):
             init(_init),
             continuator (_continuator),
             eval (dummyEval),
@@ -121,17 +121,17 @@ namespace eo
 
 
 	/** Another constructor without initializer
-	 * @param _continuator - An eoContinue that manages the stopping criterion and the checkpointing system
-	 * @param _eval - An eoEvalFunc: the evaluation performer
-	 * @param _velocity - An eoVelocity that defines how to compute the velocities
-	 * @param _flight - An eoFlight that defines how to make the particle flying: that means how 
+	 * @param _continuator - An Continue that manages the stopping criterion and the checkpointing system
+	 * @param _eval - An EvalFunc: the evaluation performer
+	 * @param _velocity - An Velocity that defines how to compute the velocities
+	 * @param _flight - An Flight that defines how to make the particle flying: that means how 
 	 * to modify the positions according to the velocities
 	 */
-	eoSyncEasyPSO (
-		       eoContinue < POT > &_continuator,
-		       eoEvalFunc < POT > &_eval,
-		       eoVelocity < POT > &_velocity,
-		       eoFlight < POT > &_flight):
+	SyncEasyPSO (
+		       Continue < POT > &_continuator,
+		       EvalFunc < POT > &_eval,
+		       Velocity < POT > &_velocity,
+		       Flight < POT > &_flight):
             init(dummyInit),
             continuator (_continuator),
             eval (_eval),
@@ -142,15 +142,15 @@ namespace eo
 	{}
 
 
-	/** Constructor without eoFlight nor eoInitializer. For special cases when the flight is performed withing the velocity.
-	 * @param _continuator - An eoContinue that manages the stopping criterion and the checkpointing system
-	 * @param _eval - An eoEvalFunc: the evaluation performer
-	 * @param _velocity - An eoVelocity that defines how to compute the velocities
+	/** Constructor without Flight nor Initializer. For special cases when the flight is performed withing the velocity.
+	 * @param _continuator - An Continue that manages the stopping criterion and the checkpointing system
+	 * @param _eval - An EvalFunc: the evaluation performer
+	 * @param _velocity - An Velocity that defines how to compute the velocities
 	 */
-	eoSyncEasyPSO (
-		       eoContinue < POT > &_continuator,
-		       eoEvalFunc < POT > &_eval,
-		       eoVelocity < POT > &_velocity):
+	SyncEasyPSO (
+		       Continue < POT > &_continuator,
+		       EvalFunc < POT > &_eval,
+		       Velocity < POT > &_velocity):
             init(dummyInit),
             continuator (_continuator),
             eval (_eval),
@@ -161,16 +161,16 @@ namespace eo
 	{}
 
 	/** Full constructor - Can be used in parallel
-	 * @param _continuator - An eoContinue that manages the stopping criterion and the checkpointing system
-	 * @param _eval - An eoPopEvalFunc
-	 * @param _velocity - An eoVelocity that defines how to compute the velocities
-	 * @param _flight - An eoFlight
+	 * @param _continuator - An Continue that manages the stopping criterion and the checkpointing system
+	 * @param _eval - An PopEvalFunc
+	 * @param _velocity - An Velocity that defines how to compute the velocities
+	 * @param _flight - An Flight
 	 */
-	eoSyncEasyPSO (
-		       eoContinue < POT > &_continuator,
-		       eoPopEvalFunc < POT > &_eval,
-		       eoVelocity < POT > &_velocity,
-		       eoFlight <POT> &_flight):
+	SyncEasyPSO (
+		       Continue < POT > &_continuator,
+		       PopEvalFunc < POT > &_eval,
+		       Velocity < POT > &_velocity,
+		       Flight <POT> &_flight):
             init(dummyInit),
             continuator (_continuator),
             eval (dummyEval),
@@ -181,7 +181,7 @@ namespace eo
 	{}
     
 	/// Apply a few iteration of flight to the population (=swarm).
-	virtual void operator  () (eoPop < POT > &_pop)
+	virtual void operator  () (Pop < POT > &_pop)
 	{
 
 	    try
@@ -190,7 +190,7 @@ namespace eo
 		    init();
             
 		    // just to use a loop eval
-		    eoPop<POT> empty_pop;
+		    Pop<POT> empty_pop;
 
 		    do
 			{
@@ -213,7 +213,7 @@ namespace eo
 	    catch (std::exception & e)
 		{
 		    std::string s = e.what ();
-		    s.append (" in eoSyncEasyPSO");
+		    s.append (" in SyncEasyPSO");
 		    throw std::runtime_error (s);
 		}
 
@@ -221,18 +221,18 @@ namespace eo
 
     private:
 
-	eoInitializerBase <POT> &init;
-	eoContinue < POT > &continuator;
+	InitializerBase <POT> &init;
+	Continue < POT > &continuator;
 
-	eoEvalFunc < POT > &eval;
-	eoPopLoopEval<POT>        loopEval;
-	eoPopEvalFunc<POT>&       popEval;
+	EvalFunc < POT > &eval;
+	PopLoopEval<POT>        loopEval;
+	PopEvalFunc<POT>&       popEval;
 
-	eoVelocity < POT > &velocity;
-	eoFlight < POT > &flight;
+	Velocity < POT > &velocity;
+	Flight < POT > &flight;
 
 	// if the eval does not need to be used, use the dummy eval instance
-	class eoDummyEval : public eoEvalFunc<POT>
+	class DummyEval : public EvalFunc<POT>
 	{
 	public:
 	    void operator()(POT &)
@@ -240,23 +240,23 @@ namespace eo
 	}
 	    dummyEval;
 
-	class eoDummyFlight:public eoFlight < POT >
+	class DummyFlight:public Flight < POT >
 	{
 	public:
-	    eoDummyFlight () {}
+	    DummyFlight () {}
 	    void operator  () (POT & _po) {}
 	}dummyFlight;
 	
 	// if the initializer does not need to be used, use the dummy one instead
-	class eoDummyInitializer:public eoInitializerBase < POT >
+	class DummyInitializer:public InitializerBase < POT >
 	{
 	public:
-	    eoDummyInitializer () {}
+	    DummyInitializer () {}
 	    void operator  () (POT & _po) {}
 	}dummyInit;
 	
     };
-    /** @example t-eoSyncEasyPSO.cpp
+    /** @example t-SyncEasyPSO.cpp
      */
 
 }

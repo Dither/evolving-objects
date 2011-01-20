@@ -26,10 +26,10 @@
 #ifndef _make_PBILupdate_h
 #define _make_PBILupdate_h
 
-#include <ga/eoPBILOrg.h>
-#include <utils/eoRNG.h>
-#include <utils/eoParser.h>
-#include <utils/eoState.h>
+#include <ga/PBILOrg.h>
+#include <utils/RNG.h>
+#include <utils/Parser.h>
+#include <utils/State.h>
 
 namespace eo
 {
@@ -37,17 +37,17 @@ namespace eo
     ///////CONSTRUCTION of PBIL distribution updaters/////////////////
     /**
      * Templatized version of parser-based construct of the update rule for PBIL
-     * distributions (see eoPBILDistrib.h)
+     * distributions (see PBILDistrib.h)
      *
      * It must then be instantiated, and compiled on its own for a given EOType
-     * (see  test/t-eoPBIL.cpp)
+     * (see  test/t-PBIL.cpp)
      *
      * Last argument is template-disambiguating
      */
 
 
     template <class EOT>
-    eoDistribUpdater<EOT> &  do_make_PBILupdate(eoParser & _parser, eoState& _state, EOT)
+    DistribUpdater<EOT> &  do_make_PBILupdate(Parser & _parser, State& _state, EOT)
     {
 	// ast the moment, a single update rule is available 
 	// but at some point we'll have to choose among different rules
@@ -61,14 +61,14 @@ namespace eo
 	double tolerance = _parser.createParam(0.0, "tolerance", "Keeping away from 0 and 1", 't', "Algorithm").value();
 
 	// a pointer to choose among several possible types
-	eoDistribUpdater<EOT> * ptUpdate; 
+	DistribUpdater<EOT> * ptUpdate; 
 
 	if (UType == std::string("PBIL"))
 	    {
 		if ( (nbWorst == 0) && (nbBest == 1) )
-		    ptUpdate = new eoPBILOrg<EOT>(LRBest, tolerance);
+		    ptUpdate = new PBILOrg<EOT>(LRBest, tolerance);
 		else
-		    ptUpdate = new eoPBILAdditive<EOT>(LRBest, nbBest, tolerance, LRWorst, nbWorst);
+		    ptUpdate = new PBILAdditive<EOT>(LRBest, nbBest, tolerance, LRWorst, nbWorst);
 	    }
 	else
 	    throw std::runtime_error("Only PBIL additive update rule available at the moment");

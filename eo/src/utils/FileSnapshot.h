@@ -29,9 +29,9 @@
 #include <fstream>
 #include <string>
 
-#include <utils/eoParam.h>
-#include <utils/eoMonitor.h>
-#include <eoObject.h>
+#include <utils/Param.h>
+#include <utils/Monitor.h>
+#include <Object.h>
 
 namespace eo
 {
@@ -40,7 +40,7 @@ namespace eo
     Prints snapshots of fitnesses to a (new) file every N generations
 
     Assumes that the parameters that are passed to the monitor
-    (method add in eoMonitor.h) are eoValueParam<std::vector<double> > of same size.
+    (method add in Monitor.h) are ValueParam<std::vector<double> > of same size.
 
     A dir is created and one file per snapshot is created there -
     so you can later generate a movie!
@@ -48,18 +48,18 @@ namespace eo
     @todo The counter is handled internally, but this should be changed
     so that you can pass e.g. an evalcounter (minor)
 
-    I failed to templatize everything so that it can handle eoParam<std::vector<T> >
+    I failed to templatize everything so that it can handle Param<std::vector<T> >
     for any type T, simply calling their getValue method ...
 
     @ingroup Monitors
     */
-    class eoFileSnapshot : public eoMonitor
+    class FileSnapshot : public Monitor
     {
     public :
 	typedef std::vector<double> vDouble;
-	typedef eoValueParam<std::vector<double> > vDoubleParam;
+	typedef ValueParam<std::vector<double> > vDoubleParam;
 
-	eoFileSnapshot(std::string _dirname, unsigned _frequency = 1, std::string _filename = "gen",
+	FileSnapshot(std::string _dirname, unsigned _frequency = 1, std::string _filename = "gen",
 		       std::string _delim = " ", unsigned _counter = 0, bool _rmFiles = true):
 	    dirname(_dirname), frequency(_frequency),
 	    filename(_filename), delim(_delim), counter(_counter), boolChanged(true)
@@ -69,7 +69,7 @@ namespace eo
 		int res = system(s.c_str());
 		// test for (unlikely) errors
 		if ( (res==-1) || (res==127) )
-		    throw std::runtime_error("Problem executing test of dir in eoFileSnapshot");
+		    throw std::runtime_error("Problem executing test of dir in FileSnapshot");
 		// now make sure there is a dir without any genXXX file in it
 		if (res)                    // no dir present
 		{
@@ -109,7 +109,7 @@ namespace eo
 
 	/** The operator(void): opens the std::ostream and calls the write method
 	*/
-	eoMonitor& operator()(void)
+	Monitor& operator()(void)
 	    {
 		if (counter % frequency)
 		{
@@ -124,7 +124,7 @@ namespace eo
 
 		if (!os)
 		{
-		    std::string str = "eoFileSnapshot: Could not open " + currentFileName;
+		    std::string str = "FileSnapshot: Could not open " + currentFileName;
 		    throw std::runtime_error(str);
 		}
 
@@ -133,10 +133,10 @@ namespace eo
 
 	/** The operator(): write on an std::ostream
 	*/
-	eoMonitor& operator()(std::ostream& _os)
+	Monitor& operator()(std::ostream& _os)
 	    {
-		const eoValueParam<std::vector<double> >  * ptParam =
-		    static_cast<const eoValueParam<std::vector<double> >* >(vec[0]);
+		const ValueParam<std::vector<double> >  * ptParam =
+		    static_cast<const ValueParam<std::vector<double> >* >(vec[0]);
 
 		const std::vector<double>  v = ptParam->value();
 		if (vec.size() == 1)	   // only one std::vector: -> add number in front
@@ -150,7 +150,7 @@ namespace eo
 		    vv[0]=v;
 		    for (unsigned i=1; i<vec.size(); i++)
 		    {
-			ptParam = static_cast<const eoValueParam<std::vector<double> >* >(vec[1]);
+			ptParam = static_cast<const ValueParam<std::vector<double> >* >(vec[1]);
 			vv[i] = ptParam->value();
 			if (vv[i].size() != v.size())
 			    throw std::runtime_error("Dimension error in eoSnapshotMonitor");
@@ -165,19 +165,19 @@ namespace eo
 		return *this;
 	    }
 
-	virtual const std::string getDirName()	   // for eoGnuPlot
+	virtual const std::string getDirName()	   // for GnuPlot
 	    { return dirname;}
-	virtual const std::string baseFileName()	   // the title for eoGnuPlot
+	virtual const std::string baseFileName()	   // the title for GnuPlot
 	    { return filename;}
 
 	/// add checks whether it is a std::vector of doubles
-	void add(const eoParam& _param)
+	void add(const Param& _param)
 	    {
-		if (!dynamic_cast<const eoValueParam<std::vector<double> >*>(&_param))
+		if (!dynamic_cast<const ValueParam<std::vector<double> >*>(&_param))
 		{
-		    throw std::logic_error(std::string("eoFileSnapshot: I can only monitor std::vectors of doubles, sorry. The offending parameter name = ") + _param.longName());
+		    throw std::logic_error(std::string("FileSnapshot: I can only monitor std::vectors of doubles, sorry. The offending parameter name = ") + _param.longName());
 		}
-		eoMonitor::add(_param);
+		Monitor::add(_param);
 	    }
 
     private :

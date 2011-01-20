@@ -27,10 +27,10 @@
 #define _make_PBILdistrib_h
 
 #include <ctime>		   // for time(0) for random seeding
-#include <ga/eoPBILOrg.h>
-#include <utils/eoRNG.h>
-#include <utils/eoParser.h>
-#include <utils/eoState.h>
+#include <ga/PBILOrg.h>
+#include <utils/RNG.h>
+#include <utils/Parser.h>
+#include <utils/State.h>
 
 namespace eo
 {
@@ -41,24 +41,24 @@ namespace eo
      * for PBIL distribution evolution algorithm
      *
      * It must then be instantiated, and compiled on its own for a given EOType
-     * (see test/t-eoPBIL.cpp
+     * (see test/t-PBIL.cpp
      *
      * Last argument is template-disambiguating
      */
 
 
     template <class EOT>
-    eoPBILDistrib<EOT> &  do_make_PBILdistrib(eoParser & _parser, eoState& _state, EOT)
+    PBILDistrib<EOT> &  do_make_PBILdistrib(Parser & _parser, State& _state, EOT)
     {
 	// First the random seed
-	eoValueParam<uint32_t>& seedParam = _parser.createParam(uint32_t(0), "seed", "Random number seed", 'S');
+	ValueParam<uint32_t>& seedParam = _parser.createParam(uint32_t(0), "seed", "Random number seed", 'S');
 	if (seedParam.value() == 0)
 	    seedParam.value() = time(0);
 
 	// chromosome size:
 	unsigned theSize;
 	// but it might have been already read in the definition fo the performance
-	eoParam* ptParam = _parser.getParamWithLongName(std::string("chromSize"));
+	Param* ptParam = _parser.getParamWithLongName(std::string("chromSize"));
 
 	if (!ptParam)			   // not already defined: read it here
 	    {
@@ -66,19 +66,19 @@ namespace eo
 	    }
 	else				   // it was read before, get its value
 	    {
-		eoValueParam<unsigned>* ptChromSize = dynamic_cast<eoValueParam<unsigned>*>(ptParam);
+		ValueParam<unsigned>* ptChromSize = dynamic_cast<ValueParam<unsigned>*>(ptParam);
 		theSize = ptChromSize->value();
 	    }
 
-	eoPBILDistrib<EOT> * ptDistrib = new eoPBILDistrib<EOT>(theSize);
+	PBILDistrib<EOT> * ptDistrib = new PBILDistrib<EOT>(theSize);
 	_state.storeFunctor(ptDistrib);
 
 	// now the initialization: read a previously saved distribution, or random
-	eoValueParam<std::string>& loadNameParam = _parser.createParam(std::string(""), "Load","A save file to restart from",'L', "Persistence" );
+	ValueParam<std::string>& loadNameParam = _parser.createParam(std::string(""), "Load","A save file to restart from",'L', "Persistence" );
 	if (loadNameParam.value() != "") // something to load
 	    {
 		// create another state for reading
-		eoState inState;		// a state for loading - WITHOUT the parser
+		State inState;		// a state for loading - WITHOUT the parser
 		// register the rng and the distribution in the state,
 		// so they can be loaded,
 		// and the present run will be the exact continuation of the saved run

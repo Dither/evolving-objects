@@ -28,7 +28,7 @@
 #pragma warning(disable:4786)
 #endif 
 
-#include <utils/eoLogger.h>
+#include <utils/Logger.h>
 
 #include <signal.h>
 #include <iostream>
@@ -46,7 +46,7 @@ namespace eo
     bool     existCtrlCContinue = false;
 
     //
-    // The signal handler - installed in the eoCtrlCContinue Ctor
+    // The signal handler - installed in the CtrlCContinue Ctor
     //
     void signal_handler( int sig )
     // ---------------------------

@@ -27,11 +27,11 @@
 #define _SBXcross_h
 
 #include <algorithm>    // swap_ranges
-#include <utils/eoParser.h>
-#include <utils/eoRNG.h>
-#include <es/eoReal.h>
-#include <utils/eoRealBounds.h>
-#include <utils/eoRealVectorBounds.h>
+#include <utils/Parser.h>
+#include <utils/RNG.h>
+#include <es/Real.h>
+#include <utils/RealBounds.h>
+#include <utils/RealVectorBounds.h>
 
 namespace eo
 {
@@ -40,7 +40,7 @@ namespace eo
      * @ingroup Real
      * @ingroup Variators
      */
-    template<class EOT> class eoSBXCrossover: public eoQuadOp<EOT>
+    template<class EOT> class SBXCrossover: public QuadOp<EOT>
     {
     public:
 	/****
@@ -49,22 +49,22 @@ namespace eo
 	 *
 	 * 
 	 */
-	eoSBXCrossover(const double& _eta = 1.0) :
-	    bounds(eoDummyVectorNoBounds), eta(_eta), range(1) {}
+	SBXCrossover(const double& _eta = 1.0) :
+	    bounds(DummyVectorNoBounds), eta(_eta), range(1) {}
 
 
 	//////////////////////////////////////////////
 
 	/**
 	 * Constructor with bounds
-	 * @param _bounds an eoRealVectorBounds that contains the bounds
+	 * @param _bounds an RealVectorBounds that contains the bounds
 	 * @param _eta the amount of exploration OUTSIDE the parents 
 	 *               as in BLX-alpha notation (Eshelman and Schaffer)
 	 *               0 == contractive application
 	 *               Must be positive
 	 */
 
-	eoSBXCrossover(eoRealVectorBounds & _bounds, 
+	SBXCrossover(RealVectorBounds & _bounds, 
 		       const double& _eta = 1.0) : 
 	    bounds(_bounds), eta(_eta), range(1) {}
 
@@ -74,20 +74,20 @@ namespace eo
 
 	/**
 	 * Constructor from a parser. Will read from the argument parser
-	 * eoRealVectorBounds that contains the bounds
+	 * RealVectorBounds that contains the bounds
 	 * eta, the SBX parameter
 	 */
 
-	eoSBXCrossover(eoParser & _parser) : 
+	SBXCrossover(Parser & _parser) : 
 	    // First, decide whether the objective variables are bounded
 	    // Warning, must be the same keywords than other possible objectBounds elsewhere
-	    bounds (_parser.getORcreateParam(eoDummyVectorNoBounds, "objectBounds", "Bounds for variables", 'B', "Variation Operators").value()) ,
+	    bounds (_parser.getORcreateParam(DummyVectorNoBounds, "objectBounds", "Bounds for variables", 'B', "Variation Operators").value()) ,
 	    // then get eta value
 	    eta (_parser.getORcreateParam(1.0, "eta", "SBX eta parameter", '\0', "Variation Operators").value()) ,
 	    range(1) {}
 
 	/// The class name.
-	virtual std::string className() const { return "eoSBXCrossover"; }
+	virtual std::string className() const { return "SBXCrossover"; }
 
 	/*****************************************
 	 * SBX crossover - modifies both parents *
@@ -125,7 +125,7 @@ namespace eo
 	}
 
     protected:
-	eoRealVectorBounds & bounds;
+	RealVectorBounds & bounds;
 	double eta;
 	double range;			   // == 1
     };

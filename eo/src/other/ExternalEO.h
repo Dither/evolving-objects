@@ -40,20 +40,20 @@ namespace eo
      * @ingroup Utilities
      */
     template <class Fit, class External>
-    class eoExternalEO : public EO<Fit>, virtual public External
+    class ExternalEO : public EO<Fit>, virtual public External
     {
     public :
 
-	eoExternalEO()
+	ExternalEO()
 	    : External(), EO<Fit>()
         {}
 
 	/** Init externalEo with the struct itself and set fitness to zero */
-	eoExternalEO(const External& ext)
+	ExternalEO(const External& ext)
 	    : EO<Fit>(), External(ext)
         {}
 
-	eoExternalEO(std::istream& is, const External& ext)
+	ExternalEO(std::istream& is, const External& ext)
 	    : EO<Fit>(), External(ext)
         { readFrom(is); }
 
@@ -77,14 +77,14 @@ namespace eo
 	}
 
     };
-    /** @example t-eoExternalEO.cpp
+    /** @example t-ExternalEO.cpp
      */
 
     /** To remove ambiguities between EO<F> and External, streaming operators are defined yet again
      * @ingroup Utilities
      */
     template <class F, class External>
-    std::ostream& operator<<(std::ostream& os, const eoExternalEO<F, External>& eo)
+    std::ostream& operator<<(std::ostream& os, const ExternalEO<F, External>& eo)
     {
 	eo.printOn(os);
 	return os;
@@ -94,7 +94,7 @@ namespace eo
      * @ingroup Utilities
      */
     template <class F, class External>
-    std::istream& operator>>(std::istream& is, eoExternalEO<F, External>& eo)
+    std::istream& operator>>(std::istream& is, ExternalEO<F, External>& eo)
     {
 	eo.readFrom(is);
 	return is;

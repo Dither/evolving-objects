@@ -26,7 +26,7 @@
 #define _PARTICLEBESTINIT_H
 
 //-----------------------------------------------------------------------------
-#include <eoFunctor.h>
+#include <Functor.h>
 //-----------------------------------------------------------------------------
 
 namespace eo
@@ -40,12 +40,12 @@ namespace eo
     /**
      * Abstract class for particle best position initialization.
      */
-    template < class POT > class eoParticleBestInit:public eoUF < POT &, void >
+    template < class POT > class ParticleBestInit:public UF < POT &, void >
     {
     public:
 
 	/** Apply the initialization to a whole given population */
-	virtual void apply (eoPop < POT > &_pop)
+	virtual void apply (Pop < POT > &_pop)
 	{
 	    for (unsigned i = 0; i < _pop.size (); i++)
 		{
@@ -60,13 +60,13 @@ namespace eo
      * Initializes the best positions of a particle as its current positions and set the
      * particle best fitness.
      */
-    template < class POT > class eoFirstIsBestInit:public eoParticleBestInit <POT>
+    template < class POT > class FirstIsBestInit:public ParticleBestInit <POT>
     {
 
     public:
 
 	/** Default CTor */
-	eoFirstIsBestInit (){}
+	FirstIsBestInit (){}
 
 	void operator  () (POT & _po1)
 	{

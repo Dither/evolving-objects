@@ -27,25 +27,25 @@
 #ifndef _PropGAGenOp_h
 #define _PropGAGenOp_h
 
-#include "eoGenOp.h"
-#include "eoInvalidateOps.h"
+#include "GenOp.h"
+#include "InvalidateOps.h"
 
 namespace eo
 {
 
     ///////////////////////////////////////////////////////////////////////////////
-    // class eoSGAGenOp
+    // class SGAGenOp
     ///////////////////////////////////////////////////////////////////////////////
 
     /** 
-     * eoPropGAGenOp (for Simple GA, but Proportional) 
+     * PropGAGenOp (for Simple GA, but Proportional) 
      * choice between Crossover, mutation or cloining 
      * with respect to given relatve weights
      *
      * @ingroup Combination
      */
     template<class EOT> 
-    class eoPropGAGenOp : public eoGenOp<EOT>
+    class PropGAGenOp : public GenOp<EOT>
     {
     public:
     
@@ -54,8 +54,8 @@ namespace eo
 	 *   * crossover (with weight)
 	 *   * mutation (with weight)
 	 */
-	eoPropGAGenOp(double _wClone, eoQuadOp<EOT>& _cross, double _wCross, 
-		      eoMonOp<EOT>& _mut, double _wMut)
+	PropGAGenOp(double _wClone, QuadOp<EOT>& _cross, double _wCross, 
+		      MonOp<EOT>& _mut, double _wMut)
 	    : wClone(_wClone),
 	      cross(_cross),
 	      wCross(_wCross),
@@ -68,25 +68,25 @@ namespace eo
 	}
   
 	/** do the job: delegate to op */
-	virtual void apply(eoPopulator<EOT>& _pop)
+	virtual void apply(Populator<EOT>& _pop)
 	{
 	    propOp.apply(_pop);
 	}
 
-	/** inherited from eoGenOp */
+	/** inherited from GenOp */
 	virtual unsigned max_production(void) {return 2;}
 
-	virtual std::string className() const {return "eoPropGAGenOp";}
+	virtual std::string className() const {return "PropGAGenOp";}
 
 
     private:
 	double wClone;
-	eoQuadOp<EOT> &cross;   // eoInvalidateXXX take the boolean output
+	QuadOp<EOT> &cross;   // InvalidateXXX take the boolean output
 	double wCross;
-	eoMonOp<EOT> & mut;      // of the XXX op and invalidate the EOT
+	MonOp<EOT> & mut;      // of the XXX op and invalidate the EOT
 	double wMut;
-	eoProportionalOp<EOT> propOp;
-	eoMonCloneOp<EOT> monClone;
+	ProportionalOp<EOT> propOp;
+	MonCloneOp<EOT> monClone;
     };
 
 }

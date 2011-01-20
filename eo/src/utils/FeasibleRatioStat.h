@@ -26,42 +26,42 @@ Johann Dréo <johann.dreo@thalesgroup.com>
 
 #include <algorithm>
 
-#include <eoDualFitness.h>
-#include <utils/eoLogger.h>
+#include <DualFitness.h>
+#include <utils/Logger.h>
 
-#include "eoStat.h"
+#include "Stat.h"
 
 namespace eo
 {
 
-    /** Ratio of the number of individuals with a feasible dual fitness in the population (@see eoDualFitness)
+    /** Ratio of the number of individuals with a feasible dual fitness in the population (@see DualFitness)
      *
      * @ingroup Stats
      */
     template<class EOT>
-    class eoFeasibleRatioStat : public eoStat< EOT, double >
+    class FeasibleRatioStat : public Stat< EOT, double >
     {
     public:
-	using eoStat<EOT, double>::value;
+	using Stat<EOT, double>::value;
 
-	eoFeasibleRatioStat( std::string description = "FeasibleRatio" ) : eoStat<EOT,double>( 0.0, description ) {}
+	FeasibleRatioStat( std::string description = "FeasibleRatio" ) : Stat<EOT,double>( 0.0, description ) {}
 
-	virtual void operator()( const eoPop<EOT> & pop )
+	virtual void operator()( const Pop<EOT> & pop )
 	{
 #ifndef NDEBUG
 	    assert( pop.size() > 0 );
 
-	    double count = static_cast<double>( std::count_if( pop.begin(), pop.end(), eoIsFeasible<EOT> ) );
+	    double count = static_cast<double>( std::count_if( pop.begin(), pop.end(), IsFeasible<EOT> ) );
 	    double size = static_cast<double>( pop.size() );
 	    double ratio = count/size;
-	    eo::log << eo::xdebug << "eoFeasibleRatioStat: " << count << " / " << size << " = " << ratio << std::endl;
+	    eo::log << eo::xdebug << "FeasibleRatioStat: " << count << " / " << size << " = " << ratio << std::endl;
 	    value() = ratio;
 #else
-	    value() = static_cast<double>( std::count_if( pop.begin(), pop.end(), eoIsFeasible<EOT> ) ) / static_cast<double>( pop.size() );
+	    value() = static_cast<double>( std::count_if( pop.begin(), pop.end(), IsFeasible<EOT> ) ) / static_cast<double>( pop.size() );
 #endif
 	}
 
-	virtual std::string className(void) const { return "eoFeasibleRatioStat"; }
+	virtual std::string className(void) const { return "FeasibleRatioStat"; }
     };
 
 }

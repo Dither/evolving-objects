@@ -26,24 +26,24 @@
 #define FIXEDINERTIAWEIGHTEDVELOCITY_H
 
 //-----------------------------------------------------------------------------
-#include <eoFunctor.h>
-#include <utils/eoRNG.h>
-#include <eoPop.h>
-#include <utils/eoRealVectorBounds.h>
-#include <eoTopology.h>
+#include <Functor.h>
+#include <utils/RNG.h>
+#include <Pop.h>
+#include <utils/RealVectorBounds.h>
+#include <Topology.h>
 //-----------------------------------------------------------------------------
 
 namespace eo
 {
 
-    /** Inertia weight based velocity performer. Derivated from abstract eoVelocity,
+    /** Inertia weight based velocity performer. Derivated from abstract Velocity,
      *   At step t+1 : v(t+1)= w * v(t) + c1*r1 * (xbest(t)-x(t)) + c2*r2 * (gbest(t) - x(t))
      *   w is fixed for all the particles and all the generations.
      *  (ci and w given; Ri chosen at random *   in [0;1])
      *
      *  @ingroup Variators
      */
-    template < class POT > class eoFixedInertiaWeightedVelocity:public eoVelocity < POT >
+    template < class POT > class FixedInertiaWeightedVelocity:public Velocity < POT >
     {
 
     public:
@@ -58,18 +58,18 @@ namespace eo
 	 * @param _weight - The weight with type VelocityType
 	 * @param _c1 - The first learning factor used for the particle's best. Type must be POT::ParticleVelocityType 
 	 * @param _c2 - The second learning factor used for the local/global best(s). Type must be POT::ParticleVelocityType 
-	 * @param _bounds - An eoRealBaseVectorBounds: real bounds for real velocities. 
-	 * If the velocities are not real, they won't be bounded by default. Should have a eoBounds ?
-	 * @param _bndsModifier - An eoRealBoundModifier used to modify the bounds (for real bounds only).
+	 * @param _bounds - An RealBaseVectorBounds: real bounds for real velocities. 
+	 * If the velocities are not real, they won't be bounded by default. Should have a Bounds ?
+	 * @param _bndsModifier - An RealBoundModifier used to modify the bounds (for real bounds only).
 	 * @param _gen - The eo random generator, default=rng
 	 */
-	eoFixedInertiaWeightedVelocity (eoTopology < POT > & _topology,
+	FixedInertiaWeightedVelocity (Topology < POT > & _topology,
 					const VelocityType & _weight,
 					const VelocityType & _c1,
 					const VelocityType & _c2 ,
-					eoRealVectorBounds & _bounds,
-					eoRealBoundModifier & _bndsModifier,
-					eoRng & _gen = rng):
+					RealVectorBounds & _bounds,
+					RealBoundModifier & _bndsModifier,
+					Rng & _gen = rng):
             topology(_topology),
             weight(_weight),
             c1 (_c1),
@@ -84,16 +84,16 @@ namespace eo
 	 * @param _weight - The weight with type VelocityType
 	 * @param _c1 - The first learning factor used for the particle's best. Type must be POT::ParticleVelocityType 
 	 * @param _c2 - The second learning factor used for the local/global best(s). Type must be POT::ParticleVelocityType 
-	 * @param _bounds - An eoRealBaseVectorBounds: real bounds for real velocities. 
-	 * If the velocities are not real, they won't be bounded by default. Should have a eoBounds ?
+	 * @param _bounds - An RealBaseVectorBounds: real bounds for real velocities. 
+	 * If the velocities are not real, they won't be bounded by default. Should have a Bounds ?
 	 * @param _gen - The eo random generator, default=rng
 	 */
-	eoFixedInertiaWeightedVelocity (eoTopology < POT > & _topology,
+	FixedInertiaWeightedVelocity (Topology < POT > & _topology,
 					const VelocityType & _weight,
 					const VelocityType & _c1,
 					const VelocityType & _c2,
-					eoRealVectorBounds & _bounds,
-					eoRng & _gen = rng):
+					RealVectorBounds & _bounds,
+					Rng & _gen = rng):
             topology(_topology),
             weight(_weight),
             c1 (_c1),
@@ -110,16 +110,16 @@ namespace eo
 	 * @param _c2 - The second learning factor used for the local/global best(s). Type must be POT::ParticleVelocityType 
 	 * @param _gen - The eo random generator, default=rng
 	 */
-	eoFixedInertiaWeightedVelocity (eoTopology < POT > & _topology,
+	FixedInertiaWeightedVelocity (Topology < POT > & _topology,
 					const VelocityType & _weight,
 					const VelocityType & _c1,
 					const VelocityType & _c2,
-					eoRng & _gen = rng):
+					Rng & _gen = rng):
             topology(_topology),
             weight(_weight),
             c1 (_c1),
             c2 (_c2),
-            bounds(*(new eoRealVectorNoBounds(0))),
+            bounds(*(new RealVectorNoBounds(0))),
             bndsModifier(dummyModifier),
             gen(_gen)
 	{}
@@ -176,17 +176,17 @@ namespace eo
 
 
     protected:
-	eoTopology < POT > & topology;
+	Topology < POT > & topology;
 	const VelocityType & c1;  	// learning factor 1
 	const VelocityType  & c2; 	 // learning factor 2
 	const VelocityType & weight;   // the fixed weight
-	eoRng & gen; 	// the random generator
+	Rng & gen; 	// the random generator
 
-	eoRealVectorBounds & bounds; // REAL bounds even if the velocity could be of another type.
-	eoRealBoundModifier & bndsModifier;
+	RealVectorBounds & bounds; // REAL bounds even if the velocity could be of another type.
+	RealBoundModifier & bndsModifier;
 
 	// If the bound modifier doesn't need to be used, use the dummy instance
-	eoDummyRealBoundModifier dummyModifier;
+	DummyRealBoundModifier dummyModifier;
     };
 
 }

@@ -27,39 +27,39 @@
 
 
 //-----------------------------------------------------------------------------
-#include <eoPop.h>
-#include <eoFunctor.h>
-#include <eoMerge.h>
-#include <eoReduce.h>
-#include <eoReplacement.h>
-#include <utils/eoHowMany.h>
+#include <Pop.h>
+#include <Functor.h>
+#include <Merge.h>
+#include <Reduce.h>
+#include <Replacement.h>
+#include <utils/HowMany.h>
 //-----------------------------------------------------------------------------
 
 namespace eo
 {
 
     /** 
-	Replacement strategies that combine en eoMerge and an eoReduce.
+	Replacement strategies that combine en Merge and an Reduce.
 
-	@class eoMergeReduce, the base (pure abstract) class
-	@class eoPlusReplacement the ES plus strategy
-	@class eoCommaReplacement the ES comma strategy
+	@class MergeReduce, the base (pure abstract) class
+	@class PlusReplacement the ES plus strategy
+	@class CommaReplacement the ES comma strategy
     */
 
     /**
-       eoMergeReduce: abstract replacement strategy that is just an application of 
+       MergeReduce: abstract replacement strategy that is just an application of 
        an embedded merge, followed by an embedded reduce
        @ingroup Replacors
     */
     template <class EOT>
-    class eoMergeReduce : public eoReplacement<EOT>
+    class MergeReduce : public Replacement<EOT>
     {
     public:
-        eoMergeReduce(eoMerge<EOT>& _merge, eoReduce<EOT>& _reduce) :
+        MergeReduce(Merge<EOT>& _merge, Reduce<EOT>& _reduce) :
 	    merge(_merge), reduce(_reduce)
         {}
 
-        void operator()(eoPop<EOT>& _parents, eoPop<EOT>& _offspring)
+        void operator()(Pop<EOT>& _parents, Pop<EOT>& _offspring)
         {
             merge(_parents, _offspring); // parents untouched, result in offspring
             reduce(_offspring, _parents.size());
@@ -67,8 +67,8 @@ namespace eo
         }
 
     private :
-        eoMerge<EOT>& merge;
-        eoReduce<EOT>& reduce;
+        Merge<EOT>& merge;
+        Reduce<EOT>& reduce;
     };
 
     /**
@@ -76,14 +76,14 @@ namespace eo
        @ingroup Replacors
     */
     template <class EOT>
-    class eoPlusReplacement : public eoMergeReduce<EOT>
+    class PlusReplacement : public MergeReduce<EOT>
     {
     public :
-        eoPlusReplacement() : eoMergeReduce<EOT>(plus, truncate) {}
+        PlusReplacement() : MergeReduce<EOT>(plus, truncate) {}
 
     private :
-        eoPlus<EOT> plus;
-        eoTruncate<EOT> truncate;
+        Plus<EOT> plus;
+        Truncate<EOT> truncate;
     };
 
     /**
@@ -91,14 +91,14 @@ namespace eo
        @ingroup Replacors
     */
     template <class EOT>
-    class eoCommaReplacement : public eoMergeReduce<EOT>
+    class CommaReplacement : public MergeReduce<EOT>
     {
     public :
-        eoCommaReplacement() : eoMergeReduce<EOT>(no_elite, truncate) {}
+        CommaReplacement() : MergeReduce<EOT>(no_elite, truncate) {}
 
     private :
-        eoNoElitism<EOT> no_elite;
-        eoTruncate<EOT> truncate;
+        NoElitism<EOT> no_elite;
+        Truncate<EOT> truncate;
     };
 
     /**
@@ -107,15 +107,15 @@ namespace eo
        @ingroup Replacors
     */
     template <class EOT>
-    class eoEPReplacement : public eoMergeReduce<EOT>
+    class EPReplacement : public MergeReduce<EOT>
     {
     public :
-	eoEPReplacement(int _tSize) : eoMergeReduce<EOT>(plus, truncate), truncate(_tSize)
+	EPReplacement(int _tSize) : MergeReduce<EOT>(plus, truncate), truncate(_tSize)
 				      //  {truncate.setSize(_tSize);}
 	{}
     private :
-	eoPlus<EOT> plus;
-	eoEPReduce<EOT> truncate;
+	Plus<EOT> plus;
+	EPReduce<EOT> truncate;
     };
 
 }

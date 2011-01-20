@@ -27,9 +27,9 @@
 
 #include <algorithm>
 
-#include <eoOp.h>
-#include <eoSTLFunctor.h>
-#include <utils/eoRndGenerators.h>
+#include <Op.h>
+#include <STLFunctor.h>
+#include <utils/RndGenerators.h>
 
 namespace eo
 {
@@ -40,25 +40,25 @@ namespace eo
     */
 
     /** Abstract class for velocities initilization of particle swarm optimization.*/
-    template < class POT > class eoVelocityInit:public eoInit < POT >
+    template < class POT > class VelocityInit:public Init < POT >
     {
     public:
 	virtual std::string className (void) const
 	{
-	    return "eoVelocityInit";
+	    return "VelocityInit";
 	}
     };
 
 
     /**
-     *  Provides a particle initialized thanks to the eoVelocityInit object given.
+     *  Provides a particle initialized thanks to the VelocityInit object given.
      */
-    template < class POT > class eoVelocityInitGenerator:public eoF < POT >
+    template < class POT > class VelocityInitGenerator:public F < POT >
     {
     public:
 
-	/** Ctor from a plain eoVelocityInit */
-	eoVelocityInitGenerator (eoVelocityInit < POT > &_init):init (_init){}
+	/** Ctor from a plain VelocityInit */
+	VelocityInitGenerator (VelocityInit < POT > &_init):init (_init){}
 
 	virtual POT operator  () ()
 	{
@@ -68,21 +68,21 @@ namespace eo
 	}
 
     private:
-	eoVelocityInit < POT > &init;
+	VelocityInit < POT > &init;
     };
 
     /**
        Initializer for fixed length velocities with a single type
     */
-    template < class POT > class eoVelocityInitFixedLength:public eoVelocityInit <
+    template < class POT > class VelocityInitFixedLength:public VelocityInit <
 	POT >
     {
     public:
 
 	typedef typename POT::ParticleVelocityType VelocityType;
 
-	eoVelocityInitFixedLength (unsigned _combien,
-				   eoRndGenerator < VelocityType >
+	VelocityInitFixedLength (unsigned _combien,
+				   RndGenerator < VelocityType >
 				   &_generator):combien (_combien),
 						generator (_generator)
 	{
@@ -97,29 +97,29 @@ namespace eo
 
     private:
 	unsigned combien;
-	/// generic wrapper for eoFunctor (s), to make them have the function-pointer style copy semantics
-	eoSTLF < VelocityType > generator;
+	/// generic wrapper for Functor (s), to make them have the function-pointer style copy semantics
+	STLF < VelocityType > generator;
     };
 
     /**
        Initializer for variable length velocitys with a single type
     */
-    template < class POT > class eoVelocityInitVariableLength:public eoVelocityInit <
+    template < class POT > class VelocityInitVariableLength:public VelocityInit <
 	POT >
     {
     public:
 	typedef typename POT::ParticleVelocityType VelocityType;
 
-	/** Ctor from an eoVelocityInit */
-	eoVelocityInitVariableLength (unsigned _minSize, unsigned _maxSize,
-				      eoVelocityInit < VelocityType >
+	/** Ctor from an VelocityInit */
+	VelocityInitVariableLength (unsigned _minSize, unsigned _maxSize,
+				      VelocityInit < VelocityType >
 				      &_init):offset (_minSize),
 					      extent (_maxSize - _minSize), init (_init)
 	{
 	    if (_minSize >= _maxSize)
 		throw std::
 		    logic_error
-		    ("eoVelocityInitVariableLength: minSize larger or equal to maxSize");
+		    ("VelocityInitVariableLength: minSize larger or equal to maxSize");
 	}
 
 
@@ -132,7 +132,7 @@ namespace eo
 	}
 
 	// accessor to the atom initializer (needed by operator constructs sometimes)
-	eoInit < VelocityType > &atomInit ()
+	Init < VelocityType > &atomInit ()
 	{
 	    return init;
 	}
@@ -140,7 +140,7 @@ namespace eo
     private:
 	unsigned offset;
 	unsigned extent;
-	eoVelocityInit < VelocityType > &init;
+	VelocityInit < VelocityType > &init;
     };
 
 }

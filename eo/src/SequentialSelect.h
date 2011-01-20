@@ -29,17 +29,17 @@
 
 #include <limits>
 
-#include "utils/eoData.h"
-#include "utils/eoRNG.h"
-#include "eoSelectOne.h"
+#include "utils/Data.h"
+#include "utils/RNG.h"
+#include "SelectOne.h"
 
 namespace eo
 {
 
     /** Contains the following classes:
-     *  - eoSequentialSelect, returns all individuals one by one,
+     *  - SequentialSelect, returns all individuals one by one,
      *    either sorted or shuffled
-     *  - eoEliteSequentialSelect, returns all indivisuals one by one
+     *  - EliteSequentialSelect, returns all indivisuals one by one
      *    starting with best, continuing shuffled (see G3 engine)
      */
 
@@ -49,43 +49,43 @@ namespace eo
 	Looping back to the beginning when exhausted, can be from best to
 	worse, or in random order.
 
-	It is the eoSelectOne equivalent of eoDetSelect - though eoDetSelect
+	It is the SelectOne equivalent of DetSelect - though DetSelect
 	always returns individuals from best to worst
 
 	@ingroup Selectors
     */
-    template <class EOT> class eoSequentialSelect: public eoSelectOne<EOT>
+    template <class EOT> class SequentialSelect: public SelectOne<EOT>
     {
     public:
 	/** Ctor: sets the current pter to numeric_limits<unsigned>::max() so init will take place first time
 	    not very elegant, maybe ...
 	*/
-	eoSequentialSelect(bool _ordered = true)
+	SequentialSelect(bool _ordered = true)
 	    : ordered(_ordered), current(std::numeric_limits<unsigned>::max()) {}
 
-	void setup(const eoPop<EOT>& _pop)
+	void setup(const Pop<EOT>& _pop)
 	{
-	    eoPters.resize(_pop.size());
+	    Pters.resize(_pop.size());
 	    if (ordered)    // probably we could have a marker to avoid re-sorting
-		_pop.sort(eoPters);
+		_pop.sort(Pters);
 	    else
-		_pop.shuffle(eoPters);
+		_pop.shuffle(Pters);
 	    current=0;
 	}
 
-	virtual const EOT& operator()(const eoPop<EOT>& _pop)
+	virtual const EOT& operator()(const Pop<EOT>& _pop)
 	{
 	    if (current >= _pop.size())
 		setup(_pop);
 
 	    unsigned eoN = current;
 	    current++;
-	    return *eoPters[eoN] ;
+	    return *Pters[eoN] ;
 	}
     private:
 	bool ordered;
 	unsigned current;
-	std::vector<const EOT*> eoPters;
+	std::vector<const EOT*> Pters;
     };
 
 
@@ -95,56 +95,56 @@ namespace eo
 	The best individual first, then the others in sequence (random order).
 	for G3 evolution engine, see Deb, Anad and Joshi, CEC 2002
 
-	As eoSequentialSelect, it is an eoSelectOne to be used within the
-	eoEaseyEA algo, but conceptually it should be a global eoSelect, as it
+	As SequentialSelect, it is an SelectOne to be used within the
+	eoEaseyEA algo, but conceptually it should be a global Select, as it
 	selects a bunch of guys in one go (done in the setup function now)
 
 	@ingroup Selectors
     */
-    template <class EOT> class eoEliteSequentialSelect: public eoSelectOne<EOT>
+    template <class EOT> class EliteSequentialSelect: public SelectOne<EOT>
     {
     public:
 
 	/** Ctor: sets the current pter to numeric_limits<unsigned>::max() so init will take place first time
 	    not very elegant, maybe ...
 	*/
-	eoEliteSequentialSelect(): current(std::numeric_limits<unsigned>::max()) {}
+	EliteSequentialSelect(): current(std::numeric_limits<unsigned>::max()) {}
 
-	void setup(const eoPop<EOT>& _pop)
+	void setup(const Pop<EOT>& _pop)
 	{
-	    eoPters.resize(_pop.size());
-	    _pop.shuffle(eoPters);
+	    Pters.resize(_pop.size());
+	    _pop.shuffle(Pters);
 	    // now get the best
 	    unsigned int ibest = 0;
-	    const EOT * best = eoPters[0];
+	    const EOT * best = Pters[0];
 	    if (_pop.size() == 1)
-		throw std::runtime_error("Trying eoEliteSequentialSelect with only one individual!");
+		throw std::runtime_error("Trying EliteSequentialSelect with only one individual!");
 	    for (unsigned i=1; i<_pop.size(); i++)
-		if (*eoPters[i]>*best)
+		if (*Pters[i]>*best)
 		    {
 			ibest = i;
-			best = eoPters[ibest];
+			best = Pters[ibest];
 		    }
 	    // and put it upfront
-	    const EOT *ptmp = eoPters[0];
-	    eoPters[0]=best;
-	    eoPters[ibest] = ptmp;
+	    const EOT *ptmp = Pters[0];
+	    Pters[0]=best;
+	    Pters[ibest] = ptmp;
 	    // exit after setting current
 	    current=0;
 	}
 
-	virtual const EOT& operator()(const eoPop<EOT>& _pop)
+	virtual const EOT& operator()(const Pop<EOT>& _pop)
 	{
 	    if (current >= _pop.size())
 		setup(_pop);
 
 	    unsigned eoN = current;
 	    current++;
-	    return *eoPters[eoN] ;
+	    return *Pters[eoN] ;
 	}
     private:
 	unsigned current;
-	std::vector<const EOT*> eoPters;
+	std::vector<const EOT*> Pters;
     };
 
 }

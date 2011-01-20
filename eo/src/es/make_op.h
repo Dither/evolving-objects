@@ -28,21 +28,21 @@
 #define _make_op_h
 
 // the operators
-#include <eoOp.h>
-#include <eoGenOp.h>
-#include <eoCloneOps.h>
-#include <eoOpContainer.h>
-// combinations of simple eoOps (eoMonOp and eoQuadOp)
-#include <eoProportionalCombinedOp.h>
+#include <Op.h>
+#include <GenOp.h>
+#include <CloneOps.h>
+#include <OpContainer.h>
+// combinations of simple Ops (MonOp and QuadOp)
+#include <ProportionalCombinedOp.h>
 
 // the specialized Real stuff
-#include <es/eoReal.h>
-#include <es/eoRealInitBounded.h>
-#include <es/eoRealOp.h>
-#include <es/eoNormalMutation.h>
+#include <es/Real.h>
+#include <es/RealInitBounded.h>
+#include <es/RealOp.h>
+#include <es/NormalMutation.h>
   // also need the parser and param includes
-#include <utils/eoParser.h>
-#include <utils/eoState.h>
+#include <utils/Parser.h>
+#include <utils/State.h>
 
 namespace eo
 {
@@ -52,7 +52,7 @@ namespace eo
      */
 
     /*
-     * This function builds the operators that will be applied to the eoReal
+     * This function builds the operators that will be applied to the Real
      *
      * It uses a parser (to get user parameters) and a state (to store the memory)
      * the last argument is an individual, needed for 2 reasons
@@ -62,7 +62,7 @@ namespace eo
      * This is why the template is the complete EOT even though only the fitness
      * is actually templatized here: the following only applies to bitstrings
      *
-     * Note : the last parameter is an eoInit: if some operator needs some info
+     * Note : the last parameter is an Init: if some operator needs some info
      *        about the gneotypes, the init has it all (e.g. bounds, ...)
      *        Simply do
      *        EOT myEO;
@@ -70,16 +70,16 @@ namespace eo
      *        and myEO is then an ACTUAL object
      */
     template <class EOT>
-    eoGenOp<EOT> & do_make_op(eoParameterLoader& _parser, eoState& _state, eoInit<EOT>& _init)
+    GenOp<EOT> & do_make_op(ParameterLoader& _parser, State& _state, Init<EOT>& _init)
     {
 	// First, decide whether the objective variables are bounded
-	eoValueParam<eoParamParamType>& boundsParam
-	    = _parser.getORcreateParam(eoParamParamType("(0,1)"), "objectBounds",
+	ValueParam<ParamParamType>& boundsParam
+	    = _parser.getORcreateParam(ParamParamType("(0,1)"), "objectBounds",
 				       "Bounds for variables (unbounded if absent)",
 				       'B', "Genetic Operators");
 
 	// get initisalizer size == std::vector size
-	//  eoRealInitBounded<EOT> * realInit = (eoRealInitBounded<EOT>*)(&_init);
+	//  RealInitBounded<EOT> * realInit = (RealInitBounded<EOT>*)(&_init);
 	//  unsigned vecSize = realInit->theBounds().size();
 
 	// get std::vector size: safer???
@@ -88,13 +88,13 @@ namespace eo
 	unsigned vecSize = eoTmp.size();
 
 	// the bounds pointer
-	eoRealVectorBounds * ptBounds;
+	RealVectorBounds * ptBounds;
 	if (_parser.isItThere(boundsParam))	// otherwise, no bounds
 	    {
 		/////Warning: this code should probably be replaced by creating
-		/////    some eoValueParam<eoRealVectorBounds> with specific implementation
-		////     in eoParser.cpp. At the moemnt, it is there (cf also make_genotype
-		eoParamParamType & ppBounds = boundsParam.value(); // std::pair<std::string,std::vector<std::string> >
+		/////    some ValueParam<RealVectorBounds> with specific implementation
+		////     in Parser.cpp. At the moemnt, it is there (cf also make_genotype
+		ParamParamType & ppBounds = boundsParam.value(); // std::pair<std::string,std::vector<std::string> >
 		// transform into a std::vector<double>
 		std::vector<double> v;
 		std::vector<std::string>::iterator it;
@@ -105,23 +105,23 @@ namespace eo
 			is >> r;
 			v.push_back(r);
 		    }
-		// now create the eoRealVectorBounds object
+		// now create the RealVectorBounds object
 		if (v.size() == 2) // a min and a max for all variables
-		    ptBounds = new eoRealVectorBounds(vecSize, v[0], v[1]);
+		    ptBounds = new RealVectorBounds(vecSize, v[0], v[1]);
 		else				   // no time now
 		    throw std::runtime_error("Sorry, only unique bounds for all variables implemented at the moment. Come back later");
 		// we need to give ownership of this pointer to somebody
 		/////////// end of temporary code
 	    }
 	else			   // no param for bounds was given
-	    ptBounds = new eoRealVectorNoBounds(vecSize); // DON'T USE eoDummyVectorNoBounds
+	    ptBounds = new RealVectorNoBounds(vecSize); // DON'T USE DummyVectorNoBounds
 	// as it does not have any dimension
 
 	// this is a temporary version(!),
 	// while Maarten codes the full tree-structured general operator input
 	// BTW we must leave that simple version available somehow, as it is the one
 	// that 90% people use!
-	eoValueParam<std::string>& operatorParam
+	ValueParam<std::string>& operatorParam
 	    =  _parser.getORcreateParam(std::string("SGA"), "operator",
 					"Description of the operator (SGA only now)",
 					'o', "Genetic Operators");
@@ -132,17 +132,17 @@ namespace eo
 	// now we read Pcross and Pmut,
 	// the relative weights for all crossovers -> proportional choice
 	// the relative weights for all mutations -> proportional choice
-	// and create the eoGenOp that is exactly
+	// and create the GenOp that is exactly
 	// crossover with pcross + mutation with pmut
 
-	eoValueParam<double>& pCrossParam
+	ValueParam<double>& pCrossParam
 	    = _parser.getORcreateParam(0.6, "pCross", "Probability of Crossover",
 				       'C', "Genetic Operators" );
 	// minimum check
 	if ( (pCrossParam.value() < 0) || (pCrossParam.value() > 1) )
 	    throw std::runtime_error("Invalid pCross");
 
-	eoValueParam<double>& pMutParam
+	ValueParam<double>& pMutParam
 	    = _parser.getORcreateParam(0.1, "pMut", "Probability of Mutation",
 				       'M', "Genetic Operators" );
 	// minimum check
@@ -152,7 +152,7 @@ namespace eo
 	// the crossovers
 	/////////////////
 	// the parameters
-	eoValueParam<double>& segmentRateParam
+	ValueParam<double>& segmentRateParam
 	    = _parser.getORcreateParam(double(1.0), "segmentRate",
 				       "Relative rate for segment crossover",
 				       's', "Genetic Operators" );
@@ -160,7 +160,7 @@ namespace eo
 	if ( (segmentRateParam.value() < 0) )
 	    throw std::runtime_error("Invalid segmentRate");
 
-	eoValueParam<double>& arithmeticRateParam
+	ValueParam<double>& arithmeticRateParam
 	    = _parser.getORcreateParam(double(2.0), "arithmeticRate",
 				       "Relative rate for arithmetic crossover",
 				       'A', "Genetic Operators" );
@@ -177,18 +177,18 @@ namespace eo
 	    }
 
 	// Create the CombinedQuadOp
-	eoPropCombinedQuadOp<EOT> *ptCombinedQuadOp = NULL;
-	eoQuadOp<EOT> *ptQuad = NULL;
+	PropCombinedQuadOp<EOT> *ptCombinedQuadOp = NULL;
+	QuadOp<EOT> *ptQuad = NULL;
 
 	if (bCross)
 	    {
 		// segment crossover for bitstring - pass it the bounds
-		ptQuad = new eoSegmentCrossover<EOT>(*ptBounds);
+		ptQuad = new SegmentCrossover<EOT>(*ptBounds);
 		_state.storeFunctor(ptQuad);
-		ptCombinedQuadOp = new eoPropCombinedQuadOp<EOT>(*ptQuad, segmentRateParam.value());
+		ptCombinedQuadOp = new PropCombinedQuadOp<EOT>(*ptQuad, segmentRateParam.value());
 
 		// arithmetic crossover
-		ptQuad = new eoArithmeticCrossover<EOT>(*ptBounds);
+		ptQuad = new ArithmeticCrossover<EOT>(*ptBounds);
 		_state.storeFunctor(ptQuad);
 		ptCombinedQuadOp->add(*ptQuad, arithmeticRateParam.value());
 
@@ -199,21 +199,21 @@ namespace eo
 	// the mutations
 	/////////////////
 	// the parameters
-	eoValueParam<double> & epsilonParam
+	ValueParam<double> & epsilonParam
 	    = _parser.getORcreateParam(0.01, "epsilon", "Half-size of interval for Uniform Mutation",
 				       'e', "Genetic Operators" );
 	// minimum check
 	if ( (epsilonParam.value() < 0) )
 	    throw std::runtime_error("Invalid epsilon");
 
-	eoValueParam<double> & uniformMutRateParam
+	ValueParam<double> & uniformMutRateParam
 	    = _parser.getORcreateParam(1.0, "uniformMutRate",
 				       "Relative rate for uniform mutation", 'u', "Genetic Operators" );
 	// minimum check
 	if ( (uniformMutRateParam.value() < 0) )
 	    throw std::runtime_error("Invalid uniformMutRate");
 
-	eoValueParam<double> & detMutRateParam
+	ValueParam<double> & detMutRateParam
 	    = _parser.getORcreateParam(1.0, "detMutRate",
 				       "Relative rate for deterministic uniform mutation",
 				       'd', "Genetic Operators" );
@@ -221,7 +221,7 @@ namespace eo
 	if ( (detMutRateParam.value() < 0) )
 	    throw std::runtime_error("Invalid detMutRate");
 
-	eoValueParam<double> & normalMutRateParam
+	ValueParam<double> & normalMutRateParam
 	    = _parser.getORcreateParam(1.0, "normalMutRate",
 				       "Relative rate for Gaussian mutation",
 				       'd', "Genetic Operators" );
@@ -229,7 +229,7 @@ namespace eo
 	if ( (normalMutRateParam.value() < 0) )
 	    throw std::runtime_error("Invalid normalMutRate");
 	// and the sigma
-	eoValueParam<double> & sigmaParam
+	ValueParam<double> & sigmaParam
 	    = _parser.getORcreateParam(1.0, "sigma",
 				       "Sigma (fixed) for Gaussian mutation",
 				       'S', "Genetic Operators" );
@@ -248,31 +248,31 @@ namespace eo
 	    throw std::runtime_error("No operator called in SGA operator definition!!!");
 
 	// Create the CombinedMonOp
-	eoPropCombinedMonOp<EOT> *ptCombinedMonOp = NULL;
-	eoMonOp<EOT> *ptMon = NULL;
+	PropCombinedMonOp<EOT> *ptCombinedMonOp = NULL;
+	MonOp<EOT> *ptMon = NULL;
 
 	if (bMut)
 	    {
 		// uniform mutation on all components:
 		// offspring(i) uniformly chosen in [parent(i)-epsilon, parent(i)+epsilon]
-		ptMon = new eoUniformMutation<EOT>(*ptBounds, epsilonParam.value());
+		ptMon = new UniformMutation<EOT>(*ptBounds, epsilonParam.value());
 		_state.storeFunctor(ptMon);
 		// create the CombinedMonOp
-		ptCombinedMonOp = new eoPropCombinedMonOp<EOT>(*ptMon, uniformMutRateParam.value());
+		ptCombinedMonOp = new PropCombinedMonOp<EOT>(*ptMon, uniformMutRateParam.value());
 
 		// mutate exactly 1 component (uniformly) per individual
-		ptMon = new eoDetUniformMutation<EOT>(*ptBounds, epsilonParam.value());
+		ptMon = new DetUniformMutation<EOT>(*ptBounds, epsilonParam.value());
 		_state.storeFunctor(ptMon);
 		ptCombinedMonOp->add(*ptMon, detMutRateParam.value());
 
 		// mutate all component using Gaussian mutation
-		ptMon = new eoNormalMutation<EOT>(*ptBounds, sigmaParam.value());
+		ptMon = new NormalMutation<EOT>(*ptBounds, sigmaParam.value());
 		_state.storeFunctor(ptMon);
 		ptCombinedMonOp->add(*ptMon, normalMutRateParam.value());
 		_state.storeFunctor(ptCombinedMonOp);
 	    }
 
-	// now build the eoGenOp:
+	// now build the GenOp:
 	// to simulate SGA (crossover with proba pCross + mutation with proba pMut
 	// we must construct
 	//     a sequential combination of
@@ -281,15 +281,15 @@ namespace eo
 	//          with proba pMut, our mutation
 
 	// the crossover - with probability pCross
-	eoProportionalOp<EOT> * cross = new eoProportionalOp<EOT> ;
+	ProportionalOp<EOT> * cross = new ProportionalOp<EOT> ;
 	_state.storeFunctor(cross);
-	ptQuad = new eoQuadCloneOp<EOT>;
+	ptQuad = new QuadCloneOp<EOT>;
 	_state.storeFunctor(ptQuad);
 	cross->add(*ptCombinedQuadOp, pCrossParam.value()); // user crossover
 	cross->add(*ptQuad, 1-pCrossParam.value()); // clone operator
 
 	// now the sequential
-	eoSequentialOp<EOT> *op = new eoSequentialOp<EOT>;
+	SequentialOp<EOT> *op = new SequentialOp<EOT>;
 	_state.storeFunctor(op);
 	op->add(*cross, 1.0);	 // always crossover (but clone with prob 1-pCross
 	op->add(*ptCombinedMonOp, pMutParam.value());

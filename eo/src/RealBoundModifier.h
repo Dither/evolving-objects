@@ -24,8 +24,8 @@
 #ifndef REALBOUNDMODIFIER_H
 #define REALBOUNDMODIFIER_H
 
-#include <eoFunctor.h>
-#include <utils/eoRealVectorBounds.h>
+#include <Functor.h>
+#include <utils/RealVectorBounds.h>
 
 namespace eo
 {
@@ -39,25 +39,25 @@ namespace eo
      */
 
     /**
-     * Abstract class for eoRealVectorBounds modifier.
-     * Used to modify the bounds included into the eoRealVectorBounds object.
+     * Abstract class for RealVectorBounds modifier.
+     * Used to modify the bounds included into the RealVectorBounds object.
      *
      * @ingroup Bounds
      */
-    class eoRealBoundModifier: public eoBF < eoRealBaseVectorBounds &,unsigned,void > {};
+    class RealBoundModifier: public BF < RealBaseVectorBounds &,unsigned,void > {};
 
 
     /**
-     * An eoRealBoundModifier that modify nothing !
+     * An RealBoundModifier that modify nothing !
      * @ingroup Bounds
      */
-    class eoDummyRealBoundModifier: public eoRealBoundModifier
+    class DummyRealBoundModifier: public RealBoundModifier
     {
     public:
 
-	eoDummyRealBoundModifier (){}
+	DummyRealBoundModifier (){}
 
-	void operator() (eoRealBaseVectorBounds & _bnds,unsigned _i)
+	void operator() (RealBaseVectorBounds & _bnds,unsigned _i)
 	{
 	    (void)_bnds;
 	    (void)_i;
@@ -66,43 +66,43 @@ namespace eo
 
 
     /**
-     * Modify an eoReal(Base)VectorBounds :
+     * Modify an Real(Base)VectorBounds :
      * At iteration t, the interval I(t)=[min,max] is updated as:
      * I(t)=[min,(1-(t/Nt)^alpha)*max] where
-     * - t, the current iteration, is given with an eoValueParam<unsigned>
+     * - t, the current iteration, is given with an ValueParam<unsigned>
      * - Nt is the stopping criteria <=> the total number of iterations
      * - alpha a coefficient
      * 
      */
-    class eoExpDecayingBoundModifier: public eoRealBoundModifier
+    class ExpDecayingBoundModifier: public RealBoundModifier
     {
     public:
 	/**
 	 * Constructor
 	 * @param _stopCriteria - The total number of iterations
 	 * @param _alpha 
-	 * @param _genCounter - An eoValueParam<unsigned> that gives the current iteration
+	 * @param _genCounter - An ValueParam<unsigned> that gives the current iteration
 	 */
-	eoExpDecayingBoundModifier (unsigned _stopCriteria,
+	ExpDecayingBoundModifier (unsigned _stopCriteria,
 				    double _alpha,
-				    eoValueParam<unsigned> & _genCounter):
+				    ValueParam<unsigned> & _genCounter):
 	    stopCriteria(_stopCriteria),
 	    alpha(_alpha),
 	    genCounter(_genCounter){}
 
-	void operator() (eoRealBaseVectorBounds & _bnds,unsigned _i)
+	void operator() (RealBaseVectorBounds & _bnds,unsigned _i)
 	{
 	    double newMaxBound=(1-pow((double)genCounter.value()/stopCriteria,alpha))*_bnds.maximum(_i);
 
-	    // should delete the old eoRealBounds ?
-	    _bnds[_i]=new eoRealInterval(_bnds.minimum(_i),std::max(_bnds.minimum(_i),newMaxBound));
+	    // should delete the old RealBounds ?
+	    _bnds[_i]=new RealInterval(_bnds.minimum(_i),std::max(_bnds.minimum(_i),newMaxBound));
 	}
 
 
     protected:
 	unsigned stopCriteria;
 	double alpha;
-	eoValueParam<unsigned> & genCounter;
+	ValueParam<unsigned> & genCounter;
 
     };
 

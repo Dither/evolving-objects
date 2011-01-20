@@ -28,19 +28,19 @@
 
 
 //-----------------------------------------------------------------------------
-#include <eoPop.h>
-#include <eoFunctor.h>
-#include <eoMerge.h>
-#include <eoReduce.h>
-#include <utils/eoHowMany.h>
-#include <eoReduceSplit.h>
+#include <Pop.h>
+#include <Functor.h>
+#include <Merge.h>
+#include <Reduce.h>
+#include <utils/HowMany.h>
+#include <ReduceSplit.h>
 //-----------------------------------------------------------------------------
 
 namespace eo
 {
 
     /**
-       eoG3Replacement is an eoReplacement:
+       G3Replacement is an Replacement:
        - no strong elitism (is suppposed to be within a steady-state engine)
        - choose N (2) parents RANDOMLY - remove them from the parent population
        - merge offspring and the N removed parents
@@ -50,19 +50,19 @@ namespace eo
        @ingroup Replacors
     */
     template <class EOT>
-    class eoG3Replacement : public eoReplacement<EOT>
+    class G3Replacement : public Replacement<EOT>
     {
     public:
-	eoG3Replacement(eoHowMany _howManyEliminatedParents = eoHowMany(2, false)) :
+	G3Replacement(HowMany _howManyEliminatedParents = HowMany(2, false)) :
 	    // split truncates the parents and returns eliminated parents
 	    split(_howManyEliminatedParents, true), 
 	    // reduce truncates the offpsring and does not return eliminated guys
 	    reduce(-_howManyEliminatedParents, false) 
 	{}
     
-	void operator()(eoPop<EOT> & _parents, eoPop<EOT> & _offspring)
+	void operator()(Pop<EOT> & _parents, Pop<EOT> & _offspring)
 	{
-	    eoPop<EOT> temp;
+	    Pop<EOT> temp;
 	    split(_parents, temp);
 	    unsigned toKeep = temp.size(); // how many to keep from merged populations
 	    // merge temp into offspring
@@ -74,16 +74,16 @@ namespace eo
 	    if (_offspring.size() != toKeep)
 		{
 		    std::cerr << "Les tailles " << _offspring.size() << " " << toKeep << std::endl;
-		    throw std::runtime_error("eoG3Replacement: wrong number of remaining offspring");
+		    throw std::runtime_error("G3Replacement: wrong number of remaining offspring");
 		}
 	    // and put back into _parents
 	    plus(_offspring, _parents);      
 	}
 
     private:
-	eoLinearTruncateSplit<EOT> split; // few parents to truncate -> linear 
-	eoTruncateSplit<EOT> reduce;	   // supposedly many offspring to truncate
-	eoPlus<EOT> plus;
+	LinearTruncateSplit<EOT> split; // few parents to truncate -> linear 
+	TruncateSplit<EOT> reduce;	   // supposedly many offspring to truncate
+	Plus<EOT> plus;
     };
 
 }

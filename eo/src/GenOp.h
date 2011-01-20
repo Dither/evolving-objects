@@ -26,9 +26,9 @@
 #ifndef _GenOp_H
 #define _GenOp_H
 
-#include <eoOp.h>
-#include <eoPopulator.h>
-#include <eoFunctorStore.h>
+#include <Op.h>
+#include <Populator.h>
+#include <FunctorStore.h>
 #include <assert.h>
 
 namespace eo
@@ -37,7 +37,7 @@ namespace eo
     /** @name General variation operators
 
 	a class that allows to use i->j operators for any i and j
-	thanks to the friend class eoPopulator
+	thanks to the friend class Populator
 
 	@author Maarten Keijzer
 	@version 0.0
@@ -50,8 +50,8 @@ namespace eo
 
     /** The base class for General Operators
 	Subclass this operator is you want to define an operator that falls
-	outside of the eoMonOp, eoBinOp, eoQuadOp classification. The argument
-	the operator will receive is an eoPopulator, which is a wrapper around
+	outside of the MonOp, BinOp, QuadOp classification. The argument
+	the operator will receive is an Populator, which is a wrapper around
 	the original population, is an instantiation of the next population and
 	has often a selection function embedded in it to select new individuals.
 
@@ -60,11 +60,11 @@ namespace eo
 	the object if necessary
     */
     template <class EOT>
-    class eoGenOp : public eoOp<EOT>, public eoUF<eoPopulator<EOT> &, void>
+    class GenOp : public Op<EOT>, public UF<Populator<EOT> &, void>
     {
     public :
 	/// Ctor that honors its superclass
-	eoGenOp(): eoOp<EOT>( eoOp<EOT>::general ) {}
+	GenOp(): Op<EOT>( Op<EOT>::general ) {}
 
 	/** Max production is used to reserve space for all elements that are used by the operator,
 	    not setting it properly can result in a crash
@@ -72,7 +72,7 @@ namespace eo
 	virtual unsigned max_production(void) = 0;
 
 	virtual std::string className() const = 0;
-	void operator()(eoPopulator<EOT>& _pop)
+	void operator()(Populator<EOT>& _pop)
 	{
 	    _pop.reserve(max_production());
 	    apply(_pop);
@@ -82,22 +82,22 @@ namespace eo
     protected :
 	/** the function that will do the work
 	 */
-	virtual void apply(eoPopulator<EOT>& _pop) = 0;
+	virtual void apply(Populator<EOT>& _pop) = 0;
     };
-    /** @example t-eoGenOp.cpp
+    /** @example t-GenOp.cpp
      */
 
 
-    /** Wrapper for eoMonOp */
+    /** Wrapper for MonOp */
     template <class EOT>
-    class eoMonGenOp : public eoGenOp<EOT>
+    class MonGenOp : public GenOp<EOT>
     {
     public:
-	eoMonGenOp(eoMonOp<EOT>& _op) : op(_op) {}
+	MonGenOp(MonOp<EOT>& _op) : op(_op) {}
 
 	unsigned max_production(void) { return 1; }
 
-	void apply(eoPopulator<EOT>& _it)
+	void apply(Populator<EOT>& _it)
 	{
 	    if (op(*_it))
 		(*_it).invalidate();  // look how simple
@@ -105,24 +105,24 @@ namespace eo
 	}
 	virtual std::string className() const {return op.className();}
     private :
-	eoMonOp<EOT>& op;
+	MonOp<EOT>& op;
     };
 
-    /** Wrapper for binop: here we use select method of eoPopulator
+    /** Wrapper for binop: here we use select method of Populator
      *  but we could also have an embedded selector to select the second parent
      */
     template <class EOT>
-    class eoBinGenOp : public eoGenOp<EOT>
+    class BinGenOp : public GenOp<EOT>
     {
     public:
-	eoBinGenOp(eoBinOp<EOT>& _op) : op(_op) {}
+	BinGenOp(BinOp<EOT>& _op) : op(_op) {}
 
 	unsigned max_production(void) { return 1; } 
 
 	/** do the work: get 2 individuals from the population, modifies
-	    only one (it's a eoBinOp) 
+	    only one (it's a BinOp) 
 	*/
-	void apply(eoPopulator<EOT>& _pop)
+	void apply(Populator<EOT>& _pop)
 	{
 	    EOT& a = *_pop;
 	    const EOT& b = _pop.select();
@@ -133,43 +133,43 @@ namespace eo
 	virtual std::string className() const {return op.className();}
 
     private :
-	eoBinOp<EOT>& op;
+	BinOp<EOT>& op;
     };
 
-    /** wrapper for eoBinOp with a selector */
+    /** wrapper for BinOp with a selector */
     template <class EOT>
-    class eoSelBinGenOp : public eoGenOp<EOT>
+    class SelBinGenOp : public GenOp<EOT>
     {
     public:
-	eoSelBinGenOp(eoBinOp<EOT>& _op, eoSelectOne<EOT>& _sel) :
+	SelBinGenOp(BinOp<EOT>& _op, SelectOne<EOT>& _sel) :
 	    op(_op), sel(_sel) {}
 
 	unsigned max_production(void) { return 1; }
 
-	void apply(eoPopulator<EOT>& _pop)
-	{ // _pop.source() gets the original population, an eoVecOp can make use of this as well
+	void apply(Populator<EOT>& _pop)
+	{ // _pop.source() gets the original population, an VecOp can make use of this as well
 	    if (op(*_pop, sel(_pop.source())))
 		(*_pop).invalidate();
 	}
 	virtual std::string className() const {return op.className();}
 
     private :
-	eoBinOp<EOT>& op;
-	eoSelectOne<EOT>& sel;
+	BinOp<EOT>& op;
+	SelectOne<EOT>& sel;
     };
 
 
     /** Wrapper for quadop: easy as pie
      */
     template <class EOT>
-    class eoQuadGenOp : public eoGenOp<EOT>
+    class QuadGenOp : public GenOp<EOT>
     {
     public:
-	eoQuadGenOp(eoQuadOp<EOT>& _op) : op(_op) {}
+	QuadGenOp(QuadOp<EOT>& _op) : op(_op) {}
 
 	unsigned max_production(void) { return 2; }
 
-	void apply(eoPopulator<EOT>& _pop)
+	void apply(Populator<EOT>& _pop)
 	{
 	    EOT& a = *_pop;
 	    EOT& b = *++_pop;
@@ -184,46 +184,46 @@ namespace eo
 	virtual std::string className() const {return op.className();}
 
     private :
-	eoQuadOp<EOT>& op;
+	QuadOp<EOT>& op;
     };
 
     /**
        Factory function for automagically creating references to an
-       eoGenOp object. Useful when you are too lazy to figure out
+       GenOp object. Useful when you are too lazy to figure out
        which wrapper belongs to which operator. The memory allocated
-       in the wrapper will be stored in a eoFunctorStore (eoState derives from this).
-       Therefore the memory will only be freed when the eoFunctorStore is deleted.
+       in the wrapper will be stored in a FunctorStore (State derives from this).
+       Therefore the memory will only be freed when the FunctorStore is deleted.
        Make very sure that you are not using these wrappers after this happens.
 
        You can use this function 'wrap_op' in the following way. Suppose you've
-       created an eoQuadOp<EOT> called my_quad, and you want to feed it to an eoTransform
-       derived class that expects an eoGenOp<EOT>. If you have an eoState lying around
+       created an QuadOp<EOT> called my_quad, and you want to feed it to an Transform
+       derived class that expects an GenOp<EOT>. If you have an State lying around
        (which is generally a good idea) you can say:
 
-       eoDerivedTransform<EOT> trans(eoGenOp<EOT>::wrap_op(my_quad, state), ...);
+       DerivedTransform<EOT> trans(GenOp<EOT>::wrap_op(my_quad, state), ...);
 
        And as long as your state is not destroyed (by going out of scope for example,
        your 'trans' functor will be usefull.
 
-       As a final note, you can also enter an eoGenOp as the argument. It will
+       As a final note, you can also enter an GenOp as the argument. It will
        not allocate memory then. This to make it even easier to use the wrap_op function.
-       For an example of how this is used, check the eoOpContainer class.
+       For an example of how this is used, check the OpContainer class.
 
-       @see eoOpContainer
+       @see OpContainer
     */
     template <class EOT>
-    eoGenOp<EOT>& wrap_op(eoOp<EOT>& _op, eoFunctorStore& _store)
+    GenOp<EOT>& wrap_op(Op<EOT>& _op, FunctorStore& _store)
     {
 	switch(_op.getType())
 	    {
-	    case eoOp<EOT>::unary     : return _store.storeFunctor(new eoMonGenOp<EOT>(static_cast<eoMonOp<EOT>&>(_op)));
-	    case eoOp<EOT>::binary    : return _store.storeFunctor(new eoBinGenOp<EOT>(static_cast<eoBinOp<EOT>&>(_op)));
-	    case eoOp<EOT>::quadratic : return _store.storeFunctor(new eoQuadGenOp<EOT>(static_cast<eoQuadOp<EOT>&>(_op)));
-	    case eoOp<EOT>::general   : return static_cast<eoGenOp<EOT>&>(_op);
+	    case Op<EOT>::unary     : return _store.storeFunctor(new MonGenOp<EOT>(static_cast<MonOp<EOT>&>(_op)));
+	    case Op<EOT>::binary    : return _store.storeFunctor(new BinGenOp<EOT>(static_cast<BinOp<EOT>&>(_op)));
+	    case Op<EOT>::quadratic : return _store.storeFunctor(new QuadGenOp<EOT>(static_cast<QuadOp<EOT>&>(_op)));
+	    case Op<EOT>::general   : return static_cast<GenOp<EOT>&>(_op);
 	    }
 
 	assert(false);
-	return static_cast<eoGenOp<EOT>&>(_op);
+	return static_cast<GenOp<EOT>&>(_op);
     }
 
 }

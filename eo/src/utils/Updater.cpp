@@ -8,15 +8,15 @@
 
 #include <sstream>
 
-#include <utils/eoState.h>
-#include <utils/eoUpdater.h>
+#include <utils/State.h>
+#include <utils/Updater.h>
 
 namespace eo
 {
 
     using namespace std;
 
-    void eoTimedStateSaver::operator()(void)
+    void TimedStateSaver::operator()(void)
     {
 	time_t now = time(0);
 
@@ -29,20 +29,20 @@ namespace eo
 	    }
     }
 
-    void eoCountedStateSaver::doItNow(void)
+    void CountedStateSaver::doItNow(void)
     {
 	ostringstream os;
         os << prefix << counter << '.' << extension;
         state.save(os.str());
     }
 
-    void eoCountedStateSaver::operator()(void)
+    void CountedStateSaver::operator()(void)
     {
 	if (++counter % interval == 0)
 	    doItNow();
     }
 
-    void eoCountedStateSaver::lastCall(void)
+    void CountedStateSaver::lastCall(void)
     {
 	if (saveOnLastCall)
 	    doItNow();

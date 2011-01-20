@@ -25,26 +25,26 @@
 #ifndef _REALPARTICLE_H
 #define _REALPARTICLE_H
 
-#include <eoVectorParticle.h>
+#include <VectorParticle.h>
 
 namespace eo
 {
 
-    /** eoRealParticle: Implementation of a real-coded particle for
+    /** RealParticle: Implementation of a real-coded particle for
      *  particle swarm optimization. Positions, velocities and best positions are real-coded.
      *
      *  @ingroup Real
      */
-    template < class FitT> class eoRealParticle: public eoVectorParticle<FitT,double,double>
+    template < class FitT> class RealParticle: public VectorParticle<FitT,double,double>
 
     {
     public:
 
-	eoRealParticle(unsigned size = 0, double positions = 0.0,double velocities = 0.0,double bestPositions = 0.0): eoVectorParticle<FitT, double,double> (size, positions,velocities,bestPositions) {}
+	RealParticle(unsigned size = 0, double positions = 0.0,double velocities = 0.0,double bestPositions = 0.0): VectorParticle<FitT, double,double> (size, positions,velocities,bestPositions) {}
 
 	virtual std::string className() const
 	{
-	    return "eoRealParticle";
+	    return "RealParticle";
 	}
     };
 

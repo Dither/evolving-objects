@@ -27,13 +27,13 @@
 #ifndef _SGA_h
 #define _SGA_h
 
-#include <eoInvalidateOps.h>
-#include <eoContinue.h>
-#include <eoPop.h>
-#include <eoSelectOne.h>
-#include <eoSelectPerc.h>
-#include <eoEvalFunc.h>
-#include <eoAlgo.h>
+#include <InvalidateOps.h>
+#include <Continue.h>
+#include <Pop.h>
+#include <SelectOne.h>
+#include <SelectPerc.h>
+#include <EvalFunc.h>
+#include <Algo.h>
 #include <apply.h>
 
 namespace eo
@@ -41,27 +41,27 @@ namespace eo
 
     /** The Simple Genetic Algorithm, following Holland and Goldberg
      *
-     * Needs a selector (class eoSelectOne) a crossover (eoQuad, i.e. a
+     * Needs a selector (class SelectOne) a crossover (Quad, i.e. a
      * 2->2 operator) and a mutation with their respective rates, of
-     * course an evaluation function (eoEvalFunc) and a continuator
-     * (eoContinue) which gives the stopping criterion. Performs full
+     * course an evaluation function (EvalFunc) and a continuator
+     * (Continue) which gives the stopping criterion. Performs full
      * generational replacement.
      *
      * @ingroup Algorithms
      */
     template <class EOT>
-    class eoSGA : public eoAlgo<EOT>
+    class SGA : public Algo<EOT>
     {
     public :
 
 	// added this second ctor as I didn't like the ordering of the parameters
 	// in the one above. Any objection :-) MS
-	eoSGA(
-	      eoSelectOne<EOT>& _select,
-	      eoQuadOp<EOT>& _cross, float _crate,
-	      eoMonOp<EOT>& _mutate, float _mrate,
-	      eoEvalFunc<EOT>& _eval,
-	      eoContinue<EOT>& _cont)
+	SGA(
+	      SelectOne<EOT>& _select,
+	      QuadOp<EOT>& _cross, float _crate,
+	      MonOp<EOT>& _mutate, float _mrate,
+	      EvalFunc<EOT>& _eval,
+	      Continue<EOT>& _cont)
 	    : cont(_cont),
 	      mutate(_mutate),
 	      mutationRate(_mrate),
@@ -70,9 +70,9 @@ namespace eo
 	      select(_select),
 	      eval(_eval) {}
 
-	void operator()(eoPop<EOT>& _pop)
+	void operator()(Pop<EOT>& _pop)
 	{
-	    eoPop<EOT> offspring;
+	    Pop<EOT> offspring;
 
 	    do
 		{
@@ -110,15 +110,15 @@ namespace eo
 
     private :
 
-	eoContinue<EOT>& cont;
-	/// eoInvalidateMonOp invalidates the embedded operator
-	eoInvalidateMonOp<EOT> mutate;
+	Continue<EOT>& cont;
+	/// InvalidateMonOp invalidates the embedded operator
+	InvalidateMonOp<EOT> mutate;
 	float mutationRate;
-	// eoInvalidateQuadOp invalidates the embedded operator
-	eoInvalidateQuadOp<EOT> cross;
+	// InvalidateQuadOp invalidates the embedded operator
+	InvalidateQuadOp<EOT> cross;
 	float crossoverRate;
-	eoSelectPerc<EOT> select;
-	eoEvalFunc<EOT>& eval;
+	SelectPerc<EOT> select;
+	EvalFunc<EOT>& eval;
     };
 
 }

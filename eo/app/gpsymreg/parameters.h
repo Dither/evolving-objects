@@ -20,7 +20,7 @@
 #ifndef _PARAMETERS_FUNCTION_H
 #define _PARAMETERS_FUNCTION_H
 
-#include <gp/eoParseTree.h>
+#include <gp/ParseTree.h>
 #include <eo>
 
 using namespace gp_parse_tree;
@@ -40,59 +40,59 @@ struct Parameters{
 
 			Parameters(int argc, char **argv)
 			{
-				eoParser parser(argc,argv);
+				Parser parser(argc,argv);
 			
 				// generations
-				eoValueParam<unsigned int> paramGenerations(1, "generations", "Generations", 'G', false);
+				ValueParam<unsigned int> paramGenerations(1, "generations", "Generations", 'G', false);
 				parser.processParam( paramGenerations );
 				nGenerations = paramGenerations.value();
 				cerr << "nGenerations= " << nGenerations << endl;
 	
 				// populationsize
-				eoValueParam<unsigned int> paramPopulationSize(10, "populationsize", "PopulationSize", 'P', false);
+				ValueParam<unsigned int> paramPopulationSize(10, "populationsize", "PopulationSize", 'P', false);
 				parser.processParam( paramPopulationSize );
 				population_size = paramPopulationSize.value();
 				cerr << "population_size= " << population_size << endl;
 	
 				// offspringsize
-				eoValueParam<unsigned int> paramOffspringSize(population_size, "offspringsize", "OffspringSize", 'O', false);
+				ValueParam<unsigned int> paramOffspringSize(population_size, "offspringsize", "OffspringSize", 'O', false);
 				parser.processParam( paramOffspringSize );
 				offspring_size = paramOffspringSize.value();
 				cerr << "offspring_size= " << offspring_size << endl;
 	
 				// maxsize
-				eoValueParam<unsigned int> paramMaxSize(15, "maxsize", "MaxSize", 'S', false);
+				ValueParam<unsigned int> paramMaxSize(15, "maxsize", "MaxSize", 'S', false);
 				parser.processParam( paramMaxSize );
 				MaxSize = paramMaxSize.value();
 				cerr << "MaxSize= " << MaxSize << endl;
 	
 				// initialmaxdepth
-				eoValueParam<unsigned int> paramInitialMaxDepth(4, "initialmaxdepth", "InitialMaxDepth", 'D', false);
+				ValueParam<unsigned int> paramInitialMaxDepth(4, "initialmaxdepth", "InitialMaxDepth", 'D', false);
 				parser.processParam( paramInitialMaxDepth );
 				InitMaxDepth = paramInitialMaxDepth.value();
 				cerr << "InitMaxDepth= " << InitMaxDepth << endl;
 			
 				// randomseed
-				eoValueParam<unsigned int> paramRandomSeed(1, "randomseed", "Random Seed", 'R', false);
+				ValueParam<unsigned int> paramRandomSeed(1, "randomseed", "Random Seed", 'R', false);
 				parser.processParam( paramRandomSeed );
 				randomseed = paramRandomSeed.value();
 				cerr << "randomseed= " << randomseed << endl;
 	
 				
 				// crossover-rate
-				eoValueParam<double> paramXover(0.75, "crossoverrate", "crossover rate", 'x', false);
+				ValueParam<double> paramXover(0.75, "crossoverrate", "crossover rate", 'x', false);
 				parser.processParam(paramXover );
 				xover_rate = paramXover.value();
 				cerr << "xover_rate= " << xover_rate << endl;
 	
 				//mutation-rate
-				eoValueParam<double> paramMutation(0.25, "mutationrate", "mutation rate", 'm', false);
+				ValueParam<double> paramMutation(0.25, "mutationrate", "mutation rate", 'm', false);
 				parser.processParam(paramMutation );
 				mutation_rate = paramMutation.value();
 				cerr << "mutation_rate= " << mutation_rate << endl;
 				
 				//tournament size
-				eoValueParam<unsigned int > paramTournamentSize(5, "tournamentsize", "tournament size", 't', false);
+				ValueParam<unsigned int > paramTournamentSize(5, "tournamentsize", "tournament size", 't', false);
 				parser.processParam(paramTournamentSize );
 				tournamentsize = paramTournamentSize.value();
 				cerr << "Tournament Size= " << tournamentsize << endl;

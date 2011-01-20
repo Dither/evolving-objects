@@ -27,11 +27,11 @@
 // to test it so at the moment it is commented out when in MSVC
 
 
-#ifndef eoCtrlCContinue_h
-#define eoCtrlCContinue_h
+#ifndef CtrlCContinue_h
+#define CtrlCContinue_h
 
 #include <signal.h>
-#include <eoContinue.h>
+#include <Continue.h>
 
 namespace eo
 {
@@ -47,17 +47,17 @@ namespace eo
 
 
     /**
-       Ctrl C handling: this eoContinue tells whether the user pressed Ctrl C
+       Ctrl C handling: this Continue tells whether the user pressed Ctrl C
     */
     template< class EOT>
-    class eoCtrlCContinue: public eoContinue<EOT>
+    class CtrlCContinue: public Continue<EOT>
     {
     public:
  
 	/// Ctor : installs the signal handler
-	eoCtrlCContinue()
+	CtrlCContinue()
 	{
-	    // First checks that no other eoCtrlCContinue does exist
+	    // First checks that no other CtrlCContinue does exist
 	    if (existCtrlCContinue)
 		throw std::runtime_error("A signal handler for Ctrl C is already defined!\n");
       
@@ -73,7 +73,7 @@ namespace eo
  
 	/** Returns false when Ctrl C has been typed in
          * reached */
-	virtual bool operator() ( const eoPop<EOT>& _vEO )
+	virtual bool operator() ( const Pop<EOT>& _vEO )
 	{
 	    (void)_vEO;
 	    if (ask_for_stop)
@@ -81,7 +81,7 @@ namespace eo
 	    return true;
 	}
 
-	virtual std::string className(void) const { return "eoCtrlCContinue"; }
+	virtual std::string className(void) const { return "CtrlCContinue"; }
     };
 
 }

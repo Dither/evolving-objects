@@ -28,18 +28,18 @@
 
 
 //-----------------------------------------------------------------------------
-#include <eoPop.h>
-#include <eoFunctor.h>
-#include <eoMerge.h>
-#include <eoReduce.h>
-#include <utils/eoHowMany.h>
+#include <Pop.h>
+#include <Functor.h>
+#include <Merge.h>
+#include <Reduce.h>
+#include <utils/HowMany.h>
 //-----------------------------------------------------------------------------
 
 namespace eo
 {
 
     /**
-       eoReduceMergeReduce is an eoReplacement:
+       ReduceMergeReduce is an Replacement:
        - saves possible elite parents
        - reduces rest of parents
        - reduces offspring
@@ -49,16 +49,16 @@ namespace eo
        @ingroup Replacors
     */
     template <class EOT>
-    class eoReduceMergeReduce : public eoReplacement<EOT>
+    class ReduceMergeReduce : public Replacement<EOT>
     {
     public:
-	eoReduceMergeReduce(eoHowMany _howManyElite, 
+	ReduceMergeReduce(HowMany _howManyElite, 
 			    bool _strongElitism, 
-			    eoHowMany _howManyReducedParents,
-			    eoReduce<EOT> & _reduceParents,
-			    eoHowMany _howManyReducedOffspring, 
-			    eoReduce<EOT> & _reduceOffspring,
-			    eoReduce<EOT> & _reduceFinal) :
+			    HowMany _howManyReducedParents,
+			    Reduce<EOT> & _reduceParents,
+			    HowMany _howManyReducedOffspring, 
+			    Reduce<EOT> & _reduceOffspring,
+			    Reduce<EOT> & _reduceFinal) :
 	    howManyElite(_howManyElite),
 	    strongElitism(_strongElitism),
 	    howManyReducedParents(_howManyReducedParents),
@@ -68,9 +68,9 @@ namespace eo
 	    reduceFinal(_reduceFinal)
 	{}
     
-	void operator()(eoPop<EOT> & _parents, eoPop<EOT> & _offspring)
+	void operator()(Pop<EOT> & _parents, Pop<EOT> & _offspring)
 	{
-	    eoPop<EOT> temp;
+	    Pop<EOT> temp;
 	    unsigned int finalPopSize = _parents.size();
 	    unsigned int offSize = _offspring.size();
 
@@ -121,9 +121,9 @@ namespace eo
 			{
 			    unsigned toSave = 0;
 			    _parents.sort();
-			    EOT & eoLimit = _parents[elite-1];
+			    EOT & Limit = _parents[elite-1];
 			    unsigned index=0;
-			    while ( (temp[index++] > eoLimit) && (index < temp.size()) )
+			    while ( (temp[index++] > Limit) && (index < temp.size()) )
 				toSave++;
 			    if (toSave)
 				for (unsigned i=0; i<toSave; i++)
@@ -133,14 +133,14 @@ namespace eo
 	}
 
     private:
-	eoHowMany howManyElite;	   // if 0, no elitism at all
+	HowMany howManyElite;	   // if 0, no elitism at all
 	bool strongElitism;		   // if false -> weak estd::listism
-	eoHowMany howManyReducedParents; // if 0, no parent in final replacement
-	eoHowMany howManyReducedOffspring; // if 0, std::runtime_error
+	HowMany howManyReducedParents; // if 0, no parent in final replacement
+	HowMany howManyReducedOffspring; // if 0, std::runtime_error
 	// the reducers
-	eoReduce<EOT> & reduceParents;
-	eoReduce<EOT> & reduceOffspring;
-	eoReduce<EOT> & reduceFinal;
+	Reduce<EOT> & reduceParents;
+	Reduce<EOT> & reduceOffspring;
+	Reduce<EOT> & reduceFinal;
     };
 
 }

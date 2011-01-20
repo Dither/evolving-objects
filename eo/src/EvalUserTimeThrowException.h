@@ -27,25 +27,25 @@ Johann Dréo <johann.dreo@thalesgroup.com>
 #include <sys/time.h>
 #include <sys/resource.h>
 
-#include <eoExceptions.h>
+#include <Exceptions.h>
 
 namespace eo
 {
 
     /** Check at each evaluation if a given CPU user time contract has been reached.
      *
-     * Throw an eoMaxTimeException if the given max time has been reached.
+     * Throw an MaxTimeException if the given max time has been reached.
      * Usefull if you want to end the search independently of generations.
      * This class uses (almost-)POSIX headers.
-     * It uses a computation of the user time used on the CPU. For a wallclock time measure, see eoEvalTimeThrowException
+     * It uses a computation of the user time used on the CPU. For a wallclock time measure, see EvalTimeThrowException
      *
      * @ingroup Evaluation
      */
     template< class EOT >
-    class eoEvalUserTimeThrowException : public eoEvalFuncCounter< EOT >
+    class EvalUserTimeThrowException : public EvalFuncCounter< EOT >
     {
     public:
-	eoEvalUserTimeThrowException( eoEvalFunc<EOT> & func, long max ) : _max(max), eoEvalFuncCounter<EOT>( func, "CPU-user") {}
+	EvalUserTimeThrowException( EvalFunc<EOT> & func, long max ) : _max(max), EvalFuncCounter<EOT>( func, "CPU-user") {}
 
 	virtual void operator() ( EOT & eo )
 	{
@@ -54,7 +54,7 @@ namespace eo
 		getrusage(RUSAGE_SELF,&_usage);
 
 		if( _usage.ru_utime.tv_sec >= _max ) {
-		    throw eoMaxTimeException( _usage.ru_utime.tv_sec );
+		    throw MaxTimeException( _usage.ru_utime.tv_sec );
 		} else {
 		    func(eo);
 		}

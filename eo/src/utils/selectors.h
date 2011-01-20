@@ -5,13 +5,13 @@
     A bunch of useful selector functions. They generally have three forms:
 
     template <class It>
-    It select(It begin, It end, params, eoRng& gen = rng);
+    It select(It begin, It end, params, Rng& gen = rng);
 
     template <class EOT>
-    const EOT& select(const eoPop<EOT>& pop, params, eoRng& gen = rng);
+    const EOT& select(const Pop<EOT>& pop, params, Rng& gen = rng);
 
     template <class EOT>
-    EOT& select(eoPop<EOT>& pop, params, eoRng& gen = rng);
+    EOT& select(Pop<EOT>& pop, params, Rng& gen = rng);
 
     where select is one of: roulette_wheel, deterministic_tournament
     and stochastic_tournament (at the moment).
@@ -40,8 +40,8 @@
 
 #include <stdexcept>
 
-#include "eoRNG.h"
-#include <eoPop.h>
+#include "RNG.h"
+#include <Pop.h>
 
 namespace eo
 {
@@ -101,17 +101,17 @@ namespace eo
     }
 
     template <class EOT>
-    double sum_fitness(const eoPop<EOT>& _pop)
+    double sum_fitness(const Pop<EOT>& _pop)
     {
 	return sum_fitness(_pop.begin(), _pop.end());
     }
 
     template <class EOT>
-    double sum_fitness(const eoPop<EOT>& _pop, std::pair<double, double>& _minmax)
+    double sum_fitness(const Pop<EOT>& _pop, std::pair<double, double>& _minmax)
     {
 	double rawTotal, scaledTotal;
 
-	typename eoPop<EOT>::const_iterator it = _pop.begin();
+	typename Pop<EOT>::const_iterator it = _pop.begin();
 
 	_minmax.first = it->fitness();
 	_minmax.second = it++->fitness();
@@ -145,7 +145,7 @@ namespace eo
     }
 
     template <class It>
-    It roulette_wheel(It _begin, It _end, double total, eoRng& _gen = rng)
+    It roulette_wheel(It _begin, It _end, double total, Rng& _gen = rng)
     {
 
 	double roulette = _gen.uniform(total);
@@ -164,14 +164,14 @@ namespace eo
     }
 
     template <class EOT>
-    const EOT& roulette_wheel(const eoPop<EOT>& _pop, double total, eoRng& _gen = rng)
+    const EOT& roulette_wheel(const Pop<EOT>& _pop, double total, Rng& _gen = rng)
     {
 	double roulette = _gen.uniform(total);
 
 	if (roulette == 0.0)	   // covers the case where total==0.0
 	    return _pop[_gen.random(_pop.size())]; // uniform choice
 
-	typename eoPop<EOT>::const_iterator i = _pop.begin();
+	typename Pop<EOT>::const_iterator i = _pop.begin();
 
 	while (roulette > 0.0)
 	    {
@@ -182,14 +182,14 @@ namespace eo
     }
 
     template <class EOT>
-    EOT& roulette_wheel(eoPop<EOT>& _pop, double total, eoRng& _gen = rng)
+    EOT& roulette_wheel(Pop<EOT>& _pop, double total, Rng& _gen = rng)
     {
 	float roulette = _gen.uniform(total);
 
 	if (roulette == 0.0)	   // covers the case where total==0.0
 	    return _pop[_gen.random(_pop.size())]; // uniform choice
 
-	typename eoPop<EOT>::iterator i = _pop.begin();
+	typename Pop<EOT>::iterator i = _pop.begin();
 
 	while (roulette > 0.0)
 	    {
@@ -200,7 +200,7 @@ namespace eo
     }
 
     template <class It>
-    It deterministic_tournament(It _begin, It _end, unsigned _t_size, eoRng& _gen = rng)
+    It deterministic_tournament(It _begin, It _end, unsigned _t_size, Rng& _gen = rng)
     {
 	It best = _begin + _gen.random(_end - _begin);
 
@@ -218,19 +218,19 @@ namespace eo
     }
 
     template <class EOT>
-    const EOT& deterministic_tournament(const eoPop<EOT>& _pop, unsigned _t_size, eoRng& _gen = rng)
+    const EOT& deterministic_tournament(const Pop<EOT>& _pop, unsigned _t_size, Rng& _gen = rng)
     {
 	return *deterministic_tournament(_pop.begin(), _pop.end(), _t_size, _gen);
     }
 
     template <class EOT>
-    EOT& deterministic_tournament(eoPop<EOT>& _pop, unsigned _t_size, eoRng& _gen = rng)
+    EOT& deterministic_tournament(Pop<EOT>& _pop, unsigned _t_size, Rng& _gen = rng)
     {
 	return *deterministic_tournament(_pop.begin(), _pop.end(), _t_size, _gen);
     }
 
     template <class It>
-    It inverse_deterministic_tournament(It _begin, It _end, unsigned _t_size, eoRng& _gen = rng)
+    It inverse_deterministic_tournament(It _begin, It _end, unsigned _t_size, Rng& _gen = rng)
     {
 	It worst = _begin + _gen.random(_end - _begin);
 
@@ -254,19 +254,19 @@ namespace eo
     }
 
     template <class EOT>
-    const EOT& inverse_deterministic_tournament(const eoPop<EOT>& _pop, unsigned _t_size, eoRng& _gen = rng)
+    const EOT& inverse_deterministic_tournament(const Pop<EOT>& _pop, unsigned _t_size, Rng& _gen = rng)
     {
 	return *inverse_deterministic_tournament<EOT>(_pop.begin(), _pop.end(), _t_size, _gen);
     }
 
     template <class EOT>
-    EOT& inverse_deterministic_tournament(eoPop<EOT>& _pop, unsigned _t_size, eoRng& _gen = rng)
+    EOT& inverse_deterministic_tournament(Pop<EOT>& _pop, unsigned _t_size, Rng& _gen = rng)
     {
 	return *inverse_deterministic_tournament(_pop.begin(), _pop.end(), _t_size, _gen);
     }
 
     template <class It>
-    It stochastic_tournament(It _begin, It _end, double _t_rate, eoRng& _gen = rng)
+    It stochastic_tournament(It _begin, It _end, double _t_rate, Rng& _gen = rng)
     {
 	It i1 = _begin + _gen.random(_end - _begin);
 	It i2 = _begin + _gen.random(_end - _begin);
@@ -291,19 +291,19 @@ namespace eo
     }
 
     template <class EOT>
-    const EOT& stochastic_tournament(const eoPop<EOT>& _pop, double _t_rate, eoRng& _gen = rng)
+    const EOT& stochastic_tournament(const Pop<EOT>& _pop, double _t_rate, Rng& _gen = rng)
     {
 	return *stochastic_tournament(_pop.begin(), _pop.end(), _t_rate, _gen);
     }
 
     template <class EOT>
-    EOT& stochastic_tournament(eoPop<EOT>& _pop, double _t_rate, eoRng& _gen = rng)
+    EOT& stochastic_tournament(Pop<EOT>& _pop, double _t_rate, Rng& _gen = rng)
     {
 	return *stochastic_tournament(_pop.begin(), _pop.end(), _t_rate, _gen);
     }
 
     template <class It>
-    It inverse_stochastic_tournament(It _begin, It _end, double _t_rate, eoRng& _gen = rng)
+    It inverse_stochastic_tournament(It _begin, It _end, double _t_rate, Rng& _gen = rng)
     {
 	It i1 = _begin + _gen.random(_end - _begin);
 	It i2 = _begin + _gen.random(_end - _begin);
@@ -328,13 +328,13 @@ namespace eo
     }
 
     template <class EOT>
-    const EOT& inverse_stochastic_tournament(const eoPop<EOT>& _pop, double _t_rate, eoRng& _gen = rng)
+    const EOT& inverse_stochastic_tournament(const Pop<EOT>& _pop, double _t_rate, Rng& _gen = rng)
     {
 	return *inverse_stochastic_tournament(_pop.begin(), _pop.end(), _t_rate, _gen);
     }
 
     template <class EOT>
-    EOT& inverse_stochastic_tournament(eoPop<EOT>& _pop, double _t_rate, eoRng& _gen = rng)
+    EOT& inverse_stochastic_tournament(Pop<EOT>& _pop, double _t_rate, Rng& _gen = rng)
     {
 	return *inverse_stochastic_tournament(_pop.begin(), _pop.end(), _t_rate, _gen);
     }

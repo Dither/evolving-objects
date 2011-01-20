@@ -43,11 +43,11 @@
 // The templatized code
 #include <do/make_run.h>
 // the instanciating EOType(s)
-#include <es/eoEsSimple.h>	   // one Sigma per individual
-#include <es/eoEsStdev.h>	   // one sigmal per object variable
-#include <es/eoEsFull.h>	   // full correlation matrix per indi
+#include <es/EsSimple.h>	   // one Sigma per individual
+#include <es/EsStdev.h>	   // one sigmal per object variable
+#include <es/EsFull.h>	   // full correlation matrix per indi
 // the instanciating fitnesses
-#include <eoScalarFitness.h>
+#include <ScalarFitness.h>
 
 namespace eo
 {
@@ -56,34 +56,34 @@ namespace eo
 
     // run
     /////////
-    void run_ea(eoAlgo<eoEsSimple<double> >& _ga, eoPop<eoEsSimple<double> >& _pop)
+    void run_ea(Algo<EsSimple<double> >& _ga, Pop<EsSimple<double> >& _pop)
     {
 	do_run(_ga, _pop);
     }
 
-    void run_ea(eoAlgo<eoEsSimple<eoMinimizingFitness> >& _ga, eoPop<eoEsSimple<eoMinimizingFitness> >& _pop)
-    {
-	do_run(_ga, _pop);
-    }
-
-    /////////
-    void run_ea(eoAlgo<eoEsStdev<double> >& _ga, eoPop<eoEsStdev<double> >& _pop)
-    {
-	do_run(_ga, _pop);
-    }
-
-    void run_ea(eoAlgo<eoEsStdev<eoMinimizingFitness> >& _ga, eoPop<eoEsStdev<eoMinimizingFitness> >& _pop)
+    void run_ea(Algo<EsSimple<MinimizingFitness> >& _ga, Pop<EsSimple<MinimizingFitness> >& _pop)
     {
 	do_run(_ga, _pop);
     }
 
     /////////
-    void run_ea(eoAlgo<eoEsFull<double> >& _ga, eoPop<eoEsFull<double> >& _pop)
+    void run_ea(Algo<EsStdev<double> >& _ga, Pop<EsStdev<double> >& _pop)
     {
 	do_run(_ga, _pop);
     }
 
-    void run_ea(eoAlgo<eoEsFull<eoMinimizingFitness> >& _ga, eoPop<eoEsFull<eoMinimizingFitness> >& _pop)
+    void run_ea(Algo<EsStdev<MinimizingFitness> >& _ga, Pop<EsStdev<MinimizingFitness> >& _pop)
+    {
+	do_run(_ga, _pop);
+    }
+
+    /////////
+    void run_ea(Algo<EsFull<double> >& _ga, Pop<EsFull<double> >& _pop)
+    {
+	do_run(_ga, _pop);
+    }
+
+    void run_ea(Algo<EsFull<MinimizingFitness> >& _ga, Pop<EsFull<MinimizingFitness> >& _pop)
     {
 	do_run(_ga, _pop);
     }

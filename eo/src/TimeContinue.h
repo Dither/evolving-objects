@@ -27,8 +27,8 @@
 
 #include <ctime>
 
-#include <eoContinue.h>
-#include <utils/eoLogger.h>
+#include <Continue.h>
+#include <utils/Logger.h>
 
 namespace eo
 {
@@ -39,7 +39,7 @@ namespace eo
      * @ingroup Continuators
      */
     template < class EOT >
-    class eoTimeContinue: public eoContinue<EOT>
+    class TimeContinue: public Continue<EOT>
     {
     public:
 
@@ -47,7 +47,7 @@ namespace eo
 	 * Ctor.
 	 * @param _max maximum running time
 	 */
-	eoTimeContinue(time_t _max): max(_max)
+	TimeContinue(time_t _max): max(_max)
 	{
 	    start = time(NULL);
 	}
@@ -57,12 +57,12 @@ namespace eo
 	 * Returns false when the running time is reached.
 	 * @param _pop the population
 	 */
-	virtual bool operator() (const eoPop < EOT > & _pop)
+	virtual bool operator() (const Pop < EOT > & _pop)
 	{
 	    time_t elapsed = (time_t) difftime(time(NULL), start);
 	    if (elapsed >= max)
 		{
-		    eo::log << eo::progress << "STOP in eoTimeContinue: Reached maximum time [" << elapsed << "/" << max << "]" << std::endl;
+		    log << progress << "STOP in TimeContinue: Reached maximum time [" << elapsed << "/" << max << "]" << std::endl;
 		    return false;
 		}
 	    return true;
@@ -74,7 +74,7 @@ namespace eo
 	 */
 	virtual std::string className(void) const
 	{
-	    return "eoTimeContinue";
+	    return "TimeContinue";
 	}
 
 

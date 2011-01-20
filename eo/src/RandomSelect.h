@@ -27,61 +27,61 @@
 #define RandomSelect_h
 
 /** This file contains straightforward selectors:
- * eoRandomSelect          returns an individual uniformly selected
- * eoBestSelect            always return the best individual
- * eoSequentialSelect      returns all individuals in turn
+ * RandomSelect          returns an individual uniformly selected
+ * BestSelect            always return the best individual
+ * SequentialSelect      returns all individuals in turn
  */
 
-#include <utils/eoRNG.h>
-#include <eoSelectOne.h>
+#include <utils/RNG.h>
+#include <SelectOne.h>
 
 namespace eo
 {
 
-    /** eoRandomSelect: a selection method that selects ONE individual randomly 
+    /** RandomSelect: a selection method that selects ONE individual randomly 
      *
      * @ingroup Selectors
      */
-    template <class EOT> class eoRandomSelect: public eoSelectOne<EOT>
+    template <class EOT> class RandomSelect: public SelectOne<EOT>
     {
     public:
 
 	/// not a big deal!!!
-	virtual const EOT& operator()(const eoPop<EOT>& _pop)
+	virtual const EOT& operator()(const Pop<EOT>& _pop)
 	{
-	    return _pop[eo::rng.random(_pop.size())] ;
+	    return _pop[rng.random(_pop.size())] ;
 	}
     };
 
-    /** eoBestSelect: a selection method that always return the best
+    /** BestSelect: a selection method that always return the best
      *                (mainly for testing purposes)
      *
      * @ingroup Selectors
      */
-    template <class EOT> class eoBestSelect: public eoSelectOne<EOT>
+    template <class EOT> class BestSelect: public SelectOne<EOT>
     {
     public:
 
 	/// not a big deal!!!
-	virtual const EOT& operator()(const eoPop<EOT>& _pop)
+	virtual const EOT& operator()(const Pop<EOT>& _pop)
 	{
 	    return _pop.best_element() ;
 	}
     };
 
-    /** eoNoSelect: returns all individual in order WITHOUT USING FITNESS!!!
+    /** NoSelect: returns all individual in order WITHOUT USING FITNESS!!!
      *       looping back to the beginning when exhasuted
      *
      * @ingroup Selectors
      */
-    template <class EOT> class eoNoSelect: public eoSelectOne<EOT>
+    template <class EOT> class NoSelect: public SelectOne<EOT>
     {
     public:
 	/** Ctor
 	 */
-	eoNoSelect(): current(0) {}
+	NoSelect(): current(0) {}
 
-	virtual const EOT& operator()(const eoPop<EOT>& _pop)
+	virtual const EOT& operator()(const Pop<EOT>& _pop)
 	{
 	    if (current >= _pop.size())
 		current=0;

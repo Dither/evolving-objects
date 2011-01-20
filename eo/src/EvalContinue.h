@@ -26,8 +26,8 @@
 #ifndef _EvalContinue_h
 #define _EvalContinue_h
 
-#include <eoContinue.h>
-#include <eoEvalFuncCounter.h>
+#include <Continue.h>
+#include <EvalFuncCounter.h>
 
 namespace eo
 {
@@ -38,20 +38,20 @@ namespace eo
      * @ingroup Continuators
      */
     template< class EOT>
-    class eoEvalContinue: public eoContinue<EOT>
+    class EvalContinue: public Continue<EOT>
     {
     public:
 	/// Ctor 
-	eoEvalContinue( eoEvalFuncCounter<EOT> & _eval, unsigned long _totalEval)
+	EvalContinue( EvalFuncCounter<EOT> & _eval, unsigned long _totalEval)
 	    : eval(_eval), repTotalEvaluations( _totalEval ) {};
   
 	/** Returns false when a certain number of evaluations has been done
 	 */
-	virtual bool operator() ( const eoPop<EOT>& _vEO ) {
+	virtual bool operator() ( const Pop<EOT>& _vEO ) {
 	    (void)_vEO;
 	    if (eval.value() >= repTotalEvaluations) 
 		{
-		    eo::log << eo::progress << "STOP in eoEvalContinue: Reached maximum number of evaluations [" << repTotalEvaluations << "]" << std::endl;
+		    log << progress << "STOP in EvalContinue: Reached maximum number of evaluations [" << repTotalEvaluations << "]" << std::endl;
 		    return false;
 		}
 	    return true;
@@ -63,9 +63,9 @@ namespace eo
 	    return repTotalEvaluations; 
 	};
   
-	virtual std::string className(void) const { return "eoEvalContinue"; }
+	virtual std::string className(void) const { return "EvalContinue"; }
     private:
-	eoEvalFuncCounter<EOT> & eval;
+	EvalFuncCounter<EOT> & eval;
 	unsigned long repTotalEvaluations;
     };
 

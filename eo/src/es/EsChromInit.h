@@ -29,10 +29,10 @@ Contact: http://eodev.sourceforge.net
 #include <cmath>
 #include <vector>
 
-#include <es/eoRealInitBounded.h>
-#include <es/eoEsSimple.h>
-#include <es/eoEsStdev.h>
-#include <es/eoEsFull.h>
+#include <es/RealInitBounded.h>
+#include <es/EsSimple.h>
+#include <es/EsStdev.h>
+#include <es/EsFull.h>
 
 #ifndef M_PI
 #define M_PI 3.1415926535897932384626433832795
@@ -41,7 +41,7 @@ Contact: http://eodev.sourceforge.net
 namespace eo
 {
 
-/** Random Es-chromosome initializer (therefore derived from eoInit)
+/** Random Es-chromosome initializer (therefore derived from Init)
 
     @ingroup Real
     @ingroup Initializators
@@ -50,20 +50,20 @@ namespace eo
     This class can initialize four types of real-valued genotypes thanks
     to tempate specialization of private method create:
 
-    - eoReal          just an eoVector<double>
-    - eoEsSimple      + one self-adapting single sigma for all variables
-    - eoEsStdev       a whole std::vector of self-adapting sigmas
-    - eoEsFull        a full self-adapting correlation matrix
+    - Real          just an Vector<double>
+    - EsSimple      + one self-adapting single sigma for all variables
+    - EsStdev       a whole std::vector of self-adapting sigmas
+    - EsFull        a full self-adapting correlation matrix
 
-    @see eoReal eoEsSimple eoEsStdev eoEsFull eoInit
+    @see Real EsSimple EsStdev EsFull Init
 */
     template <class EOT>
-    class eoEsChromInit : public eoRealInitBounded<EOT>
+    class EsChromInit : public RealInitBounded<EOT>
     {
     public:
 
-	using eoRealInitBounded<EOT>::size;
-	using eoRealInitBounded<EOT>::theBounds;
+	using RealInitBounded<EOT>::size;
+	using RealInitBounded<EOT>::theBounds;
 
 	typedef typename EOT::Fitness FitT;
 
@@ -74,8 +74,8 @@ namespace eo
 	    @param _to_scale wether sigma should be multiplied by the range of each variable
 	    added December 2004 - MS (together with the whole comment :-)
 	*/
-	eoEsChromInit(eoRealVectorBounds& _bounds, double _sigma = 0.3, bool _to_scale=false)
-	    : eoRealInitBounded<EOT>(_bounds)
+	EsChromInit(RealVectorBounds& _bounds, double _sigma = 0.3, bool _to_scale=false)
+	    : RealInitBounded<EOT>(_bounds)
 	    {
 		// a bit of pre-computations, to save time later (even if some are useless)
 		//
@@ -92,7 +92,7 @@ namespace eo
 		else
 		    uniqueSigma = _sigma;
 		// now the case of a vector of sigmas first allocate space according
-		// to the size of the bounds (see eoRealInitBounded)
+		// to the size of the bounds (see RealInitBounded)
 		vecSigma.resize(size());
 		// each sigma is scaled by the range of the corresponding variable
 		for(unsigned i=0; i<size(); i++)
@@ -112,8 +112,8 @@ namespace eo
 	    @param _bounds bounds for uniform initialization
 	    @param _vecSigma initial value for the stddev
 	*/
-	eoEsChromInit(eoRealVectorBounds& _bounds, const std::vector<double>& _vecSigma)
-	    : eoRealInitBounded<EOT>(_bounds), uniqueSigma(_vecSigma[0]), vecSigma(_vecSigma)
+	EsChromInit(RealVectorBounds& _bounds, const std::vector<double>& _vecSigma)
+	    : RealInitBounded<EOT>(_bounds), uniqueSigma(_vecSigma[0]), vecSigma(_vecSigma)
 	    {
 		assert(_bounds.size() == size());
 		assert(_vecSigma.size() == size());
@@ -122,7 +122,7 @@ namespace eo
 
 	void operator()(EOT& _eo)
 	    {
-		eoRealInitBounded<EOT>::operator()(_eo);
+		RealInitBounded<EOT>::operator()(_eo);
 		create_self_adapt(_eo);
 		_eo.invalidate();
 	    }
@@ -134,7 +134,7 @@ namespace eo
 
 	    No adaptive mutation at all
 	*/
-	void create_self_adapt(eoReal<FitT>&)
+	void create_self_adapt(Real<FitT>&)
 	    {}
 
 
@@ -145,7 +145,7 @@ namespace eo
 
 	    Adaptive mutation through a unique sigma
 	*/
-	void create_self_adapt(eoEsSimple<FitT>& result)
+	void create_self_adapt(EsSimple<FitT>& result)
 	    {
 		// pre-computed in the Ctor
 		result.stdev = uniqueSigma;
@@ -161,7 +161,7 @@ namespace eo
 
 	    @todo Should we scale sigmas to the corresponding object variable range?
 	*/
-	void create_self_adapt(eoEsStdev<FitT>& result)
+	void create_self_adapt(EsStdev<FitT>& result)
 	    {
 		// pre-computed in the constructor
 		result.stdevs = vecSigma;
@@ -175,7 +175,7 @@ namespace eo
 
 	    Adaptive mutation through a whole correlation matrix
 	*/
-	void create_self_adapt(eoEsFull<FitT>& result)
+	void create_self_adapt(EsFull<FitT>& result)
 	    {
 		// first the stdevs (pre-computed in the Ctor)
 		result.stdevs = vecSigma;

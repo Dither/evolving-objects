@@ -8,9 +8,9 @@
 //-----------------------------------------------------------------------------
 
 #include <stdlib.h>               // exit EXIT_FAILURE
-#include <eoVector.h>             // eoVectorLength
-#include <eoOp.h>                 // eoMonOp eoQuadraticOp
-#include <eoInit.h>               // eoInit
+#include <Vector.h>             // VectorLength
+#include <Op.h>                 // MonOp QuadraticOp
+#include <Init.h>               // Init
 #include "utils/rnd_generators.h" // uniform_generator
 
 //-----------------------------------------------------------------------------
@@ -29,7 +29,7 @@ typedef std::vector<int> genotype;
 // Chrom
 //-----------------------------------------------------------------------------
 
-typedef eoVector<phenotype, int> Chrom;
+typedef eo::Vector<phenotype, int> Chrom;
 
 //-----------------------------------------------------------------------------
 // eoChromEvaluator
@@ -74,121 +74,136 @@ unsigned num_colors;
 
 void init_eoChromEvaluator(const unsigned& c, const unsigned& l, std::string s)
 {
-  num_colors = c;
+    num_colors = c;
 
-  // check consistency between parameters
-  if (s != default_solution)
-    {
-      // check length
-      if (l != default_length && s.size() != l)
+    // check consistency between parameters
+    if (s != default_solution)
 	{
-	  std::cerr << "solution length != length" << std::endl;
-	  exit(EXIT_FAILURE);
+	    // check length
+	    if (l != default_length && s.size() != l)
+		{
+		    std::cerr << "solution length != length" << std::endl;
+		    exit(EXIT_FAILURE);
+		}
+
+	    // check number of colors
+	    if ((c != default_colors) && (c < unsigned(*max_element(s.begin(), s.end()) - '0')))
+		{
+		    std::cerr << "too high color number found!" << std::endl;
+		    exit(EXIT_FAILURE);
+		}
+	}
+    else
+	if (l != default_length || c != default_colors )
+	    // generate a random solution
+	    if(num_colors <= 10)
+		{
+		    eo::uniform_generator<char> color('0', static_cast<char>('0' + c));
+		    s.resize(l);
+		    generate(s.begin(), s.end(), color);
+		}
+
+    // put the solution parameter on the solution chromosome
+    if (num_colors <= 10)
+	{
+	    solution.resize(s.size());
+	    for (unsigned i = 0; i < solution.size(); ++i)
+		solution[i] = s[i] - '0';
+	}
+    else
+	{
+	    solution.resize(l);
+	    eo::uniform_generator<int> color(0, num_colors);
+	    generate(solution.begin(), solution.end(), color);
 	}
 
-      // check number of colors
-      if ((c != default_colors) && (c < unsigned(*max_element(s.begin(), s.end()) - '0')))
-	{
-	  std::cerr << "too high color number found!" << std::endl;
-	  exit(EXIT_FAILURE);
-	}
-    }
-  else
-    if (l != default_length || c != default_colors )
-      // generate a random solution
-      if(num_colors <= 10)
-	{
-	  uniform_generator<char> color('0', static_cast<char>('0' + c));
-	  s.resize(l);
-	  generate(s.begin(), s.end(), color);
-	}
-
-  // put the solution parameter on the solution chromosome
-  if (num_colors <= 10)
-    {
-      solution.resize(s.size());
-      for (unsigned i = 0; i < solution.size(); ++i)
-	solution[i] = s[i] - '0';
-    }
-  else
-    {
-      solution.resize(l);
-      uniform_generator<int> color(0, num_colors);
-      generate(solution.begin(), solution.end(), color);
-    }
-
-  solution.fitness(eoChromEvaluator(solution));
+    solution.fitness(eoChromEvaluator(solution));
 }
 
 //-----------------------------------------------------------------------------
 // eoChromInit
 //-----------------------------------------------------------------------------
 
-class eoInitChrom: public eoInit<Chrom>
+namespace eo
 {
-public:
-  void operator()(Chrom& chrom)
-  {
-    uniform_generator<int> color(0, num_colors);
-    chrom.resize(solution.size());
-    generate(chrom.begin(), chrom.end(), color);
-    chrom.invalidate();
-  }
-};
+
+    class InitChrom: public Init<Chrom>
+    {
+    public:
+	void operator()(Chrom& chrom)
+	{
+	    uniform_generator<int> color(0, num_colors);
+	    chrom.resize(solution.size());
+	    generate(chrom.begin(), chrom.end(), color);
+	    chrom.invalidate();
+	}
+    };
+
+}
 
 //-----------------------------------------------------------------------------
 // eoChromMutation
 //-----------------------------------------------------------------------------
 
-class eoChromMutation: public eoMonOp<Chrom>
+namespace eo
 {
-  // many operators in one :(
-  bool operator()(Chrom& chrom)
-  {
-    uniform_generator<unsigned> what(0, 2);
-    uniform_generator<unsigned> position(0, chrom.size());
 
-    switch(what())
-      {
-      case 0:
+    class ChromMutation: public MonOp<Chrom>
+    {
+	// many operators in one :(
+	bool operator()(Chrom& chrom)
 	{
-	  // mutation
-	  uniform_generator<int> color(0, num_colors);
-	  chrom[position()] = color();
-	  break;
-	}
-      case 1:
-	{
-	  // transposition
-	  std::swap(chrom[position()], chrom[position()]);
-	  break;
-	}
-      default:
-	{
-	  std::cerr << "unknown operator!" << std::endl;
-	  exit(EXIT_FAILURE);
-	  break;
-	}
-      }
+	    uniform_generator<unsigned> what(0, 2);
+	    uniform_generator<unsigned> position(0, chrom.size());
 
-    return true;
-  }
-};
+	    switch(what())
+		{
+		case 0:
+		    {
+			// mutation
+			uniform_generator<int> color(0, num_colors);
+			chrom[position()] = color();
+			break;
+		    }
+		case 1:
+		    {
+			// transposition
+			std::swap(chrom[position()], chrom[position()]);
+			break;
+		    }
+		default:
+		    {
+			std::cerr << "unknown operator!" << std::endl;
+			exit(EXIT_FAILURE);
+			break;
+		    }
+		}
+
+	    return true;
+	}
+    };
+
+}
 
 //-----------------------------------------------------------------------------
 // eoChromXover
 //-----------------------------------------------------------------------------
 
-class eoChromXover: public eoQuadOp<Chrom>
+namespace eo
 {
-public:
-  bool operator()(Chrom& chrom1, Chrom& chrom2)
-  {
-    uniform_generator<unsigned> position(0, chrom1.size());
-    swap_ranges(chrom1.begin(), chrom1.begin() + position(), chrom2.begin());
-    return true;
-  }
-};
+
+    class ChromXover: public QuadOp<Chrom>
+    {
+    public:
+	bool operator()(Chrom& chrom1, Chrom& chrom2)
+	{
+	    uniform_generator<unsigned> position(0, chrom1.size());
+	    swap_ranges(chrom1.begin(), chrom1.begin() + position(), chrom2.begin());
+	    return true;
+	}
+    };
+
+}
 
 //-----------------------------------------------------------------------------
 

@@ -32,8 +32,8 @@ Authors:
 
 #include <string>
 
-#include <utils/eoOStreamMonitor.h>
-#include <eoObject.h>
+#include <utils/OStreamMonitor.h>
+#include <Object.h>
 
 namespace eo
 {
@@ -43,20 +43,20 @@ namespace eo
 
        @ingroup Monitors
     */
-    class eoStdoutMonitor : public eoOStreamMonitor
+    class StdoutMonitor : public OStreamMonitor
     {
     public :
-	eoStdoutMonitor(bool _verbose, std::string _delim = "\t", unsigned int _width=20, char _fill=' ' ) : 
-	    eoOStreamMonitor( std::cout, _verbose, _delim, _width, _fill) 
+	StdoutMonitor(bool _verbose, std::string _delim = "\t", unsigned int _width=20, char _fill=' ' ) : 
+	    OStreamMonitor( std::cout, _verbose, _delim, _width, _fill) 
 	{ 
-	    eo::log << eo::warnings << "WARNING: the use of the verbose parameter in eoStdutMonitor constructor is deprecated and will be removed in the next release" << std::endl;
+	    log << warnings << "WARNING: the use of the verbose parameter in eoStdutMonitor constructor is deprecated and will be removed in the next release" << std::endl;
 	}
 
-	eoStdoutMonitor(std::string _delim = "\t", unsigned int _width=20, char _fill=' ' ) : 
-	    eoOStreamMonitor( std::cout, _delim, _width, _fill) 
+	StdoutMonitor(std::string _delim = "\t", unsigned int _width=20, char _fill=' ' ) : 
+	    OStreamMonitor( std::cout, _delim, _width, _fill) 
 	{}
 
-	virtual std::string className(void) const { return "eoStdoutMonitor"; }
+	virtual std::string className(void) const { return "StdoutMonitor"; }
     };
 
 }

@@ -26,7 +26,7 @@
 #ifndef _apply_h
 #define _apply_h
 
-#include <eoFunctor.h>
+#include <Functor.h>
 #include <vector>
 
 namespace eo
@@ -38,7 +38,7 @@ namespace eo
        @ingroup Utilities
     */
     template <class EOT>
-    void apply(eoUF<EOT&, void>& _proc, std::vector<EOT>& _pop)
+    void apply(UF<EOT&, void>& _proc, std::vector<EOT>& _pop)
     {
 	for (unsigned i = 0; i < _pop.size(); ++i)
 	    {

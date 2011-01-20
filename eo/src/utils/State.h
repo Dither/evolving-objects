@@ -32,51 +32,51 @@
 #include <map>
 #include <vector>
 
-#include <eoFunctorStore.h>
+#include <FunctorStore.h>
 
 namespace eo
 {
 
-    class eoObject;
-    class eoPersistent;
+    class Object;
+    class Persistent;
 
     /**
-       eoState can be used to register derivants of eoPersistent. It will
+       State can be used to register derivants of Persistent. It will
        then in turn implement the persistence framework through members load
        and save, that will call readFrom and printOn for the registrated objects.
 
-       It is derived from eoFunctorStore, so that it also serves as a place where
+       It is derived from FunctorStore, so that it also serves as a place where
        all those nifty eo functors can be stored. This is useful in the case you
        want to use one of the make_* functions. These functions generally take as their
-       last argument an eoFunctorStore (or a state) which is used to hold all dynamically
-       generated data. Note however, that unlike with eoPersistent derived classes, eoFunctorBase
+       last argument an FunctorStore (or a state) which is used to hold all dynamically
+       generated data. Note however, that unlike with Persistent derived classes, FunctorBase
        derived classes are not saved or loaded. To govern the creation of functors,
        command-line parameters (which can be stored) are needed.
 
        @ingroup Utilities
     */
-    class eoState : public eoFunctorStore
+    class State : public FunctorStore
     {
     public :
 
-	eoState(void) {}
+	State(void) {}
 
-	~eoState(void);
+	~State(void);
 
 	/**
 	 * Object registration function, note that it does not take ownership!
 	 */
-	void registerObject(eoPersistent& registrant);
+	void registerObject(Persistent& registrant);
 
 	/**
-	 * Copies the object (MUST be derived from eoPersistent)
+	 * Copies the object (MUST be derived from Persistent)
 	 * and returns a reference to the owned object.
 	 * Note: it does not register the object, this must be done afterwards!
 	 */
 	template <class T>
 	T&   takeOwnership(const T& persistent)
 	{
-	    // If the compiler budges here, T is not a subclass of eoPersistent
+	    // If the compiler budges here, T is not a subclass of Persistent
 	    ownedObjects.push_back(new T(persistent));
 	    return static_cast<T&>(*ownedObjects.back());
 	}
@@ -120,22 +120,22 @@ namespace eo
 	void save(std::ostream& os) const;
 
     private :
-	std::string createObjectName(eoObject* obj);
+	std::string createObjectName(Object* obj);
 
 	// first is Persistent, second is the raw data associated with it.
-	typedef std::map<std::string, eoPersistent*> ObjectMap;
+	typedef std::map<std::string, Persistent*> ObjectMap;
 
 	ObjectMap objectMap;
 
 	std::vector<ObjectMap::iterator> creationOrder;
-	std::vector<eoPersistent*> ownedObjects;
+	std::vector<Persistent*> ownedObjects;
 
-	// private copy and assignment as eoState is supposed to be unique
-	eoState(const eoState&);
-	eoState& operator=(const eoState&);
+	// private copy and assignment as State is supposed to be unique
+	State(const State&);
+	State& operator=(const State&);
 
     };
-    /** @example t-eoStateAndParser.cpp
+    /** @example t-StateAndParser.cpp
      */
 
 }

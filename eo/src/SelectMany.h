@@ -29,17 +29,17 @@
 
 
 //-----------------------------------------------------------------------------
-#include <eoSelect.h>
-#include <eoSelectOne.h>
-#include <utils/eoHowMany.h>
+#include <Select.h>
+#include <SelectOne.h>
+#include <utils/HowMany.h>
 #include <math.h>
 //-----------------------------------------------------------------------------
 
 namespace eo
 {
 
-    /** eoSelectMany selects many individuals using eoSelectOne as it's 
-	mechanism. Therefore eoSelectMany needs an eoSelectOne in its ctor
+    /** SelectMany selects many individuals using SelectOne as it's 
+	mechanism. Therefore SelectMany needs an SelectOne in its ctor
 
 	It will use an eoHowMnay to determine the number of guys to select,
 	and push them to the back of the destination population.
@@ -47,25 +47,25 @@ namespace eo
 	@ingroup Selectors
     */
     template<class EOT>
-    class eoSelectMany : public eoSelect<EOT>
+    class SelectMany : public Select<EOT>
     {
     public:
 	/// init
-	eoSelectMany(eoSelectOne<EOT>& _select, 
+	SelectMany(SelectOne<EOT>& _select, 
 		     double  _rate, bool _interpret_as_rate = true) 
 	    : select(_select), howMany(_rate, _interpret_as_rate) {}
 
-	// Ctor with eoHowMany
-	eoSelectMany(eoSelectOne<EOT>& _select, eoHowMany _howMany) 
+	// Ctor with HowMany
+	SelectMany(SelectOne<EOT>& _select, HowMany _howMany) 
 	    : select(_select), howMany(_howMany) {}
 
 	/**
 	   The implementation repeatidly selects an individual
 
 	   @param _source the source population
-	   @param _dest  the resulting population (size of this population is the number of times eoSelectOne is called. It empties the destination and adds the selection into it)
+	   @param _dest  the resulting population (size of this population is the number of times SelectOne is called. It empties the destination and adds the selection into it)
 	*/
-	virtual void operator()(const eoPop<EOT>& _source, eoPop<EOT>& _dest)
+	virtual void operator()(const Pop<EOT>& _source, Pop<EOT>& _dest)
 	{
 	    unsigned target = howMany(_source.size());
     
@@ -78,8 +78,8 @@ namespace eo
 	}
   
     private :
-	eoSelectOne<EOT>& select;
-	eoHowMany howMany;
+	SelectOne<EOT>& select;
+	HowMany howMany;
     };
 
 }

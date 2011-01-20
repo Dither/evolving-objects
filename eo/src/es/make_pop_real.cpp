@@ -30,7 +30,7 @@
 #endif 
 
 /** This file contains ***INSTANCIATED DEFINITIONS*** of pop. init. fns
- * of the library for  evolution of ***eoReal*** indis inside EO.
+ * of the library for  evolution of ***Real*** indis inside EO.
  * It should be included in the file that calls any of the corresponding fns
  * Compiling this file allows one to generate part of the library (i.e. object
  * files that you just need to link with your own main and fitness code).
@@ -43,7 +43,7 @@
 // The templatized code
 #include <do/make_pop.h>
 // the instanciating EOType
-#include <es/eoReal.h>
+#include <es/Real.h>
 
 namespace eo
 {
@@ -52,12 +52,12 @@ namespace eo
 
     // Init POP
     ///////////
-    eoPop<eoReal<double> >&  make_pop(eoParser& _parser, eoState& _state, eoInit<eoReal<double> > & _init)
+    Pop<Real<double> >&  make_pop(Parser& _parser, State& _state, Init<Real<double> > & _init)
     {
 	return do_make_pop(_parser, _state, _init);
     }
 
-    eoPop<eoReal<eoMinimizingFitness> >&  make_pop(eoParser& _parser, eoState& _state, eoInit<eoReal<eoMinimizingFitness> > & _init)
+    Pop<Real<MinimizingFitness> >&  make_pop(Parser& _parser, State& _state, Init<Real<MinimizingFitness> > & _init)
     {
 	return do_make_pop(_parser, _state, _init);
     }

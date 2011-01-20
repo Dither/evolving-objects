@@ -28,41 +28,41 @@
 #define _Updater_h
 
 #include <string>
-#include <eoFunctor.h>
-#include <utils/eoState.h>
-#include <utils/eoParam.h>
+#include <Functor.h>
+#include <utils/State.h>
+#include <utils/Param.h>
 
 namespace eo
 {
 
-    template <class EOT> class eoCheckPoint;
+    template <class EOT> class CheckPoint;
 
     /**
-       eoUpdater is a generic procudere for updating whatever you want.
+       Updater is a generic procudere for updating whatever you want.
        Yet again an empty name
 
        @ingroup Utilities
     */
-    class eoUpdater : public eoF<void>
+    class Updater : public F<void>
     {
     public:
 	virtual void lastCall() {}
-	virtual std::string className(void) const { return "eoUpdater"; }
+	virtual std::string className(void) const { return "Updater"; }
    
 	template <class EOT> 
-	eoUpdater& addTo(eoCheckPoint<EOT>& cp)        { cp.add(*this);  return *this; }
+	Updater& addTo(CheckPoint<EOT>& cp)        { cp.add(*this);  return *this; }
     };
 
     /**
-       an eoUpdater that simply increments a counter
+       an Updater that simply increments a counter
 
        @ingroup Utilities
     */
     template <class T>
-    class eoIncrementor : public eoUpdater
+    class Incrementor : public Updater
     {public :
 	/** Default Ctor - requires a reference to the thing to increment */
-	eoIncrementor(T& _counter, T _stepsize = 1) : counter(_counter), stepsize(_stepsize) {}
+	Incrementor(T& _counter, T _stepsize = 1) : counter(_counter), stepsize(_stepsize) {}
 
 	/** Simply increments */
 	virtual void operator()()
@@ -70,33 +70,33 @@ namespace eo
 	    counter += stepsize;
 	}
 
-	virtual std::string className(void) const { return "eoIncrementor"; }
+	virtual std::string className(void) const { return "Incrementor"; }
     private:
 	T& counter;
 	T stepsize;
     };
 
-    /** an eoUpdater that is an eoValueParam (and thus OWNS its counter)
+    /** an Updater that is an ValueParam (and thus OWNS its counter)
      *  Mandatory for generation counter in make_checkpoint
 
      @ingroup Utilities
     */
     template <class T>
-    class eoIncrementorParam : public eoUpdater, public eoValueParam<T>
+    class IncrementorParam : public Updater, public ValueParam<T>
     {
     public:
 
-	using eoValueParam<T>::value;
+	using ValueParam<T>::value;
 
 	/** Default Ctor : a name and optionally an increment*/
-	eoIncrementorParam( std::string _name, T _stepsize = 1) :
-	    eoValueParam<T>(T(0), _name), stepsize(_stepsize) {}
+	IncrementorParam( std::string _name, T _stepsize = 1) :
+	    ValueParam<T>(T(0), _name), stepsize(_stepsize) {}
 
 	/** Ctor with a name and non-zero initial value
 	 *  and mandatory stepSize to remove ambiguity
 	 */
-	eoIncrementorParam( std::string _name, T _countValue, T _stepsize) :
-	    eoValueParam<T>(_countValue, _name), stepsize(_stepsize) {}
+	IncrementorParam( std::string _name, T _countValue, T _stepsize) :
+	    ValueParam<T>(_countValue, _name), stepsize(_stepsize) {}
 
 	/** Simply increments */
 	virtual void operator()()
@@ -104,7 +104,7 @@ namespace eo
 	    value() += stepsize;
 	}
 
-	virtual std::string className(void) const { return "eoIncrementorParam"; }
+	virtual std::string className(void) const { return "IncrementorParam"; }
 
     private:
 	T stepsize;
@@ -113,22 +113,22 @@ namespace eo
 #include <time.h>
 
     /**
-       an eoUpdater that saves a state every given time interval
+       an Updater that saves a state every given time interval
 
        @ingroup Utilities
     */
-    class eoTimedStateSaver : public eoUpdater
+    class TimedStateSaver : public Updater
     {
     public :
-	eoTimedStateSaver(time_t _interval, const eoState& _state, std::string _prefix = "state", std::string _extension = "sav") : state(_state),
+	TimedStateSaver(time_t _interval, const State& _state, std::string _prefix = "state", std::string _extension = "sav") : state(_state),
 																    interval(_interval), last_time(time(0)), first_time(time(0)),
 																    prefix(_prefix), extension(_extension) {}
 
 	void operator()(void);
 
-	virtual std::string className(void) const { return "eoTimedStateSaver"; }
+	virtual std::string className(void) const { return "TimedStateSaver"; }
     private :
-	const eoState& state;
+	const State& state;
 
 	const time_t interval;
 	time_t last_time;
@@ -138,19 +138,19 @@ namespace eo
     };
 
     /**
-       an eoUpdater that saves a state every given generations
+       an Updater that saves a state every given generations
 
        @ingroup Utilities
     */
-    class eoCountedStateSaver : public eoUpdater
+    class CountedStateSaver : public Updater
     {
     public :
-	eoCountedStateSaver(unsigned _interval, const eoState& _state, std::string _prefix, bool _saveOnLastCall, std::string _extension = "sav", unsigned _counter = 0)
+	CountedStateSaver(unsigned _interval, const State& _state, std::string _prefix, bool _saveOnLastCall, std::string _extension = "sav", unsigned _counter = 0)
 	    : state(_state), interval(_interval), counter(_counter),
 	      saveOnLastCall(_saveOnLastCall),
 	      prefix(_prefix), extension(_extension) {}
 
-	eoCountedStateSaver(unsigned _interval, const eoState& _state, std::string _prefix = "state", std::string _extension = "sav", unsigned _counter = 0)
+	CountedStateSaver(unsigned _interval, const State& _state, std::string _prefix = "state", std::string _extension = "sav", unsigned _counter = 0)
 	    : state(_state), interval(_interval), counter(_counter),
 	      saveOnLastCall(true),
 	      prefix(_prefix), extension(_extension) {}
@@ -158,11 +158,11 @@ namespace eo
 	virtual void lastCall(void);
 	void operator()(void);
 
-	virtual std::string className(void) const { return "eoCountedStateSaver"; }
+	virtual std::string className(void) const { return "CountedStateSaver"; }
     private :
 	void doItNow(void);
 
-	const eoState& state;
+	const State& state;
 	const unsigned interval;
 	unsigned counter;
 	bool saveOnLastCall;

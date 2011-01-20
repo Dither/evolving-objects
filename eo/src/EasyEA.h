@@ -28,21 +28,21 @@
 //-----------------------------------------------------------------------------
 
 #include <apply.h>
-#include <eoAlgo.h>
-#include <eoPopEvalFunc.h>
-#include <eoContinue.h>
-#include <eoSelect.h>
-#include <eoTransform.h>
-#include <eoBreed.h>
-#include <eoMergeReduce.h>
-#include <eoReplacement.h>
+#include <Algo.h>
+#include <PopEvalFunc.h>
+#include <Continue.h>
+#include <Select.h>
+#include <Transform.h>
+#include <Breed.h>
+#include <MergeReduce.h>
+#include <Replacement.h>
 
 namespace eo
 {
 
-    template <class EOT> class eoIslandsEasyEA ;
+    template <class EOT> class IslandsEasyEA ;
 
-    template <class EOT> class eoDistEvalEasyEA ;
+    template <class EOT> class DistEvalEasyEA ;
 
     /** An easy-to-use evolutionary algorithm; you can use any chromosome,
 	and any selection transformation, merging and evaluation
@@ -50,11 +50,11 @@ namespace eo
 	sub-algorithms
 
 	Change (MS, July 3. 2001):
-	Replaced the eoEvalFunc by an eoPopEvalFunc: this immediately
+	Replaced the EvalFunc by an PopEvalFunc: this immediately
 	allows many useful constructs, such as co-evolution (e.g. game players),
 	parisian approach (the solution to the problem is the whole population)
 	or simple distribution of evaluations on a cluster.
-	In case an eoEvalFunc is passed, it is embedded on an eoPopLoopEval
+	In case an EvalFunc is passed, it is embedded on an PopLoopEval
 	This makes things a little uglier (required an additional "dummy" member
 
 	Note: it looks ugly only because we wanted to authorize many different
@@ -62,16 +62,16 @@ namespace eo
 
 	@ingroup Algorithms
     */
-    template<class EOT> class eoEasyEA: public eoAlgo<EOT>
+    template<class EOT> class EasyEA: public Algo<EOT>
     {
     public:
 
 	/** Ctor taking a breed and merge */
-	eoEasyEA(
-		 eoContinue<EOT>& _continuator,
-		 eoEvalFunc<EOT>& _eval,
-		 eoBreed<EOT>& _breed,
-		 eoReplacement<EOT>& _replace
+	EasyEA(
+		 Continue<EOT>& _continuator,
+		 EvalFunc<EOT>& _eval,
+		 Breed<EOT>& _breed,
+		 Replacement<EOT>& _replace
 		 ) : continuator(_continuator),
 		     eval (_eval),
 		     loopEval(_eval),
@@ -83,10 +83,10 @@ namespace eo
 	{}
 
 	/*
-	  eoEasyEA(eoContinue <EOT> & _continuator,
-	  eoPopEvalFunc <EOT> & _pop_eval,
-	  eoBreed <EOT> & _breed,
-	  eoReplacement <EOT> & _replace
+	  EasyEA(Continue <EOT> & _continuator,
+	  PopEvalFunc <EOT> & _pop_eval,
+	  Breed <EOT> & _breed,
+	  Replacement <EOT> & _replace
 	  ) :
 	  continuator (_continuator),
 	  eval (dummyEval),
@@ -100,12 +100,12 @@ namespace eo
 	  }
 	*/
 
-	/** NEW Ctor taking a breed and merge and an eoPopEval */
-	eoEasyEA(
-		 eoContinue<EOT>& _continuator,
-		 eoPopEvalFunc<EOT>& _eval,
-		 eoBreed<EOT>& _breed,
-		 eoReplacement<EOT>& _replace
+	/** NEW Ctor taking a breed and merge and an PopEval */
+	EasyEA(
+		 Continue<EOT>& _continuator,
+		 PopEvalFunc<EOT>& _eval,
+		 Breed<EOT>& _breed,
+		 Replacement<EOT>& _replace
 		 ) : continuator(_continuator),
 		     eval (dummyEval),
 		     loopEval(dummyEval),
@@ -117,13 +117,13 @@ namespace eo
 	{}
 
 
-	/// Ctor eoSelect, eoTransform, eoReplacement and an eoPopEval
-	eoEasyEA(
-		 eoContinue<EOT>& _continuator,
-		 eoPopEvalFunc<EOT>& _eval,
-		 eoSelect<EOT>& _select,
-		 eoTransform<EOT>& _transform,
-		 eoReplacement<EOT>& _replace
+	/// Ctor Select, Transform, Replacement and an PopEval
+	EasyEA(
+		 Continue<EOT>& _continuator,
+		 PopEvalFunc<EOT>& _eval,
+		 Select<EOT>& _select,
+		 Transform<EOT>& _transform,
+		 Replacement<EOT>& _replace
 		 ) : continuator(_continuator),
 		     eval (dummyEval),
 		     loopEval(dummyEval),
@@ -134,13 +134,13 @@ namespace eo
 		     replace(_replace)
 	{}
 
-	/// Ctor eoBreed, eoMerge and eoReduce.
-	eoEasyEA(
-		 eoContinue<EOT>& _continuator,
-		 eoEvalFunc<EOT>& _eval,
-		 eoBreed<EOT>& _breed,
-		 eoMerge<EOT>& _merge,
-		 eoReduce<EOT>& _reduce
+	/// Ctor Breed, Merge and Reduce.
+	EasyEA(
+		 Continue<EOT>& _continuator,
+		 EvalFunc<EOT>& _eval,
+		 Breed<EOT>& _breed,
+		 Merge<EOT>& _merge,
+		 Reduce<EOT>& _reduce
 		 ) : continuator(_continuator),
 		     eval (_eval),
 		     loopEval(_eval),
@@ -151,13 +151,13 @@ namespace eo
 		     replace(mergeReduce)
 	{}
 
-	/// Ctor eoSelect, eoTransform, and eoReplacement
-	eoEasyEA(
-		 eoContinue<EOT>& _continuator,
-		 eoEvalFunc<EOT>& _eval,
-		 eoSelect<EOT>& _select,
-		 eoTransform<EOT>& _transform,
-		 eoReplacement<EOT>& _replace
+	/// Ctor Select, Transform, and Replacement
+	EasyEA(
+		 Continue<EOT>& _continuator,
+		 EvalFunc<EOT>& _eval,
+		 Select<EOT>& _select,
+		 Transform<EOT>& _transform,
+		 Replacement<EOT>& _replace
 		 ) : continuator(_continuator),
 		     eval (_eval),
 		     loopEval(_eval),
@@ -168,14 +168,14 @@ namespace eo
 		     replace(_replace)
 	{}
     
-	/// Ctor eoSelect, eoTransform, eoMerge and eoReduce.
-	eoEasyEA(
-		 eoContinue<EOT>& _continuator,
-		 eoEvalFunc<EOT>& _eval,
-		 eoSelect<EOT>& _select,
-		 eoTransform<EOT>& _transform,
-		 eoMerge<EOT>&     _merge,
-		 eoReduce<EOT>&    _reduce
+	/// Ctor Select, Transform, Merge and Reduce.
+	EasyEA(
+		 Continue<EOT>& _continuator,
+		 EvalFunc<EOT>& _eval,
+		 Select<EOT>& _select,
+		 Transform<EOT>& _transform,
+		 Merge<EOT>&     _merge,
+		 Reduce<EOT>&    _reduce
 		 ) : continuator(_continuator),
 		     eval (_eval),
 		     loopEval(_eval),
@@ -190,9 +190,9 @@ namespace eo
 
 
 	/// Apply a few generation of evolution to the population.
-	virtual void operator()(eoPop<EOT>& _pop)
+	virtual void operator()(Pop<EOT>& _pop)
 	{
-	    eoPop<EOT> offspring, empty_pop;
+	    Pop<EOT> offspring, empty_pop;
 
 	    popEval(empty_pop, _pop); // A first eval of pop.
 
@@ -218,7 +218,7 @@ namespace eo
 		    catch (std::exception& e)
 			{
 			    std::string s = e.what();
-			    s.append( " in eoEasyEA");
+			    s.append( " in EasyEA");
 			    throw std::runtime_error( s );
 			}
 		}
@@ -229,23 +229,23 @@ namespace eo
 
 	// If selectTransform needs not be used, dummySelect and dummyTransform are used
 	// to instantiate it.
-	class eoDummySelect : public eoSelect<EOT>
+	class DummySelect : public Select<EOT>
 	{
 	public :
-	    void operator()(const eoPop<EOT>&, eoPop<EOT>&)
+	    void operator()(const Pop<EOT>&, Pop<EOT>&)
 	    {}
 	}
 	dummySelect;
 
-	class eoDummyTransform : public eoTransform<EOT>
+	class DummyTransform : public Transform<EOT>
 	{
 	public :
-	    void operator()(eoPop<EOT>&)
+	    void operator()(Pop<EOT>&)
 	    {}
 	}
 	    dummyTransform;
 
-	class eoDummyEval : public eoEvalFunc<EOT>
+	class DummyEval : public EvalFunc<EOT>
 	{
 	public:
 	    void operator()(EOT &)
@@ -253,31 +253,31 @@ namespace eo
 	}
 	    dummyEval;
 
-	eoContinue<EOT>&          continuator;
+	Continue<EOT>&          continuator;
 
-	eoEvalFunc <EOT> &        eval ;
-	eoPopLoopEval<EOT>        loopEval;
+	EvalFunc <EOT> &        eval ;
+	PopLoopEval<EOT>        loopEval;
 
-	eoPopEvalFunc<EOT>&       popEval;
+	PopEvalFunc<EOT>&       popEval;
 
-	eoSelectTransform<EOT>    selectTransform;
-	eoBreed<EOT>&             breed;
+	SelectTransform<EOT>    selectTransform;
+	Breed<EOT>&             breed;
 
 	// If mergeReduce needs not be used, dummyMerge and dummyReduce are used
 	// to instantiate it.
-	eoNoElitism<EOT>          dummyMerge;
-	eoTruncate<EOT>           dummyReduce;
+	NoElitism<EOT>          dummyMerge;
+	Truncate<EOT>           dummyReduce;
 
-	eoMergeReduce<EOT>        mergeReduce;
-	eoReplacement<EOT>&       replace;
+	MergeReduce<EOT>        mergeReduce;
+	Replacement<EOT>&       replace;
 
 	// Friend classes
-	friend class eoIslandsEasyEA <EOT> ;
-	friend class eoDistEvalEasyEA <EOT> ;
+	friend class IslandsEasyEA <EOT> ;
+	friend class DistEvalEasyEA <EOT> ;
     };
 
     /**
-       @example t-eoEasyEA.cpp
+       @example t-EasyEA.cpp
        Example of a test program building an EA algorithm.
     */
 

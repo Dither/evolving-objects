@@ -30,7 +30,7 @@
 #endif 
 
 /** This file contains ***INSTANCIATED DEFINITIONS*** of run funs
- * of the library for evolution of  ***eoReal***  inside EO.
+ * of the library for evolution of  ***Real***  inside EO.
  * It should be included in the file that calls any of the corresponding fns
  * Compiling this file allows one to generate part of the library (i.e. object
  * files that you just need to link with your own main and fitness code).
@@ -43,9 +43,9 @@
 // The templatized code
 #include <do/make_run.h>
 // the instanciating EOType
-#include <es/eoReal.h>
+#include <es/Real.h>
 // the instanciating fitnesses
-#include <eoScalarFitness.h>
+#include <ScalarFitness.h>
 
 namespace eo
 {
@@ -54,12 +54,12 @@ namespace eo
 
     // run
     /////////
-    void run_ea(eoAlgo<eoReal<double> >& _ga, eoPop<eoReal<double> >& _pop)
+    void run_ea(Algo<Real<double> >& _ga, Pop<Real<double> >& _pop)
     {
 	do_run(_ga, _pop);
     }
 
-    void run_ea(eoAlgo<eoReal<eoMinimizingFitness> >& _ga, eoPop<eoReal<eoMinimizingFitness> >& _pop)
+    void run_ea(Algo<Real<MinimizingFitness> >& _ga, Pop<Real<MinimizingFitness> >& _pop)
     {
 	do_run(_ga, _pop);
     }

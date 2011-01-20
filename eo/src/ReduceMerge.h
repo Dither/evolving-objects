@@ -29,12 +29,12 @@
 
 
 //-----------------------------------------------------------------------------
-#include <eoPop.h>
-#include <eoFunctor.h>
-#include <eoMerge.h>
-#include <eoReduce.h>
-#include <eoReplacement.h>
-#include <utils/eoHowMany.h>
+#include <Pop.h>
+#include <Functor.h>
+#include <Merge.h>
+#include <Reduce.h>
+#include <Replacement.h>
+#include <utils/HowMany.h>
 //-----------------------------------------------------------------------------
 
 namespace eo
@@ -45,82 +45,82 @@ namespace eo
      */
 
     /** 
-	eoReduceMerge: Replacement strategies that start by reducing the parents, 
+	ReduceMerge: Replacement strategies that start by reducing the parents, 
 	then merge with the offspring
 
 	This is the way to do SSGA: the offspring gets inserted in the population
 	even if it is worse than anybody else.
 
-	@see eoReduceMerge
-	@see eoSSGAWorseReplacement
-	@see eoSSGADetTournamentReplacement
-	@see eoSSGAStochTournamentReplacement
+	@see ReduceMerge
+	@see SSGAWorseReplacement
+	@see SSGADetTournamentReplacement
+	@see SSGAStochTournamentReplacement
     */
     template <class EOT>
-    class eoReduceMerge : public eoReplacement<EOT>
+    class ReduceMerge : public Replacement<EOT>
     {
     public:
-        eoReduceMerge(eoReduce<EOT>& _reduce, eoMerge<EOT>& _merge) :
+        ReduceMerge(Reduce<EOT>& _reduce, Merge<EOT>& _merge) :
 	    reduce(_reduce), merge(_merge)
         {}
 
-        void operator()(eoPop<EOT>& _parents, eoPop<EOT>& _offspring)
+        void operator()(Pop<EOT>& _parents, Pop<EOT>& _offspring)
         {
 	    if (_parents.size() < _offspring.size())
-		throw std::logic_error("eoReduceMerge: More offspring than parents!\n");
+		throw std::logic_error("ReduceMerge: More offspring than parents!\n");
 	    reduce(_parents, _parents.size() - _offspring.size()); 
 	    merge(_offspring, _parents);
         }
 
     private :
-        eoReduce<EOT>& reduce;
-        eoMerge<EOT>& merge;
+        Reduce<EOT>& reduce;
+        Merge<EOT>& merge;
     };
 
     /** 
-	SSGA replace worst. Is an eoReduceMerge.
+	SSGA replace worst. Is an ReduceMerge.
     */
     template <class EOT> 
-    class eoSSGAWorseReplacement : public eoReduceMerge<EOT>
+    class SSGAWorseReplacement : public ReduceMerge<EOT>
     {
     public :
-        eoSSGAWorseReplacement() : eoReduceMerge<EOT>(truncate, plus) {}
+        SSGAWorseReplacement() : ReduceMerge<EOT>(truncate, plus) {}
 
     private :
-        eoLinearTruncate<EOT> truncate;
-        eoPlus<EOT> plus;
+        LinearTruncate<EOT> truncate;
+        Plus<EOT> plus;
     };
 
     /** 
-	SSGA deterministic tournament replacement. Is an eoReduceMerge.
+	SSGA deterministic tournament replacement. Is an ReduceMerge.
     */
     template <class EOT> 
-    class eoSSGADetTournamentReplacement : public eoReduceMerge<EOT>
+    class SSGADetTournamentReplacement : public ReduceMerge<EOT>
     {
     public :
-        eoSSGADetTournamentReplacement(unsigned _t_size) : 
-	    eoReduceMerge<EOT>(truncate, plus), truncate(_t_size) {}
+        SSGADetTournamentReplacement(unsigned _t_size) : 
+	    ReduceMerge<EOT>(truncate, plus), truncate(_t_size) {}
 
     private :
-        eoDetTournamentTruncate<EOT> truncate;
-        eoPlus<EOT> plus;
+        DetTournamentTruncate<EOT> truncate;
+        Plus<EOT> plus;
     };
 
-    /** SSGA stochastic tournament replacement. Is an eoReduceMerge.
+    /** SSGA stochastic tournament replacement. Is an ReduceMerge.
 	It much cleaner to insert directly the offspring in the parent population, 
 	but it is NOT equivalent in case of more than 1 offspring as already 
-	replaced could be removed , which is not possible in the eoReduceMerge 
+	replaced could be removed , which is not possible in the ReduceMerge 
 	So what the heck ! */
     template <class EOT> 
-    class eoSSGAStochTournamentReplacement : public eoReduceMerge<EOT>
+    class SSGAStochTournamentReplacement : public ReduceMerge<EOT>
     {
     public :
-        eoSSGAStochTournamentReplacement(double _t_rate) : 
-	    eoReduceMerge<EOT>(truncate, plus), truncate(_t_rate) {}
+        SSGAStochTournamentReplacement(double _t_rate) : 
+	    ReduceMerge<EOT>(truncate, plus), truncate(_t_rate) {}
 
     private :
-        eoStochTournamentTruncate<EOT> truncate;
-        eoPlus<EOT> plus;
+        StochTournamentTruncate<EOT> truncate;
+        Plus<EOT> plus;
     };
 
 }

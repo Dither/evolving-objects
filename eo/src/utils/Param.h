@@ -33,7 +33,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include <eoScalarFitness.h>
+#include <ScalarFitness.h>
 
 namespace eo
 {
@@ -42,21 +42,21 @@ namespace eo
      *
      * A parameter is basically an object that stores a value and that can read/print it from/on streams.
      *
-     * It is mainly used for command-line options (see eoParser) and eoStat.
+     * It is mainly used for command-line options (see Parser) and Stat.
      *
      * @ingroup Utilities
      * @{
      */
 
     /**
-       eoParam: Base class for monitoring and parsing parameters
+       Param: Base class for monitoring and parsing parameters
     */
-    class eoParam
+    class Param
     {
     public:
 
 	/** Empty constructor - called from outside any parser */
-	eoParam ()
+	Param ()
 	    : repLongName(""), repDefault(""), repDescription(""),
 	      repShortHand(0), repRequired(false)
         {}
@@ -69,7 +69,7 @@ namespace eo
 	 * @param _shortName     Short name of the argument (Optional)
 	 * @param _required      If it is a necessary parameter or not
 	 */
-	eoParam (std::string _longName, std::string _default,
+	Param (std::string _longName, std::string _default,
 		 std::string _description, char _shortName = 0, bool _required = false)
 	    : repLongName(_longName), repDefault(_default),
 	      repDescription(_description ),
@@ -79,7 +79,7 @@ namespace eo
 	/**
 	 * Virtual destructor is needed.
 	 */
-	virtual ~eoParam () {}
+	virtual ~Param () {}
 
 	/**
 	 * Pure virtual function to get the value out.
@@ -117,7 +117,7 @@ namespace eo
 	void defValue( const std::string& str ) { repDefault = str; };
 
 	/**
-	 * ALlows to change the name (see the prefix in eoParser.h)
+	 * ALlows to change the name (see the prefix in Parser.h)
 	 */
 	void setLongName(std::string _longName) { repLongName = _longName;}
 
@@ -137,7 +137,7 @@ namespace eo
 
 
     /**
-       eoValueParam<ValueType>: templatized derivation of eoParam. Can be used to contain
+       ValueParam<ValueType>: templatized derivation of Param. Can be used to contain
        any scalar value type. It makes use of std::strstream to get and set values. 
    
        @todo This should be changed to std::stringstream when that class is available in g++.
@@ -146,12 +146,12 @@ namespace eo
        for std::vector<double>. These stream their contents delimited with whitespace.
     */
     template <class ValueType>
-    class eoValueParam : public eoParam
+    class ValueParam : public Param
     {
     public :
 
 	/** Construct a Param. */
-	eoValueParam(void) : eoParam() {}
+	ValueParam(void) : Param() {}
 
 	/** Construct a Param.
 	 *
@@ -161,15 +161,15 @@ namespace eo
 	 * @param _shortHand          Short name of the argument (Optional)
 	 * @param _required           If it is a necessary parameter or not
 	 */
-	eoValueParam(ValueType _defaultValue,
+	ValueParam(ValueType _defaultValue,
 		     std::string _longName,
 		     std::string _description = "No description",
 		     char _shortHand = 0,
 		     bool _required = false)
-	    : eoParam(_longName, "", _description, _shortHand, _required),
+	    : Param(_longName, "", _description, _shortHand, _required),
 	      repValue(_defaultValue)
         {
-            eoParam::defValue(getValue());
+            Param::defValue(getValue());
         }
 
 	/** Get a reference on the parameter value
@@ -219,7 +219,7 @@ namespace eo
 	    For vector<double> we expect a list of numbers, where the first is
 	    an unsigned integer taken as the length ot the vector and then
 	    successively the vector elements. Vector elements can be separated
-	    by ',', ';', or ' '. Note, however, that eoParser does not deal
+	    by ',', ';', or ' '. Note, however, that Parser does not deal
 	    correctly with parameter values contianing spaces (' ').
 
 	    @param _value Textual representation of the new value
@@ -239,14 +239,14 @@ namespace eo
       Specialization for std::string
     */
     template <>
-    inline std::string eoValueParam<std::string>::getValue() const
+    inline std::string ValueParam<std::string>::getValue() const
     {
 	return repValue;
     }
 
 
     template <>
-    inline void eoValueParam<bool>::setValue(const std::string& _value)
+    inline void ValueParam<bool>::setValue(const std::string& _value)
     {
 	if (_value.empty())
 	    {
@@ -260,7 +260,7 @@ namespace eo
 
     /// Because MSVC does not support partial specialization, the std::pair is a double, not a T
     template <>
-    inline std::string eoValueParam<std::pair<double, double> >::getValue(void) const
+    inline std::string ValueParam<std::pair<double, double> >::getValue(void) const
     {
 	// use own buffer as MSVC's buffer leaks!
 	std::ostringstream os;
@@ -270,7 +270,7 @@ namespace eo
 
     /// Because MSVC does not support partial specialization, the std::pair is a double, not a T
     template <>
-    inline void eoValueParam<std::pair<double, double> >::setValue(const std::string& _value)
+    inline void ValueParam<std::pair<double, double> >::setValue(const std::string& _value)
     {
 	std::istringstream is(_value);
 	is >> repValue.first;
@@ -281,7 +281,7 @@ namespace eo
     //////////////////////////////////
     /// Because MSVC does not support partial specialization, the std::vector is a std::vector of doubles, not a T
     template <>
-    inline std::string eoValueParam<std::vector<std::vector<double> > >::getValue(void) const
+    inline std::string ValueParam<std::vector<std::vector<double> > >::getValue(void) const
     {
 	std::ostringstream os;
 	os << repValue.size() << ' ';
@@ -295,7 +295,7 @@ namespace eo
 
     /// Because MSVC does not support partial specialization, the std::vector is a std::vector of doubles, not a T
     template <>
-    inline void eoValueParam<std::vector<std::vector<double> > >::setValue(const std::string& _value)
+    inline void ValueParam<std::vector<std::vector<double> > >::setValue(const std::string& _value)
     {
 	std::istringstream is(_value);
 	unsigned i,j,sz;
@@ -318,7 +318,7 @@ namespace eo
     //////////////////////////////////
     /// Because MSVC does not support partial specialization, the std::vector is a double, not a T
     template <>
-    inline std::string eoValueParam<std::vector<double> >::getValue(void) const
+    inline std::string ValueParam<std::vector<double> >::getValue(void) const
     {
 	std::ostringstream os;
 	os << repValue.size() << ' ';
@@ -328,7 +328,7 @@ namespace eo
 
     /// Because MSVC does not support partial specialization, the std::vector is a double, not a T
     template <>
-    inline void eoValueParam<std::vector<double> >::setValue(const std::string& _value)
+    inline void ValueParam<std::vector<double> >::setValue(const std::string& _value)
     {
 	static const std::string delimiter(",;");
 	std::istringstream is(_value);
@@ -344,56 +344,56 @@ namespace eo
 	}
     }
 
-    // The std::vector<eoMinimizingFitness>
+    // The std::vector<MinimizingFitness>
     //////////////////////////////////
-    /// Because MSVC does not support partial specialization, the std::vector is a eoMinimizingFitness, not a T
+    /// Because MSVC does not support partial specialization, the std::vector is a MinimizingFitness, not a T
     template <>
-    inline std::string eoValueParam<std::vector<eoMinimizingFitness> >::getValue(void) const
+    inline std::string ValueParam<std::vector<MinimizingFitness> >::getValue(void) const
     {
 	std::ostringstream os;
 	os << repValue.size() << ' ';
-	std::copy(repValue.begin(), repValue.end(), std::ostream_iterator<eoMinimizingFitness>(os, " "));
+	std::copy(repValue.begin(), repValue.end(), std::ostream_iterator<MinimizingFitness>(os, " "));
 	return os.str();
     }
 
-    /// Because MSVC does not support partial specialization, the std::vector is a eoMinimizingFitness, not a T
+    /// Because MSVC does not support partial specialization, the std::vector is a MinimizingFitness, not a T
     // NOTE: g++ doesn support it either!!!
     template <>
-    inline void eoValueParam<std::vector<eoMinimizingFitness> >::setValue(const std::string& _value)
+    inline void ValueParam<std::vector<MinimizingFitness> >::setValue(const std::string& _value)
     {
 	std::istringstream is(_value);
 	unsigned sz;
 	is >> sz;
 	repValue.resize(sz);
-	std::copy(std::istream_iterator<eoMinimizingFitness>(is), std::istream_iterator<eoMinimizingFitness>(), repValue.begin());
+	std::copy(std::istream_iterator<MinimizingFitness>(is), std::istream_iterator<MinimizingFitness>(), repValue.begin());
     }
 
     // The std::vector<const EOT*>
     //////////////////////////////////
     template <>
-    inline std::string eoValueParam<std::vector<void*> >::getValue(void) const
+    inline std::string ValueParam<std::vector<void*> >::getValue(void) const
     {
 	throw std::runtime_error("I cannot getValue for a std::vector<EOT*>");
 	return std::string("");
     }
 
     template <>
-    inline void eoValueParam<std::vector<void*> >::setValue(const std::string&)
+    inline void ValueParam<std::vector<void*> >::setValue(const std::string&)
     {
 	throw std::runtime_error("I cannot setValue for a std::vector<EOT*>");
 	return;
     }
 
     /*template <class ContainerType>
-      class eoContainerParam : public eoParam
+      class ContainerParam : public Param
       {
       public :
-      eoContainerParam (ContainerType& value, std::string _shortName, std::string _longName,
+      ContainerParam (ContainerType& value, std::string _shortName, std::string _longName,
       std::string _default,
       std::string _description,
       bool _required,
       bool _change )
-      : value(_value), eoParam(_shortName, _longName, _description, _default, _required, _change)
+      : value(_value), Param(_shortName, _longName, _description, _default, _required, _change)
       {}
 
 
@@ -417,10 +417,10 @@ namespace eo
      * See make_algo.h
      */
 
-    class eoParamParamType : public std::pair<std::string,std::vector<std::string> >
+    class ParamParamType : public std::pair<std::string,std::vector<std::string> >
     {
     public:
-	eoParamParamType(std::string _value)
+	ParamParamType(std::string _value)
         {
             readFrom(_value);
         }
@@ -481,9 +481,9 @@ namespace eo
         }
     };
 
-    // at the moment, the following are defined in eoParser.cpp
-    std::ostream & operator<<(std::ostream & _os, const eoParamParamType & _rate);
-    std::istream & operator>>(std::istream & _is,  eoParamParamType & _rate);
+    // at the moment, the following are defined in Parser.cpp
+    std::ostream & operator<<(std::ostream & _os, const ParamParamType & _rate);
+    std::istream & operator>>(std::istream & _is,  ParamParamType & _rate);
 
 }
 

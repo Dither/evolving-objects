@@ -39,20 +39,20 @@ namespace eo
      *
      * @ingroup Variators
      */
-    template<class Chrom> class eoSwapMutation: public eoMonOp<Chrom>
+    template<class Chrom> class SwapMutation: public MonOp<Chrom>
     {
     public:
  
 	/// CTor
-	eoSwapMutation(const unsigned _howManySwaps=1): howManySwaps(_howManySwaps) 
+	SwapMutation(const unsigned _howManySwaps=1): howManySwaps(_howManySwaps) 
 	{
 	    // consistency check
 	    if(howManySwaps < 1)
-  		throw std::runtime_error("Invalid number of swaps in eoSwapMutation");	
+  		throw std::runtime_error("Invalid number of swaps in SwapMutation");	
 	}
   
 	/// The class name.
-	virtual std::string className() const { return "eoSwapMutation"; }
+	virtual std::string className() const { return "SwapMutation"; }
 
 	/**
 	 * Swap two components of the given chromosome.
@@ -77,7 +77,7 @@ namespace eo
     private:
    	unsigned int howManySwaps;
     };
-    /** @example t-eoSwapMutation.cpp
+    /** @example t-SwapMutation.cpp
      */
 
 }

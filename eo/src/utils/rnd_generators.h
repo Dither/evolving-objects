@@ -31,7 +31,7 @@
 #ifndef RND_GENERATORS_H
 #define RND_GENERATORS_H
 
-#include "eoRNG.h"
+#include "RNG.h"
 #include <stdexcept>
 
 namespace eo
@@ -53,9 +53,9 @@ namespace eo
 	// added new ctor with 2 params, and modified the data to minim and range
 	// (was maxim only). MS 3/11/2000
     public :
-	uniform_generator(T _max = T(1.0), eoRng& _rng = rng) :
+	uniform_generator(T _max = T(1.0), Rng& _rng = rng) :
 	    minim(T(0.0)), range(_max), uniform(_rng) {}
-	uniform_generator(T _min, T _max, eoRng& _rng = rng) :
+	uniform_generator(T _min, T _max, Rng& _rng = rng) :
 	    minim(_min), range(_max-_min), uniform(_rng)
 	{
 	    if (_min>_max)
@@ -67,7 +67,7 @@ namespace eo
     private :
 	T minim;
 	T range;
-	eoRng& uniform;
+	Rng& uniform;
     };
 
     /**
@@ -77,12 +77,12 @@ namespace eo
     class boolean_generator
     {
     public :
-	boolean_generator(float _bias = 0.5, eoRng& _rng = rng) : bias(_bias), gen(_rng) {}
+	boolean_generator(float _bias = 0.5, Rng& _rng = rng) : bias(_bias), gen(_rng) {}
 
 	bool operator()(void) { return gen.flip(bias); }
     private :
 	float bias;
-	eoRng& gen;
+	Rng& gen;
     };
 
     /**
@@ -96,9 +96,9 @@ namespace eo
     public :
 	// added new ctor with 2 params, and modified the data to minim and range
 	// (was maxim only). MS 3/11/2000
-	random_generator(T _max, eoRng& _rng = rng) :
+	random_generator(T _max, Rng& _rng = rng) :
 	    minim(T(0.0)), range(_max), random(_rng) {}
-	random_generator(T _min, T _max, eoRng& _rng = rng) :
+	random_generator(T _min, T _max, Rng& _rng = rng) :
 	    minim(_min), range(_max-_min), random(_rng)
 	{
 	    if (_min>_max)
@@ -110,7 +110,7 @@ namespace eo
     private :
 	T minim;
 	T range;
-	eoRng& random;
+	Rng& random;
     };
 
     /// Specialization for bool
@@ -122,19 +122,19 @@ namespace eo
 
     /**
        Another class random_generator that can be used in the STL random_shuffle
-       function (see eoPop::shuffle): its operator() takes an unsigned argument m
+       function (see Pop::shuffle): its operator() takes an unsigned argument m
        and  must return an unsigned uniformly distributed in [0,m}
     */
     template <class T = uint32_t> class UF_random_generator
     {
     public :
-	UF_random_generator(eoRng& _rng = rng) :
+	UF_random_generator(Rng& _rng = rng) :
 	    random(_rng) {}
 
 	T operator()(T _t) { return (T) (random.random(_t)); }
 
     private :
-	eoRng& random;
+	Rng& random;
     };
 
 
@@ -146,13 +146,13 @@ namespace eo
     template <class T = double> class normal_generator
     {
     public :
-	normal_generator(T _stdev = T(1.0), eoRng& _rng = rng) : stdev(_stdev), normal(_rng) {}
+	normal_generator(T _stdev = T(1.0), Rng& _rng = rng) : stdev(_stdev), normal(_rng) {}
 
 	T operator()(void) { return (T) normal.normal(stdev); }
 
     private :
 	T stdev;
-	eoRng& normal;
+	Rng& normal;
     };
 
     /**
@@ -163,13 +163,13 @@ namespace eo
     template <class T = double> class negexp_generator
     {
     public :
-	negexp_generator(T _mean = 1.0, eoRng& _rng = rng) : mean(_mean), negexp(_rng) {}
+	negexp_generator(T _mean = 1.0, Rng& _rng = rng) : mean(_mean), negexp(_rng) {}
 
 	T operator()(void) { return (T) negexp.negexp(mean); }
 
     private :
 	T mean;
-	eoRng& negexp;
+	Rng& negexp;
     };
 
 }

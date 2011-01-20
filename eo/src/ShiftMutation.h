@@ -39,18 +39,18 @@ namespace eo
      *
      * @ingroup Variators
      */
-    template<class EOT> class eoShiftMutation: public eoMonOp<EOT>
+    template<class EOT> class ShiftMutation: public MonOp<EOT>
     {
     public:
  
 	typedef typename EOT::AtomType GeneType;
  
 	/// CTor
-	eoShiftMutation(){}
+	ShiftMutation(){}
   
   
 	/// The class name.
-	virtual std::string className() const { return "eoShiftMutation"; }
+	virtual std::string className() const { return "ShiftMutation"; }
 
 
 	/**
@@ -85,7 +85,7 @@ namespace eo
 	}
     
     };
-    /** @example t-eoShiftMutation.cpp
+    /** @example t-ShiftMutation.cpp
      */ 
 
 }

@@ -31,8 +31,8 @@
 #include <iostream>
 
 // EO includes
-#include <eoPop.h>     // eoPop
-#include <eoFunctor.h>  // eoReduce
+#include <Pop.h>     // Pop
+#include <Functor.h>  // Reduce
 #include <utils/selectors.h>
 
 namespace eo
@@ -43,25 +43,25 @@ namespace eo
      */
 
     /**
-     * eoReduceSplit: reduce the pop to the specified size
+     * ReduceSplit: reduce the pop to the specified size
      *                  AND eventually returns the eliminated guys
      */
-    template<class EOT> class eoReduceSplit: public eoBF<eoPop<EOT>&, eoPop<EOT> &, void >
+    template<class EOT> class ReduceSplit: public BF<Pop<EOT>&, Pop<EOT> &, void >
     {};
 
     /** deterministic truncation method using sort */
     template <class EOT> 
-    class eoTruncateSplit : public eoReduceSplit<EOT>
+    class TruncateSplit : public ReduceSplit<EOT>
     {
     public:
 	/** Ctor: must provide amount of reduction, 
 	    and whether or not you need to return the eliminated guys
 	*/
-	eoTruncateSplit(eoHowMany _howMany, bool _returnEliminated = false):
+	TruncateSplit(HowMany _howMany, bool _returnEliminated = false):
 	    howMany(_howMany), returnEliminated(_returnEliminated) {}
     
 	/** do the jonb */
-	void operator()(eoPop<EOT>& _newgen, eoPop<EOT> & _eliminated)
+	void operator()(Pop<EOT>& _newgen, Pop<EOT> & _eliminated)
 	{
 	    unsigned popSize = _newgen.size();
 	    unsigned eliminated = howMany(popSize);
@@ -69,7 +69,7 @@ namespace eo
 		return ;
 	    unsigned newsize = popSize - eliminated;
 	    if (newsize < 0)
-		throw std::logic_error("eoTruncateSplit: Cannot truncate to a larger size!\n");
+		throw std::logic_error("TruncateSplit: Cannot truncate to a larger size!\n");
     
 	    _newgen.nth_element(newsize);
 
@@ -83,25 +83,25 @@ namespace eo
 	}
 
     private:
-	eoHowMany howMany;
+	HowMany howMany;
 	bool returnEliminated;
     };
 
     /** a ReduceSplit class that does not sort, but repeatidely kills the worse.
-	To be used in SSGA-like replacements (e.g. see eoSSGAWorseReplacement)
+	To be used in SSGA-like replacements (e.g. see SSGAWorseReplacement)
     */
     template <class EOT> 
-    class eoLinearTruncateSplit : public eoReduceSplit<EOT>
+    class LinearTruncateSplit : public ReduceSplit<EOT>
     {
     public:
 	/** Ctor: must provide amount of reduction, 
 	    and whether or not you need to return the eliminated guys
 	*/
-	eoLinearTruncateSplit(eoHowMany _howMany, bool _returnEliminated = false):
+	LinearTruncateSplit(HowMany _howMany, bool _returnEliminated = false):
 	    howMany(_howMany), returnEliminated(_returnEliminated) {}
     
 	/** do the job */
-	void operator()(eoPop<EOT>& _newgen, eoPop<EOT> & _eliminated)
+	void operator()(Pop<EOT>& _newgen, Pop<EOT> & _eliminated)
 	{
 	    unsigned popSize = _newgen.size();
 	    unsigned eliminated = howMany(popSize);
@@ -109,12 +109,12 @@ namespace eo
 		return ;
 	    unsigned newsize = popSize - eliminated;
 	    if (newsize < 0)
-		throw std::logic_error("eoLinearTruncateSplit: Cannot truncate to a larger size!\n");
+		throw std::logic_error("LinearTruncateSplit: Cannot truncate to a larger size!\n");
 
 	    _eliminated.reserve(_eliminated.size()+eliminated); //in case not empty?
 	    for (unsigned i=0; i<eliminated; i++)
 		{
-		    typename eoPop<EOT>::iterator it = _newgen.it_worse_element();
+		    typename Pop<EOT>::iterator it = _newgen.it_worse_element();
 		    if (returnEliminated)
 			_eliminated.push_back(*it);
 		    _newgen.erase(it);	    
@@ -122,23 +122,23 @@ namespace eo
 	}
 
     private:
-	eoHowMany howMany;
+	HowMany howMany;
 	bool returnEliminated;
     };
 
     /** random truncation - batch version */
     template <class EOT> 
-    class eoRandomSplit : public eoReduceSplit<EOT>
+    class RandomSplit : public ReduceSplit<EOT>
     {
     public:
 	/** Ctor: must provide amount of reduction, 
 	    and whether or not you need to return the eliminated guys
 	*/
-	eoRandomSplit(eoHowMany _howMany, bool _returnEliminated = false):
+	RandomSplit(HowMany _howMany, bool _returnEliminated = false):
 	    howMany(_howMany), returnEliminated(_returnEliminated) {}
     
 	/** do the job */
-	void operator()(eoPop<EOT>& _newgen, eoPop<EOT> & _eliminated)
+	void operator()(Pop<EOT>& _newgen, Pop<EOT> & _eliminated)
 	{
 	    unsigned popSize = _newgen.size();
 	    unsigned eliminated = howMany(popSize);
@@ -146,7 +146,7 @@ namespace eo
 		return ;
 	    unsigned newsize = popSize - eliminated;
 	    if (newsize < 0)
-		throw std::logic_error("eoRandomSplit: Cannot truncate to a larger size!\n");
+		throw std::logic_error("RandomSplit: Cannot truncate to a larger size!\n");
 
 	    _newgen.shuffle();
 
@@ -160,24 +160,24 @@ namespace eo
 	}
 
     private:
-	eoHowMany howMany;
+	HowMany howMany;
 	bool returnEliminated;
     };
 
 
     /** random truncation - linear version */
     template <class EOT> 
-    class eoLinearRandomSplit : public eoReduceSplit<EOT>
+    class LinearRandomSplit : public ReduceSplit<EOT>
     {
     public:
 	/** Ctor: must provide amount of reduction, 
 	    and whether or not you need to return the eliminated guys
 	*/
-	eoLinearRandomSplit(eoHowMany _howMany, bool _returnEliminated = false):
+	LinearRandomSplit(HowMany _howMany, bool _returnEliminated = false):
 	    howMany(_howMany), returnEliminated(_returnEliminated) {}
     
 	/** do the job */
-	void operator()(eoPop<EOT>& _newgen, eoPop<EOT> & _eliminated)
+	void operator()(Pop<EOT>& _newgen, Pop<EOT> & _eliminated)
 	{
 	    unsigned popSize = _newgen.size();
 	    unsigned eliminated = howMany(popSize);
@@ -185,13 +185,13 @@ namespace eo
 		return ;
 	    unsigned newsize = popSize - eliminated;
 	    if (newsize < 0)
-		throw std::logic_error("eoLinearRandomSplit: Cannot truncate to a larger size!\n");
+		throw std::logic_error("LinearRandomSplit: Cannot truncate to a larger size!\n");
 
 	    _eliminated.reserve(_eliminated.size()+eliminated); //in case not empty?
 	    for (unsigned i=0; i<eliminated; i++)
 		{
 		    unsigned loser=random(_newgen.size());
-		    typename eoPop<EOT>::iterator it = _newgen.begin()+loser;
+		    typename Pop<EOT>::iterator it = _newgen.begin()+loser;
 		    if (returnEliminated)
 			_eliminated.push_back(*it);
 		    _newgen.erase(it);	    
@@ -200,36 +200,36 @@ namespace eo
 	}
 
     private:
-	eoHowMany howMany;
+	HowMany howMany;
 	bool returnEliminated;
     };
 
 
     /** a ReduceSplit class based on a repeated deterministic (reverse!) tournament
-	To be used in SSGA-like replacements (e.g. see eoSSGADetTournamentReplacement)
+	To be used in SSGA-like replacements (e.g. see SSGADetTournamentReplacement)
     */
     template <class EOT> 
-    class eoDetTournamentTruncateSplit : public eoReduceSplit<EOT>
+    class DetTournamentTruncateSplit : public ReduceSplit<EOT>
     {
     public:
 	/** Ctor: must provide amount of reduction, 
 	    and whether or not you need to return the eliminated guys
 	*/
-	eoDetTournamentTruncateSplit(unsigned _t_size, eoHowMany _howMany, 
+	DetTournamentTruncateSplit(unsigned _t_size, HowMany _howMany, 
 				     bool _returnEliminated = false):
 	    t_size(_t_size), howMany(_howMany), 
 	    returnEliminated(_returnEliminated) 
 	{
 	    if (t_size < 2)
 		{ 
-		    eo::log << eo::warnings << "Warning, Size for eoDetTournamentTruncateSplit adjusted to 2" << std::endl;
+		    eo::log << eo::warnings << "Warning, Size for DetTournamentTruncateSplit adjusted to 2" << std::endl;
 		    t_size = 2;
 		}
 	}
 
 	/** Performs repeated inverse_deterministic_tournament on the pop */
-	void operator()(eoPop<EOT>& _newgen, eoPop<EOT> & _eliminated)
-	// BUG???  void operator()(eoPop<EOT>& _newgen, unsigned _newsize)
+	void operator()(Pop<EOT>& _newgen, Pop<EOT> & _eliminated)
+	// BUG???  void operator()(Pop<EOT>& _newgen, unsigned _newsize)
 	{
 	    unsigned popSize = _newgen.size();
 	    unsigned eliminated = howMany(popSize);
@@ -237,13 +237,13 @@ namespace eo
 		return ;
 	    unsigned newsize = popSize - eliminated;
 	    if (newsize < 0)
-		throw std::logic_error("eoDetTournamentTruncateSplit: Cannot truncate to a larger size!\n");
+		throw std::logic_error("DetTournamentTruncateSplit: Cannot truncate to a larger size!\n");
 
 
 	    _eliminated.reserve(_eliminated.size()+eliminated); //in case not empty?
 	    for (unsigned i=0; i<eliminated; i++)
 		{
-		    typename eoPop<EOT>::iterator it = inverse_deterministic_tournament(_newgen.begin(), _newgen.end(), t_size);
+		    typename Pop<EOT>::iterator it = inverse_deterministic_tournament(_newgen.begin(), _newgen.end(), t_size);
 		    if (returnEliminated)
 			_eliminated.push_back(*it);
 		    _newgen.erase(it);
@@ -252,40 +252,40 @@ namespace eo
 
     private:
 	unsigned t_size;
-	eoHowMany howMany;
+	HowMany howMany;
 	bool returnEliminated;
     };
 
     /** a ReduceSplit class based on a repeated deterministic (reverse!) tournament
-	To be used in SSGA-like replacements (e.g. see eoSSGAStochTournamentReplacement)
+	To be used in SSGA-like replacements (e.g. see SSGAStochTournamentReplacement)
     */
     template <class EOT> 
-    class eoStochTournamentTruncateSplit : public eoReduce<EOT>
+    class StochTournamentTruncateSplit : public Reduce<EOT>
     {
     public:
 	/** Ctor: must provide amount of reduction, 
 	    and whether or not you need to return the eliminated guys
 	*/
-	eoStochTournamentTruncateSplit(double _t_rate, eoHowMany _howMany, 
+	StochTournamentTruncateSplit(double _t_rate, HowMany _howMany, 
 				       bool _returnEliminated = false):
 	    t_rate(_t_rate), howMany(_howMany), 
 	    returnEliminated(_returnEliminated) 
 	{
 	    if (t_rate <= 0.5)
 		{ 
-		    eo::log << eo:warnings << "Warning, Rate for eoStochTournamentTruncateSplit adjusted to 0.51" << std::endl;
+		    eo::log << eo:warnings << "Warning, Rate for StochTournamentTruncateSplit adjusted to 0.51" << std::endl;
 		    t_rate = 0.51;
 		}
 	    if (t_rate > 1)
 		{
-		    eo::log << eo::warnings << "Warning, Rate for eoStochTournamentTruncateSplit adjusted to 1" << std::endl;
+		    eo::log << eo::warnings << "Warning, Rate for StochTournamentTruncateSplit adjusted to 1" << std::endl;
 		    t_rate = 1;
 		}
 	}
 
 	/** Performs repeated inverse_stochastic_tournament on the pop */
-	void operator()(eoPop<EOT>& _newgen, eoPop<EOT> & _eliminated)
-	//BUG???  void operator()(eoPop<EOT>& _newgen, unsigned _newsize)
+	void operator()(Pop<EOT>& _newgen, Pop<EOT> & _eliminated)
+	//BUG???  void operator()(Pop<EOT>& _newgen, unsigned _newsize)
 	{
 	    /* old version
 	       if (!_eliminated.size())	   // nothing to do
@@ -294,7 +294,7 @@ namespace eo
 	       unsigned newSize = oldSize - _eliminated.size();
 	       unsigned eliminated = howMany(popSize);
 	       if (newSize < 0)
-	       throw std::logic_error("eoStochTournamentTruncateSplit: Cannot truncate to a larger size!\n");
+	       throw std::logic_error("StochTournamentTruncateSplit: Cannot truncate to a larger size!\n");
 
 	       end of old version    */
 
@@ -304,14 +304,14 @@ namespace eo
 		return ;
 	    unsigned newsize = popSize - eliminated;
 	    if (newsize < 0)
-		throw std::logic_error("eoDetTournamentTruncateSplit: Cannot truncate to a larger size!\n");
+		throw std::logic_error("DetTournamentTruncateSplit: Cannot truncate to a larger size!\n");
 
 
 
 	    _eliminated.reserve(_eliminated.size()+eliminated); //in case not empty?
 	    for (unsigned i=0; i<_eliminated.size(); i++)
 		{
-		    typename eoPop<EOT>::iterator it = inverse_stochastic_tournament(_newgen.begin(), _newgen.end(), t_rate);
+		    typename Pop<EOT>::iterator it = inverse_stochastic_tournament(_newgen.begin(), _newgen.end(), t_rate);
 		    if (returnEliminated)
 			_eliminated.push_back(*it);
 		    _newgen.erase(it);
@@ -321,7 +321,7 @@ namespace eo
 
     private:
 	double t_rate;
-	eoHowMany howMany;
+	HowMany howMany;
 	bool returnEliminated;
     };
 

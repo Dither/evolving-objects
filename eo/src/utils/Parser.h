@@ -26,39 +26,39 @@ Contact: http://eodev.sourceforge.net
 #include <sstream>
 #include <string>
 
-#include "eoParam.h"
-#include "eoObject.h"
-#include "eoPersistent.h"
+#include "Param.h"
+#include "Object.h"
+#include "Persistent.h"
 
 namespace eo
 {
 
 /** Parameter saving and loading
 
-    eoParameterLoader is an abstract class that can be used as a base for your own
-    parameter loading and saving. The command line parser eoParser is derived from
+    ParameterLoader is an abstract class that can be used as a base for your own
+    parameter loading and saving. The command line parser Parser is derived from
     this class.
 
     @ingroup Parameters
 */
-    class eoParameterLoader
+    class ParameterLoader
     {
     public :
 
 	/** Need a virtual destructor */
-	virtual ~eoParameterLoader();
+	virtual ~ParameterLoader();
 
 	/** Register a parameter and set its value if it is known
 
 	    @param param      the parameter to process
 	    @param section    the section where this parameter belongs
 	*/
-	virtual void processParam(eoParam& param, std::string section = "") = 0;
+	virtual void processParam(Param& param, std::string section = "") = 0;
 
 	/**
 	 * checks if _param has been actually entered
 	 */
-	virtual bool isItThere(eoParam& _param) const = 0;
+	virtual bool isItThere(Param& _param) const = 0;
 
 	/**
 	 * Construct a Param and sets its value. The loader will own the memory thus created
@@ -71,14 +71,14 @@ namespace eo
 	 * @param _required           If it is a necessary parameter or not
 	 */
 	template <class ValueType>
-	eoValueParam<ValueType>& createParam(ValueType _defaultValue,
+	ValueParam<ValueType>& createParam(ValueType _defaultValue,
 					     std::string _longName,
 					     std::string _description,
 					     char _shortHand = 0,
 					     std::string _section = "",
 					     bool _required = false)
 	    {
-		eoValueParam<ValueType>* p = new eoValueParam<ValueType>(_defaultValue,
+		ValueParam<ValueType>* p = new ValueParam<ValueType>(_defaultValue,
 									 _longName,
 									 _description,
 									 _shortHand,
@@ -91,19 +91,19 @@ namespace eo
 
     private :
 
-	std::vector<eoParam*> ownedParams;
+	std::vector<Param*> ownedParams;
     };
 
 
 
 /**
-   eoParser: command line parser and configuration file reader
+   Parser: command line parser and configuration file reader
    This class is persistent, so it can be stored and reloaded to restore
    parameter settings.
 
    @ingroup Parameters
 */
-    class eoParser : public eoParameterLoader, public eoObject, public eoPersistent
+    class Parser : public ParameterLoader, public Object, public Persistent
     {
 
     public:
@@ -122,13 +122,13 @@ namespace eo
 	 * @param _lFileParamName         Name of the parameter specifying the configuration file (--param-file)
 	 * @param _shortHand              Single charachter shorthand for specifying the configuration file
 	 */
-	eoParser ( unsigned _argc, char **_argv , std::string _programDescription = "",
+	Parser ( unsigned _argc, char **_argv , std::string _programDescription = "",
 		   std::string _lFileParamName = "param-file", char _shortHand = 'p');
 
 	/**
 	   Processes the parameter and puts it in the appropriate section for readability
 	*/
-	void processParam(eoParam& param, std::string section = "");
+	void processParam(Param& param, std::string section = "");
 
 	/** Read from a stream
 	 * @param is the input stream
@@ -157,7 +157,7 @@ namespace eo
 
 	    Checks if _param has been actually entered by the user
 	*/
-	virtual bool isItThere(eoParam& _param) const
+	virtual bool isItThere(Param& _param) const
 	    { return getValue(_param).first; }
 
 	/**
@@ -168,7 +168,7 @@ namespace eo
 	 * Not very clean (requires hard-coding of the long name twice!)
 	 * but very useful in many occasions...
 	 */
-	eoParam * getParamWithLongName(const std::string& _name) const;
+	Param * getParamWithLongName(const std::string& _name) const;
 
 
 
@@ -182,18 +182,18 @@ namespace eo
 	    .cpp. Any hint???
 	*/
 	template <class ValueType>
-	eoValueParam<ValueType>& getORcreateParam(ValueType _defaultValue,
+	ValueParam<ValueType>& getORcreateParam(ValueType _defaultValue,
 						  std::string _longName,
 						  std::string _description,
 						  char _shortHand = 0,
 						  std::string _section = "",
 						  bool _required = false)
 	    {
-		eoParam* ptParam = getParamWithLongName(_longName);
+		Param* ptParam = getParamWithLongName(_longName);
 		if (ptParam) {
 		    // found
-		    eoValueParam<ValueType>* ptTypedParam(
-			dynamic_cast<eoValueParam<ValueType>*>(ptParam));
+		    ValueParam<ValueType>* ptTypedParam(
+			dynamic_cast<ValueParam<ValueType>*>(ptParam));
 		    return *ptTypedParam;
 		} else {
 		    // not found -> create it
@@ -221,14 +221,14 @@ namespace eo
 	    @return Corresponding parameter.
 	*/
 	template <class ValueType>
-	eoValueParam<ValueType>& setORcreateParam(ValueType _defaultValue,
+	ValueParam<ValueType>& setORcreateParam(ValueType _defaultValue,
 						  std::string _longName,
 						  std::string _description,
 						  char _shortHand = 0,
 						  std::string _section = "",
 						  bool _required = false)
 	    {
-		eoValueParam<ValueType>& param = createParam(_defaultValue, _longName, _description,
+		ValueParam<ValueType>& param = createParam(_defaultValue, _longName, _description,
 							     _shortHand, _section, _required);
 		std::ostringstream os;
 		os << _defaultValue;
@@ -256,13 +256,13 @@ namespace eo
 
     private:
 
-	void doRegisterParam(eoParam& param);
+	void doRegisterParam(Param& param);
 
-	std::pair<bool, std::string> getValue(eoParam& _param) const;
+	std::pair<bool, std::string> getValue(Param& _param) const;
 
 	void updateParameters();
 
-	typedef std::multimap<std::string, eoParam*> MultiMapType;
+	typedef std::multimap<std::string, Param*> MultiMapType;
 
 	// used to store all parameters that are processed
 	MultiMapType params;
@@ -280,8 +280,8 @@ namespace eo
 	// used to display the message about "-h" only once
 	bool needHelpMessage;
 
-	eoValueParam<bool>   needHelp;
-	eoValueParam<bool>   stopOnUnknownParam;
+	ValueParam<bool>   needHelp;
+	ValueParam<bool>   stopOnUnknownParam;
 
 	mutable std::vector<std::string> messages;
 

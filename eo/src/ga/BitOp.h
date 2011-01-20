@@ -21,7 +21,7 @@
     Contact: todos@geneura.ugr.es, http://geneura.ugr.es
              Marc.Schoenauer@polytechnique.fr
              mak@dhi.dk
- CVS Info: $Date: 2007-08-21 14:52:50 $ $Header: /home/nojhan/dev/eodev/eodev_cvs/eo/src/ga/eoBitOp.h,v 1.18 2007-08-21 14:52:50 kuepper Exp $ $Author: kuepper $
+ CVS Info: $Date: 2007-08-21 14:52:50 $ $Header: /home/nojhan/dev/eodev/eodev_cvs/eo/src/ga/BitOp.h,v 1.18 2007-08-21 14:52:50 kuepper Exp $ $Author: kuepper $
  */
 //-----------------------------------------------------------------------------
 
@@ -31,25 +31,25 @@
 //-----------------------------------------------------------------------------
 
 #include <algorithm>    // swap_ranges
-#include <utils/eoRNG.h>
-#include <eoInit.h>       // eoMonOp
-#include <ga/eoBit.h>
+#include <utils/RNG.h>
+#include <Init.h>       // MonOp
+#include <ga/Bit.h>
 
 namespace eo
 {
 
-    /** eoBitFlip --> changes 1 bit
-	\class eoBitBitFlip eoBitOp.h ga/eoBitOp.h
+    /** BitFlip --> changes 1 bit
+	\class BitBitFlip BitOp.h ga/BitOp.h
 	\ingroup bitstring
 
 	@ingroup Variators
     */
 
-    template<class Chrom> class eoOneBitFlip: public eoMonOp<Chrom>
+    template<class Chrom> class OneBitFlip: public MonOp<Chrom>
     {
     public:
 	/// The class name.
-	virtual std::string className() const { return "eoOneBitFlip"; }
+	virtual std::string className() const { return "OneBitFlip"; }
 
 	/**
 	 * Change one bit.
@@ -57,29 +57,29 @@ namespace eo
 	 */
 	bool operator()(Chrom& chrom)
 	{
-	    unsigned i = eo::rng.random(chrom.size());
+	    unsigned i = rng.random(chrom.size());
 	    chrom[i] = (chrom[i]) ? false : true;
 	    return true;
 	}
     };
 
-    /** eoDetBitFlip --> changes exactly k bits
-	\class eoDetBitFlip eoBitOp.h ga/eoBitOp.h
+    /** DetBitFlip --> changes exactly k bits
+	\class DetBitFlip BitOp.h ga/BitOp.h
 	\ingroup bitstring
     */
 
-    template<class Chrom> class eoDetBitFlip: public eoMonOp<Chrom>
+    template<class Chrom> class DetBitFlip: public MonOp<Chrom>
     {
     public:
 	/**
 	 * (Default) Constructor.
 	 * @param _num_bit The number of bits to change
-	 * default is one - equivalent to eoOneBitFlip then
+	 * default is one - equivalent to OneBitFlip then
 	 */
-	eoDetBitFlip(const unsigned& _num_bit = 1): num_bit(_num_bit) {}
+	DetBitFlip(const unsigned& _num_bit = 1): num_bit(_num_bit) {}
 
 	/// The class name.
-	virtual std::string className() const { return "eoDetBitFlip"; }
+	virtual std::string className() const { return "DetBitFlip"; }
 
 	/**
 	 * Change num_bit bits.
@@ -90,7 +90,7 @@ namespace eo
 	    // does not check for duplicate: if someone volunteers ....
 	    for (unsigned k=0; k<num_bit; k++)
 		{
-		    unsigned i = eo::rng.random(chrom.size());
+		    unsigned i = rng.random(chrom.size());
 		    chrom[i] = (chrom[i]) ? false : true;
 		}
 	    return true;
@@ -100,12 +100,12 @@ namespace eo
     };
 
 
-    /** eoBitMutation --> classical mutation
-	\class eoBitMutation eoBitOp.h ga/eoBitOp.h
+    /** BitMutation --> classical mutation
+	\class BitMutation BitOp.h ga/BitOp.h
 	\ingroup bitstring
     */
 
-    template<class Chrom> class eoBitMutation: public eoMonOp<Chrom>
+    template<class Chrom> class BitMutation: public MonOp<Chrom>
     {
     public:
 	/**
@@ -113,11 +113,11 @@ namespace eo
 	 * @param _rate Rate of mutation.
 	 * @param _normalize use rate/chrom.size if true
 	 */
-	eoBitMutation(const double& _rate = 0.01, bool _normalize=false):
+	BitMutation(const double& _rate = 0.01, bool _normalize=false):
 	    rate(_rate), normalize(_normalize) {}
 
 	/// The class name.
-	virtual std::string className() const { return "eoBitMutation"; }
+	virtual std::string className() const { return "BitMutation"; }
 
 	/**
 	 * Mutate a chromosome.
@@ -128,7 +128,7 @@ namespace eo
 	    double actualRate = (normalize ? rate/chrom.size() : rate);
 	    bool changed_something = false;
 	    for (unsigned i = 0; i < chrom.size(); i++)
-		if (eo::rng.flip(actualRate))
+		if (rng.flip(actualRate))
 		    {
 			chrom[i] = !chrom[i];
 			changed_something = true;
@@ -143,16 +143,16 @@ namespace eo
     };
 
 
-    /** eoBitInversion: inverts the bits of the chromosome between an interval
-	\class eoBitInversion eoBitOp.h ga/eoBitOp.h
+    /** BitInversion: inverts the bits of the chromosome between an interval
+	\class BitInversion BitOp.h ga/BitOp.h
 	\ingroup bitstring
     */
 
-    template<class Chrom> class eoBitInversion: public eoMonOp<Chrom>
+    template<class Chrom> class BitInversion: public MonOp<Chrom>
     {
     public:
 	/// The class name.
-	virtual std::string className() const { return "eoBitInversion"; }
+	virtual std::string className() const { return "BitInversion"; }
 
 	/**
 	 * Inverts a range of bits in a binary chromosome.
@@ -161,8 +161,8 @@ namespace eo
 	bool operator()(Chrom& chrom)
 	{
 
-	    unsigned u1 = eo::rng.random(chrom.size() + 1) , u2;
-	    do u2 = eo::rng.random(chrom.size() + 1); while (u1 == u2);
+	    unsigned u1 = rng.random(chrom.size() + 1) , u2;
+	    do u2 = rng.random(chrom.size() + 1); while (u1 == u2);
 	    unsigned r1 = std::min(u1, u2), r2 = std::max(u1, u2);
 
 	    std::reverse(chrom.begin() + r1, chrom.begin() + r2);
@@ -171,16 +171,16 @@ namespace eo
     };
 
 
-    /** eoBitNext --> next value when bitstring considered as binary value
-	\class eoBitNext eoBitOp.h ga/eoBitOp.h
+    /** BitNext --> next value when bitstring considered as binary value
+	\class BitNext BitOp.h ga/BitOp.h
 	\ingroup bitstring
     */
 
-    template<class Chrom> class eoBitNext: public eoMonOp<Chrom>
+    template<class Chrom> class BitNext: public MonOp<Chrom>
     {
     public:
 	/// The class name.
-	virtual std::string className() const { return "eoBitNext"; }
+	virtual std::string className() const { return "BitNext"; }
 
 	/**
 	 * Change the bit std::string x to be x+1.
@@ -205,16 +205,16 @@ namespace eo
     };
 
 
-    /** eoBitPrev --> previous value when bitstring treated as binary value
-	\class eoBitPrev eoBitOp.h ga/eoBitOp.h
+    /** BitPrev --> previous value when bitstring treated as binary value
+	\class BitPrev BitOp.h ga/BitOp.h
 	\ingroup bitstring
     */
 
-    template<class Chrom> class eoBitPrev: public eoMonOp<Chrom>
+    template<class Chrom> class BitPrev: public MonOp<Chrom>
     {
     public:
 	/// The class name.
-	virtual std::string className() const { return "eoBitPrev"; }
+	virtual std::string className() const { return "BitPrev"; }
 
 	/**
 	 * Change the bit std::string x to be x-1.
@@ -239,16 +239,16 @@ namespace eo
     };
 
 
-    /** eo1PtBitXover --> classic 1-point crossover
-	\class eo1PtBitCrossover eoBitOp.h ga/eoBitOp.h
+    /** 1PtBitXover --> classic 1-point crossover
+	\class 1PtBitCrossover BitOp.h ga/BitOp.h
 	\ingroup bitstring
     */
 
-    template<class Chrom> class eo1PtBitXover: public eoQuadOp<Chrom>
+    template<class Chrom> class OnePtBitXover: public QuadOp<Chrom>
     {
     public:
 	/// The class name.
-	virtual std::string className() const { return "eo1PtBitXover"; }
+	virtual std::string className() const { return "1PtBitXover"; }
 
 	/**
 	 * 1-point crossover for binary chromosomes.
@@ -257,7 +257,7 @@ namespace eo
 	 */
 	bool operator()(Chrom& chrom1, Chrom& chrom2)
 	{
-	    unsigned site = eo::rng.random(std::min(chrom1.size(), chrom2.size()));
+	    unsigned site = rng.random(std::min(chrom1.size(), chrom2.size()));
 
 	    if (!std::equal(chrom1.begin(), chrom1.begin()+site, chrom2.begin()))
 		{
@@ -271,22 +271,22 @@ namespace eo
     };
 
 
-    /** eoUBitXover --> classic Uniform crossover
-	\class eoUBitXover eoBitOp.h ga/eoBitOp.h
+    /** UBitXover --> classic Uniform crossover
+	\class UBitXover BitOp.h ga/BitOp.h
 	\ingroup bitstring
     */
 
-    template<class Chrom> class eoUBitXover: public eoQuadOp<Chrom>
+    template<class Chrom> class UBitXover: public QuadOp<Chrom>
     {
     public:
 	/// (Default) Constructor.
-	eoUBitXover(const float& _preference = 0.5): preference(_preference)
+	UBitXover(const float& _preference = 0.5): preference(_preference)
 	{
 	    if ( (_preference <= 0.0) || (_preference >= 1.0) )
 		std::runtime_error("UxOver --> invalid preference");
 	}
 	/// The class name.
-	virtual std::string className() const { return "eoUBitXover"; }
+	virtual std::string className() const { return "UBitXover"; }
 
 	/**
 	 * Uniform crossover for binary chromosomes.
@@ -301,7 +301,7 @@ namespace eo
 	    bool changed = false;
 	    for (unsigned int i=0; i<chrom1.size(); i++)
 		{
-		    if (chrom1[i] != chrom2[i] && eo::rng.flip(preference))
+		    if (chrom1[i] != chrom2[i] && rng.flip(preference))
 			{
 			    bool tmp = chrom1[i];
 			    chrom1[i]=chrom2[i];
@@ -316,23 +316,23 @@ namespace eo
     };
 
 
-    /** eoNPtsBitXover --> n-point crossover
-	\class eoNPtsBitXover eoBitOp.h ga/eoBitOp.h
+    /** NPtsBitXover --> n-point crossover
+	\class NPtsBitXover BitOp.h ga/BitOp.h
 	\ingroup bitstring
     */
-    template<class Chrom> class eoNPtsBitXover : public eoQuadOp<Chrom>
+    template<class Chrom> class NPtsBitXover : public QuadOp<Chrom>
     {
     public:
 
 	/** (Default) Constructor. */
-	eoNPtsBitXover(const unsigned& _num_points = 2) : num_points(_num_points)
+	NPtsBitXover(const unsigned& _num_points = 2) : num_points(_num_points)
 	{
 	    if (num_points < 1)
 		std::runtime_error("NxOver --> invalid number of points");
 	}
 
 	/** The class name */
-	virtual std::string className() const { return "eoNPtsBitXover"; }
+	virtual std::string className() const { return "NPtsBitXover"; }
 
 	/** n-point crossover for binary chromosomes.
 
@@ -346,7 +346,7 @@ namespace eo
 
 	    // select ranges of bits to swap
 	    do {
-		unsigned bit(eo::rng.random(max_size));
+		unsigned bit(rng.random(max_size));
 		if(points[bit])
 		    continue;
 		else {
@@ -377,18 +377,18 @@ namespace eo
 
 
 
-    /** eoBitGxOver --> Npts crossover when bistd::string considered
+    /** BitGxOver --> Npts crossover when bistd::string considered
 	as a std::string of binary-encoded genes (exchanges genes)
 	Is anybody still using it apart from historians ??? :-)
-	\class eoBitGxOver eoBitOp.h ga/eoBitOp.h
+	\class BitGxOver BitOp.h ga/BitOp.h
 	\ingroup bitstring
     */
 
-    template<class Chrom> class eoBitGxOver: public eoQuadOp<Chrom>
+    template<class Chrom> class BitGxOver: public QuadOp<Chrom>
     {
     public:
 	/// Constructor.
-	eoBitGxOver(const unsigned _gene_size, const unsigned _num_points = 2):
+	BitGxOver(const unsigned _gene_size, const unsigned _num_points = 2):
 	    gene_size(_gene_size), num_points(_num_points)
 	{
 	    if (gene_size < 1)
@@ -398,7 +398,7 @@ namespace eo
 	}
 
 	/// The class name
-	virtual std::string className() const { return "eoBitGxOver"; }
+	virtual std::string className() const { return "BitGxOver"; }
 
 	/**
 	 * Gene crossover for binary chromosomes.
@@ -414,7 +414,7 @@ namespace eo
 
 	    // selects genes to swap
 	    do {
-		unsigned bit = eo::rng.random(max_genes);
+		unsigned bit = rng.random(max_genes);
 		if (points[bit])
 		    continue;
 		else

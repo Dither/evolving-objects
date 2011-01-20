@@ -25,9 +25,9 @@
 #ifndef _GenContinue_h
 #define _GenContinue_h
 
-#include <eoContinue.h>
-#include <utils/eoParam.h>
-#include <utils/eoLogger.h>
+#include <Continue.h>
+#include <utils/Param.h>
+#include <utils/Logger.h>
 
 namespace eo
 {
@@ -38,21 +38,21 @@ namespace eo
 	@ingroup Continuators
     */
     template< class EOT>
-    class eoGenContinue: public eoContinue<EOT>, public eoValueParam<unsigned>
+    class GenContinue: public Continue<EOT>, public ValueParam<unsigned>
     {
     public:
 
 	/// Ctor for setting a
-	eoGenContinue( unsigned long _totalGens)
-	    : eoValueParam<unsigned>(0, "Generations", "Generations"),
+	GenContinue( unsigned long _totalGens)
+	    : ValueParam<unsigned>(0, "Generations", "Generations"),
 	      repTotalGenerations( _totalGens ), 
 	      thisGenerationPlaceHolder(0),
 	      thisGeneration(thisGenerationPlaceHolder)
 	{};
   
 	/// Ctor for enabling the save/load the no. of generations counted
-	eoGenContinue( unsigned long _totalGens, unsigned long& _currentGen)
-	    : eoValueParam<unsigned>(0, "Generations", "Generations"),
+	GenContinue( unsigned long _totalGens, unsigned long& _currentGen)
+	    : ValueParam<unsigned>(0, "Generations", "Generations"),
 	      repTotalGenerations( _totalGens ), 
 	      thisGenerationPlaceHolder(0),
 	      thisGeneration(_currentGen)
@@ -60,14 +60,14 @@ namespace eo
   
 	/** Returns false when a certain number of generations is
 	 * reached */
-	virtual bool operator() ( const eoPop<EOT>& _vEO ) {
+	virtual bool operator() ( const Pop<EOT>& _vEO ) {
 	    (void)_vEO;
 	    thisGeneration++;
 	    value() = thisGeneration;
     
 	    if (thisGeneration >= repTotalGenerations) 
 		{
-		    eo::log << eo::logging << "STOP in eoGenContinue: Reached maximum number of generations [" << thisGeneration << "/" << repTotalGenerations << "]\n";
+		    log << logging << "STOP in GenContinue: Reached maximum number of generations [" << thisGeneration << "/" << repTotalGenerations << "]\n";
 		    return false;
 		}
 	    return true;
@@ -90,7 +90,7 @@ namespace eo
 	};
     
   
-	virtual std::string className(void) const { return "eoGenContinue"; }
+	virtual std::string className(void) const { return "GenContinue"; }
 
 	/** Read from a stream
 	 * @param __is the istream to read from

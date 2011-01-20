@@ -26,7 +26,7 @@
 #define _FACTORY_H
 
 //-----------------------------------------------------------------------------
-#include <eoObject.h>
+#include <Object.h>
 
 //-----------------------------------------------------------------------------
 
@@ -45,16 +45,16 @@ namespace eo
 	@ingroup Utilities
     */
     template<class EOClass>
-    class eoFactory: public eoObject {
+    class Factory: public Object {
     public:
 
 	/// @name ctors and dtors
 	//{@
 	/// constructor
-	eoFactory( ) {}
+	Factory( ) {}
 
 	/// destructor
-	virtual ~eoFactory() {}
+	virtual ~Factory() {}
 	//@}
 
 	/** Another factory methods: creates an object from an std::istream, reading from
@@ -63,10 +63,10 @@ namespace eo
 	*/
 	virtual EOClass* make(std::istream& _is) = 0;
 
-	///@name eoObject methods
+	///@name Object methods
 	//@{
 	/** Return the class id */
-	virtual std::string className() const { return "eoFactory"; }
+	virtual std::string className() const { return "Factory"; }
 
 	/** Read and print are left without implementation */
 	//@}

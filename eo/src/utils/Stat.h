@@ -34,11 +34,11 @@ Contact: http://eodev.sourceforge.net
 
 #include <numeric> // accumulate
 
-#include <eoFunctor.h>
-#include <utils/eoParam.h>
-#include <eoPop.h>
-#include <utils/eoMonitor.h>
-//#include <utils/eoCheckPoint.h>
+#include <Functor.h>
+#include <utils/Param.h>
+#include <Pop.h>
+#include <utils/Monitor.h>
+//#include <utils/CheckPoint.h>
 
 namespace eo
 {
@@ -47,13 +47,13 @@ namespace eo
      *
      * Compute various statistics on a population.
      *
-     * Objects of those classes are generally called by an eoCheckPoint 
+     * Objects of those classes are generally called by an CheckPoint 
      * to compute statistics about the population at a given generation.
-     * As they inherit from eoValueParam, they can be printed drectly,
-     * for instance by an eoMonitor.
+     * As they inherit from ValueParam, they can be printed drectly,
+     * for instance by an Monitor.
      *
-     * @see eoCheckPoint
-     * @see eoMonitor
+     * @see CheckPoint
+     * @see Monitor
      *
      * @ingroup Utilities
      * @{
@@ -63,40 +63,40 @@ namespace eo
        Base class for all statistics that need to be calculated
        over the (unsorted) population
        (I guess it is not really necessary? MS.
-       Depstd::ends, there might be reasons to have a stat that is not an eoValueParam,
+       Depstd::ends, there might be reasons to have a stat that is not an ValueParam,
        but maybe I'm just kidding myself, MK)
     */
     template <class EOT>
-    class eoStatBase : public eoUF<const eoPop<EOT>&, void>
+    class StatBase : public UF<const Pop<EOT>&, void>
     {
     public:
-	virtual void lastCall(const eoPop<EOT>&) {}
-	virtual std::string className(void) const { return "eoStatBase"; }
+	virtual void lastCall(const Pop<EOT>&) {}
+	virtual std::string className(void) const { return "StatBase"; }
     };
 
 
-    template <class EOT> class eoCheckPoint;
+    template <class EOT> class CheckPoint;
 
     /**
        The actual class that will be used as base for all statistics
        that need to be calculated over the (unsorted) population
-       It is an eoStatBase AND an eoValueParam so it can be used in Monitors.
+       It is an StatBase AND an ValueParam so it can be used in Monitors.
     */
     template <class EOT, class T>
-    class eoStat : public eoValueParam<T>, public eoStatBase<EOT>
+    class Stat : public ValueParam<T>, public StatBase<EOT>
     {
     public:
 
-	eoStat(T _value, std::string _description)
-	    : eoValueParam<T>(_value, _description)
+	Stat(T _value, std::string _description)
+	    : ValueParam<T>(_value, _description)
         {}
 
 	virtual std::string className(void) const
-        { return "eoStat"; }
+        { return "Stat"; }
 
 
-	eoStat<EOT, T>& addTo(eoCheckPoint<EOT>& cp)        { cp.add(*this);  return *this; }
-	eoStat<EOT, T>& addTo(eoMonitor& mon)               { mon.add(*this); return *this; }
+	Stat<EOT, T>& addTo(CheckPoint<EOT>& cp)        { cp.add(*this);  return *this; }
+	Stat<EOT, T>& addTo(Monitor& mon)               { mon.add(*this); return *this; }
     };
 
 
@@ -105,73 +105,73 @@ namespace eo
        Base class for statistics calculated over a sorted snapshot of the population
     */
     template <class EOT>
-    class eoSortedStatBase : public eoUF<const std::vector<const EOT*>&, void>
+    class SortedStatBase : public UF<const std::vector<const EOT*>&, void>
     {
     public:
 	virtual void lastCall(const std::vector<const EOT*>&) {}
-	virtual std::string className(void) const { return "eoSortedStatBase"; }
+	virtual std::string className(void) const { return "SortedStatBase"; }
 
     };
 
     /**
        The actual class that will be used as base for all statistics
        that need to be calculated over the sorted population
-       It's an eoSortedStatBase AND an eoValueParam so it can be used in Monitors.
+       It's an SortedStatBase AND an ValueParam so it can be used in Monitors.
     */
     template <class EOT, class ParamType>
-    class eoSortedStat : public eoSortedStatBase<EOT>, public eoValueParam<ParamType>
+    class SortedStat : public SortedStatBase<EOT>, public ValueParam<ParamType>
     {
     public :
-	eoSortedStat(ParamType _value, std::string _desc) : eoValueParam<ParamType>(_value, _desc) {}
-	virtual std::string className(void) const { return "eoSortedStat"; }
+	SortedStat(ParamType _value, std::string _desc) : ValueParam<ParamType>(_value, _desc) {}
+	virtual std::string className(void) const { return "SortedStat"; }
 
-	eoSortedStat<EOT, ParamType>& addTo(eoCheckPoint<EOT>& cp)        { cp.add(*this);  return *this; }
-	eoSortedStat<EOT, ParamType>& addTo(eoMonitor& mon)               { mon.add(*this); return *this; }
+	SortedStat<EOT, ParamType>& addTo(CheckPoint<EOT>& cp)        { cp.add(*this);  return *this; }
+	SortedStat<EOT, ParamType>& addTo(Monitor& mon)               { mon.add(*this); return *this; }
     };
 
     /**
        Average fitness of a population. Fitness can be:
        - double
-       - eoMinimizingFitness or eoMaximizingFitness
+       - MinimizingFitness or MaximizingFitness
        The average of each objective is evaluated.
 
-       ( For eoScalarFitnessAssembled user eoAssembledFitnessStat classes.)
+       ( For ScalarFitnessAssembled user AssembledFitnessStat classes.)
     */
 #if  defined(_MSC_VER) && (_MSC_VER < 1300)
-    template <class EOT> class eoAverageStat : public eoStat<EOT, EOT::Fitness>
+    template <class EOT> class AverageStat : public Stat<EOT, EOT::Fitness>
 #else
-    template <class EOT> class eoAverageStat : public eoStat<EOT, typename EOT::Fitness>
+    template <class EOT> class AverageStat : public Stat<EOT, typename EOT::Fitness>
 #endif
     {
     public :
 
-	using eoStat<EOT, typename EOT::Fitness>::value;
+	using Stat<EOT, typename EOT::Fitness>::value;
 
 	typedef typename EOT::Fitness Fitness;
 
-	eoAverageStat(std::string _description = "Average Fitness")
-	    : eoStat<EOT, Fitness>(Fitness(), _description) {}
+	AverageStat(std::string _description = "Average Fitness")
+	    : Stat<EOT, Fitness>(Fitness(), _description) {}
 
 	static Fitness sumFitness(double _sum, const EOT& _eot){
 	    _sum += _eot.fitness();
 	    return _sum;
 	}
 
-	eoAverageStat(double _value, std::string _desc) : eoStat<EOT, double>(_value, _desc) {}
+	AverageStat(double _value, std::string _desc) : Stat<EOT, double>(_value, _desc) {}
 
-	virtual void operator()(const eoPop<EOT>& _pop){
+	virtual void operator()(const Pop<EOT>& _pop){
 	    doit(_pop, Fitness()); // specializations for scalar and std::vector
 	}
 
-	virtual std::string className(void) const { return "eoAverageStat"; }
+	virtual std::string className(void) const { return "AverageStat"; }
 
     private :
 
 	// Default behavior
 	template <class T>
-	void doit(const eoPop<EOT>& _pop, T)
+	void doit(const Pop<EOT>& _pop, T)
 	{
-	    Fitness v = std::accumulate(_pop.begin(), _pop.end(), Fitness(0.0), eoAverageStat::sumFitness);
+	    Fitness v = std::accumulate(_pop.begin(), _pop.end(), Fitness(0.0), AverageStat::sumFitness);
 
 	    value() = v / _pop.size();
 	}
@@ -182,18 +182,18 @@ namespace eo
        Average fitness + Std. dev. of a population, fitness needs to be scalar.
     */
     template <class EOT>
-    class eoSecondMomentStats : public eoStat<EOT, std::pair<double, double> >
+    class SecondMomentStats : public Stat<EOT, std::pair<double, double> >
     {
     public :
 
-	using eoStat<EOT, std::pair<double, double> >::value;
+	using Stat<EOT, std::pair<double, double> >::value;
 
 	typedef typename EOT::Fitness fitness_type;
 
 	typedef std::pair<double, double> SquarePair;
 
-	eoSecondMomentStats(std::string _description = "Average & Stdev")
-	    : eoStat<EOT, SquarePair>(std::make_pair(0.0,0.0), _description)
+	SecondMomentStats(std::string _description = "Average & Stdev")
+	    : Stat<EOT, SquarePair>(std::make_pair(0.0,0.0), _description)
         {}
 
 	static SquarePair sumOfSquares(SquarePair _sq, const EOT& _eo)
@@ -205,36 +205,36 @@ namespace eo
 	    return _sq;
 	}
 
-	virtual void operator()(const eoPop<EOT>& _pop)
+	virtual void operator()(const Pop<EOT>& _pop)
 	{
-	    SquarePair result = std::accumulate(_pop.begin(), _pop.end(), std::make_pair(0.0, 0.0), eoSecondMomentStats::sumOfSquares);
+	    SquarePair result = std::accumulate(_pop.begin(), _pop.end(), std::make_pair(0.0, 0.0), SecondMomentStats::sumOfSquares);
 
 	    double n = _pop.size();
 	    value().first = result.first / n; // average
 	    value().second = sqrt( (result.second - n * value().first * value().first) / (n - 1.0)); // stdev
 	}
 
-	virtual std::string className(void) const { return "eoSecondMomentStats"; }
+	virtual std::string className(void) const { return "SecondMomentStats"; }
     };
 
     /**
-       The n_th element fitness in the population (see eoBestFitnessStat)
+       The n_th element fitness in the population (see BestFitnessStat)
     */
 #if  defined(_MSC_VER) && (_MSC_VER < 1300)
     template <class EOT>
-    class eoNthElementFitnessStat : public eoSortedStat<EOT, EOT::Fitness >
+    class NthElementFitnessStat : public SortedStat<EOT, EOT::Fitness >
 #else
     template <class EOT>
-    class eoNthElementFitnessStat : public eoSortedStat<EOT, typename EOT::Fitness >
+    class NthElementFitnessStat : public SortedStat<EOT, typename EOT::Fitness >
 #endif
     {
     public :
-	using eoSortedStat<EOT, typename EOT::Fitness >::value;
+	using SortedStat<EOT, typename EOT::Fitness >::value;
 
 	typedef typename EOT::Fitness Fitness;
 
-	eoNthElementFitnessStat(unsigned _whichElement, std::string _description = "nth element fitness")
-	    : eoSortedStat<EOT, Fitness>(Fitness(), _description), whichElement(_whichElement) {}
+	NthElementFitnessStat(unsigned _whichElement, std::string _description = "nth element fitness")
+	    : SortedStat<EOT, Fitness>(Fitness(), _description), whichElement(_whichElement) {}
 
 	virtual void operator()(const std::vector<const EOT*>& _pop)
 	{
@@ -244,7 +244,7 @@ namespace eo
 	    doit(_pop, Fitness());
 	}
 
-	virtual std::string className(void) const { return "eoNthElementFitnessStat"; }
+	virtual std::string className(void) const { return "NthElementFitnessStat"; }
     private :
 
 	struct CmpFitness
@@ -281,15 +281,15 @@ namespace eo
        MK - 09/01/03
 
        template <class EOT>
-       class eoBestFitnessStat : public eoStat<EOT, typename EOT::Fitness >
+       class BestFitnessStat : public Stat<EOT, typename EOT::Fitness >
        {
        public :
        typedef typename EOT::Fitness Fitness;
 
-       eoBestFitnessStat(std::string _description = "Best Fitness") :
-       eoStat<EOT, Fitness>(Fitness(), _description) {}
+       BestFitnessStat(std::string _description = "Best Fitness") :
+       Stat<EOT, Fitness>(Fitness(), _description) {}
 
-       virtual void operator()(const eoPop<EOT>& _pop)
+       virtual void operator()(const Pop<EOT>& _pop)
        {
        value() = _pop.nth_element_fitness(0);
        }
@@ -300,34 +300,34 @@ namespace eo
     /**
        Best fitness of a population. Fitness can be:
        - double
-       - eoMinimizingFitness or eoMaximizingFitness
+       - MinimizingFitness or MaximizingFitness
 
-       ( For eoScalarFitnessAssembled look at eoAssembledFitnessStat )
+       ( For ScalarFitnessAssembled look at AssembledFitnessStat )
     */
 
 #if  defined(_MSC_VER) && (_MSC_VER < 1300)
     template <class EOT>
-    class eoBestFitnessStat : public eoStat<EOT, EOT::Fitness>
+    class BestFitnessStat : public Stat<EOT, EOT::Fitness>
 #else
     template <class EOT>
-    class eoBestFitnessStat : public eoStat<EOT, typename EOT::Fitness>
+    class BestFitnessStat : public Stat<EOT, typename EOT::Fitness>
 #endif
     {
     public:
 
-	using eoStat<EOT, typename EOT::Fitness>::value;
+	using Stat<EOT, typename EOT::Fitness>::value;
 
 	typedef typename EOT::Fitness Fitness;
 
-	eoBestFitnessStat(std::string _description = "Best ")
-	    : eoStat<EOT, Fitness>(Fitness(), _description)
+	BestFitnessStat(std::string _description = "Best ")
+	    : Stat<EOT, Fitness>(Fitness(), _description)
         {}
 
-	void operator()(const eoPop<EOT>& _pop) {
+	void operator()(const Pop<EOT>& _pop) {
 	    doit(_pop, Fitness() ); // specializations for scalar and std::vector
 	}
 
-	virtual std::string className(void) const { return "eoBestFitnessStat"; }
+	virtual std::string className(void) const { return "BestFitnessStat"; }
 
 
     private :
@@ -350,24 +350,24 @@ namespace eo
 
 	// default
 	template<class T>
-	void doit(const eoPop<EOT>& _pop, T)
+	void doit(const Pop<EOT>& _pop, T)
 	{ // find the largest elements
 	    value() = _pop.best_element().fitness();
 	}
 
     };
-    /** @example t-eoSSGA.cpp
+    /** @example t-SSGA.cpp
      */
 
     template <class EOT>
-    class eoDistanceStat : public eoStat<EOT, double>
+    class DistanceStat : public Stat<EOT, double>
     {
     public:
 
-	using eoStat<EOT, double>::value;
+	using Stat<EOT, double>::value;
 
-	eoDistanceStat(std::string _name = "distance")
-	    : eoStat<EOT, double>(0.0, _name)
+	DistanceStat(std::string _name = "distance")
+	    : Stat<EOT, double>(0.0, _name)
         {}
 
 	template <class T>
@@ -382,7 +382,7 @@ namespace eo
 	    return (a==b)? 0 : 1;
 	}
 
-	void operator()(const eoPop<EOT>& _pop)
+	void operator()(const Pop<EOT>& _pop)
 	{
 	    double& v = value();
 	    v = 0.0;
@@ -401,7 +401,7 @@ namespace eo
 	    double sz = _pop.size();
 	    v /= sz * sz * _pop[0].size();
 	}
-	virtual std::string className(void) const { return "eoDistanceStat"; }
+	virtual std::string className(void) const { return "DistanceStat"; }
 
     };
 
@@ -409,16 +409,16 @@ namespace eo
 
     /*
       template <class EOT>
-      class eoStdevStat : public eoStat<EOT, double >
+      class StdevStat : public Stat<EOT, double >
       {
       public :
-      typedef typename eoSecondMomentStats<EOT>::SquarePair SquarePair;
+      typedef typename SecondMomentStats<EOT>::SquarePair SquarePair;
 
-      eoStdevStat(std::string _description = "Stdev") : eoStat<EOT, double>(0.0, _description) {}
+      StdevStat(std::string _description = "Stdev") : Stat<EOT, double>(0.0, _description) {}
 
-      virtual void operator()(const eoPop<EOT>& _pop)
+      virtual void operator()(const Pop<EOT>& _pop)
       {
-      SquarePair result = std::accumulate(pop.begin(), pop.end(), std::make_pair(0.0, 0.0), eoSecondMomentStats::sumOfSquares);
+      SquarePair result = std::accumulate(pop.begin(), pop.end(), std::make_pair(0.0, 0.0), SecondMomentStats::sumOfSquares);
 
       double n = pop.size();
       value() = sqrt( (result.second - (result.first / n)) / (n - 1.0)); // stdev
@@ -429,20 +429,20 @@ namespace eo
 
     //! A robust measure of dispersion (also called midspread or middle fifty) that is the difference between the third and the first quartile.
     template<class EOT>
-    class eoInterquartileRangeStat : public eoStat< EOT, typename EOT::Fitness >
+    class InterquartileRangeStat : public Stat< EOT, typename EOT::Fitness >
     {
     public:
-	using eoStat<EOT, typename EOT::Fitness>::value;
+	using Stat<EOT, typename EOT::Fitness>::value;
 
-	eoInterquartileRangeStat( typename EOT::Fitness start, std::string description = "IQR" ) : eoStat<EOT,typename EOT::Fitness>( start, description ) {}
+	InterquartileRangeStat( typename EOT::Fitness start, std::string description = "IQR" ) : Stat<EOT,typename EOT::Fitness>( start, description ) {}
 
-	virtual void operator()( const eoPop<EOT> & _pop ) 
+	virtual void operator()( const Pop<EOT> & _pop ) 
 	{
 	    if( _pop.size() == 0 ) {
 		// how to implement value() = 0 ?
 
 	    } else {
-		eoPop<EOT> pop = _pop;
+		Pop<EOT> pop = _pop;
 
 		unsigned int quartile = pop.size()/4;
 		std::nth_element( pop.begin(), pop.begin()+quartile*1, pop.end() );
@@ -455,7 +455,7 @@ namespace eo
 	    }
 	}
   
-	virtual std::string className(void) const { return "eoInterquartileRangeStat"; }
+	virtual std::string className(void) const { return "InterquartileRangeStat"; }
     };
     /** @example t-eoIQRStat.cpp
      */
@@ -466,16 +466,16 @@ namespace eo
      * like any STL container.
      */
     template<class EOT>
-    class eoAverageSizeStat : public eoStat< EOT, double>
+    class AverageSizeStat : public Stat< EOT, double>
     {
     public:
 
-	using eoStat<EOT, double>::value;
+	using Stat<EOT, double>::value;
 
-	eoAverageSizeStat( std::string description = "Av.Size" ) : 
-	    eoStat<EOT,double>( 0.0, description ) {} // 0 by default
+	AverageSizeStat( std::string description = "Av.Size" ) : 
+	    Stat<EOT,double>( 0.0, description ) {} // 0 by default
 
-	virtual void operator()( const eoPop<EOT> & pop ) 
+	virtual void operator()( const Pop<EOT> & pop ) 
 	{
 	    size_t pop_size = pop.size();
 
@@ -491,7 +491,7 @@ namespace eo
 	    value() = static_cast<double>(sum) / static_cast<double>(pop_size);
 	}
   
-	virtual std::string className(void) const { return "eoAverageSizeStat"; }
+	virtual std::string className(void) const { return "AverageSizeStat"; }
     };
 
 }

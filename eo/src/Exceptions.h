@@ -30,25 +30,25 @@ Johann Dréo <johann.dreo@thalesgroup.com>
 namespace eo
 {
 
-    class eoMaxException : public std::exception {};
+    class MaxException : public std::exception {};
 
 
     /*!
       An error that signals that a maximum elapsed time has been reached.
 
-      Thrown by @see eoEvalTimeThrowException
+      Thrown by @see EvalTimeThrowException
 
       @ingroup Evaluation
     */
-    class eoMaxTimeException : public eoMaxException
+    class MaxTimeException : public MaxException
     {
     public:
-	eoMaxTimeException( time_t elapsed) : _elapsed(elapsed) {}
+	MaxTimeException( time_t elapsed) : _elapsed(elapsed) {}
 
 	virtual const char* what() const throw()
 	{
 	    std::ostringstream ss;
-	    ss << "STOP in eoMaxTimeException: the maximum number of wallclock seconds has been reached (" << _elapsed << ").";
+	    ss << "STOP in MaxTimeException: the maximum number of wallclock seconds has been reached (" << _elapsed << ").";
 	    return ss.str().c_str();
 	}
 
@@ -61,19 +61,19 @@ namespace eo
     /*!
       An error that signals that a maximum number of evaluations has been reached.
 
-      Thrown by @see eoEvalEvalThrowException
+      Thrown by @see EvalEvalThrowException
 
       @ingroup Evaluation
     */
-    class eoMaxEvalException : public eoMaxException
+    class MaxEvalException : public MaxException
     {
     public:
-	eoMaxEvalException(unsigned long threshold) : _threshold(threshold){}
+	MaxEvalException(unsigned long threshold) : _threshold(threshold){}
 
 	virtual const char* what() const throw()
 	{
 	    std::ostringstream ss;
-	    ss << "STOP in eoMaxEvalException: the maximum number of evaluation has been reached (" << _threshold << ").";
+	    ss << "STOP in MaxEvalException: the maximum number of evaluation has been reached (" << _threshold << ").";
 	    return ss.str().c_str();
 	}
 

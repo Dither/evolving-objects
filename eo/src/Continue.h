@@ -25,9 +25,9 @@
 #ifndef _Continue_h
 #define _Continue_h
 
-#include <eoFunctor.h>
-#include <eoPop.h>
-#include <eoPersistent.h>
+#include <Functor.h>
+#include <Pop.h>
+#include <Persistent.h>
 
 namespace eo
 {
@@ -48,10 +48,10 @@ namespace eo
      * @ingroup Core
      */
     template< class EOT>
-    class eoContinue : public eoUF<const eoPop<EOT>&, bool>, public eoPersistent 
+    class Continue : public UF<const Pop<EOT>&, bool>, public Persistent 
     {
     public:
-	virtual std::string className(void) const { return "eoContinue"; }
+	virtual std::string className(void) const { return "Continue"; }
 
 	/** Read from a stream
 	 * @param __is istream to read from

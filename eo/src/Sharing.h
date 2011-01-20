@@ -26,8 +26,8 @@
 #ifndef Sharing_h
 #define Sharing_h
 
-#include <eoPerf2Worth.h>
-#include <utils/eoDistance.h>
+#include <Perf2Worth.h>
+#include <utils/Distance.h>
 
 namespace eo
 {
@@ -78,27 +78,27 @@ namespace eo
 
     /** Sharing is a perf2worth class that implements
      *  Goldberg and Richardson's basic sharing
-     *  see eoSharingSelect for how to use it
-     * and test/t-eoSharing.cpp for a sample use of both
+     *  see SharingSelect for how to use it
+     * and test/t-Sharing.cpp for a sample use of both
      * @ingroup Selectors
      */
     template <class EOT>
-    class eoSharing : public eoPerf2Worth<EOT>
+    class Sharing : public Perf2Worth<EOT>
     {
     public:
 
-	using eoPerf2Worth<EOT>::value;
+	using Perf2Worth<EOT>::value;
 
 
 	/* Ctor requires a distance - cannot have a default distance! */
-	eoSharing(double _nicheSize, eoDistance<EOT> & _dist) : eoPerf2Worth<EOT>("Sharing"),
+	Sharing(double _nicheSize, Distance<EOT> & _dist) : Perf2Worth<EOT>("Sharing"),
 								nicheSize(_nicheSize),
 								dist(_dist)
 	{}
 
 	/** Computes shared fitnesses
 	 */
-	void operator()(const eoPop<EOT>& _pop)
+	void operator()(const Pop<EOT>& _pop)
 	{
 	    unsigned i, j,
 		pSize=_pop.size();
@@ -133,10 +133,10 @@ namespace eo
 	    for (i = 0; i < _pop.size(); ++i)
 		value()[i]=_pop[i].fitness()/sim[i];
 	}
-	// private data of class eoSharing
+	// private data of class Sharing
     private:
 	double nicheSize;
-	eoDistance<EOT> & dist;	     // specific distance
+	Distance<EOT> & dist;	     // specific distance
     };
 
 }

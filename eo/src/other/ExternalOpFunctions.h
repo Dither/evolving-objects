@@ -2,7 +2,7 @@
 
   -----------------------------------------------------------------------------
   ExternalOpFunc.h
-        Defines eoExternalInitOpFunc, eoExternalMonOpFunc, eoExternalBinOpFunc, eoExternalQuadOpFunc
+        Defines ExternalInitOpFunc, ExternalMonOpFunc, ExternalBinOpFunc, ExternalQuadOpFunc
         that are used to wrap a function pointer to externally defined initialization
         and 'genetic' operators
 
@@ -28,10 +28,10 @@
 #ifndef ExternalOpFunc_h
 #define ExternalOpFunc_h
 
-#include <other/eoExternalEO.h>
-#include <eoOp.h>
-#include <eoInit.h>
-#include <eoEvalFunc.h>
+#include <other/ExternalEO.h>
+#include <Op.h>
+#include <Init.h>
+#include <EvalFunc.h>
 
 namespace eo
 {
@@ -46,13 +46,13 @@ namespace eo
 
        @ingroup Utilities
     */
-    template <class F, class External, class ExternalEO = eoExternalEO<F, External> >
-    class eoExternalInit : public eoInit<ExternalEO>
+    template <class F, class External, class ExternalEO = ExternalEO<F, External> >
+    class ExternalInit : public Init<ExternalEO>
     {
 
     public :
 
-	eoExternalInit(External (*_init)(void)) : init(_init) {}
+	ExternalInit(External (*_init)(void)) : init(_init) {}
 
 
 	void operator()(ExternalEO& _eo)
@@ -76,12 +76,12 @@ namespace eo
 
        @ingroup Utilities
     */
-    template <class F, class External, class ExternalEO = eoExternalEO<F, External> >
-    class eoExternalEvalFunc : public eoEvalFunc<ExternalEO>
+    template <class F, class External, class ExternalEO = ExternalEO<F, External> >
+    class ExternalEvalFunc : public EvalFunc<ExternalEO>
     {
     public :
 
-	eoExternalEvalFunc(F (*_eval)(const External&)) : eval(_eval) {}
+	ExternalEvalFunc(F (*_eval)(const External&)) : eval(_eval) {}
 
 	void operator()(ExternalEO& eo)
 	{
@@ -107,12 +107,12 @@ namespace eo
        @ingroup Utilities
     */
 
-    template <class F, class External, class ExternalEO = eoExternalEO<F, External> >
-    class eoExternalMonOp : public eoMonOp<ExternalEO>
+    template <class F, class External, class ExternalEO = ExternalEO<F, External> >
+    class ExternalMonOp : public MonOp<ExternalEO>
     {
     public :
 
-	eoExternalMonOp(bool (*_mutate)(External&)) : mutate(_mutate) {}
+	ExternalMonOp(bool (*_mutate)(External&)) : mutate(_mutate) {}
 
 	bool operator()(ExternalEO& eo)
 	{
@@ -135,12 +135,12 @@ namespace eo
 
        @ingroup Utilities
     */
-    template <class F, class External, class ExternalEO = eoExternalEO<F, External> >
-    class eoExternalBinOp : public eoBinOp<ExternalEO>
+    template <class F, class External, class ExternalEO = ExternalEO<F, External> >
+    class ExternalBinOp : public BinOp<ExternalEO>
     {
     public :
 
-	eoExternalBinOp(bool (*_binop)(External&, const External&)) : binop(_binop) {}
+	ExternalBinOp(bool (*_binop)(External&, const External&)) : binop(_binop) {}
 
 	bool operator()(ExternalEO& eo1, const ExternalEO& eo2)
 	{
@@ -163,12 +163,12 @@ namespace eo
 
        @ingroup Utilities
     */
-    template <class F, class External, class ExternalEO = eoExternalEO<F, External> >
-    class eoExternalQuadOp : public eoQuadOp<ExternalEO>
+    template <class F, class External, class ExternalEO = ExternalEO<F, External> >
+    class ExternalQuadOp : public QuadOp<ExternalEO>
     {
     public :
 
-	eoExternalQuadOp(bool (*_quadop)(External&, External&)) : quadop(_quadop) {}
+	ExternalQuadOp(bool (*_quadop)(External&, External&)) : quadop(_quadop) {}
 
 	bool operator()(ExternalEO& eo1, ExternalEO& eo2)
 	{

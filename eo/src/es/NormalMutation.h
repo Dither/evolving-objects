@@ -29,11 +29,11 @@
 //-----------------------------------------------------------------------------
 
 #include <algorithm>    // swap_ranges
-#include <utils/eoRNG.h>
-#include <utils/eoUpdatable.h>
-#include <eoEvalFunc.h>
-#include <es/eoReal.h>
-#include <utils/eoRealBounds.h>
+#include <utils/RNG.h>
+#include <utils/Updatable.h>
+#include <EvalFunc.h>
+#include <es/Real.h>
+#include <utils/RealBounds.h>
 //-----------------------------------------------------------------------------
 
 namespace eo
@@ -50,7 +50,7 @@ namespace eo
      * @ingroup Real
      * @ingroup Variators
      */
-    template<class EOT> class eoNormalVecMutation: public eoMonOp<EOT>
+    template<class EOT> class NormalVecMutation: public MonOp<EOT>
     {
     public:
 	/**
@@ -60,18 +60,18 @@ namespace eo
 	 * @param _sigma the range for uniform nutation
 	 * @param _p_change the probability to change a given coordinate
 	 */
-	eoNormalVecMutation(double _sigma, const double& _p_change = 1.0):
-	    sigma(_sigma), bounds(eoDummyVectorNoBounds), p_change(_p_change) {}
+	NormalVecMutation(double _sigma, const double& _p_change = 1.0):
+	    sigma(_sigma), bounds(DummyVectorNoBounds), p_change(_p_change) {}
 
 	/**
 	 * Constructor with bounds
-	 * @param _bounds an eoRealVectorBounds that contains the bounds
+	 * @param _bounds an RealVectorBounds that contains the bounds
 	 * @param _sigma the range for uniform nutation
 	 * @param _p_change the probability to change a given coordinate
 	 *
 	 * for each component, the sigma is scaled to the range of the bound, if bounded
 	 */
-	eoNormalVecMutation(eoRealVectorBounds & _bounds,
+	NormalVecMutation(RealVectorBounds & _bounds,
 			    double _sigma, const double& _p_change = 1.0):
 	    sigma(_bounds.size(), _sigma), bounds(_bounds), p_change(_p_change)
 	{
@@ -82,7 +82,7 @@ namespace eo
 	}
 
 	/** The class name */
-	virtual std::string className() const { return "eoNormalVecMutation"; }
+	virtual std::string className() const { return "NormalVecMutation"; }
 
 	/**
 	 * Do it!
@@ -105,7 +105,7 @@ namespace eo
 
     private:
 	std::vector<double> sigma;
-	eoRealVectorBounds & bounds;
+	RealVectorBounds & bounds;
 	double p_change;
     };
 
@@ -120,8 +120,8 @@ namespace eo
      * @ingroup Real
      * @ingroup Variators
      */
-    template<class EOT> class eoNormalMutation
-	: public eoMonOp<EOT>
+    template<class EOT> class NormalMutation
+	: public MonOp<EOT>
     {
     public:
 	/**
@@ -131,21 +131,21 @@ namespace eo
 	 * @param _sigma the range for uniform nutation
 	 * @param _p_change the probability to change a given coordinate
 	 */
-	eoNormalMutation(double & _sigma, const double& _p_change = 1.0):
-	    sigma(_sigma), bounds(eoDummyVectorNoBounds), p_change(_p_change) {}
+	NormalMutation(double & _sigma, const double& _p_change = 1.0):
+	    sigma(_sigma), bounds(DummyVectorNoBounds), p_change(_p_change) {}
 
 	/**
 	 * Constructor with bounds
-	 * @param _bounds an eoRealVectorBounds that contains the bounds
+	 * @param _bounds an RealVectorBounds that contains the bounds
 	 * @param _sigma the range for uniform nutation
 	 * @param _p_change the probability to change a given coordinate
 	 */
-	eoNormalMutation(eoRealVectorBounds & _bounds,
+	NormalMutation(RealVectorBounds & _bounds,
 			 double _sigma, const double& _p_change = 1.0):
 	    sigma(_sigma), bounds(_bounds), p_change(_p_change) {}
 
 	/** The class name */
-	virtual std::string className() const { return "eoNormalMutation"; }
+	virtual std::string className() const { return "NormalMutation"; }
 
 	/**
 	 * Do it!
@@ -171,7 +171,7 @@ namespace eo
 
     private:
 	double & sigma;
-	eoRealVectorBounds & bounds;
+	RealVectorBounds & bounds;
 	double p_change;
     };
 
@@ -183,12 +183,12 @@ namespace eo
      * @ingroup Real
      * @ingroup Variators
      */
-    template<class EOT> class eoOneFifthMutation :
-	public eoNormalMutation<EOT>, public eoUpdatable
+    template<class EOT> class OneFifthMutation :
+	public NormalMutation<EOT>, public Updatable
     {
     public:
 
-	using eoNormalMutation< EOT >::Sigma;
+	using NormalMutation< EOT >::Sigma;
 
 	typedef typename EOT::Fitness Fitness;
 
@@ -201,20 +201,20 @@ namespace eo
 	 * @param _updateFactor multiplicative update factor for sigma
 	 * @param _threshold the threshold (the 1/5 - 0.2)
 	 */
-	eoOneFifthMutation(eoEvalFunc<EOT> & _eval, double & _sigmaInit,
+	OneFifthMutation(EvalFunc<EOT> & _eval, double & _sigmaInit,
 			   unsigned _windowSize = 10, double _updateFactor=0.83,
 			   double _threshold=0.2):
-	    eoNormalMutation<EOT>(_sigmaInit), eval(_eval),
+	    NormalMutation<EOT>(_sigmaInit), eval(_eval),
 	    threshold(_threshold), updateFactor(_updateFactor),
 	    nbMut(_windowSize, 0), nbSuccess(_windowSize, 0), genIndex(0)
 	{
 	    // minimal check
 	    if (updateFactor>=1)
-		throw std::runtime_error("Update factor must be < 1 in eoOneFifthMutation");
+		throw std::runtime_error("Update factor must be < 1 in OneFifthMutation");
 	}
 
 	/** The class name */
-	virtual std::string className() const { return "eoOneFifthMutation"; }
+	virtual std::string className() const { return "OneFifthMutation"; }
 
 	/**
 	 * Do it!
@@ -229,7 +229,7 @@ namespace eo
 	    Fitness oldFitness = _eo.fitness(); // save old fitness
 
 	    // call standard operator - then count the successes
-	    if (eoNormalMutation<EOT>::operator()(_eo)) // _eo has been modified
+	    if (NormalMutation<EOT>::operator()(_eo)) // _eo has been modified
 		{
 		    _eo.invalidate();	   // don't forget!!!
 		    nbMut[genIndex]++;
@@ -270,7 +270,7 @@ namespace eo
 	}
 
     private:
-	eoEvalFunc<EOT> & eval;
+	EvalFunc<EOT> & eval;
 	double threshold;		   // 1/5 !
 	double updateFactor ;		   // the multiplicative factor
 	std::vector<unsigned> nbMut;	   // total number of mutations per gen

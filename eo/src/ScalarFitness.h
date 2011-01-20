@@ -37,7 +37,7 @@ namespace eo
      */
 
     /**
-     * eoScalarFitness<ScalarType, Compare = less<ScalarType> >:
+     * ScalarFitness<ScalarType, Compare = less<ScalarType> >:
      * Wraps a scalar fitness values such as a double or int, with the option of
      * maximizing (using less<ScalarType>) or minimizing (using greater<ScalarType>)
 
@@ -47,23 +47,23 @@ namespace eo
      * with this quantity as if it were a ScalarType.
      */
     template <class ScalarType, class Compare >
-    class eoScalarFitness
+    class ScalarFitness
     {
     public :
 
-	eoScalarFitness() : value() {}
-	eoScalarFitness(const eoScalarFitness& other) : value(other.value) {}
-	eoScalarFitness(const ScalarType& v) : value(v) {}
+	ScalarFitness() : value() {}
+	ScalarFitness(const ScalarFitness& other) : value(other.value) {}
+	ScalarFitness(const ScalarType& v) : value(v) {}
 
-	eoScalarFitness& operator=(const eoScalarFitness& other)
+	ScalarFitness& operator=(const ScalarFitness& other)
 	{ value = other.value; return *this; }
-	eoScalarFitness& operator=(const ScalarType& v)
+	ScalarFitness& operator=(const ScalarType& v)
 	{ value = v; return *this; }
 
 	operator ScalarType(void) const { return value; }
 
 	/// Comparison, using less by default
-	bool operator<(const eoScalarFitness& other) const
+	bool operator<(const ScalarFitness& other) const
 	{ return Compare()(value, other.value); }
 
 	/// Comparison, using less by default
@@ -72,11 +72,11 @@ namespace eo
 	{ return Compare()(value, other); }
 
 	// implementation of the other operators
-	bool operator>( const eoScalarFitness<ScalarType, Compare>& y ) const  { return y < *this; }
+	bool operator>( const ScalarFitness<ScalarType, Compare>& y ) const  { return y < *this; }
 	// implementation of the other operators
-	bool operator<=( const eoScalarFitness<ScalarType, Compare>& y ) const { return !(*this > y); }
+	bool operator<=( const ScalarFitness<ScalarType, Compare>& y ) const { return !(*this > y); }
 	// implementation of the other operators
-	bool operator>=(const eoScalarFitness<ScalarType, Compare>& y ) const { return !(*this < y); }
+	bool operator>=(const ScalarFitness<ScalarType, Compare>& y ) const { return !(*this < y); }
 
 
     private :
@@ -94,22 +94,22 @@ namespace eo
     */
 
 #if defined(__CUDACC__)
-    typedef eoScalarFitness<float, std::less<float> >    eoMaximizingFitness;
-    typedef eoScalarFitness<float, std::greater<float> > eoMinimizingFitness;
+    typedef ScalarFitness<float, std::less<float> >    MaximizingFitness;
+    typedef ScalarFitness<float, std::greater<float> > MinimizingFitness;
 #else
-    typedef eoScalarFitness<double, std::less<double> >    eoMaximizingFitness;
-    typedef eoScalarFitness<double, std::greater<double> > eoMinimizingFitness;
+    typedef ScalarFitness<double, std::less<double> >    MaximizingFitness;
+    typedef ScalarFitness<double, std::greater<double> > MinimizingFitness;
 #endif
 
     template <class F, class Cmp>
-    std::ostream& operator<<(std::ostream& os, const eoScalarFitness<F, Cmp>& f)
+    std::ostream& operator<<(std::ostream& os, const ScalarFitness<F, Cmp>& f)
     {
 	os << (F) f;
 	return os;
     }
 
     template <class F, class Cmp>
-    std::istream& operator>>(std::istream& is, eoScalarFitness<F, Cmp>& f)
+    std::istream& operator>>(std::istream& is, ScalarFitness<F, Cmp>& f)
     {
 	F value;
 	is >> value;

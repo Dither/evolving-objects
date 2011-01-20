@@ -25,17 +25,17 @@
 #ifndef _BoolFlip_h
 #define _BoolFlip_h
 
-#include <eoOp.h>
+#include <Op.h>
 
 namespace eo
 {
 
-    /** a simple boolean mutation - to be used in generic eoOp's
+    /** a simple boolean mutation - to be used in generic Op's
      *
      @ingroup bitstring
      @ingroup Variators
     */
-    class eoBoolFlip : public eoMonOp<bool> {
+    class BoolFlip : public MonOp<bool> {
     public: 
 	/** simply flips the boolean argument */
 	bool operator()(bool & _b)

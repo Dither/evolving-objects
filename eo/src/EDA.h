@@ -28,7 +28,7 @@
 
 //-----------------------------------------------------------------------------
 
-#include <eoDistribution.h>
+#include <Distribution.h>
 
 namespace eo
 {
@@ -37,12 +37,12 @@ namespace eo
      * This design evolve a probability distribution 
      *  on the spaces of populations rather than a population
      *
-     * It IS NOT an eoAlgo, as it evolves a distribution, not a population.
+     * It IS NOT an Algo, as it evolves a distribution, not a population.
      *
      * @ingroup Algorithms
      */
 
-    template<class EOT> class eoEDA: public eoUF<eoDistribution<EOT>&, void>
+    template<class EOT> class EDA: public UF<Distribution<EOT>&, void>
     {
     };
 

@@ -27,9 +27,9 @@
 #define LINEARTOPOLOGY_H_
 
 //-----------------------------------------------------------------------------
-#include <eoPop.h>
-#include <eoTopology.h>
-#include <eoSocialNeighborhood.h>
+#include <Pop.h>
+#include <Topology.h>
+#include <SocialNeighborhood.h>
 //-----------------------------------------------------------------------------
 
 namespace eo
@@ -43,7 +43,7 @@ namespace eo
      *  @ingroup Selectors
      */
     template < class POT >
-    class eoLinearTopology : public eoTopology < POT >
+    class LinearTopology : public Topology < POT >
     {
 
     public:
@@ -52,7 +52,7 @@ namespace eo
 	 * Build the topology made of _neighborhoodSize neighborhoods.
 	 * @param _neighborhoodSize - The size of each neighborhood. 
 	 */
-	eoLinearTopology (unsigned _neighborhoodSize):neighborhoodSize (_neighborhoodSize),isSetup(false){}
+	LinearTopology (unsigned _neighborhoodSize):neighborhoodSize (_neighborhoodSize),isSetup(false){}
 
 
 	/**
@@ -61,14 +61,14 @@ namespace eo
 	 * If it remains several particle (because _pop.size()%neighborhoodSize !=0), there are inserted
 	 * in the last neighborhood. So it may be possible to have a bigger neighborhood.
 	 */
-	void setup(const eoPop<POT> & _pop)
+	void setup(const Pop<POT> & _pop)
 	{
 	    if (!isSetup)
 		{
 		    // consitency check
 		    if (neighborhoodSize >= _pop.size()){
 			std::string s;
-			s.append (" Invalid neighborhood size in eoLinearTopology ");
+			s.append (" Invalid neighborhood size in LinearTopology ");
 			throw std::runtime_error (s);
 		    }
 
@@ -77,7 +77,7 @@ namespace eo
 		    // build all the neighborhoods
 		    for (unsigned i=0;i< howManyNeighborhood;i++)
 			{
-			    eoSocialNeighborhood<POT> currentNghd;
+			    SocialNeighborhood<POT> currentNghd;
 
 			    currentNghd.best(_pop[i*neighborhoodSize]);
 			    for (unsigned k=i*neighborhoodSize;k < neighborhoodSize*(i+1);k++)
@@ -107,7 +107,7 @@ namespace eo
 		    // Should activate this part ?
 		    /*
 		      std::string s;
-		      s.append (" Linear topology already setup in eoLinearTopology");
+		      s.append (" Linear topology already setup in LinearTopology");
 		      throw std::runtime_error (s);
 		    */
 		}
@@ -209,7 +209,7 @@ namespace eo
 
 
     protected:
-	std::vector<eoSocialNeighborhood<POT> >  neighborhoods;
+	std::vector<SocialNeighborhood<POT> >  neighborhoods;
 	unsigned neighborhoodSize; // the size of each neighborhood
 
 	bool isSetup;

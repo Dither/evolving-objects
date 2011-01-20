@@ -26,10 +26,10 @@
 #define VELOCITY_H
 
 //-----------------------------------------------------------------------------
-#include <eoFunctor.h>
-#include <utils/eoRNG.h>
-#include <eoPop.h>
-#include <eoTopology.h>
+#include <Functor.h>
+#include <utils/RNG.h>
+#include <Pop.h>
+#include <Topology.h>
 //-----------------------------------------------------------------------------
 
 namespace eo
@@ -37,24 +37,23 @@ namespace eo
 
     /**
      * Abstract class for velocities calculation (particle swarm optimization).
-     * All the velocities must derivated from eoVelocity.
+     * All the velocities must derivated from Velocity.
      *
      * @ingroup Variators
      */
-    template < class POT > class eoVelocity:public eoBF < POT &,unsigned , void >
+    template < class POT > class Velocity:public BF < POT &,unsigned , void >
     {
     public:
 	/**
 	 * Apply the velocity computation to a whole given population.
 	 * Used for synchronous PSO.
 	 */
-	virtual void apply (eoPop < POT > &_pop)
+	virtual void apply (Pop < POT > &_pop)
 	{
 	    for (unsigned i = 0; i < _pop.size (); i++)
 		{
-		    operator  ()(_pop[i],i);
+		    operator()(_pop[i],i);
 		}
-
 	}
 
 	/**
@@ -66,7 +65,7 @@ namespace eo
 	/**
 	 * Apply the neighborhood with a whole population (used for distributed or synchronous PSO).
 	 */
-	virtual void updateNeighborhood (eoPop < POT > &_pop)
+	virtual void updateNeighborhood (Pop < POT > &_pop)
 	{
 	    for (unsigned i = 0; i < _pop.size (); i++)
 		{
@@ -75,7 +74,7 @@ namespace eo
 
 	}
 
-	virtual eoTopology<POT> & getTopology () = 0;
+	virtual Topology<POT> & getTopology () = 0;
 
     };
 

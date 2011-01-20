@@ -29,15 +29,15 @@
 //-----------------------------------------------------------------------------
 
 /*****************************************************************************
- * eoGeneralBreeder: transforms a population using the generalOp construct.
+ * GeneralBreeder: transforms a population using the generalOp construct.
  *****************************************************************************/
 
-#include <eoOp.h>
-#include <eoGenOp.h>
-#include <eoPopulator.h>
-#include <eoSelectOne.h>
-#include <eoBreed.h>
-#include <utils/eoHowMany.h>
+#include <Op.h>
+#include <GenOp.h>
+#include <Populator.h>
+#include <SelectOne.h>
+#include <Breed.h>
+#include <utils/HowMany.h>
 
 namespace eo
 {
@@ -48,19 +48,19 @@ namespace eo
        @ingroup Combination
     */
     template<class EOT>
-    class eoGeneralBreeder: public eoBreed<EOT>
+    class GeneralBreeder: public Breed<EOT>
     {
     public:
 	/** Ctor:
 	 *
 	 * @param _select a selectoOne, to be used for all selections
-	 * @param _op a general operator (will generally be an eoOpContainer)
+	 * @param _op a general operator (will generally be an OpContainer)
 	 * @param _rate               pour howMany, le nbre d'enfants a generer
 	 * @param _interpret_as_rate  <a href="../../tutorial/html/eoEngine.html#howmany">explanation</a>
 	 */
-	eoGeneralBreeder(
-			 eoSelectOne<EOT>& _select,
-			 eoGenOp<EOT>& _op,
+	GeneralBreeder(
+			 SelectOne<EOT>& _select,
+			 GenOp<EOT>& _op,
 			 double  _rate=1.0,
 			 bool _interpret_as_rate = true) :
 	    select( _select ), op(_op),  howMany(_rate, _interpret_as_rate) {}
@@ -68,13 +68,13 @@ namespace eo
 	/** Ctor:
 	 *
 	 * @param _select a selectoOne, to be used for all selections
-	 * @param _op a general operator (will generally be an eoOpContainer)
-	 * @param _howMany an eoHowMany <a href="../../tutorial/html/eoEngine.html#howmany">explanation</a>
+	 * @param _op a general operator (will generally be an OpContainer)
+	 * @param _howMany an HowMany <a href="../../tutorial/html/eoEngine.html#howmany">explanation</a>
 	 */
-	eoGeneralBreeder(
-			 eoSelectOne<EOT>& _select,
-			 eoGenOp<EOT>& _op,
-			 eoHowMany _howMany ) :
+	GeneralBreeder(
+			 SelectOne<EOT>& _select,
+			 GenOp<EOT>& _op,
+			 HowMany _howMany ) :
 	    select( _select ), op(_op),  howMany(_howMany) {}
 
 	/** The breeder: simply calls the genOp on a selective populator!
@@ -82,12 +82,12 @@ namespace eo
 	 * @param _parents the initial population
 	 * @param _offspring the resulting population (content -if any- is lost)
 	 */
-	void operator()(const eoPop<EOT>& _parents, eoPop<EOT>& _offspring)
+	void operator()(const Pop<EOT>& _parents, Pop<EOT>& _offspring)
 	{
 	    unsigned target = howMany(_parents.size());
 
 	    _offspring.clear();
-	    eoSelectivePopulator<EOT> it(_parents, _offspring, select);
+	    SelectivePopulator<EOT> it(_parents, _offspring, select);
 
 	    while (_offspring.size() < target)
 		{
@@ -99,12 +99,12 @@ namespace eo
 	}
 
 	/// The class name.
-	virtual std::string className() const { return "eoGeneralBreeder"; }
+	virtual std::string className() const { return "GeneralBreeder"; }
 
     private:
-	eoSelectOne<EOT>& select;
-	eoGenOp<EOT>& op;
-	eoHowMany howMany;
+	SelectOne<EOT>& select;
+	GenOp<EOT>& op;
+	HowMany howMany;
     };
 
 }

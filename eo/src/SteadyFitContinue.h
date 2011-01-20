@@ -25,8 +25,8 @@
 #ifndef _SteadyFitContinue_h
 #define _SteadyFitContinue_h
 
-#include <eoContinue.h>
-#include <utils/eoLogger.h>
+#include <Continue.h>
+#include <utils/Logger.h>
 
 namespace eo
 {
@@ -38,19 +38,19 @@ namespace eo
 	@ingroup Continuators
     */
     template< class EOT>
-    class eoSteadyFitContinue: public eoContinue<EOT>
+    class SteadyFitContinue: public Continue<EOT>
     {
     public:
 	typedef typename EOT::Fitness Fitness;
 
 	/// Ctor for setting a
-	eoSteadyFitContinue( unsigned long _minGens, unsigned long _steadyGens)
+	SteadyFitContinue( unsigned long _minGens, unsigned long _steadyGens)
 	    : repMinGenerations( _minGens ), repSteadyGenerations( _steadyGens),
 	      steadyState(false), thisGenerationPlaceHolder(0),
 	      thisGeneration(thisGenerationPlaceHolder){};
 	
 	/// Ctor for enabling the save/load the no. of generations counted
-	eoSteadyFitContinue( unsigned long _minGens, unsigned long _steadyGen,
+	SteadyFitContinue( unsigned long _minGens, unsigned long _steadyGen,
 			     unsigned long& _currentGen)
 	    : repMinGenerations( _minGens ), repSteadyGenerations( _steadyGen),
 	      steadyState(_currentGen>_minGens), thisGenerationPlaceHolder(0),
@@ -58,7 +58,7 @@ namespace eo
 
 	/** Returns false when a certain number of generations is
 	 * reached withtout improvement */
-	virtual bool operator() ( const eoPop<EOT>& _vEO ) {
+	virtual bool operator() ( const Pop<EOT>& _vEO ) {
 	    thisGeneration++;
     
 	    Fitness bestCurrentFitness = _vEO.nth_element_fitness(0);
@@ -69,7 +69,7 @@ namespace eo
 		    lastImprovement = thisGeneration;
 		} else {
 		    if (thisGeneration - lastImprovement > repSteadyGenerations) {
-			eo::log << eo::progress << "STOP in eoSteadyFitContinue: Done " << repSteadyGenerations 
+			log << progress << "STOP in SteadyFitContinue: Done " << repSteadyGenerations 
 				<< " generations without improvement\n";
 			return false;
 		    }
@@ -79,7 +79,7 @@ namespace eo
 		    steadyState = true;
 		    bestSoFar = bestCurrentFitness;
 		    lastImprovement = thisGeneration;
-		    eo::log << eo::progress << "eoSteadyFitContinue: Done the minimum number of generations\n";
+		    log << progress << "SteadyFitContinue: Done the minimum number of generations\n";
 		}
 	    }
 	    return true;
@@ -108,7 +108,7 @@ namespace eo
 	virtual unsigned long steadyGenerations( ) 
 	{  return repSteadyGenerations; 	};
     
-	virtual std::string className(void) const { return "eoSteadyFitContinue"; }
+	virtual std::string className(void) const { return "SteadyFitContinue"; }
     private:
 	unsigned long repMinGenerations;
 	unsigned long  repSteadyGenerations;

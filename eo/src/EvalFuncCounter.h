@@ -27,8 +27,8 @@
 #ifndef EvalFuncCounter_H
 #define EvalFuncCounter_H
 
-#include <eoEvalFunc.h>
-#include <utils/eoParam.h>
+#include <EvalFunc.h>
+#include <utils/Param.h>
 
 namespace eo
 {
@@ -38,11 +38,11 @@ namespace eo
 
 	@ingroup Evaluation
     */
-    template<class EOT> class eoEvalFuncCounter : public eoEvalFunc<EOT>, public eoValueParam<unsigned long>
+    template<class EOT> class EvalFuncCounter : public EvalFunc<EOT>, public ValueParam<unsigned long>
     {
     public :
-        eoEvalFuncCounter(eoEvalFunc<EOT>& _func, std::string _name = "Eval. ") 
-            : eoValueParam<unsigned long>(0, _name), func(_func) {}
+        EvalFuncCounter(EvalFunc<EOT>& _func, std::string _name = "Eval. ") 
+            : ValueParam<unsigned long>(0, _name), func(_func) {}
 
         virtual void operator()(EOT& _eo)
         {
@@ -54,7 +54,7 @@ namespace eo
         }
 
     protected :
-        eoEvalFunc<EOT>& func;
+        EvalFunc<EOT>& func;
     };
 
 }

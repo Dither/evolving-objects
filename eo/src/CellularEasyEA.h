@@ -24,12 +24,12 @@
 #ifndef CellularEasyEA_h
 #define CellularEasyEA_h
 
-#include <eoContinue.h>
-#include <eoEvalFunc.h>
-#include <eoSelectOne.h>
-#include <eoPopEvalFunc.h>
-#include <eoAlgo.h>
-#include <eoOp.h>
+#include <Continue.h>
+#include <EvalFunc.h>
+#include <SelectOne.h>
+#include <PopEvalFunc.h>
+#include <Algo.h>
+#include <Op.h>
 
 namespace eo
 {
@@ -39,19 +39,19 @@ namespace eo
 
        @ingroup Algorithms
     */
-    template <class EOT> class eoCellularEasyEA : public eoAlgo <EOT> {
+    template <class EOT> class CellularEasyEA : public Algo <EOT> {
 
     public :
 	/**
 	   Two constructors
 	*/
 
-	eoCellularEasyEA (eoContinue <EOT> & _cont, // Stop. criterion
-			  eoEvalFunc <EOT> & _eval, // Evaluation function
-			  eoSelectOne <EOT> & _sel_neigh, // To choose a partner
-			  eoBinOp <EOT> & _cross, // Cross-over operator
-			  eoMonOp <EOT> & _mut, // Mutation operator
-			  eoSelectOne <EOT> & _sel_repl /* Which to keep between the new
+	CellularEasyEA (Continue <EOT> & _cont, // Stop. criterion
+			  EvalFunc <EOT> & _eval, // Evaluation function
+			  SelectOne <EOT> & _sel_neigh, // To choose a partner
+			  BinOp <EOT> & _cross, // Cross-over operator
+			  MonOp <EOT> & _mut, // Mutation operator
+			  SelectOne <EOT> & _sel_repl /* Which to keep between the new
 							   child and the old individual ? */
 			  ) :
 	    cont (_cont),
@@ -60,19 +60,19 @@ namespace eo
 	    sel_neigh (_sel_neigh),
 	    cross (_cross),
 	    mut (_mut),
-	    sel_child (eoSelectFirstOne ()),
+	    sel_child (SelectFirstOne ()),
 	    sel_repl (_sel_repl) {
 
 	}
 
-	eoCellularEasyEA (eoContinue <EOT> & _cont,
-			  eoEvalFunc <EOT> & _eval,
-			  eoSelectOne <EOT> & _sel_neigh,
-			  eoQuadOp <EOT> & _cross,
-			  eoMonOp <EOT> & _mut,
-			  eoSelectOne <EOT> & _sel_child, /* To choose one from
+	CellularEasyEA (Continue <EOT> & _cont,
+			  EvalFunc <EOT> & _eval,
+			  SelectOne <EOT> & _sel_neigh,
+			  QuadOp <EOT> & _cross,
+			  MonOp <EOT> & _mut,
+			  SelectOne <EOT> & _sel_child, /* To choose one from
 							     the both children */
-			  eoSelectOne <EOT> & _sel_repl
+			  SelectOne <EOT> & _sel_repl
 			  ) :
 	    cont (_cont),
 	    eval (_eval),
@@ -89,14 +89,14 @@ namespace eo
 	   For a given population.
 	*/
 
-	void operator () (eoPop <EOT> & pop) {
+	void operator () (Pop <EOT> & pop) {
 
 	    do {
 
 		for (unsigned i = 0 ; i < pop.size () ; i ++) {
 
 		    // Who are neighbouring to the current individual ?
-		    eoPop <EOT> neigh = neighbours (pop, i) ;
+		    Pop <EOT> neigh = neighbours (pop, i) ;
 
 		    // To select a partner
 		    EOT part, old_sol = pop [i] ;
@@ -115,7 +115,7 @@ namespace eo
 		    eval (part) ;
 
 		    // To choose one of the two children ...
-		    eoPop <EOT> pop_loc ;
+		    Pop <EOT> pop_loc ;
 		    pop_loc.push_back (pop [i]) ;
 		    pop_loc.push_back (part) ;
 
@@ -132,21 +132,21 @@ namespace eo
 
     protected :
 
-	virtual eoPop <EOT> neighbours (const eoPop <EOT> & pop, int rank) = 0 ;
+	virtual Pop <EOT> neighbours (const Pop <EOT> & pop, int rank) = 0 ;
 
     private :
-	eoContinue <EOT> & cont ;
-	eoEvalFunc <EOT> & eval ;
-	eoPopLoopEval <EOT> popEval ;
-	eoSelectOne <EOT> & sel_neigh ;
-	eoBF <EOT &, EOT &, bool> & cross ;
-	eoMonOp <EOT> & mut ;
-	eoSelectOne <EOT> & sel_child ;
-	eoSelectOne <EOT> & sel_repl ;
+	Continue <EOT> & cont ;
+	EvalFunc <EOT> & eval ;
+	PopLoopEval <EOT> popEval ;
+	SelectOne <EOT> & sel_neigh ;
+	BF <EOT &, EOT &, bool> & cross ;
+	MonOp <EOT> & mut ;
+	SelectOne <EOT> & sel_child ;
+	SelectOne <EOT> & sel_repl ;
 
-	class eoSelectFirstOne : public eoSelectOne <EOT> {
+	class SelectFirstOne : public SelectOne <EOT> {
 	public :
-	    const EOT & operator () (const eoPop <EOT> & pop) {
+	    const EOT & operator () (const Pop <EOT> & pop) {
 		return pop [0] ;
 	    }
 

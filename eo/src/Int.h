@@ -29,17 +29,17 @@
 #include <iostream>    // std::ostream, std::istream
 #include <string>      // std::string
 
-#include <eoVector.h>
+#include <Vector.h>
 
 namespace eo
 {
 
-    /** eoInt: implementation of simple integer-valued chromosome.
-     * based on eoVector class
+    /** Int: implementation of simple integer-valued chromosome.
+     * based on Vector class
      *
      * @ingroup Representations
      */
-    template <class FitT> class eoInt: public eoVector<FitT, int>
+    template <class FitT> class Int: public Vector<FitT, int>
     {
     public:
 
@@ -48,17 +48,17 @@ namespace eo
 	 * @param size Size of the std::vector
 	 * @param value fill the vector with this value
 	 */
-	eoInt(unsigned size = 0, int value = 0):
-	    eoVector<FitT, int>(size, value) {}
+	Int(unsigned size = 0, int value = 0):
+	    Vector<FitT, int>(size, value) {}
 
 	/// My class name.
 	virtual std::string className() const
 	{
-	    return "eoInt";
+	    return "Int";
 	}
 
     };
-    /** @example t-eoInt.cpp
+    /** @example t-Int.cpp
      */
 
     //-----------------------------------------------------------------------------

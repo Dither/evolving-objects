@@ -31,12 +31,12 @@
 #pragma warning(disable:4786)
 #endif 
 
-#include "eoScalarFitnessAssembled.h"
+#include "ScalarFitnessAssembled.h"
 
 namespace eo
 {
 
-    // need to allocate the static variables of class eoScalarFitnessAssembledTraits
-    std::vector<std::string> eoScalarFitnessAssembledTraits::TermDescriptions;
+    // need to allocate the static variables of class ScalarFitnessAssembledTraits
+    std::vector<std::string> ScalarFitnessAssembledTraits::TermDescriptions;
 
 }

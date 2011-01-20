@@ -2,15 +2,15 @@
 #include <config.h>
 #endif
 
-#include "eoGnuplot1DSnapshot.h"
+#include "Gnuplot1DSnapshot.h"
 
 namespace eo
 {
 
-    eoMonitor& eoGnuplot1DSnapshot::operator()()
+    Monitor& Gnuplot1DSnapshot::operator()()
     {
-	// update file using the eoFileMonitor method
-	eoFileSnapshot::operator()();
+	// update file using the FileMonitor method
+	FileSnapshot::operator()();
 #ifdef HAVE_GNUPLOT
 	// sends plot order to gnuplot
 	std::ostringstream os;

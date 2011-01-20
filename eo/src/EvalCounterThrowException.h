@@ -26,9 +26,9 @@ Caner Candan <caner.candan@thalesgroup.com>
 #ifndef __EvalCounterThrowException_h__
 #define __EvalCounterThrowException_h__
 
-#include <eoEvalFuncCounter.h>
-#include <utils/eoParam.h>
-#include <eoExceptions.h>
+#include <EvalFuncCounter.h>
+#include <utils/Param.h>
+#include <Exceptions.h>
 
 namespace eo
 {
@@ -42,20 +42,20 @@ namespace eo
 
       The class first call the evaluation function, then check the number of
       times it has been called. If the maximum number of evaluation has been
-      reached, it throw an eoMaxEvalException. You can catch this exception
+      reached, it throw an MaxEvalException. You can catch this exception
       from your main function, so as to stop everything properly.
 
       @ingroup Evaluation
     */
     template < typename EOT >
-    class eoEvalCounterThrowException : public eoEvalFuncCounter< EOT >
+    class EvalCounterThrowException : public EvalFuncCounter< EOT >
     {
     public :
-	eoEvalCounterThrowException( eoEvalFunc<EOT>& func, unsigned long max_evals, std::string name = "Eval. ")
-	    : eoEvalFuncCounter< EOT >( func, name ), _threshold( max_evals )
+	EvalCounterThrowException( EvalFunc<EOT>& func, unsigned long max_evals, std::string name = "Eval. ")
+	    : EvalFuncCounter< EOT >( func, name ), _threshold( max_evals )
 	{}
 
-	using eoEvalFuncCounter< EOT >::value;
+	using EvalFuncCounter< EOT >::value;
 
 	//! Evaluate the individual, then throw an exception if it exceed the max number of evals.
 	virtual void operator()(EOT& eo)
@@ -64,14 +64,14 @@ namespace eo
 	    if (eo.invalid()) {
 
 		// increment the value of the self parameter 
-		// (eoEvalFuncCounter inherits from @see eoValueParam) 
+		// (EvalFuncCounter inherits from @see ValueParam) 
 		value()++;
 
 		// if we have reached the maximum
 		if ( value() >= _threshold ) {
 
 		    // go back through the stack until catched
-		    throw eoMaxEvalException(_threshold);
+		    throw MaxEvalException(_threshold);
 		}
 
 		// evaluate
@@ -80,7 +80,7 @@ namespace eo
 	    } // if invalid
 	}
 
-	virtual std::string className() const {return "eoEvalCounterThrowException";}
+	virtual std::string className() const {return "EvalCounterThrowException";}
 
     private :
 	unsigned long _threshold;

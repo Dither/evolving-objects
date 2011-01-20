@@ -27,11 +27,11 @@
 #ifndef _Initializer_H
 #define _Initializer_H
 
-#include <utils/eoRealVectorBounds.h>
-#include <eoVelocityInit.h>
-#include <eoPop.h>
-#include <eoParticleBestInit.h>
-#include <eoTopology.h>
+#include <utils/RealVectorBounds.h>
+#include <VelocityInit.h>
+#include <Pop.h>
+#include <ParticleBestInit.h>
+#include <Topology.h>
 
 namespace eo
 {
@@ -45,11 +45,11 @@ namespace eo
     /**
      * Abstract class for initialization of algorithm PSO
      */
-    template <class POT> class eoInitializerBase : public eoFunctorBase
+    template <class POT> class InitializerBase : public FunctorBase
     {
     public :
 
-	virtual ~eoInitializerBase()
+	virtual ~InitializerBase()
 	{}
 
 	virtual void operator()()
@@ -59,9 +59,9 @@ namespace eo
     /**
        Base (name) class for Initialization of algorithm PSO
 
-       @see eoInitializerBase eoUF apply
+       @see InitializerBase UF apply
     */
-    template <class POT> class eoInitializer : public eoInitializerBase <POT>
+    template <class POT> class Initializer : public InitializerBase <POT>
     {
     public:
 
@@ -71,12 +71,12 @@ namespace eo
 	//! @param _initBest Initialization of the best
 	//! @param _topology the topology to use
 	//! @param _pop Population
-	eoInitializer(
-		      eoUF<POT&, void>& _proc,
-		      eoVelocityInit < POT > &_initVelo,
-		      eoParticleBestInit <POT> &_initBest,
-		      eoTopology <POT> &_topology,
-		      eoPop < POT > &_pop
+	Initializer(
+		      UF<POT&, void>& _proc,
+		      VelocityInit < POT > &_initVelo,
+		      ParticleBestInit <POT> &_initBest,
+		      Topology <POT> &_topology,
+		      Pop < POT > &_pop
 		      ) : proc(_proc), initVelo(_initVelo), procPara(dummyEval), initBest(_initBest), topology(_topology), pop(_pop)
 	{}
 
@@ -86,12 +86,12 @@ namespace eo
 	//! @param _initBest Initialization of the best
 	//! @param _topology the topology to use
 	//! @param _pop Population
-	eoInitializer(
-		      eoPopEvalFunc <POT>& _proc,
-		      eoVelocityInit < POT > &_initVelo,
-		      eoParticleBestInit <POT> &_initBest,
-		      eoTopology <POT> &_topology,
-		      eoPop < POT > &_pop
+	Initializer(
+		      PopEvalFunc <POT>& _proc,
+		      VelocityInit < POT > &_initVelo,
+		      ParticleBestInit <POT> &_initBest,
+		      Topology <POT> &_topology,
+		      Pop < POT > &_pop
 		      ) : proc(dummy), initVelo(_initVelo), procPara(_proc), initBest(_initBest), topology(_topology), pop(_pop)
 	{}
 
@@ -100,14 +100,14 @@ namespace eo
 	//! @return The name of the class
 	virtual std::string className (void) const
 	{
-	    return "eoInitializer";
+	    return "Initializer";
 	}
 
 
 
 	virtual void operator() ()
 	{
-	    eoPop<POT> empty_pop;
+	    Pop<POT> empty_pop;
 	    apply(proc, pop);
 	    procPara(empty_pop, pop);
 	    apply < POT > (initVelo, pop);
@@ -122,21 +122,21 @@ namespace eo
 	  @param initVelo Initialization of the velocity
 	  @param initBest Initialization of the best
 	*/
-	eoUF<POT&, void>& proc;
-	eoVelocityInit < POT > & initVelo;
-	eoPopEvalFunc <POT>& procPara;
-	eoParticleBestInit <POT> & initBest;
-	eoTopology <POT> & topology;
-	eoPop < POT > & pop;
+	UF<POT&, void>& proc;
+	VelocityInit < POT > & initVelo;
+	PopEvalFunc <POT>& procPara;
+	ParticleBestInit <POT> & initBest;
+	Topology <POT> & topology;
+	Pop < POT > & pop;
 
-	class eoDummyEval : public eoPopEvalFunc<POT>
+	class DummyEval : public PopEvalFunc<POT>
 	{
 	public:
-	    void operator()(eoPop<POT> &,eoPop<POT> &_pop)
+	    void operator()(Pop<POT> &,Pop<POT> &_pop)
 	    {}
 	} dummyEval;
 
-	class eoDummy : public eoUF<POT&, void>
+	class Dummy : public UF<POT&, void>
 	{
 	public:
 	    void operator()(POT &)

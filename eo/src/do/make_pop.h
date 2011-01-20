@@ -28,11 +28,11 @@
 #define _make_pop_h
 
 #include <ctime>  // for time(0) for random seeding
-#include <eoPop.h>
-#include <eoInit.h>
-#include <utils/eoRNG.h>
-#include <utils/eoParser.h>
-#include <utils/eoState.h>
+#include <Pop.h>
+#include <Init.h>
+#include <utils/RNG.h>
+#include <utils/Parser.h>
+#include <utils/State.h>
 
 namespace eo
 {
@@ -57,25 +57,25 @@ namespace eo
      * @ingroup Builders
      */
     template <class EOT>
-    eoPop<EOT>&  do_make_pop(eoParser & _parser, eoState& _state, eoInit<EOT> & _init)
+    Pop<EOT>&  do_make_pop(Parser & _parser, State& _state, Init<EOT> & _init)
     {
 	// random seed
-	eoValueParam<uint32_t>& seedParam = _parser.getORcreateParam(uint32_t(0), "seed", "Random number seed", 'S');
+	ValueParam<uint32_t>& seedParam = _parser.getORcreateParam(uint32_t(0), "seed", "Random number seed", 'S');
 	if (seedParam.value() == 0)
 	    seedParam.value() = time(0);
-	eoValueParam<unsigned>& popSize = _parser.getORcreateParam(unsigned(20), "popSize", "Population Size", 'P', "Evolution Engine");
+	ValueParam<unsigned>& popSize = _parser.getORcreateParam(unsigned(20), "popSize", "Population Size", 'P', "Evolution Engine");
 
 	// Either load or initialize
 	// create an empty pop and let the state handle the memory
-	eoPop<EOT>& pop = _state.takeOwnership(eoPop<EOT>());
+	Pop<EOT>& pop = _state.takeOwnership(Pop<EOT>());
 
-	eoValueParam<std::string>& loadNameParam = _parser.getORcreateParam(std::string(""), "Load","A save file to restart from",'L', "Persistence" );
-	eoValueParam<bool> & recomputeFitnessParam = _parser.getORcreateParam(false, "recomputeFitness", "Recompute the fitness after re-loading the pop.?", 'r',  "Persistence" );
+	ValueParam<std::string>& loadNameParam = _parser.getORcreateParam(std::string(""), "Load","A save file to restart from",'L', "Persistence" );
+	ValueParam<bool> & recomputeFitnessParam = _parser.getORcreateParam(false, "recomputeFitness", "Recompute the fitness after re-loading the pop.?", 'r',  "Persistence" );
 
 	if (loadNameParam.value() != "") // something to load
 	    {
 		// create another state for reading
-		eoState inState;		// a state for loading - WITHOUT the parser
+		State inState;		// a state for loading - WITHOUT the parser
 		// register the rng and the pop in the state, so they can be loaded,
 		// and the present run will be the exact continuation of the saved run
 		// eventually with different parameters

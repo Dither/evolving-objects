@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
 
 //-----------------------------------------------------------------------------
-// ParseTree.h : eoParseTree class (for Tree-based Genetic Programming)
+// ParseTree.h : ParseTree class (for Tree-based Genetic Programming)
 // (c) Maarten Keijzer 2000
 /*
     This library is free software; you can redistribute it and/or
@@ -31,8 +31,8 @@
 #include <list>
 
 #include <EO.h>
-#include <eoInit.h>
-#include <eoOp.h>
+#include <Init.h>
+#include <Op.h>
 #include <gp/parse_tree.h>
 
 namespace eo
@@ -53,12 +53,12 @@ namespace eo
 
     /** Implementation of parse-tree for genetic programming
 
-	@class eoParseTree eoParseTree.h gp/eoParseTree.h
+	@class ParseTree ParseTree.h gp/ParseTree.h
 
 	@ingroup ParseTree
     */
     template <class FType, class Node>
-    class eoParseTree : public EO<FType>, public parse_tree<Node>
+    class ParseTree : public EO<FType>, public parse_tree<Node>
     {
     public:
 
@@ -77,15 +77,15 @@ namespace eo
 	/**
 	 * Default Constructor
 	 */
-	eoParseTree(void)  {}
+	ParseTree(void)  {}
 
 	/**
 	 * Copy Constructor
 	 * @param tree The tree to copy
 	 */
-	eoParseTree(const parse_tree<Node>& tree)  : parse_tree<Node>(tree) {}
+	ParseTree(const parse_tree<Node>& tree)  : parse_tree<Node>(tree) {}
 
-	//    eoParseTree(const eoParseTree<FType, Node>& tree) :  parse_tree<Node>(tree) {}
+	//    ParseTree(const ParseTree<FType, Node>& tree) :  parse_tree<Node>(tree) {}
 	/**
 	 * To prune me to a certain size
 	 * @param _size My maximum size
@@ -106,13 +106,13 @@ namespace eo
 	 * @param is The std::istream
 	 */
 
-	eoParseTree(std::istream& is) : EO<FType>(), parse_tree<Node>()
+	ParseTree(std::istream& is) : EO<FType>(), parse_tree<Node>()
 	{
 	    readFrom(is);
 	}
 
 	/// My class name
-	std::string className(void) const { return "eoParseTree"; }
+	std::string className(void) const { return "ParseTree"; }
 
 	/**
 	 * To print me on a stream
@@ -175,17 +175,17 @@ namespace eo
     /** @example t-eoSymreg.cpp
      */
 
-    // friend function to print eoParseTree
+    // friend function to print ParseTree
     template <class FType, class Node>
-    std::ostream& operator<<(std::ostream& os, const eoParseTree<FType, Node>& eot)
+    std::ostream& operator<<(std::ostream& os, const ParseTree<FType, Node>& eot)
     {
 	eot.printOn(os);
 	return os;
     }
 
-    // friend function to read eoParseTree
+    // friend function to read ParseTree
     template <class FType, class Node>
-    std::istream& operator>>(std::istream& is, eoParseTree<FType, Node>& eot)
+    std::istream& operator>>(std::istream& is, ParseTree<FType, Node>& eot)
     {
 	eot.readFrom(is);
 	return is;
@@ -194,7 +194,7 @@ namespace eo
 }
 
 // for backward compatibility
-#include <gp/eoParseTreeOp.h>
-#include <gp/eoParseTreeDepthInit.h>
+#include <gp/ParseTreeOp.h>
+#include <gp/ParseTreeDepthInit.h>
 
 #endif

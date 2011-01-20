@@ -26,9 +26,9 @@
 #ifndef _Counter_h
 #define _Counter_h
 
-#include <eoFunctor.h>
-#include <eoFunctorStore.h>
-#include <utils/eoParam.h>
+#include <Functor.h>
+#include <FunctorStore.h>
+#include <utils/Param.h>
 
 namespace eo
 {
@@ -38,17 +38,17 @@ namespace eo
        a procedure is used. Add a procedure through its ctor and
        use this class instead of it.
 
-       It is derived from eoValueParam so you can add it to a monitor.
+       It is derived from ValueParam so you can add it to a monitor.
 
        @ingroup Utilities
     */
     template <class Procedure>
-    class eoProcedureCounter : public Procedure, public eoValueParam<unsigned long>
+    class ProcedureCounter : public Procedure, public ValueParam<unsigned long>
     {
     public:
 
-        eoProcedureCounter(Procedure& _proc, std::string _name = "proc_counter") 
-            : eoValueParam<unsigned long>(0, _name), proc(_proc) {}
+        ProcedureCounter(Procedure& _proc, std::string _name = "proc_counter") 
+            : ValueParam<unsigned long>(0, _name), proc(_proc) {}
 
         /** Calls the embedded function and increments the counter
         
@@ -86,22 +86,22 @@ namespace eo
        a unary function is used. Add a unary function through its ctor and
        use this class instead of it.
     
-       It is derived from eoValueParam so you can add it to a monitor.
+       It is derived from ValueParam so you can add it to a monitor.
 
-       Example: suppose you have an eoEvalFunc called myeval, to count the 
+       Example: suppose you have an EvalFunc called myeval, to count the 
        number of evaluations, just define:
 
-       eoUnaryFunctorCounter<void, EoType> evalCounter(myeval);
+       UnaryFunctorCounter<void, EoType> evalCounter(myeval);
 
        and use evalCounter now instead of myeval. 
     */
 
     template <class UnaryFunctor>
-    class eoUnaryFunctorCounter : public UnaryFunctor, public eoValueParam<unsigned long>
+    class UnaryFunctorCounter : public UnaryFunctor, public ValueParam<unsigned long>
     {
     public:
-        eoUnaryFunctorCounter(UnaryFunctor& _func, std::string _name = "uf_counter") 
-            : eoValueParam<unsigned long>(0, _name), func(_func) {}
+        UnaryFunctorCounter(UnaryFunctor& _func, std::string _name = "uf_counter") 
+            : ValueParam<unsigned long>(0, _name), func(_func) {}
         
         /** Calls the embedded function and increments the counter
         
@@ -140,15 +140,15 @@ namespace eo
        a binary function is used. Add a binary function through its ctor and
        use this class instead of it.
     
-       It is derived from eoValueParam so you can add it to a monitor.
+       It is derived from ValueParam so you can add it to a monitor.
 
     */
     template <class BinaryFunctor>
-    class eoBinaryFunctorCounter : public BinaryFunctor, public eoValueParam<unsigned long>
+    class BinaryFunctorCounter : public BinaryFunctor, public ValueParam<unsigned long>
     {
     public:
-        eoBinaryFunctorCounter(BinaryFunctor& _func, std::string _name = "proc_counter") 
-            : eoValueParam<unsigned long>(0, _name), func(_func) {}
+        BinaryFunctorCounter(BinaryFunctor& _func, std::string _name = "proc_counter") 
+            : ValueParam<unsigned long>(0, _name), func(_func) {}
 
         /** Calls the embedded function and increments the counter
         
@@ -189,34 +189,34 @@ namespace eo
 	how it works...
 
 	by using the xxx_function_tag structure defined in eoFunctionBase, you 
-	can easily create a counter from a general class (say eoEval<EOT>), by
+	can easily create a counter from a general class (say Eval<EOT>), by
 	simply stating:
 
-	eoEval<EOT>& myCounted = make_counter(functor_category(myEval), myEval, store)
+	Eval<EOT>& myCounted = make_counter(functor_category(myEval), myEval, store)
 
-	@see eoFunctorBase, functor_category, eoFunctorStore
+	@see FunctorBase, functor_category, FunctorStore
 
     */
     template <class Procedure>
-    eoProcedureCounter<Procedure>& make_counter(eoFunctorBase::procedure_tag, Procedure& _proc, eoFunctorStore& store, std::string _name = "proc_counter")
+    ProcedureCounter<Procedure>& make_counter(FunctorBase::procedure_tag, Procedure& _proc, FunctorStore& store, std::string _name = "proc_counter")
     {
-	eoProcedureCounter<Procedure>* result = new eoProcedureCounter<Procedure>(_proc, _name);
+	ProcedureCounter<Procedure>* result = new ProcedureCounter<Procedure>(_proc, _name);
 	store.storeFunctor(result);
 	return *result;
     }
 
     template <class UnaryFunctor>
-    eoUnaryFunctorCounter<UnaryFunctor>& make_counter(eoFunctorBase::unary_function_tag, UnaryFunctor& _proc, eoFunctorStore& store, std::string _name = "uf_counter")
+    UnaryFunctorCounter<UnaryFunctor>& make_counter(FunctorBase::unary_function_tag, UnaryFunctor& _proc, FunctorStore& store, std::string _name = "uf_counter")
     {
-	eoUnaryFunctorCounter<UnaryFunctor>* result = new eoUnaryFunctorCounter<UnaryFunctor>(_proc, _name);
+	UnaryFunctorCounter<UnaryFunctor>* result = new UnaryFunctorCounter<UnaryFunctor>(_proc, _name);
 	store.storeFunctor(result);
 	return *result;
     }
 
     template <class BinaryFunctor>
-    eoBinaryFunctorCounter<BinaryFunctor>& make_counter(eoFunctorBase::binary_function_tag, BinaryFunctor& _proc, eoFunctorStore& store, std::string _name = "uf_counter")
+    BinaryFunctorCounter<BinaryFunctor>& make_counter(FunctorBase::binary_function_tag, BinaryFunctor& _proc, FunctorStore& store, std::string _name = "uf_counter")
     {
-	eoBinaryFunctorCounter<BinaryFunctor>* result = new eoBinaryFunctorCounter<BinaryFunctor>(_proc, _name);
+	BinaryFunctorCounter<BinaryFunctor>* result = new BinaryFunctorCounter<BinaryFunctor>(_proc, _name);
 	store.storeFunctor(result);
 	return *result;
     }

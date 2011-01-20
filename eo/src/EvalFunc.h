@@ -25,7 +25,7 @@
 #ifndef EvalFunc_H
 #define EvalFunc_H
 
-#include <eoFunctor.h>
+#include <Functor.h>
 
 namespace eo
 {
@@ -47,7 +47,7 @@ namespace eo
 	@ingroup Evaluation
 	@ingroup Core
     */
-    template<class EOT> class eoEvalFunc : public eoUF<EOT&, void>
+    template<class EOT> class EvalFunc : public UF<EOT&, void>
     {
     public :
         typedef EOT EOType;

@@ -29,36 +29,36 @@
 
 
 //-----------------------------------------------------------------------------
-#include <eoSelect.h>
-#include <utils/eoHowMany.h>
+#include <Select.h>
+#include <utils/HowMany.h>
 #include <math.h>
 //-----------------------------------------------------------------------------
 
 namespace eo
 {
 
-    /** eoTruncSelect selects individuals after truncating the population
-     * using eoSelectOne as it's mechanism. 
-     * Therefore eoSelectMany needs an eoSelectOne in its ctor
+    /** TruncSelect selects individuals after truncating the population
+     * using SelectOne as it's mechanism. 
+     * Therefore SelectMany needs an SelectOne in its ctor
      * It will use an eoHowMnay to determine the number of guys to keep,
      *
      * @ingroup Selectors
      */
     template<class EOT>
-    class eoTruncSelect : public eoSelect<EOT>
+    class TruncSelect : public Select<EOT>
     {
     public:
-	/** Ctor: from an eoSelect (and an eoMany to tell how many are kept for selectino */
-	eoTruncSelect(eoSelectOne<EOT>& _select, eoHowMany _howMany) 
+	/** Ctor: from an Select (and an Many to tell how many are kept for selectino */
+	TruncSelect(SelectOne<EOT>& _select, HowMany _howMany) 
 	    : select(_select), howMany(_howMany) {}
   
 	/**
 	   The implementation repeatidly selects an individual
 
 	   @param _source the source population
-	   @param _dest  the resulting population (size of this population is the number of times eoSelectOne is called. It empties the destination and adds the selection into it)
+	   @param _dest  the resulting population (size of this population is the number of times SelectOne is called. It empties the destination and adds the selection into it)
 	*/
-	virtual void operator()(const eoPop<EOT>& _source, eoPop<EOT>& _dest)
+	virtual void operator()(const Pop<EOT>& _source, Pop<EOT>& _dest)
 	{
 	    unsigned target = howMany(_source.size());
     
@@ -71,8 +71,8 @@ namespace eo
 	}
   
     private :
-	eoSelectOne<EOT>& select;
-	eoHowMany howMany;
+	SelectOne<EOT>& select;
+	HowMany howMany;
     };
 
 }

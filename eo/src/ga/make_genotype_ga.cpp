@@ -48,11 +48,11 @@ namespace eo
 
     /// The following function merely call the templatized do_* functions above
 
-    eoInit<eoBit<double> > & make_genotype(eoParser& _parser, eoState& _state, eoBit<double> _eo)
+    Init<Bit<double> > & make_genotype(Parser& _parser, State& _state, Bit<double> _eo)
     {
 	return do_make_genotype(_parser, _state, _eo);
     }
-    eoInit<eoBit<eoMinimizingFitness> > & make_genotype(eoParser& _parser, eoState& _state, eoBit<eoMinimizingFitness> _eo)
+    Init<Bit<MinimizingFitness> > & make_genotype(Parser& _parser, State& _state, Bit<MinimizingFitness> _eo)
     {
 	return do_make_genotype(_parser, _state, _eo);
     }

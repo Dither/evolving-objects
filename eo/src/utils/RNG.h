@@ -50,17 +50,17 @@ typedef unsigned long uint32_t;
 
 #include <cmath>
 #include <vector>
-#include "eoPersistent.h"
-#include "eoObject.h"
+#include "Persistent.h"
+#include "Object.h"
 
 namespace eo
 {
 
     /** Random Number Generator
 
-    @class eoRng eoRNG.h utils/eoRNG.h
+    @class Rng RNG.h utils/RNG.h
 
-    eoRng is a persistent class that uses the ``Mersenne Twister'' random
+    Rng is a persistent class that uses the ``Mersenne Twister'' random
     number generator MT19937 for generating random numbers. The various
     member functions implement useful functions for evolutionary
     algorithms. Included are: rand(), random(), flip() and normal().
@@ -110,11 +110,11 @@ namespace eo
     <h1>Portability</h1>
 
     Note for people porting EO to other platforms: please make sure that the type
-    uint32_t in the file eoRNG.h is exactly 32 bits long. It may in principle be
+    uint32_t in the file RNG.h is exactly 32 bits long. It may in principle be
     longer, but not shorter. If it is longer, file compatibility between EO on
     different platforms may be broken.
     */
-    class eoRng : public eoObject, public eoPersistent
+    class Rng : public Object, public Persistent
     {
     public :
 
@@ -124,7 +124,7 @@ namespace eo
 
 	@see reseed for details on usage of the seeding value.
 	*/
-	eoRng(uint32_t s)
+	Rng(uint32_t s)
 	    : state(0), next(0), left(-1), cached(false)
 	    {
 		state = new uint32_t[N+1];
@@ -132,7 +132,7 @@ namespace eo
 	    }
 
 	/** Destructor */
-	~eoRng()
+	~Rng()
 	    {
 		delete [] state;
 	    }
@@ -251,7 +251,7 @@ namespace eo
 	*/
 	double negexp(double mean)
 	    {
-		return -mean*log(double(rand()) / rand_max());
+		return -mean*::log(double(rand()) / rand_max());
 	    }
 
 	/**
@@ -432,32 +432,26 @@ namespace eo
 
 	As it cannot be called, we do not provide an implementation.
 	*/
-	eoRng(const eoRng&);
+	Rng(const Rng&);
 
 	/** @brief Assignment operator
 
-	@see Copy constructor eoRng(const eoRng&).
+	@see Copy constructor Rng(const Rng&).
 	*/
-	eoRng& operator=(const eoRng&);
+	Rng& operator=(const Rng&);
     };
-/** @example t-eoRNG.cpp
+/** @example t-RNG.cpp
 */
 
-
-
-    namespace eo
-    {
-	/** The one and only global eoRng object */
-	extern eoRng rng;
-    }
-    using eo::rng;
+    /** The one and only global Rng object */
+    extern Rng rng;
 
 /** @} */
 
 
 
 
-// Implementation of some eoRng members.... Don't mind the mess, it does work.
+// Implementation of some Rng members.... Don't mind the mess, it does work.
 
 #define hiBit(u)       ((u) & 0x80000000U)   // mask all but highest   bit of u
 #define loBit(u)       ((u) & 0x00000001U)   // mask all but lowest    bit of u
@@ -465,7 +459,7 @@ namespace eo
 #define mixBits(u, v)  (hiBit(u)|loBits(v))  // move hi bit of u to hi bit of v
 
 
-    inline void eoRng::initialize(uint32_t seed)
+    inline void Rng::initialize(uint32_t seed)
     {
 	left = -1;
 
@@ -478,7 +472,7 @@ namespace eo
 
 
 
-    inline uint32_t eoRng::restart()
+    inline uint32_t Rng::restart()
     {
 	register uint32_t *p0=state, *p2=state+2, *pM=state+M, s0, s1;
 	register int j;
@@ -500,7 +494,7 @@ namespace eo
 
 
 
-    inline uint32_t eoRng::rand()
+    inline uint32_t Rng::rand()
     {
 	if(--left < 0)
 	    return(restart());
@@ -513,7 +507,7 @@ namespace eo
 
 
 
-    inline double eoRng::normal()
+    inline double Rng::normal()
     {
 	if (cached) {
 	    cached = false;
@@ -525,7 +519,7 @@ namespace eo
 	    var2 = 2.0 * uniform() - 1.0;
 	    rSquare = var1 * var1 + var2 * var2;
 	} while (rSquare >= 1.0 || rSquare == 0.0);
-	double factor = sqrt(-2.0 * log(rSquare) / rSquare);
+	double factor = ::sqrt(-2.0 * ::log(rSquare) / rSquare);
 	cacheValue = var1 * factor;
 	cached = true;
 	return (var2 * factor);

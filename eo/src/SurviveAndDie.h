@@ -29,69 +29,69 @@
 
 
 //-----------------------------------------------------------------------------
-#include <eoPop.h>
-#include <eoFunctor.h>
-#include <eoMerge.h>
-#include <eoReduce.h>
-#include <utils/eoHowMany.h>
+#include <Pop.h>
+#include <Functor.h>
+#include <Merge.h>
+#include <Reduce.h>
+#include <utils/HowMany.h>
 //-----------------------------------------------------------------------------
 
 namespace eo
 {
 
     /**
-       eoSurviveAndDie: takes a population (first argument),
+       SurviveAndDie: takes a population (first argument),
        kills the ones that are to die,
        puts the ones that are to survive into the second argument
        removes them from the first pop argument
 
-       @class eoSurviveAndDie
-       @class eoDeterministicSurviveAndDie,
-       @class eoDeterministicSaDReplacement
+       @class SurviveAndDie
+       @class DeterministicSurviveAndDie,
+       @class DeterministicSaDReplacement
     */
 
     /** @addtogroup Replacors
      * @{
      */
 
-    /** eoSurviveAndDie
+    /** SurviveAndDie
 	A pure abstract class, to store the howmany's
     */
     template <class EOT>
-    class eoSurviveAndDie : public eoBF<eoPop<EOT> &, eoPop<EOT> &, void>
+    class SurviveAndDie : public BF<Pop<EOT> &, Pop<EOT> &, void>
     {
     public:
-	eoSurviveAndDie(double _survive, double _die, bool _interpret_as_rate = true):
+	SurviveAndDie(double _survive, double _die, bool _interpret_as_rate = true):
 	    howmanySurvive(_survive, _interpret_as_rate),
 	    howmanyDie(_die, _interpret_as_rate)
 	{}
 
     protected:
-	eoHowMany howmanySurvive;
-	eoHowMany howmanyDie;
+	HowMany howmanySurvive;
+	HowMany howmanyDie;
 
     };
 
     /** An instance (theonly one as of today, Dec. 20, 2000) of an
-	eoSurviveAndDie, that does everything deterministically
+	SurviveAndDie, that does everything deterministically
 
-	Used in eoDeterministicSaDReplacement.
+	Used in DeterministicSaDReplacement.
     */
     template <class EOT>
-    class eoDeterministicSurviveAndDie : public eoSurviveAndDie<EOT>
+    class DeterministicSurviveAndDie : public SurviveAndDie<EOT>
     {
     public:
 
-	using eoSurviveAndDie< EOT >::howmanyDie;
-	using eoSurviveAndDie< EOT >::howmanySurvive;
+	using SurviveAndDie< EOT >::howmanyDie;
+	using SurviveAndDie< EOT >::howmanySurvive;
 
 	/** constructor */
-	eoDeterministicSurviveAndDie(double _survive, double _die, bool _interpret_as_rate = true)
-	    : eoSurviveAndDie< EOT >(_survive, _die, _interpret_as_rate)
+	DeterministicSurviveAndDie(double _survive, double _die, bool _interpret_as_rate = true)
+	    : SurviveAndDie< EOT >(_survive, _die, _interpret_as_rate)
 	{}
 
 
-	void operator()(eoPop<EOT> & _pop, eoPop<EOT> & _luckyGuys)
+	void operator()(Pop<EOT> & _pop, Pop<EOT> & _luckyGuys)
 	{
 	    unsigned pSize = _pop.size();
 	    unsigned nbSurvive = howmanySurvive(pSize);
@@ -110,7 +110,7 @@ namespace eo
 	    // carefull, we can have a rate of 1 if we want to kill all remaining
 	    unsigned nbDie = std::min(howmanyDie(pSize), pSize-nbSurvive);
 	    if (nbDie > nbRemaining)
-		throw std::logic_error("eoDeterministicSurviveAndDie: Too many to kill!\n");
+		throw std::logic_error("DeterministicSurviveAndDie: Too many to kill!\n");
 
 	    if (!nbDie)
 		{
@@ -125,7 +125,7 @@ namespace eo
     };
 
     /**
-       eoDeterministicSaDReplacement: replacement strategy that is just, in sequence
+       DeterministicSaDReplacement: replacement strategy that is just, in sequence
        saves best and kill worse from parents
        + saves best and kill worse from offspring
        + merge remaining (neither save nor killed) parents and offspring
@@ -137,11 +137,11 @@ namespace eo
        (either offspring or parents+offspring)
     */
     template <class EOT>
-    class eoDeterministicSaDReplacement : public eoReplacement<EOT>
+    class DeterministicSaDReplacement : public Replacement<EOT>
     {
     public:
 	/**  Constructor with reduce */
-	eoDeterministicSaDReplacement(eoReduce<EOT>& _reduceGlobal,
+	DeterministicSaDReplacement(Reduce<EOT>& _reduceGlobal,
 				      double _surviveParents, double _dieParents=0,
 				      double _surviveOffspring=0, double _dieOffspring=0,
 				      bool _interpret_as_rate = true ) :
@@ -151,7 +151,7 @@ namespace eo
 	{}
 
 	/**  Constructor with default truncate used as reduce */
-	eoDeterministicSaDReplacement(
+	DeterministicSaDReplacement(
 				      double _surviveParents, double _dieParents=0,
 				      double _surviveOffspring=0, double _dieOffspring=0,
 				      bool _interpret_as_rate = true ) :
@@ -160,19 +160,19 @@ namespace eo
 	    sAdOffspring(_surviveOffspring, _dieOffspring, _interpret_as_rate)
 	{}
 
-	void operator()(eoPop<EOT>& _parents, eoPop<EOT>& _offspring)
+	void operator()(Pop<EOT>& _parents, Pop<EOT>& _offspring)
 	{
 	    unsigned pSize = _parents.size(); // target number of individuals
 
-	    eoPop<EOT> luckyParents;       // to hold the absolute survivors
+	    Pop<EOT> luckyParents;       // to hold the absolute survivors
 	    sAdParents(_parents, luckyParents);
 
-	    eoPop<EOT> luckyOffspring;       // to hold the absolute survivors
+	    Pop<EOT> luckyOffspring;       // to hold the absolute survivors
 	    sAdOffspring(_offspring, luckyOffspring);
 
 	    unsigned survivorSize = luckyOffspring.size() + luckyParents.size();
 	    if (survivorSize > pSize)
-		throw std::logic_error("eoGeneralReplacement: More survivors than parents!\n");
+		throw std::logic_error("GeneralReplacement: More survivors than parents!\n");
 
 	    plus(_parents, _offspring); // all that remain in _offspring
 
@@ -185,13 +185,13 @@ namespace eo
 	}
 
     private :
-	eoReduce<EOT>& reduceGlobal;
-	eoDeterministicSurviveAndDie<EOT> sAdParents;
-	eoDeterministicSurviveAndDie<EOT> sAdOffspring;
+	Reduce<EOT>& reduceGlobal;
+	DeterministicSurviveAndDie<EOT> sAdParents;
+	DeterministicSurviveAndDie<EOT> sAdOffspring;
 	// plus helper (could be replaced by operator+= ???)
-	eoPlus<EOT> plus;
+	Plus<EOT> plus;
 	// the default reduce: deterministic truncation
-	eoTruncate<EOT> truncate;
+	Truncate<EOT> truncate;
     };
 
 

@@ -34,8 +34,8 @@ namespace eo
 {
 
     /*
-      This functionality was separated from eoObject, since it makes no sense to print
-      some objects (for instance, a #eoFactory# or a random number generator.
+      This functionality was separated from Object, since it makes no sense to print
+      some objects (for instance, a #Factory# or a random number generator.
     */
 
     /**
@@ -45,11 +45,11 @@ namespace eo
 
        @ingroup Core
     */
-    class eoPrintable
+    class Printable
     {
     public:
 	/// Virtual dtor. They are needed in virtual class hierarchies.
-	virtual ~eoPrintable() {}
+	virtual ~Printable() {}
   
 	/**
 	 * Write object. It's called printOn since it prints the object on a stream.
@@ -60,7 +60,7 @@ namespace eo
 
     //-----------------------------------------------------------------------------
     ///Standard output for all objects in the EO hierarchy
-    std::ostream & operator << ( std::ostream& _os, const eoPrintable& _o );
+    std::ostream & operator << ( std::ostream& _os, const Printable& _o );
 
 }
 

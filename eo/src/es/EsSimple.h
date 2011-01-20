@@ -26,7 +26,7 @@ Contact: http://eodev.sourceforge.net
 #include <EO.h>
 #include <vector>
 
-#include <eoVector.h>
+#include <Vector.h>
 
 namespace eo
 {
@@ -36,31 +36,31 @@ namespace eo
     @ingroup Real
 
     One of the more simple evolution strategies, sporting just a single stdeviation
-    for the entire chromosome. For more advanced versions see also eoEsStdev
-    eoEsFull
+    for the entire chromosome. For more advanced versions see also EsStdev
+    EsFull
 
-    @see eoEsStdev eoEsFull
+    @see EsStdev EsFull
 */
     template <class Fit>
-    class eoEsSimple : public eoVector<Fit, double>
+    class EsSimple : public Vector<Fit, double>
     {
     public :
 
 	typedef double Type;
 
-	eoEsSimple() : eoVector<Fit, double>() {}
+	EsSimple() : Vector<Fit, double>() {}
 
-	virtual std::string className() const { return "eoEsSimple"; }
+	virtual std::string className() const { return "EsSimple"; }
 
 	void printOn(std::ostream& os) const
 	    {
-		eoVector<Fit,double>::printOn(os);
+		Vector<Fit,double>::printOn(os);
 		os << ' ' << stdev << ' ';
 	    }
 
 	void readFrom(std::istream& is)
 	    {
-		eoVector<Fit,double>::readFrom(is);
+		Vector<Fit,double>::readFrom(is);
 		is >> stdev;
 	    }
 

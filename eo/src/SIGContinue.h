@@ -33,7 +33,7 @@
 #define SIGContinue_h
 
 #include <signal.h>
-#include <eoContinue.h>
+#include <Continue.h>
 
 namespace eo
 {
@@ -51,17 +51,17 @@ namespace eo
     }
 
     /**
-       Ctrl C handling: this eoContinue tells whether the user pressed Ctrl C
+       Ctrl C handling: this Continue tells whether the user pressed Ctrl C
     */
     template< class EOT>
-    class eoSIGContinue: public eoContinue<EOT>
+    class SIGContinue: public Continue<EOT>
     {
     public:
 	/// Ctor : installs the signal handler
-	eoSIGContinue(int sig, sighandler_t fct)
+	SIGContinue(int sig, sighandler_t fct)
 	    : _sig(sig), _fct(fct)
 	{
-	    // First checks that no other eoSIGContinue does exist
+	    // First checks that no other SIGContinue does exist
 	    if (existSIGContinue)
 		throw std::runtime_error("A signal handler is already defined!\n");
 
@@ -74,7 +74,7 @@ namespace eo
 	}
 
 	/** Returns false when the signal has been typed in reached */
-	virtual bool operator() ( const eoPop<EOT>& _vEO )
+	virtual bool operator() ( const Pop<EOT>& _vEO )
 	{
 	    if (call_func)
 		{
@@ -85,7 +85,7 @@ namespace eo
 	    return true;
 	}
 
-	virtual std::string className(void) const { return "eoSIGContinue"; }
+	virtual std::string className(void) const { return "SIGContinue"; }
     private:
 	int		_sig;
 	sighandler_t	_fct;

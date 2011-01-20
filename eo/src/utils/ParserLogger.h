@@ -23,35 +23,35 @@ Authors:
 #ifndef PARSER_LOGGER_H
 #define PARSER_LOGGER_H
 
-#include "eoParser.h"
-#include "eoLogger.h"
+#include "Parser.h"
+#include "Logger.h"
 
 namespace eo
 {
 
 /**
-* A parser that use the advanced logging system (@see eoLogger)
+* A parser that use the advanced logging system (@see Logger)
 *
 * @ingroup Parameters
 * @ingroup Logging
 */
-    class	eoParserLogger : public eoParser
+    class	ParserLogger : public Parser
     {
     public:
-	eoParserLogger(unsigned _argc, char** _argv,
+	ParserLogger(unsigned _argc, char** _argv,
 		       std::string _programDescription = "",
 		       std::string _lFileParamName = "param-file",
 		       char _shortHand = 'p');
-	~eoParserLogger();
+	~ParserLogger();
 
     private:
-	friend void	make_verbose(eoParserLogger&);
-	eoValueParam<std::string>	_verbose;
-	eoValueParam<bool>		_printVerboseLevels;
-	eoValueParam<std::string>	_output;
+	friend void	make_verbose(ParserLogger&);
+	ValueParam<std::string>	_verbose;
+	ValueParam<bool>		_printVerboseLevels;
+	ValueParam<std::string>	_output;
     };
 
-    void	make_verbose(eoParserLogger&);
+    void	make_verbose(ParserLogger&);
 
 }
 

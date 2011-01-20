@@ -27,8 +27,8 @@
 #define STARTOPOLOGY_H_
 
 //-----------------------------------------------------------------------------
-#include <eoTopology.h>
-#include <eoSocialNeighborhood.h>
+#include <Topology.h>
+#include <SocialNeighborhood.h>
 //-----------------------------------------------------------------------------
 
 namespace eo
@@ -37,17 +37,17 @@ namespace eo
     /**
      * Topology dedicated to "globest best" strategy for particle swarm optimization.
      * All the particles of the swarm belong to the same and only social neighborhood.
-     * The global best is stored and updated using the eoSocialNeighborhood.
+     * The global best is stored and updated using the SocialNeighborhood.
      *
      *   @ingroup Selectors
      */
-    template < class POT > class eoStarTopology:public eoTopology <POT>
+    template < class POT > class StarTopology:public Topology <POT>
     {
     public:
 	/**
 	 * The only Ctor. No parameter required.
 	 */
-	eoStarTopology ():isSetup(false){}
+	StarTopology ():isSetup(false){}
 
 
 	/**
@@ -56,7 +56,7 @@ namespace eo
 	 * @param _pop - The population used to build the only neighborhood.
 	 * @return
 	 */
-	void setup(const eoPop<POT> & _pop)
+	void setup(const Pop<POT> & _pop)
 	{
 	    if (!isSetup){
 
@@ -74,7 +74,7 @@ namespace eo
 		    // Should activate this part ?
 		    /*
 		      std::string s;
-		      s.append (" Linear topology already setup in eoStarTopology");
+		      s.append (" Linear topology already setup in StarTopology");
 		      throw std::runtime_error (s);
 		    */
 		}
@@ -114,7 +114,7 @@ namespace eo
 	 * Return the global best of the topology
 	 */
 	 
-	virtual POT & globalBest(const eoPop<POT>& _pop)
+	virtual POT & globalBest(const Pop<POT>& _pop)
 	{
 	    return neighborhood.best();
 	}
@@ -132,7 +132,7 @@ namespace eo
 	}
 
     protected:
-	eoSocialNeighborhood<POT> neighborhood; // the only neighborhood
+	SocialNeighborhood<POT> neighborhood; // the only neighborhood
 	bool isSetup;
     };
 

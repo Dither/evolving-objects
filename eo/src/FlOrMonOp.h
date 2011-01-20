@@ -26,9 +26,9 @@
 #ifndef _FlOrMonOp_h
 #define _FlOrMonOp_h
 
-#include <eoFunctor.h>
-#include <eoOp.h>
-#include <eoInit.h>
+#include <Functor.h>
+#include <Op.h>
+#include <Init.h>
 
 namespace eo
 {
@@ -39,24 +39,24 @@ namespace eo
 
     /** Base classes for generic mutations on fixed length chromosomes.
      *  Contains 2 classes that both use an atomic mutation
-     *      eoFlOrAllMutation applies the atom mutation to all components with given rate
-     *      eoFlOrKMutation applies the atom mutation to a fixed nb of components
+     *      FlOrAllMutation applies the atom mutation to all components with given rate
+     *      FlOrKMutation applies the atom mutation to a fixed nb of components
      *
-     * Remark: the standard bit-flip mutation is an eoFlOrAllMutation 
+     * Remark: the standard bit-flip mutation is an FlOrAllMutation 
      *                      with atom mutation == bitflipping
      */
 
     /** applies an atomic mutation to all the components with a given rate
      */
     template <class EOT>
-    class eoFlOrAllMutation : public eoMonOp<EOT>
+    class FlOrAllMutation : public MonOp<EOT>
     {
     public :
 
 	typedef typename EOT::AtomType AtomType;
 
 	/** default ctor: requires an Atom mutation and a rate */
-	eoFlOrAllMutation(eoMonOp<AtomType> & _atomMutation, double _rate=1.0) :
+	FlOrAllMutation(MonOp<AtomType> & _atomMutation, double _rate=1.0) :
 	    atomMutation(_atomMutation), rate(_rate) {}
 
 	/** applies the atom mutation to all components with given rate */
@@ -74,11 +74,11 @@ namespace eo
 	/** inherited className() */
 	virtual std::string className() const 
 	{ 
-	    return "eoFlOrAllMutation(" + atomMutation.className() + ")";
+	    return "FlOrAllMutation(" + atomMutation.className() + ")";
 	}
 
     private:
-	eoMonOp<AtomType> & atomMutation; // the atom mutation
+	MonOp<AtomType> & atomMutation; // the atom mutation
 	double rate;			   // the mutation rate PER ATOM
     };
 
@@ -86,14 +86,14 @@ namespace eo
 	number of components (1 by default)
     */
     template <class EOT>
-    class eoFlOrKMutation : public eoMonOp<EOT>
+    class FlOrKMutation : public MonOp<EOT>
     {
     public :
 
 	typedef typename EOT::AtomType AtomType;
 
 	/** default ctor: requires an Atom mutation */
-	eoFlOrKMutation(eoMonOp<AtomType> & _atomMutation, unsigned _nb=1) :
+	FlOrKMutation(MonOp<AtomType> & _atomMutation, unsigned _nb=1) :
 	    nb(_nb), atomMutation(_atomMutation) {}
 
 
@@ -113,12 +113,12 @@ namespace eo
 	/** inherited className() */
 	virtual std::string className() const
 	{ 
-	    return "eoFlOrKMutation(" + atomMutation.className() + ")";
+	    return "FlOrKMutation(" + atomMutation.className() + ")";
 	}
 
     private:
 	unsigned nb;			   // the number of atoms to mutate
-	eoMonOp<AtomType> & atomMutation; // the atom mutation
+	MonOp<AtomType> & atomMutation; // the atom mutation
     };
 
 }

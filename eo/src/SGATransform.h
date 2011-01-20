@@ -27,33 +27,33 @@
 #ifndef _SGATransform_h
 #define _SGATransform_h
 
-#include <eoInvalidateOps.h>
-#include <eoPop.h>
+#include <InvalidateOps.h>
+#include <Pop.h>
 
 ///////////////////////////////////////////////////////////////////////////////
-// class eoSGATransform
+// class SGATransform
 ///////////////////////////////////////////////////////////////////////////////
 #include <vector>          // std::vector
-#include <utils/eoRNG.h>
-#include <eoTransform.h>
+#include <utils/RNG.h>
+#include <Transform.h>
 
 namespace eo
 {
 
-    /** eoSGATransform: transforms a population using genetic operators.
-     * It does it exactly as class eoSGA, i.e. only accepts 
+    /** SGATransform: transforms a population using genetic operators.
+     * It does it exactly as class SGA, i.e. only accepts 
      *    quadratic crossover and unary mutation
      * It is here mainly for tutorial reasons
      *
      * @ingroup Combination
      */
-    template<class EOT> class eoSGATransform : public eoTransform<EOT>
+    template<class EOT> class SGATransform : public Transform<EOT>
     {
     public:
     
 	/// Default constructor.
-	eoSGATransform(eoQuadOp<EOT>& _cross, double _cProba, 
-		       eoMonOp<EOT>& _mutate, double _mProba)
+	SGATransform(QuadOp<EOT>& _cross, double _cProba, 
+		       MonOp<EOT>& _mutate, double _mProba)
 	    : cross(_cross),
 	      crossoverProba(_cProba),
 	      mutate(_mutate), 
@@ -64,7 +64,7 @@ namespace eo
 	 * Transforms a population.
 	 * @param _pop The population to be transformed.
 	 */
-	void operator()(eoPop<EOT>& _pop) 
+	void operator()(Pop<EOT>& _pop) 
 	{
 	    unsigned i;
 	        
@@ -88,37 +88,37 @@ namespace eo
 	};
     
     private:
-	eoInvalidateQuadOp<EOT> cross;
+	InvalidateQuadOp<EOT> cross;
 	double crossoverProba;
-	eoInvalidateMonOp<EOT> mutate;
+	InvalidateMonOp<EOT> mutate;
 	double mutationProba;
     };
 
-    /** eoDynSGATransform: transforms a population using genetic operators.
-     * It is the Dynamic version of the above eoSGATransform
-     *    i.e. the operators probabilities can be passed as an eoValueParam, 
+    /** DynSGATransform: transforms a population using genetic operators.
+     * It is the Dynamic version of the above SGATransform
+     *    i.e. the operators probabilities can be passed as an ValueParam, 
      *    and hence can be modified from outside
      * It is here mainly for tutorial reasons
      *
      * @ingroup Combination
      */
-    template<class EOT> class eoDynSGATransform : public eoTransform<EOT>
+    template<class EOT> class DynSGATransform : public Transform<EOT>
     {
     public:
     
 	/// Default constructor - receives values
-	eoDynSGATransform(eoQuadOp<EOT>& _cross, double _cProba, 
-			  eoMonOp<EOT>& _mutate, double _mProba)
+	DynSGATransform(QuadOp<EOT>& _cross, double _cProba, 
+			  MonOp<EOT>& _mutate, double _mProba)
 	    : cross(_cross),
 	      crossoverProbaHolder(_cProba), crossoverProba(crossoverProbaHolder),
 	      mutate(_mutate), 
 	      mutationProbaHolder(_mProba), mutationProba(mutationProbaHolder) {}
 
 	/// This constructor receives pointers
-	//  these will usually be some eoValueParam<double>.value()
+	//  these will usually be some ValueParam<double>.value()
 	//  hence the ...Holder data will bever be used in this case
-	eoDynSGATransform(eoQuadOp<EOT>& _cross, double* _cProbaRef, 
-			  eoMonOp<EOT>& _mutate, double* _mProbaRef)
+	DynSGATransform(QuadOp<EOT>& _cross, double* _cProbaRef, 
+			  MonOp<EOT>& _mutate, double* _mProbaRef)
 	    : cross(_cross),
 	      crossoverProbaHolder(0), crossoverProba(*_cProbaRef),
 	      mutate(_mutate), 
@@ -129,7 +129,7 @@ namespace eo
 	 * Transforms a population.
 	 * @param _pop The population to be transformed.
 	 */
-	void operator()(eoPop<EOT>& _pop) 
+	void operator()(Pop<EOT>& _pop) 
 	{
 	    unsigned i;
 	        
@@ -156,13 +156,13 @@ namespace eo
 	double & PMutHandle() { return mutationProba;}
 
     private:
-	// difference with eoSGATransform: the operator probabilities 
+	// difference with SGATransform: the operator probabilities 
 	// they can be passed by reference or by value.
 	// hence we need here to use a reference, and to eventually store a value
-	eoInvalidateQuadOp<EOT> cross;
+	InvalidateQuadOp<EOT> cross;
 	double crossoverProbaHolder;	// the value, used only if ctor gets a value
 	double& crossoverProba;       // the reference, to be used in operator()
-	eoInvalidateMonOp<EOT> mutate;
+	InvalidateMonOp<EOT> mutate;
 	double mutationProbaHolder;	// the value, used only if ctor gets a value
 	double& mutationProba;        // the reference, to be used in operator()
     };

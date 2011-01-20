@@ -27,23 +27,23 @@
 #ifndef _Updatable_h
 #define _Updatable_h
 
-#include <utils/eoUpdater.h>
+#include <utils/Updater.h>
 
 namespace eo
 {
 
     /**
-       eoUpdatable is a generic class for adding updatation to an existing class
+       Updatable is a generic class for adding updatation to an existing class
        Just says it has an update() method
 
        @ingroup Utilities
     */
-    class eoUpdatable
+    class Updatable
     {
     public:
 
 	/** @brief Virtual destructor */
-	virtual ~eoUpdatable() {};
+	virtual ~Updatable() {};
 
 	virtual void update() = 0;
     };
@@ -51,13 +51,13 @@ namespace eo
 
 
     /**
-       A base class to actually update an eoUpdatable object
+       A base class to actually update an Updatable object
 
        @ingroup Utilities
     */
-    class eoDynUpdater : public eoUpdater
+    class DynUpdater : public Updater
     {public :
-	eoDynUpdater(eoUpdatable & _toUpdate) : toUpdate(_toUpdate) {};
+	DynUpdater(Updatable & _toUpdate) : toUpdate(_toUpdate) {};
 
 	virtual void operator()()
 	{
@@ -65,19 +65,19 @@ namespace eo
 	}
 
     private:
-	eoUpdatable& toUpdate;
+	Updatable& toUpdate;
     };
 
     /**
-       An eoUpdater to update an eoUpdatable object every given time interval
+       An Updater to update an Updatable object every given time interval
 
        @ingroup Utilities
     */
-    class eoTimedDynUpdate : public eoDynUpdater
+    class TimedDynUpdate : public DynUpdater
     {
     public :
-	eoTimedDynUpdate(eoUpdatable & _toUpdate, time_t _interval) :
-	    eoDynUpdater(_toUpdate),
+	TimedDynUpdate(Updatable & _toUpdate, time_t _interval) :
+	    DynUpdater(_toUpdate),
 	    interval(_interval), last_time(time(0)), first_time(time(0)) {}
 
 	void operator()(void)
@@ -87,7 +87,7 @@ namespace eo
 	    if (now >= last_time + interval)
 		{
 		    last_time = now;
-		    eoDynUpdater::operator() ();
+		    DynUpdater::operator() ();
 		}
 	}
     private :
@@ -97,21 +97,21 @@ namespace eo
     };
 
     /**
-       An eoUpdater to update an eoUpdatable object every given tic
+       An Updater to update an Updatable object every given tic
 
        @ingroup Utilities
     */
-    class eoCountedDynUpdate : public eoDynUpdater
+    class CountedDynUpdate : public DynUpdater
     {
     public :
-	eoCountedDynUpdate(eoUpdatable & _toUpdate, unsigned _interval)
-	    : eoDynUpdater(_toUpdate), interval(_interval), counter(0) {}
+	CountedDynUpdate(Updatable & _toUpdate, unsigned _interval)
+	    : DynUpdater(_toUpdate), interval(_interval), counter(0) {}
 
 	void operator()(void)
 	{
 	    if (++counter % interval == 0)
 		{
-		    eoDynUpdater::operator() ();
+		    DynUpdater::operator() ();
 		}
 	}
     private :

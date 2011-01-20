@@ -32,8 +32,8 @@
 #include <iomanip>                // setprecision
 #include <string>                 // string
 #include <EO.h>                   // EO
-#include <eoOp.h>                 // eoMonOp eoQuadraticOp
-#include <eoInit.h>               // eoInit
+#include <Op.h>                 // MonOp QuadraticOp
+#include <Init.h>               // Init
 #include <utils/rnd_generators.h> // normal_generator
 #include "mlp.h"                  // mlp::net mlp::set
 #include "qp.h"                   // qp::set
@@ -45,45 +45,45 @@
 
 struct phenotype
 {
-  int trn_ok, val_ok, tst_ok;
-  double mse_error;
+    int trn_ok, val_ok, tst_ok;
+    double mse_error;
 
-  static int trn_max, val_max, tst_max;
+    static int trn_max, val_max, tst_max;
 
-  friend bool operator<(const phenotype& a, const phenotype& b)
-  {
-      return (a.val_ok < b.val_ok) || ((!(b.val_ok < a.val_ok)) && (b.mse_error < a.mse_error));
-  }
+    friend bool operator<(const phenotype& a, const phenotype& b)
+    {
+	return (a.val_ok < b.val_ok) || ((!(b.val_ok < a.val_ok)) && (b.mse_error < a.mse_error));
+    }
 
-  friend bool operator==(const phenotype& a, const phenotype& b)
-  {
-      return (a.val_ok == b.val_ok) && (b.mse_error == a.mse_error);
-  }
+    friend bool operator==(const phenotype& a, const phenotype& b)
+    {
+	return (a.val_ok == b.val_ok) && (b.mse_error == a.mse_error);
+    }
 
-  friend bool operator>=(const phenotype& a, const phenotype& b)
-  {
-    return !(a < b);
-  }
+    friend bool operator>=(const phenotype& a, const phenotype& b)
+    {
+	return !(a < b);
+    }
 
-  friend bool operator>(const phenotype& a, const phenotype& b)
-  {
-    return (!(a == b)) && (!(a < b));
-  }
+    friend bool operator>(const phenotype& a, const phenotype& b)
+    {
+	return (!(a == b)) && (!(a < b));
+    }
 
 
 
-  friend std::ostream& operator<<(std::ostream& os, const phenotype& p)
-  {
-    return os << p.trn_ok << "/" << p.trn_max << " "
-	      << p.val_ok << "/" << p.val_max << " "
-	      << p.tst_ok << "/" << p.tst_max << " "
-	      << p.mse_error;
-  }
+    friend std::ostream& operator<<(std::ostream& os, const phenotype& p)
+    {
+	return os << p.trn_ok << "/" << p.trn_max << " "
+		  << p.val_ok << "/" << p.val_max << " "
+		  << p.tst_ok << "/" << p.tst_max << " "
+		  << p.mse_error;
+    }
 
-  friend std::istream& operator>>(std::istream& is, phenotype& p)
-  {
-    return is; // complete me
-  }
+    friend std::istream& operator>>(std::istream& is, phenotype& p)
+    {
+	return is; // complete me
+    }
 };
 
 
@@ -104,39 +104,44 @@ typedef GPROP_GENOTYPE genotype;
 
 extern unsigned in, out, hidden;
 
-class Chrom: public EO<phenotype>, public genotype
+class Chrom: public eo::EO< phenotype >, public genotype
 {
 public:
-  Chrom(): genotype(in, out, std::vector<unsigned>(hidden < 1 ? 0 : 1, hidden)) {}
+    Chrom(): genotype(in, out, std::vector<unsigned>(hidden < 1 ? 0 : 1, hidden)) {}
 
-  std::string className() const { return "Chrom"; }
+    std::string className() const { return "Chrom"; }
 
-  void printOn (std::ostream& os) const
-  {
-    os << std::setprecision(3) << static_cast<genotype>(*this) << "  \t"
-       << fitness();
-    // os << fitness();
-  }
+    void printOn (std::ostream& os) const
+    {
+	os << std::setprecision(3) << static_cast<genotype>(*this) << "  \t"
+	   << fitness();
+	// os << fitness();
+    }
 
-  void readFrom (std::istream& is)
-  {
-    invalidate(); // complete me
-  }
+    void readFrom (std::istream& is)
+    {
+	invalidate(); // complete me
+    }
 };
 
 //-----------------------------------------------------------------------------
 // eoChromInit
 //-----------------------------------------------------------------------------
 
-class eoInitChrom: public eoInit<Chrom>
+namespace eo
 {
-public:
-  void operator()(Chrom& chrom)
-  {
-    chrom.reset();
-    chrom.invalidate();
-  }
-};
+
+    class InitChrom: public Init<Chrom>
+    {
+    public:
+	void operator()(Chrom& chrom)
+	{
+	    chrom.reset();
+	    chrom.invalidate();
+	}
+    };
+
+}
 
 //-----------------------------------------------------------------------------
 // global variables
@@ -162,37 +167,47 @@ void ensure_datasets_initialized() {
 // eoChromMutation
 //-----------------------------------------------------------------------------
 
-class eoChromMutation: public eoMonOp<Chrom>
+namespace eo
 {
-public:
-  bool operator()(Chrom& chrom)
-  {
-    mse::net tmp(chrom);
-    tmp.train(*trn_set, 10, 0, 0.001);
-    return true;
-  }
-};
+
+    class ChromMutation: public MonOp<Chrom>
+    {
+    public:
+	bool operator()(Chrom& chrom)
+	{
+	    mse::net tmp(chrom);
+	    tmp.train(*trn_set, 10, 0, 0.001);
+	    return true;
+	}
+    };
+
+}
 
 //-----------------------------------------------------------------------------
 // eoChromXover
 //-----------------------------------------------------------------------------
 
-class eoChromXover: public eoQuadOp<Chrom>
+namespace eo
 {
-public:
-  bool operator()(Chrom& chrom1, Chrom& chrom2)
-  {
-    chrom1.normalize();
-    chrom2.desaturate();
 
-    mse::net tmp1(chrom1), tmp2(chrom2);
-    ensure_datasets_initialized();
-    tmp1.train(*trn_set, 100, 0, 0.001);
-    tmp2.train(*trn_set, 100, 0, 0.001);
+    class ChromXover: public QuadOp<Chrom>
+    {
+    public:
+	bool operator()(Chrom& chrom1, Chrom& chrom2)
+	{
+	    chrom1.normalize();
+	    chrom2.desaturate();
 
-    return true;
-  }
-};
+	    mse::net tmp1(chrom1), tmp2(chrom2);
+	    ensure_datasets_initialized();
+	    tmp1.train(*trn_set, 100, 0, 0.001);
+	    tmp2.train(*trn_set, 100, 0, 0.001);
+
+	    return true;
+	}
+    };
+
+}
 
 //-----------------------------------------------------------------------------
 // eoChromEvaluator

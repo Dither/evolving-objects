@@ -1,32 +1,32 @@
 #ifndef FuncPtrStat_h
 #define FuncPtrStat_h
 
-#include <eoFunctorStore.h>
-#include <utils/eoStat.h>
+#include <FunctorStore.h>
+#include <utils/Stat.h>
 
 namespace eo
 {
 
-    /** Wrapper to turn any stand-alone function and into an eoStat.
+    /** Wrapper to turn any stand-alone function and into an Stat.
      *
-     * The function should take an eoPop as argument.
+     * The function should take an Pop as argument.
      *
      * @ingroup Stats
      */
     template <class EOT, class T>
-    class eoFuncPtrStat : public eoStat<EOT, T>
+    class FuncPtrStat : public Stat<EOT, T>
     {
     public :
-	typedef T (*func_t)(const eoPop<EOT>&);
+	typedef T (*func_t)(const Pop<EOT>&);
 
 
-	eoFuncPtrStat(func_t f, std::string _description = "func_ptr")
-	    : eoStat<EOT, T>(T(), _description), func(f)
+	FuncPtrStat(func_t f, std::string _description = "func_ptr")
+	    : Stat<EOT, T>(T(), _description), func(f)
         {}
 
-	using eoStat<EOT, T>::value;
+	using Stat<EOT, T>::value;
 
-	void operator()(const eoPop<EOT>& pop)
+	void operator()(const Pop<EOT>& pop)
 	{
 	    value() = func(pop);
 	}
@@ -39,9 +39,9 @@ namespace eo
      * @ingroup Stats
      */
     template <class EOT, class T>
-    eoFuncPtrStat<EOT, T>& makeFuncPtrStat( T (*func)(const eoPop<EOT>&), eoFunctorStore& store, std::string description = "func") {
+    FuncPtrStat<EOT, T>& makeFuncPtrStat( T (*func)(const Pop<EOT>&), FunctorStore& store, std::string description = "func") {
 	return store.storeFunctor(
-				  new eoFuncPtrStat<EOT, T>( func, description)
+				  new FuncPtrStat<EOT, T>( func, description)
 				  );
     }
 

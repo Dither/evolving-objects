@@ -23,13 +23,13 @@ unsigned in, out, hidden;
 // parameters
 //-----------------------------------------------------------------------------
 
-eoValueParam<unsigned> pop_size(16, "pop_size", "population size", 'p');
-eoValueParam<unsigned> generations(100, "generations", "number of generation", 'g');
-eoValueParam<double> mut_rate(0.1, "mut_rate", "mutation rate", 'm');
-eoValueParam<double> xover_rate(0.5, "xover_rate", "default crossover rate", 'x');
-eoValueParam<unsigned> col_p(default_colors, "colors", "number of colors", 'c');
-eoValueParam<unsigned> len_p(default_length, "legth", "solution legth", 'l');
-eoValueParam<string> sol_p(default_solution, "solution", "problem solution", 's');
+eo::ValueParam<unsigned> pop_size(16, "pop_size", "population size", 'p');
+eo::ValueParam<unsigned> generations(100, "generations", "number of generation", 'g');
+eo::ValueParam<double> mut_rate(0.1, "mut_rate", "mutation rate", 'm');
+eo::ValueParam<double> xover_rate(0.5, "xover_rate", "default crossover rate", 'x');
+eo::ValueParam<unsigned> col_p(default_colors, "colors", "number of colors", 'c');
+eo::ValueParam<unsigned> len_p(default_length, "legth", "solution legth", 'l');
+eo::ValueParam<string> sol_p(default_solution, "solution", "problem solution", 's');
 
 //-----------------------------------------------------------------------------
 // auxiliar functions
@@ -64,71 +64,71 @@ int main(int argc, char** argv)
 
 void arg(int argc, char** argv)
 {
-  eoParser parser(argc, argv);
+    eo::Parser parser(argc, argv);
 
-  parser.processParam(pop_size,    "genetic operators");
-  parser.processParam(generations, "genetic operators");
-  parser.processParam(mut_rate,    "genetic operators");
-  parser.processParam(xover_rate,  "genetic operators");
-  parser.processParam(col_p,       "problem");
-  parser.processParam(len_p,       "problem");
-  parser.processParam(sol_p,       "problem");
+    parser.processParam(pop_size,    "genetic operators");
+    parser.processParam(generations, "genetic operators");
+    parser.processParam(mut_rate,    "genetic operators");
+    parser.processParam(xover_rate,  "genetic operators");
+    parser.processParam(col_p,       "problem");
+    parser.processParam(len_p,       "problem");
+    parser.processParam(sol_p,       "problem");
 
-  if (parser.userNeedsHelp())
-    {
-      parser.printHelp(cout);
-      exit(EXIT_SUCCESS);
-    }
+    if (parser.userNeedsHelp())
+	{
+	    parser.printHelp(cout);
+	    exit(EXIT_SUCCESS);
+	}
 
-  init_eoChromEvaluator(col_p.value(), len_p.value(), sol_p.value());
+    init_eoChromEvaluator(col_p.value(), len_p.value(), sol_p.value());
 }
 
 //-----------------------------------------------------------------------------
 
 void ga()
 {
-  // create population
-  eoInitChrom init;
-  eoPop<Chrom> pop(pop_size.value(), init);
+    // create population
+    eo::InitChrom init;
+    eo::Pop<Chrom> pop(pop_size.value(), init);
 
-  // evaluate population
-  eoEvalFuncPtr<Chrom> evaluator(eoChromEvaluator);
-  apply<Chrom>(evaluator, pop);
+    // evaluate population
+    eo::EvalFuncPtr<Chrom> evaluator(eoChromEvaluator);
+    eo::apply<Chrom>(evaluator, pop);
 
-  // selector
-  eoProportionalSelect<Chrom> select(pop);
+    // selector
+    eo::ProportionalSelect<Chrom> select(pop);
 
-  // genetic operators
-  eoChromMutation mutation;
-  eoChromXover xover;
+    // genetic operators
+    eo::ChromMutation mutation;
+    eo::ChromXover xover;
 
-  // stop condition
-  eoGenContinue<Chrom> continuator1(generations.value());
-  eoFitContinue<Chrom> continuator2(solution.fitness());
-  eoCombinedContinue<Chrom> continuator(continuator1, continuator2);
+    // stop condition
+    eo::GenContinue<Chrom> continuator1(generations.value());
+    eo::FitContinue<Chrom> continuator2(solution.fitness());
+    eo::CombinedContinue<Chrom> continuator(continuator1, continuator2);
 
-  // checkpoint
-  eoCheckPoint<Chrom> checkpoint(continuator);
+    // checkpoint
+    eo::CheckPoint<Chrom> checkpoint(continuator);
 
-  // monitor
-  eoStdoutMonitor monitor;
-  checkpoint.add(monitor);
+    // monitor
+    eo::StdoutMonitor monitor;
+    checkpoint.add(monitor);
 
-  // statistics
-  eoBestFitnessStat<Chrom> stats;
-  checkpoint.add(stats);
-  monitor.add(stats);
+    // statistics
+    eo::BestFitnessStat<Chrom> stats;
+    checkpoint.add(stats);
+    monitor.add(stats);
 
-  // genetic algorithm
-  eoSGA<Chrom> sga(select,
+    // genetic algorithm
+    eo::SGA<Chrom> sga(select,
 		   xover, xover_rate.value(),
 		   mutation, mut_rate.value(),
 		   evaluator,
 		   checkpoint);
-  sga(pop);
+    sga(pop);
 
-  cout << "solution = " << solution << endl
-       << "best     = " << *max_element(pop.begin(), pop.end()) << endl;
+    cout << "solution = " << solution << endl
+	 << "best     = " << *max_element(pop.begin(), pop.end()) << endl;
 }
 
 //-----------------------------------------------------------------------------

@@ -22,27 +22,27 @@
 #ifndef __PeriodicContinue_h
 #define __PeriodicContinue_h
 
-#include <eoContinue.h>
-#include <eoPop.h>
+#include <Continue.h>
+#include <Pop.h>
 
 namespace eo
 {
 
     /** A continue that becomes true periodically.
      */
-    template <class EOT> class eoPeriodicContinue: public eoContinue <EOT> {
+    template <class EOT> class PeriodicContinue: public Continue <EOT> {
 
     public:
   
 	/** Constructor. The period is given in parameter. */  
-	eoPeriodicContinue (unsigned __period, unsigned __init_counter = 0) : 
+	PeriodicContinue (unsigned __period, unsigned __init_counter = 0) : 
 	    period (__period), counter (__init_counter) 
 	{}
 
 
 	/** It returns 'true' only if the current number of generations modulo
 	    the period doen't equal to zero. */  
-	bool operator () (const eoPop <EOT> & pop)
+	bool operator () (const Pop <EOT> & pop)
 	{
 	    return ((++ counter) % period) != 0 ;
 	}

@@ -28,24 +28,24 @@
 #define _DetSelect_h
 
 //-----------------------------------------------------------------------------
-#include <eoSelect.h>
-#include <utils/eoHowMany.h>
+#include <Select.h>
+#include <utils/HowMany.h>
 #include <math.h>
 //-----------------------------------------------------------------------------
 
 namespace eo
 {
 
-    /** eoDetSelect selects many individuals determinisctically
+    /** DetSelect selects many individuals determinisctically
      *
      * @ingroup Selectors
      */
     template<class EOT>
-    class eoDetSelect : public eoSelect<EOT>
+    class DetSelect : public Select<EOT>
     {
     public:
 	/// init
-	eoDetSelect(double _rate = 1.0, bool _interpret_as_rate = true)
+	DetSelect(double _rate = 1.0, bool _interpret_as_rate = true)
 	    : howMany(_rate, _interpret_as_rate)  {}
 
 	/**
@@ -54,14 +54,14 @@ namespace eo
 	   given by the HowMany data
 	   It empties the destination and adds the selection into it)
 	*/
-	virtual void operator()(const eoPop<EOT>& _source, eoPop<EOT>& _dest)
+	virtual void operator()(const Pop<EOT>& _source, Pop<EOT>& _dest)
 	{
 	    unsigned int pSize = _source.size();
 	    size_t target = howMany(pSize);
 
 	    if ( target == 0 )
 		{
-		    eo::log << eo::warnings << "Call to a eoHowMany instance returns 0 (target=" << target << ") it will be replaced by 1 to continue." << std::endl;
+		    log << warnings << "Call to a HowMany instance returns 0 (target=" << target << ") it will be replaced by 1 to continue." << std::endl;
 		    target = 1;
 		}
 
@@ -69,7 +69,7 @@ namespace eo
 
 	    unsigned remain = target % pSize;
 	    unsigned entireCopy = target / pSize;
-	    typename eoPop<EOT>::iterator it = _dest.begin();
+	    typename Pop<EOT>::iterator it = _dest.begin();
     
 	    if (target >= pSize)
 		{
@@ -87,7 +87,7 @@ namespace eo
 	}
   
     private :
-	eoHowMany howMany;
+	HowMany howMany;
     };
 
 }

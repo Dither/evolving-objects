@@ -26,8 +26,8 @@
 #ifndef _FlOrBinOp_h
 #define _FlOrBinOp_h
 
-#include <eoFunctor.h>
-#include <eoOp.h>
+#include <Functor.h>
+#include <Op.h>
 
 namespace eo
 {
@@ -36,31 +36,31 @@ namespace eo
      * @{
      */
 
-    /** Generic eoBinOps on fixed length genotypes.
+    /** Generic BinOps on fixed length genotypes.
      *  Contains exchange crossovers (1pt and uniform)
      *      and crossovers that applies an Atom crossover 
      *          to all components with given rate, or
      *          to a fixed prescribed nb of components
      *
      * Example: the standard bitstring 1-point and uniform crossovers 
-     *          could be implemented as resp. eoFlOr1ptBinOp and eoFlOrUniformBinOp
+     *          could be implemented as resp. FlOr1ptBinOp and FlOrUniformBinOp
      */
 
     //////////////////////////////////////////////////////////////////////
-    //                eoFlOrAllAtomBinOp
+    //                FlOrAllAtomBinOp
     //////////////////////////////////////////////////////////////////////
     /** Bin Crossover using an Atom Crossover
      *  that is applied to a ALL components with given rate
      */
     template <class EOT>
-    class eoFlOrAllAtomBinOp : public eoBinOp<EOT>
+    class FlOrAllAtomBinOp : public BinOp<EOT>
     {
     public :
 
 	typedef typename EOT::AtomType AtomType;
 
 	/** default ctor: requires an Atom BinOp */
-	eoFlOrAllAtomBinOp( eoBinOp<AtomType>& _op, float _rate = 1.0):
+	FlOrAllAtomBinOp( BinOp<AtomType>& _op, float _rate = 1.0):
 	    op(_op), rate( _rate ) {}
 
 	/** applies Atom crossover to ALL components with given rate */
@@ -82,28 +82,28 @@ namespace eo
 	}
 
 	/** inherited className()*/
-	virtual string className() const { return "eoFlOrAllAtomBinOp"; }
+	virtual string className() const { return "FlOrAllAtomBinOp"; }
 
     private:
 	double rate;
-	eoBinOp<AtomType> & op;
+	BinOp<AtomType> & op;
     };
 
     //////////////////////////////////////////////////////////////////////
-    //                 eoFlOrKAtomBinOp
+    //                 FlOrKAtomBinOp
     //////////////////////////////////////////////////////////////////////
     /** Bin Crossover using an Atom Crossover
      *  that is applied to a FIXED NB of components
      */
     template <class EOT>
-    class eoFlOrKAtomBinOp : public eoBinOp<EOT>
+    class FlOrKAtomBinOp : public BinOp<EOT>
     {
     public :
 
 	typedef typename EOT::AtomType AtomType;
 
 	/** default ctor: requires an Atom BinOp and an unsigned */
-	eoFlOrAtomBinOp( eoBinOp<AtomType>& _op, unsigned _k = 1):
+	FlOrAtomBinOp( BinOp<AtomType>& _op, unsigned _k = 1):
 	    op(_op), k( _k ) {}
 
 	/** applies the Atom BinOp to some components */
@@ -126,28 +126,28 @@ namespace eo
 	}
 
 	/** inherited className()*/
-	virtual string className() const { return "eoFlOrKAtomBinOp"; }
+	virtual string className() const { return "FlOrKAtomBinOp"; }
 
     private:
 	unsigned k;
-	eoBinOp<AtomType> & op;
+	BinOp<AtomType> & op;
     };
 
 
     //////////////////////////////////////////////////////////////////////
-    //                        eoFlOrUniformBinOp
+    //                        FlOrUniformBinOp
     //////////////////////////////////////////////////////////////////////
 
     /** The uniform crossover - exchanges atoms uniformly ! */
     template <class EOT>
-    class eoFlOrUniformBinOp : public eoBinOp<EOT>
+    class FlOrUniformBinOp : public BinOp<EOT>
     {
     public :
 
 	typedef typename EOT::AtomType AtomType;
 
 	/** default ctor: requires a rate - 0.5 by default */
-	eoFlOrUniformBinOp(double _rate=0.5) : eoBinOp<EOT>(_size),
+	FlOrUniformBinOp(double _rate=0.5) : BinOp<EOT>(_size),
 					       rate(_rate) {}
 
 	/** excahnges atoms at given rate */
@@ -173,19 +173,19 @@ namespace eo
 	}
 
 	/** inherited className()*/
-	virtual string className() const { return "eoFlOrUniformBinOp"; }
+	virtual string className() const { return "FlOrUniformBinOp"; }
 
     private:
 	double rate;
     };
 
     //////////////////////////////////////////////////////////////////////
-    //                        eoFlOr1ptBinOp
+    //                        FlOr1ptBinOp
     //////////////////////////////////////////////////////////////////////
 
     /** The 1pt  crossover (just in case someone wants it some day!) */
     template <class EOT>
-    class eoFlOr1ptBinOp : public eoBinOp<EOT>
+    class FlOr1ptBinOp : public BinOp<EOT>
     {
     public :
 
@@ -218,7 +218,7 @@ namespace eo
 	}
 
 	/** inherited className()*/
-	virtual string className() const { return "eoFlOr1ptBinOp"; }
+	virtual string className() const { return "FlOr1ptBinOp"; }
 
     };
 

@@ -28,36 +28,36 @@
 
 //-----------------------------------------------------------------------------
 
-#include <eoSelectFromWorth.h>
-#include <eoSharing.h>
+#include <SelectFromWorth.h>
+#include <Sharing.h>
 
 namespace eo
 {
 
-    /** eoSharingSelect: select an individual by roulette wheel 
-     * on its SHARED fitness. It is an eoRouletteWorthSelect, 
+    /** SharingSelect: select an individual by roulette wheel 
+     * on its SHARED fitness. It is an RouletteWorthSelect, 
      * i.e. a selector using a std::vector of worthes
-     * rather than the raw fitness (see eoSelectFromWorth.h)
-     * It uses an internal eoSharing object which is 
-     * an eoPerf2Worth<EOT, double>
+     * rather than the raw fitness (see SelectFromWorth.h)
+     * It uses an internal Sharing object which is 
+     * an Perf2Worth<EOT, double>
      * @ingroup Selectors
      */
 
     template <class EOT> 
-    class eoSharingSelect: public eoRouletteWorthSelect<EOT, double> 
+    class SharingSelect: public RouletteWorthSelect<EOT, double> 
     {
     public:
 	/** Ctor:
 	 *  @param _sigma the sigma_share
 	 *  @param _dist the distance object to use
 	 */
-	eoSharingSelect(double _sigma, eoDistance<EOT> & _dist): 
-	    eoRouletteWorthSelect<EOT, double>(sharing), sharing(_sigma, _dist) {}
+	SharingSelect(double _sigma, Distance<EOT> & _dist): 
+	    RouletteWorthSelect<EOT, double>(sharing), sharing(_sigma, _dist) {}
 
     private :
-	eoSharing<EOT> sharing;	   // derived from eoPerf2Worth
+	Sharing<EOT> sharing;	   // derived from Perf2Worth
     };
-    /** @example t-eoSharing.cpp
+    /** @example t-Sharing.cpp
      */
 
 }

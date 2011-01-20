@@ -29,17 +29,17 @@ Authors:
 
  Global logger for EO.
 
- Here's an example explaning how to use eoLogger:
+ Here's an example explaning how to use Logger:
  \code
  #include <iostream>
- #include <utils/eoLogger.h>
- #include <utils/eoParserLogger.h>
+ #include <utils/Logger.h>
+ #include <utils/ParserLogger.h>
 
  int	main(int ac, char** av)
  {
- // We are declaring first an overload of eoParser class using Logger
+ // We are declaring first an overload of Parser class using Logger
  // component.
- eoParserLogger	parser(ac, av);
+ ParserLogger	parser(ac, av);
 
  // This call is important to allow -v parameter to change user level.
  make_verbose(parser);
@@ -94,14 +94,14 @@ Authors:
 #include <string>
 #include <iosfwd>
 
-#include "eoObject.h"
+#include "Object.h"
 
 namespace eo
 {
     /**
-     * Levels contents all the available levels in eoLogger
+     * Levels contents all the available levels in Logger
      *
-     * /!\ If you want to add a level dont forget to add it at the implementation of the class eoLogger in the ctor
+     * /!\ If you want to add a level dont forget to add it at the implementation of the class Logger in the ctor
      */
     enum Levels {quiet = 0,
 		 errors,
@@ -134,16 +134,16 @@ namespace eo
     };
 
     /**
-     * eoLogger
+     * Logger
      * Class providing a verbose management through EO
      * Use of a global variable eo::log to easily use the logger like std::cout
      */
-    class	eoLogger : public eoObject,
+    class	Logger : public Object,
 			   public std::ostream
     {
     public:
-	eoLogger();
-	~eoLogger();
+	Logger();
+	~Logger();
 
 	virtual std::string	className() const;
 
@@ -155,68 +155,68 @@ namespace eo
 	 * Use this function if you want to be able to compare selected levels to a given one, like:
 	 * if( eo::log.getLevelSelected() >= eo::progress ) {...}
 	 */
-	eo::Levels getLevelSelected() const { return _selectedLevel; }
+	Levels getLevelSelected() const { return _selectedLevel; }
 
 	/*! Returns the current level of the context
 	 * the one given when you output message with the logger
 	 */
-	eo::Levels getLevelContext() const { return _contextLevel; }
+	Levels getLevelContext() const { return _contextLevel; }
 
     protected:
-	void	addLevel(std::string name, eo::Levels level);
+	void	addLevel(std::string name, Levels level);
 
     private:
 	/**
 	 * outbuf
-	 * this class inherits from std::streambuf which is used by eoLogger to write the buffer in an output stream
+	 * this class inherits from std::streambuf which is used by Logger to write the buffer in an output stream
 	 */
 	class	outbuf : public std::streambuf
 	{
 	public:
 	    outbuf(const int& fd,
-		   const eo::Levels& contexlvl,
-		   const eo::Levels& selectedlvl);
+		   const Levels& contexlvl,
+		   const Levels& selectedlvl);
 	protected:
 	    virtual int	overflow(int_type c);
 	private:
 	    const int&		_fd;
-	    const eo::Levels&	_contextLevel;
-	    const eo::Levels&	_selectedLevel;
+	    const Levels&	_contextLevel;
+	    const Levels&	_selectedLevel;
 	};
 
     private:
 	/**
 	 * MapLevel is the type used by the map member _levels.
 	 */
-	typedef std::map<std::string, eo::Levels>	MapLevel;
+	typedef std::map<std::string, Levels>	MapLevel;
 
     public:
 	/**
 	 * operator<< used there to set a verbose mode.
 	 */
-	friend eoLogger&	operator<<(eoLogger&, const eo::Levels);
+	friend Logger&	operator<<(Logger&, const Levels);
 
 	/**
 	 * operator<< used there to set a filename through the class file.
 	 */
-	friend eoLogger&	operator<<(eoLogger&, eo::file);
+	friend Logger&	operator<<(Logger&, file);
 
 	/**
 	 * operator<< used there to set a verbose level through the class setlevel.
 	 */
-	friend eoLogger&	operator<<(eoLogger&, eo::setlevel);
+	friend Logger&	operator<<(Logger&, setlevel);
 
 	/**
 	 * operator<< used there to be able to use std::cout to say that we wish to redirect back the buffer to a standard output.
 	 */
-	friend eoLogger&	operator<<(eoLogger&, std::ostream&);
+	friend Logger&	operator<<(Logger&, std::ostream&);
 
     private:
 	/**
 	 * _selectedLevel is the member storing verbose level setted by the user thanks to operator()
 	 */
-	eo::Levels	_selectedLevel;
-	eo::Levels	_contextLevel;
+	Levels	_selectedLevel;
+	Levels	_contextLevel;
 
 	/**
 	 * _fd in storing the file descriptor at this place we can disable easily the buffer in
@@ -244,13 +244,13 @@ namespace eo
 	 */
 	std::map< std::ostream*, int >	_standard_io_streams;
     };
-    /** @example t-eoLogger.cpp
+    /** @example t-Logger.cpp
      */
 
     /**
      * log is an external global variable defined to easily use a same way than std::cout to write a log.
      */
-    extern eoLogger	log;
+    extern Logger	log;
 
 }
 

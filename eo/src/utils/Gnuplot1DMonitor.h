@@ -27,52 +27,52 @@
 #include <fstream>
 #include <string>
 
-#include "eoObject.h"
-#include "utils/eoFileMonitor.h"
-#include "utils/eoGnuplot.h"
+#include "Object.h"
+#include "utils/FileMonitor.h"
+#include "utils/Gnuplot.h"
 #include "utils/pipecom.h"
 
 namespace eo
 {
 
-/** Plot eoStat
+/** Plot Stat
 
     @author Marc Schoenauer
     @version 0.0 (2000)
 
-    This class plots through gnuplot the eoStat given as argument
+    This class plots through gnuplot the Stat given as argument
 
-    eoGnuplot1DMonitor plots stats through gnuplot
+    Gnuplot1DMonitor plots stats through gnuplot
 
     Assumes that the same file is appened every so and so, and replots it
     everytime
 
     @ingroup Monitors
 */
-    class eoGnuplot1DMonitor : public eoFileMonitor, public eoGnuplot
+    class Gnuplot1DMonitor : public FileMonitor, public Gnuplot
     {
     public:
 
 	// this "using" directive generates a compiler internal error in GCC 4.0.0 ...
-	// it's been removed, and the only call to vec was replaced by this->vec in eoGnuplot1DMonitor.cpp
-	//    using eoMonitor::vec;
+	// it's been removed, and the only call to vec was replaced by this->vec in Gnuplot1DMonitor.cpp
+	//    using Monitor::vec;
 
 	/** Constructor */
-	eoGnuplot1DMonitor(std::string _filename, bool _top=false) :
-	    eoFileMonitor(_filename, " "),
-	    eoGnuplot(_filename,(_top?"":"set key bottom"))
+	Gnuplot1DMonitor(std::string _filename, bool _top=false) :
+	    FileMonitor(_filename, " "),
+	    Gnuplot(_filename,(_top?"":"set key bottom"))
 	    {}
 
 	/** Destructor */
-	virtual ~eoGnuplot1DMonitor(){}
+	virtual ~Gnuplot1DMonitor(){}
 
-	virtual eoMonitor& operator()();
+	virtual Monitor& operator()();
 
 	virtual void FirstPlot();
 
 	/** Class name */
 	virtual std::string className() const
-	    { return "eoGnuplot1DMonitor"; }
+	    { return "Gnuplot1DMonitor"; }
     };
 
 }

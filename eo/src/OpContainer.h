@@ -26,33 +26,33 @@
 #ifndef _OpContainer_H
 #define _OpContainer_H
 
-#include <eoGenOp.h>
+#include <GenOp.h>
 
 namespace eo
 {
 
-    /** eoOpContainer is a base class for the sequential and proportional selectors
+    /** OpContainer is a base class for the sequential and proportional selectors
      *  It takes care of wrapping the other operators,
      *  and deleting stuff that it has allocated
      *
      * Warning: all operators are added together with a rate (double)
      *          However, the meaning of this rate will be different in
-     *          the differnet instances of eoOpContainer:
+     *          the differnet instances of OpContainer:
      *          an ***absolute*** probability in the sequential version, and
      *          a ***relative*** weight in the proportional version
      *
      *  @ingroup Combination
      */
     template <class EOT>
-    class eoOpContainer : public eoGenOp<EOT>
+    class OpContainer : public GenOp<EOT>
     {
     public :
 	/** Ctor: nothing much to do */
-	eoOpContainer() : max_to_produce(0) {}
+	OpContainer() : max_to_produce(0) {}
 
 	/** Dtor: delete all the GenOps created when wrapping simple ops
 	 */
-	virtual ~eoOpContainer(void) {}
+	virtual ~OpContainer(void) {}
 
 	/** for memory management (doesn't have to be very precise */
 	virtual unsigned max_production(void)
@@ -65,7 +65,7 @@ namespace eo
 
 	   (sidenote, it's much less hairy since I added the wrap_op is used)
 	*/
-	void add(eoOp<EOT>& _op, double _rate)
+	void add(Op<EOT>& _op, double _rate)
 	{
 	    ops.push_back(&wrap_op<EOT>(_op, store));
 	    rates.push_back(_rate);
@@ -77,10 +77,10 @@ namespace eo
     protected :
 
 	std::vector<double> rates;
-	std::vector<eoGenOp<EOT>*> ops;
+	std::vector<GenOp<EOT>*> ops;
 
     private :
-	eoFunctorStore store;
+	FunctorStore store;
 	unsigned max_to_produce;
     };
 
@@ -92,29 +92,29 @@ namespace eo
      *  @ingroup Combination
      */
     template <class EOT>
-    class eoSequentialOp : public eoOpContainer<EOT>
+    class SequentialOp : public OpContainer<EOT>
     {
     public:
 
-	using eoOpContainer<EOT>::ops;
-	using eoOpContainer<EOT>::rates;
+	using OpContainer<EOT>::ops;
+	using OpContainer<EOT>::rates;
 
 	typedef unsigned position_type;
 
 
-	void apply(eoPopulator<EOT>& _pop) {
+	void apply(Populator<EOT>& _pop) {
 	    position_type pos = _pop.tellp();
 	    for (size_t i = 0; i < rates.size(); ++i) {
 		_pop.seekp(pos);
 		do {
-		    if (eo::rng.flip(rates[i])) {
+		    if (rng.flip(rates[i])) {
 			//            try
 			//            {
 			// apply it to all the guys in the todo std::list
 			(*ops[i])(_pop);
 			//            }
 			// check for out of individuals and do nothing with that...
-			//            catch(eoPopulator<EOT>::OutOfIndividuals&)
+			//            catch(Populator<EOT>::OutOfIndividuals&)
 			//	      {
 			//		std::cout << "Warning: not enough individuals to handle\n";
 			//		return ;
@@ -139,23 +139,23 @@ namespace eo
 
     /** The proportional versions: easy! */
     template <class EOT>
-    class eoProportionalOp : public eoOpContainer<EOT>
+    class ProportionalOp : public OpContainer<EOT>
     {
     public:
 
-	using eoOpContainer< EOT >::ops;
-	using eoOpContainer< EOT >::rates;
+	using OpContainer< EOT >::ops;
+	using OpContainer< EOT >::rates;
 
-	void apply(eoPopulator<EOT>& _pop)
+	void apply(Populator<EOT>& _pop)
 	{
-	    unsigned i = eo::rng.roulette_wheel(rates);
+	    unsigned i = rng.roulette_wheel(rates);
 
 	    try
 		{
 		    (*ops[i])(_pop);
 		    ++_pop;
 		}
-	    catch( typename eoPopulator<EOT>::OutOfIndividuals&)
+	    catch( typename Populator<EOT>::OutOfIndividuals&)
 		{}
 	}
 	virtual std::string className() const {return "ProportionalOp";}

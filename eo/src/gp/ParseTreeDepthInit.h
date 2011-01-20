@@ -1,7 +1,7 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
  
 //-----------------------------------------------------------------------------
-// ParseTreeDepthInit.h : initializor for eoParseTree class
+// ParseTreeDepthInit.h : initializor for ParseTree class
 // (c) Maarten Keijzer 2000  Jeroen Eggermont 2002
 /*
     This library is free software; you can redistribute it and/or
@@ -29,26 +29,26 @@
 #define ParseTreeDepthInit_h
 
 #include <EO.h>
-#include <gp/eoParseTree.h>
-#include <eoInit.h>
-#include <eoOp.h>
-#include <eoPop.h>
+#include <gp/ParseTree.h>
+#include <Init.h>
+#include <Op.h>
+#include <Pop.h>
 
 namespace eo
 {
 
     using namespace gp_parse_tree;
 
-    /** eoParseTreeDepthInit : the initializer class for eoParseTree
-	\class eoParseTreeDepthInit eoParseTreeDepthInit.h gp/eoParseTreeDepthInit.h
+    /** ParseTreeDepthInit : the initializer class for ParseTree
+	\class ParseTreeDepthInit ParseTreeDepthInit.h gp/ParseTreeDepthInit.h
 	\ingroup ParseTree
     */
 
-    // eoGpDepthInitializer is defined for backward compatibility
-#define eoGpDepthInitializer eoParseTreeDepthInit
+    // GpDepthInitializer is defined for backward compatibility
+#define GpDepthInitializer ParseTreeDepthInit
 
     template <class FType, class Node>
-    class eoParseTreeDepthInit : public eoInit< eoParseTree<FType, Node> >
+    class ParseTreeDepthInit : public Init< ParseTree<FType, Node> >
     {
     protected:
 	// a binary predicate for sorting
@@ -60,7 +60,7 @@ namespace eo
 
     public :
 
-	typedef eoParseTree<FType, Node> EoType;
+	typedef ParseTree<FType, Node> EoType;
     
 	/**
 	 * Constructor
@@ -69,13 +69,13 @@ namespace eo
 	 * @param _grow False results in a full tree, True result is a randomly grown tree
 	 * @param _ramped_half_and_half True results in Ramped Half and Half Initialization
 	 */
-	eoParseTreeDepthInit(
+	ParseTreeDepthInit(
 			     unsigned _max_depth,
 			     const std::vector<Node>& _initializor,
 			     bool _grow = true,
 			     bool _ramped_half_and_half = false)
             :
-            eoInit<EoType>(),
+            Init<EoType>(),
 	    max_depth(_max_depth),
 	    initializor(_initializor),
 	    grow(_grow),
@@ -84,14 +84,14 @@ namespace eo
 	{
 	    if(initializor.empty())
 		{
-		    throw std::logic_error("eoParseTreeDepthInit: uhm, wouldn't you rather give a non-empty set of Nodes?");
+		    throw std::logic_error("ParseTreeDepthInit: uhm, wouldn't you rather give a non-empty set of Nodes?");
 		}
 	    // lets sort the initializor std::vector according to  arity (so we can be sure the terminals are in front)
 	    // we use stable_sort so that if element i was in front of element j and they have the same arity i remains in front of j
 	    stable_sort(initializor.begin(), initializor.end(), lt_arity());
 	}
         /// My class name
-	virtual std::string className() const { return "eoParseTreeDepthInit"; };
+	virtual std::string className() const { return "ParseTreeDepthInit"; };
 
 	/**initialize a tree
 	 * @param _tree : the tree to be initialized
@@ -170,7 +170,7 @@ namespace eo
     };
 
     /**
-     * A template function for ramped half and half initialization of an eoParseTree population
+     * A template function for ramped half and half initialization of an ParseTree population
      * @param pop the population to be created
      * @param population_size the size of the population to be created
      * @param init_max_depth the initial maximum tree depth
@@ -179,30 +179,30 @@ namespace eo
      \ingroup ParseTree
     */
     template <class FType, class Node>
-    void  eoInitRampedHalfAndHalf(eoPop< eoParseTree<FType,Node> > &pop, unsigned int population_size, unsigned int init_max_depth, std::vector<Node> &initializor)
+    void  InitRampedHalfAndHalf(Pop< ParseTree<FType,Node> > &pop, unsigned int population_size, unsigned int init_max_depth, std::vector<Node> &initializor)
     {
-	typedef eoParseTree<FType,Node> EoType;
-	typedef eoPop< EoType > Pop;
+	typedef ParseTree<FType,Node> EoType;
+	typedef Pop< EoType > Pop;
 	
 	unsigned int M = init_max_depth - 1;
 	unsigned int part_pop_size = population_size / (2*M);
 	unsigned int m=0;
 
-	std::cerr << "EO WARNING: Ramped Half and Half Initialization is now supported by eoParseTreeDepthInit." << std::endl;
+	std::cerr << "EO WARNING: Ramped Half and Half Initialization is now supported by ParseTreeDepthInit." << std::endl;
 	std::cerr << "            This function is now obsolete and might be removed in the future so you should"<< std::endl;
 	std::cerr << "            update your code to use: " << std::endl << std::endl;
-	std::cerr << "            eoParseTreeDepthInit( _max_depth, _initializer, bool _grow, bool _ramped_half_and_half)" << std::endl << std::endl;
+	std::cerr << "            ParseTreeDepthInit( _max_depth, _initializer, bool _grow, bool _ramped_half_and_half)" << std::endl << std::endl;
 	
 	pop.clear();
 	
 	// initialize with Depth's (D) -> 2
 	for(m=init_max_depth; m >= 2; m--)
 	    {
-		eoParseTreeDepthInit<FType, Node> grow_initializer(m, initializor, true);
+		ParseTreeDepthInit<FType, Node> grow_initializer(m, initializor, true);
 		Pop grow(part_pop_size, grow_initializer);
 		pop.insert(pop.begin(), grow.begin(), grow.end());
 		
-		eoParseTreeDepthInit<FType, Node> full_initializer(m, initializor, false);
+		ParseTreeDepthInit<FType, Node> full_initializer(m, initializor, false);
 		Pop full(part_pop_size, full_initializer);
 		pop.insert(pop.begin(), full.begin(), full.end());
 	    }	
@@ -210,7 +210,7 @@ namespace eo
 	bool g = true;
 	while (pop.size() < population_size)
 	    {
-		eoParseTreeDepthInit<FType, Node> initializer(init_max_depth, initializor, g);
+		ParseTreeDepthInit<FType, Node> initializer(init_max_depth, initializor, g);
 		Pop p(1, initializer);
 		pop.insert(pop.begin(), p.begin(), p.end());
 		g= !g;

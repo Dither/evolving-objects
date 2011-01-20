@@ -29,28 +29,28 @@
 
 
 //-----------------------------------------------------------------------------
-#include <eoSelect.h>
-#include <eoSelectOne.h>
-#include <utils/eoHowMany.h>
+#include <Select.h>
+#include <SelectOne.h>
+#include <utils/HowMany.h>
 #include <math.h>
 //-----------------------------------------------------------------------------
 
 namespace eo
 {
 
-    /** eoTruncatedSelectOne selects one individual using eoSelectOne as it's 
-	mechanism. Therefore eoTruncatedSelectOne needs an eoSelectOne in its ctor
+    /** TruncatedSelectOne selects one individual using SelectOne as it's 
+	mechanism. Therefore TruncatedSelectOne needs an SelectOne in its ctor
 
 	It will perform selection only from the top guys in the population.
 
 	@ingroup Selectors
     */
     template<class EOT>
-    class eoTruncatedSelectOne : public eoSelectOne<EOT>
+    class TruncatedSelectOne : public SelectOne<EOT>
     {
     public:
 	/** Ctor from rate and bool */
-	eoTruncatedSelectOne(eoSelectOne<EOT>& _select, 
+	TruncatedSelectOne(SelectOne<EOT>& _select, 
 			     double  _rateFertile, 
 			     bool _interpret_as_rateF = true)
 	    : select(_select), 
@@ -58,16 +58,16 @@ namespace eo
 	      tmpPop(), actualPop(tmpPop)
 	{}
 
-	/** Ctor with eoHowMany */
-	eoTruncatedSelectOne(eoSelectOne<EOT>& _select, 
-			     eoHowMany _howManyFertile) 
+	/** Ctor with HowMany */
+	TruncatedSelectOne(SelectOne<EOT>& _select, 
+			     HowMany _howManyFertile) 
 	    : select(_select), howManyFertile(_howManyFertile),
 	      tmpPop(), actualPop(tmpPop)
 	{}
 
 
 	/** setup procedures: fills the temporary population with the fertile guys */
-	void setup(const eoPop<EOT>& _source)
+	void setup(const Pop<EOT>& _source)
 	{
 	    unsigned fertile = howManyFertile(_source.size());
 	    if (fertile == _source.size())  // noting to do, all are fertile
@@ -99,17 +99,17 @@ namespace eo
 	   @param _pop the source population
 	   @return the selected guy
 	*/
-	const EOT& operator()(const eoPop<EOT>& _pop) 
+	const EOT& operator()(const Pop<EOT>& _pop) 
 	{
 	    return select(actualPop);
 	}
 
 
     private :
-	eoSelectOne<EOT>& select;	   // selector for one guy
-	eoHowMany howManyFertile;	   // number of fertile guys
-	eoPop<EOT> tmpPop;		   // intermediate population - fertile guys
-	eoPop<EOT> & actualPop;	   // to avoid copies when 100% fertility
+	SelectOne<EOT>& select;	   // selector for one guy
+	HowMany howManyFertile;	   // number of fertile guys
+	Pop<EOT> tmpPop;		   // intermediate population - fertile guys
+	Pop<EOT> & actualPop;	   // to avoid copies when 100% fertility
     };
 
 }

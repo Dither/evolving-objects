@@ -46,7 +46,7 @@
 // The templatized code
 #include <do/make_checkpoint.h>
 // the instanciating EOType
-#include <ga/eoBit.h>
+#include <ga/Bit.h>
 
 namespace eo
 {
@@ -55,11 +55,11 @@ namespace eo
 
     // checkpoint
     /////////////
-    eoCheckPoint<eoBit<double> >& make_checkpoint(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoBit<double> >& _eval, eoContinue<eoBit<double> >& _continue)
+    CheckPoint<Bit<double> >& make_checkpoint(Parser& _parser, State& _state, EvalFuncCounter<Bit<double> >& _eval, Continue<Bit<double> >& _continue)
     {
 	return do_make_checkpoint(_parser, _state, _eval, _continue);
     }
-    eoCheckPoint<eoBit<eoMinimizingFitness> >& make_checkpoint(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoBit<eoMinimizingFitness> >& _eval, eoContinue<eoBit<eoMinimizingFitness> >& _continue) 
+    CheckPoint<Bit<MinimizingFitness> >& make_checkpoint(Parser& _parser, State& _state, EvalFuncCounter<Bit<MinimizingFitness> >& _eval, Continue<Bit<MinimizingFitness> >& _continue) 
     {
 	return do_make_checkpoint(_parser, _state, _eval, _continue);
     }

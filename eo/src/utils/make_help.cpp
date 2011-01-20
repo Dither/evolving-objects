@@ -30,7 +30,7 @@
 #include <fstream>
 #include <stdexcept>
 
-#include <utils/eoParser.h>
+#include <utils/Parser.h>
 
 namespace eo
 {
@@ -47,11 +47,11 @@ namespace eo
 * It is declared in all make_xxx.h files in representation-dependent dirs
 * but it is NOT representation-dependent itself - that's why it's in utils
 */
-    void make_help(eoParser & _parser)
+    void make_help(Parser & _parser)
     {
 	// name of the "status" file where all actual parameter values will be saved
 	string str_status = _parser.ProgramName() + ".status"; // default value
-	eoValueParam<string>& statusParam = _parser.createParam(str_status, "status","Status file",'\0', "Persistence" );
+	ValueParam<string>& statusParam = _parser.createParam(str_status, "status","Status file",'\0', "Persistence" );
 
 	// dump status file BEFORE help, so the user gets a chance to use it:
 	// it's probably the case where she/he needs it most!!!

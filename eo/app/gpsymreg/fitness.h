@@ -20,7 +20,7 @@
 #ifndef _FITNESS_FUNCTION_H
 #define _FITNESS_FUNCTION_H
 
-#include <gp/eoParseTree.h>
+#include <gp/ParseTree.h>
 #include <eo>
 
 #include <cmath>
@@ -162,11 +162,11 @@ void init(vector<Node> &initSequence)
 
 
 
-class RegFitness: public eoEvalFunc< eoParseTree<FitnessType, Node> >
+class RegFitness: public EvalFunc< ParseTree<FitnessType, Node> >
 {
 	public:
 
-    		typedef eoParseTree<FitnessType, Node> EoType;
+    		typedef ParseTree<FitnessType, Node> EoType;
 
 		void operator()(EoType &_eo)
 		{
@@ -204,7 +204,7 @@ class RegFitness: public eoEvalFunc< eoParseTree<FitnessType, Node> >
 
 
 
-		RegFitness(eoValueParam<unsigned> &_generationCounter, vector< Node > &initSequence, Parameters &_parameter) : eoEvalFunc<EoType>(), generationCounter(_generationCounter), parameter(_parameter)
+		RegFitness(ValueParam<unsigned> &_generationCounter, vector< Node > &initSequence, Parameters &_parameter) : EvalFunc<EoType>(), generationCounter(_generationCounter), parameter(_parameter)
 		{
 			init(initSequence);
 			best[NORMAL] = 1000;
@@ -218,7 +218,7 @@ class RegFitness: public eoEvalFunc< eoParseTree<FitnessType, Node> >
 		};
 
 	private:
-    		eoValueParam<unsigned> &generationCounter; // so we know the current generation
+    		ValueParam<unsigned> &generationCounter; // so we know the current generation
 		Parameters &parameter; // the parameters
 		FitnessType best;	// the best found fitness
 		string tree;

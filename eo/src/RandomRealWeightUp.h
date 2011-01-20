@@ -26,8 +26,8 @@
 #define RANDOMREALWEIGHTUP_H
 
 //-----------------------------------------------------------------------------
-#include <eoWeightUpdater.h>
-#include <utils/eoRNG.h>
+#include <WeightUpdater.h>
+#include <utils/RNG.h>
 //-----------------------------------------------------------------------------
 
 namespace eo
@@ -40,7 +40,7 @@ namespace eo
      *
      * @ingroup Variators
      */
-    class eoRandomRealWeightUp:public eoWeightUpdater<double>
+    class RandomRealWeightUp:public WeightUpdater<double>
     {
     public:
 
@@ -49,7 +49,7 @@ namespace eo
 	 * @param _min - The minimum bound for the weight
 	 * @param _max - The maximum bound for the weight
 	 */
-	eoRandomRealWeightUp(
+	RandomRealWeightUp(
 			     double  _min,
 			     double  _max
 			     ):min(_min),max(_max)
@@ -58,7 +58,7 @@ namespace eo
 	    if (min > max)
 		{
 		    std::string s;
-		    s.append (" min > max in eoRandomRealWeightUp");
+		    s.append (" min > max in RandomRealWeightUp");
 		    throw std::runtime_error (s);
 		}
 	}

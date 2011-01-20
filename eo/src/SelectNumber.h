@@ -27,16 +27,16 @@
 
 
 //-----------------------------------------------------------------------------
-#include <eoSelect.h>
-#include <eoSelectOne.h>
+#include <Select.h>
+#include <SelectOne.h>
 #include <math.h>
 //-----------------------------------------------------------------------------
 
 namespace eo
 {
 
-    /** eoSelectNumber selects many individuals using eoSelectOne as it's 
-	mechanism. Therefore eoSelectNumber needs an eoSelectOne in its ctor
+    /** SelectNumber selects many individuals using SelectOne as it's 
+	mechanism. Therefore SelectNumber needs an SelectOne in its ctor
 
 	It will select a fixed number of individuals and pushes them to
 	the back of the destination population.
@@ -44,20 +44,20 @@ namespace eo
 	@ingroup Selectors
     */
     template<class EOT>
-    class eoSelectNumber : public eoSelect<EOT>
+    class SelectNumber : public Select<EOT>
     {
     public:
 	/// init
-	eoSelectNumber(eoSelectOne<EOT>& _select, unsigned _nb_to_select = 1) 
+	SelectNumber(SelectOne<EOT>& _select, unsigned _nb_to_select = 1) 
 	    : select(_select), nb_to_select(_nb_to_select) {}
 
 	/**
 	   The implementation repeatidly selects an individual
 
 	   @param _source the source population
-	   @param _dest  the resulting population (size of this population is the number of times eoSelectOne is called. It empties the destination and adds the selection into it)
+	   @param _dest  the resulting population (size of this population is the number of times SelectOne is called. It empties the destination and adds the selection into it)
 	*/
-	virtual void operator()(const eoPop<EOT>& _source, eoPop<EOT>& _dest)
+	virtual void operator()(const Pop<EOT>& _source, Pop<EOT>& _dest)
 	{
 	    size_t target = static_cast<size_t>(nb_to_select);
     
@@ -70,7 +70,7 @@ namespace eo
 	}
   
     private :
-	eoSelectOne<EOT>& select;
+	SelectOne<EOT>& select;
 	unsigned nb_to_select;
     };
 

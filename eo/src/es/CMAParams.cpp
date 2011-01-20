@@ -41,7 +41,7 @@
  *                               */
 
 #include <es/CMAParams.h>
-#include <utils/eoParser.h>
+#include <utils/Parser.h>
 
 #include <string>
 
@@ -50,7 +50,7 @@ using namespace std;
 namespace eo
 {
 
-    CMAParams::CMAParams(eoParser& parser, unsigned dimensionality)
+    CMAParams::CMAParams(Parser& parser, unsigned dimensionality)
     {
 
 	string section = "CMA parameters";

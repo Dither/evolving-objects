@@ -30,7 +30,7 @@
 #endif 
 
 /** This file contains ***INSTANCIATED DEFINITIONS*** of operators fns
- * of the library for ***eoReal*** evolution inside EO.
+ * of the library for ***Real*** evolution inside EO.
  * It should be included in the file that calls any of the corresponding fns
  * Compiling this file allows one to generate part of the library (i.e. object
  * files that you just need to link with your own main and fitness code).
@@ -51,12 +51,12 @@ namespace eo
 
     // oeprators
     ////////////
-    eoGenOp<eoReal<double> >&  make_op(eoParser& _parser, eoState& _state, eoRealInitBounded<eoReal<double> >& _init)
+    GenOp<Real<double> >&  make_op(Parser& _parser, State& _state, RealInitBounded<Real<double> >& _init)
     {
 	return do_make_op(_parser, _state, _init);
     }
 
-    eoGenOp<eoReal<eoMinimizingFitness> >&  make_op(eoParser& _parser, eoState& _state, eoRealInitBounded<eoReal<eoMinimizingFitness> >& _init)
+    GenOp<Real<MinimizingFitness> >&  make_op(Parser& _parser, State& _state, RealInitBounded<Real<MinimizingFitness> >& _init)
     {
 	return do_make_op(_parser, _state, _init);
     }

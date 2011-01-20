@@ -28,8 +28,8 @@
 
 #include <algorithm>
 
-#include <eoDistribution.h>
-#include <eoPop.h>
+#include <Distribution.h>
+#include <Pop.h>
 
 namespace eo
 {
@@ -43,11 +43,11 @@ namespace eo
      * @ingroup Core
      */
     template <class EOT>
-    class eoDistribUpdater :  
-	public eoBF<eoDistribution<EOT> &, eoPop<EOT> &, void>
+    class DistribUpdater :  
+	public BF<Distribution<EOT> &, Pop<EOT> &, void>
     {
     public:
-	virtual void operator()(eoDistribution<EOT> &, eoPop<EOT> &)=0;
+	virtual void operator()(Distribution<EOT> &, Pop<EOT> &)=0;
     };
 
 }

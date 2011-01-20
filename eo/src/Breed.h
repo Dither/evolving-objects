@@ -27,10 +27,10 @@
 
 
 //-----------------------------------------------------------------------------
-#include <eoPop.h>
-#include <eoFunctor.h>
-#include <eoSelect.h>
-#include <eoTransform.h>
+#include <Pop.h>
+#include <Functor.h>
+#include <Select.h>
+#include <Transform.h>
 //-----------------------------------------------------------------------------
 
 namespace eo
@@ -40,15 +40,15 @@ namespace eo
 
 	Breeding is thought of a combination of selecting and transforming a
 	population. For efficiency reasons you might want to build your own
-	eoBreed derived class rather than relying on a seperate select and
+	Breed derived class rather than relying on a seperate select and
 	transform function.
 
-	@see eoSelect, eoTransform, eoSelectTransform
+	@see Select, Transform, SelectTransform
 
 	@ingroup Combination
     */
     template<class EOT>
-    class eoBreed : public eoBF<const eoPop<EOT>&, eoPop<EOT>&, void>
+    class Breed : public BF<const Pop<EOT>&, Pop<EOT>&, void>
     {};
 
 
@@ -61,22 +61,22 @@ namespace eo
 	@ingroup Combination
     */
     template <class EOT>
-    class eoSelectTransform : public eoBreed<EOT>
+    class SelectTransform : public Breed<EOT>
     {
     public:
-        eoSelectTransform(eoSelect<EOT>& _select, eoTransform<EOT>& _transform) :
+        SelectTransform(Select<EOT>& _select, Transform<EOT>& _transform) :
 	    select(_select), transform(_transform)
         {}
 
-        void operator()(const eoPop<EOT>& _parents, eoPop<EOT>& _offspring)
+        void operator()(const Pop<EOT>& _parents, Pop<EOT>& _offspring)
         {
             select(_parents, _offspring);
             transform(_offspring);
         }
 
     private :
-        eoSelect<EOT>& select;
-        eoTransform<EOT>& transform;
+        Select<EOT>& select;
+        Transform<EOT>& transform;
     };
 
 }

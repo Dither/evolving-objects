@@ -35,7 +35,7 @@
 
 #include <utils/compatibility.h>
 
-#include <utils/eoParser.h>
+#include <utils/Parser.h>
 
 namespace eo
 {
@@ -56,7 +56,7 @@ namespace eo
 	return os;
     }
 
-    eoParameterLoader::~eoParameterLoader()
+    ParameterLoader::~ParameterLoader()
     {
 	for (unsigned i = 0; i < ownedParams.size(); ++i)
 	    {
@@ -65,7 +65,7 @@ namespace eo
     }
 
 
-    eoParser::eoParser ( unsigned _argc, char **_argv , string _programDescription,
+    Parser::Parser ( unsigned _argc, char **_argv , string _programDescription,
 			 string _lFileParamName, char _shortHand) :
 	programName(_argv[0]),
 	programDescription( _programDescription),
@@ -106,9 +106,9 @@ namespace eo
 
 
 
-    eoParam * eoParser::getParamWithLongName(const std::string& _name) const
+    Param * Parser::getParamWithLongName(const std::string& _name) const
     {
-	typedef std::multimap<std::string, eoParam*> MultiMapType;
+	typedef std::multimap<std::string, Param*> MultiMapType;
 	typedef MultiMapType::const_iterator iter;
 	std::string search(prefix+_name);
 	for(iter p = params.begin(); p != params.end(); ++p)
@@ -119,7 +119,7 @@ namespace eo
 
 
 
-    void eoParser::processParam(eoParam& param, std::string section)
+    void Parser::processParam(Param& param, std::string section)
     {
 	// this param enters the parser: add the prefix to the long name
 	if (prefix != "")
@@ -131,7 +131,7 @@ namespace eo
 	params.insert(make_pair(section, &param));
     }
 
-    void eoParser::doRegisterParam(eoParam& param)
+    void Parser::doRegisterParam(Param& param)
     {
 	if (param.required() && !isItThere(param))
 	    {
@@ -146,7 +146,7 @@ namespace eo
 	    }
     }
 
-    pair<bool, string> eoParser::getValue(eoParam& _param) const
+    pair<bool, string> Parser::getValue(Param& _param) const
     {
 	pair<bool, string> result(false, "");
 
@@ -171,7 +171,7 @@ namespace eo
 	return result;
     }
 
-    void eoParser::updateParameters()
+    void Parser::updateParameters()
     {
 	typedef MultiMapType::const_iterator It;
 
@@ -181,7 +181,7 @@ namespace eo
 	    }
     }
 
-    void eoParser::readFrom(istream& is)
+    void Parser::readFrom(istream& is)
     {
 	string str;
 	// we must avoid processing \section{xxx} if xxx is NOT "Parser"
@@ -250,7 +250,7 @@ namespace eo
 	updateParameters();
     }
 
-    void eoParser::printOn(ostream& os) const
+    void Parser::printOn(ostream& os) const
     {
 	typedef MultiMapType::const_iterator It;
 
@@ -270,7 +270,7 @@ namespace eo
 			printSectionHeader(os, section);
 		    }
 
-		eoParam* param = p->second;
+		Param* param = p->second;
 
 		if (!isItThere(*param))  // comment out the ones not set by the user
 		    os << "# ";
@@ -294,7 +294,7 @@ namespace eo
 	    }
     }
 
-    void eoParser::printHelp(ostream& os)
+    void Parser::printHelp(ostream& os)
     {
 	if (needHelp.value() == false && !messages.empty())
 	    {
@@ -347,7 +347,7 @@ namespace eo
 
     }
 
-    bool eoParser::userNeedsHelp(void)
+    bool Parser::userNeedsHelp(void)
     {
 	/*
 	  check whether there are long or short names entered
@@ -414,13 +414,13 @@ namespace eo
     }
 
     ///////////////// I put these here at the moment
-    ostream & operator<<(ostream & _os, const eoParamParamType & _rate)
+    ostream & operator<<(ostream & _os, const ParamParamType & _rate)
     {
 	_rate.printOn(_os);
 	return _os;
     }
 
-    istream & operator>>(istream & _is,  eoParamParamType & _rate)
+    istream & operator>>(istream & _is,  ParamParamType & _rate)
     {
 	_rate.readFrom(_is);
 	return _is;

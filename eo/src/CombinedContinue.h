@@ -25,7 +25,7 @@
 #ifndef _CombinedContinue_h
 #define _CombinedContinue_h
 
-#include <eoContinue.h>
+#include <Continue.h>
 
 namespace eo
 {
@@ -34,7 +34,7 @@ namespace eo
 	Combined continuators - logical AND:
 	Continues until one of the embedded continuators says halt!
 
-	20/11/00 MS: Changed the 2-continuator construct to a std::vector<eoContinue<EOT> >
+	20/11/00 MS: Changed the 2-continuator construct to a std::vector<Continue<EOT> >
 	to be consistent with other Combined constructs
 	and allow to easily handle more than 2 continuators
 
@@ -43,28 +43,28 @@ namespace eo
 	@ingroup Combination
     */
     template< class EOT>
-    class eoCombinedContinue: public eoContinue<EOT> {
+    class CombinedContinue: public Continue<EOT> {
     public:
 
 	/// Define Fitness
 	typedef typename EOT::Fitness FitnessType;
 
 	/// Ctor, make sure that at least on continuator is present
-	eoCombinedContinue( eoContinue<EOT>& _cont)
-	    : eoContinue<EOT> ()
+	CombinedContinue( Continue<EOT>& _cont)
+	    : Continue<EOT> ()
 	{
 	    continuators.push_back(&_cont);
 	}
 
 	/// Ctor - for historical reasons ... should disspear some day
-	eoCombinedContinue( eoContinue<EOT>& _cont1, eoContinue<EOT>& _cont2)
-	    : eoContinue<EOT> ()
+	CombinedContinue( Continue<EOT>& _cont1, Continue<EOT>& _cont2)
+	    : Continue<EOT> ()
 	{
 	    continuators.push_back(&_cont1);
 	    continuators.push_back(&_cont2);
 	}
 
-	void add(eoContinue<EOT> & _cont)
+	void add(Continue<EOT> & _cont)
 	{
 	    continuators.push_back(&_cont);
 	}
@@ -79,17 +79,17 @@ namespace eo
 
 	/** Returns false when one of the embedded continuators say so (logical and)
 	 */
-	virtual bool operator() ( const eoPop<EOT>& _pop )
+	virtual bool operator() ( const Pop<EOT>& _pop )
 	{
 	    for (unsigned i = 0; i < continuators.size(); ++i)
 		if ( !(*continuators[i])(_pop) ) return false;
 	    return true;
 	}
 
-	virtual std::string className(void) const { return "eoCombinedContinue"; }
+	virtual std::string className(void) const { return "CombinedContinue"; }
 
     private:
-	std::vector<eoContinue<EOT>*>    continuators;
+	std::vector<Continue<EOT>*>    continuators;
     };
 
 }

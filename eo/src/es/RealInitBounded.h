@@ -28,10 +28,10 @@
 
 //-----------------------------------------------------------------------------
 
-#include <utils/eoRNG.h>
-#include <eoInit.h>
-#include <es/eoReal.h>
-#include <utils/eoRealVectorBounds.h>
+#include <utils/RNG.h>
+#include <Init.h>
+#include <es/Real.h>
+#include <utils/RealVectorBounds.h>
 
 namespace eo
 {
@@ -43,11 +43,11 @@ namespace eo
      * @ingroup Variators
      */
     template <class EOT>
-    class eoRealInitBounded : public eoInit<EOT>
+    class RealInitBounded : public Init<EOT>
     {
     public:
-	/** Ctor - from eoRealVectorBounds */
-	eoRealInitBounded(eoRealVectorBounds & _bounds):bounds(_bounds) 
+	/** Ctor - from RealVectorBounds */
+	RealInitBounded(RealVectorBounds & _bounds):bounds(_bounds) 
 	{
 	    if (!bounds.isBounded())
 		throw std::runtime_error("Needs bounded bounds to initialize a std::vector<double>");
@@ -61,11 +61,11 @@ namespace eo
 	}
 
 	/** accessor to the bounds */
-	virtual eoRealVectorBounds & theBounds() {return bounds;}
+	virtual RealVectorBounds & theBounds() {return bounds;}
 	virtual unsigned size(){return bounds.size();}
 
     private:
-	eoRealVectorBounds & bounds;
+	RealVectorBounds & bounds;
     };
 
 }

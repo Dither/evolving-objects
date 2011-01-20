@@ -31,35 +31,35 @@
 #include <iostream>
 
 // EO includes
-#include <eoPop.h>     // eoPop
-#include <eoFunctor.h>  // eoReduce
+#include <Pop.h>     // Pop
+#include <Functor.h>  // Reduce
 #include <utils/selectors.h>
 
 namespace eo
 {
 
     /**
-     * eoReduce: .reduce the new generation to the specified size
+     * Reduce: .reduce the new generation to the specified size
      At the moment, limited to truncation - with 2 different methods,
      one that sorts the whole population, and one that repeatidely kills 
      the worst. Ideally, we should be able to choose at run-time!!!
 
      @ingroup Replacors
     */
-    template<class EOT> class eoReduce: public eoBF<eoPop<EOT>&, unsigned, void>
+    template<class EOT> class Reduce: public BF<Pop<EOT>&, unsigned, void>
     {};
 
     /** truncation method using sort 
 	@ingroup Replacors
     */
-    template <class EOT> class eoTruncate : public eoReduce<EOT>
+    template <class EOT> class Truncate : public Reduce<EOT>
     {
-	void operator()(eoPop<EOT>& _newgen, unsigned _newsize)
+	void operator()(Pop<EOT>& _newgen, unsigned _newsize)
 	{
 	    if (_newgen.size() == _newsize)
 		return;
 	    if (_newgen.size() < _newsize)
-		throw std::logic_error("eoTruncate: Cannot truncate to a larger size!\n");
+		throw std::logic_error("Truncate: Cannot truncate to a larger size!\n");
         
 	    _newgen.sort();
 	    _newgen.resize(_newsize);
@@ -69,14 +69,14 @@ namespace eo
     /** random truncation 
 	@ingroup Replacors
 	* */
-    template <class EOT> class eoRandomReduce : public eoReduce<EOT>
+    template <class EOT> class RandomReduce : public Reduce<EOT>
     {
-	void operator()(eoPop<EOT>& _newgen, unsigned _newsize)
+	void operator()(Pop<EOT>& _newgen, unsigned _newsize)
 	{
 	    if (_newgen.size() == _newsize)
 		return;
 	    if (_newgen.size() < _newsize)
-		throw std::logic_error("eoRandomReduce: Cannot truncate to a larger size!\n");
+		throw std::logic_error("RandomReduce: Cannot truncate to a larger size!\n");
 
 	    // shuffle the population, then trucate
 	    _newgen.shuffle();
@@ -89,17 +89,17 @@ namespace eo
 	Softer selective pressure than pure truncate
 	@ingroup Replacors
     */
-    template <class EOT> class eoEPReduce : public eoReduce<EOT>
+    template <class EOT> class EPReduce : public Reduce<EOT>
     {
     public:
 	typedef typename EOT::Fitness Fitness; 
 
-	eoEPReduce(unsigned _t_size  ):
+	EPReduce(unsigned _t_size  ):
 	    t_size(_t_size)
 	{
 	    if (t_size < 2)
 		{ 
-		    eo::log << eo::warnings << "Warning: EP tournament size should be >= 2. Adjusted" << std::endl;
+		    log << warnings << "Warning: EP tournament size should be >= 2. Adjusted" << std::endl;
 		    t_size = 2;
 		}
 	}
@@ -107,7 +107,7 @@ namespace eo
 	/// helper struct for comparing on std::pairs
 	// compares the scores
 	// uses the fitness if scores are equals ????
-	typedef std::pair<float, typename eoPop<EOT>::iterator>  EPpair;
+	typedef std::pair<float, typename Pop<EOT>::iterator>  EPpair;
 	struct Cmp {
 	    bool operator()(const EPpair a, const EPpair b) const
 	    { 
@@ -118,14 +118,14 @@ namespace eo
 	};
   
   
-	void operator()(eoPop<EOT>& _newgen, unsigned _newsize)
+	void operator()(Pop<EOT>& _newgen, unsigned _newsize)
 	{
 	    unsigned int presentSize = _newgen.size();
     
 	    if (presentSize == _newsize)
 		return;
 	    if (presentSize < _newsize)
-		throw std::logic_error("eoTruncate: Cannot truncate to a larger size!\n");
+		throw std::logic_error("Truncate: Cannot truncate to a larger size!\n");
 	    std::vector<EPpair> scores(presentSize);
 	    for (unsigned i=0; i<presentSize; i++)
 		{
@@ -151,7 +151,7 @@ namespace eo
 	    // 	  {
 	    // 	    std::cout << scores[j].first << " " << *scores[j].second << std::endl;
 	    // 	  }
-	    eoPop<EOT> tmPop;
+	    Pop<EOT> tmPop;
 	    for (j=0; j<_newsize; j++)
 		{
 		    tmPop.push_back(*scores[j].second);
@@ -170,46 +170,46 @@ namespace eo
     };
 
     /** a truncate class that does not sort, but repeatidely kills the worse.
-	To be used in SSGA-like replacements (e.g. see eoSSGAWorseReplacement)
+	To be used in SSGA-like replacements (e.g. see SSGAWorseReplacement)
 	@ingroup Replacors
     */
     template <class EOT> 
-    class eoLinearTruncate : public eoReduce<EOT>
+    class LinearTruncate : public Reduce<EOT>
     {
-	void operator()(eoPop<EOT>& _newgen, unsigned _newsize)
+	void operator()(Pop<EOT>& _newgen, unsigned _newsize)
 	{
 	    unsigned oldSize = _newgen.size();
 	    if (oldSize == _newsize)
 		return;
 	    if (oldSize < _newsize)
-		throw std::logic_error("eoLinearTruncate: Cannot truncate to a larger size!\n");
+		throw std::logic_error("LinearTruncate: Cannot truncate to a larger size!\n");
 	    for (unsigned i=0; i<oldSize - _newsize; i++)
 		{
-		    typename eoPop<EOT>::iterator it = _newgen.it_worse_element();
+		    typename Pop<EOT>::iterator it = _newgen.it_worse_element();
 		    _newgen.erase(it);	    
 		}
 	}
     };
 
     /** a truncate class based on a repeated deterministic (reverse!) tournament
-	To be used in SSGA-like replacements (e.g. see eoSSGADetTournamentReplacement)
+	To be used in SSGA-like replacements (e.g. see SSGADetTournamentReplacement)
 	@ingroup Replacors
     */
     template <class EOT> 
-    class eoDetTournamentTruncate : public eoReduce<EOT>
+    class DetTournamentTruncate : public Reduce<EOT>
     {
     public:
-	eoDetTournamentTruncate(unsigned _t_size):
+	DetTournamentTruncate(unsigned _t_size):
 	    t_size(_t_size)
 	{
 	    if (t_size < 2)
 		{ 
-		    eo::log << eo::warnings << "Warning, Size for eoDetTournamentTruncate adjusted to 2" << std::endl;
+		    log << warnings << "Warning, Size for DetTournamentTruncate adjusted to 2" << std::endl;
 		    t_size = 2;
 		}
 	}
 
-	void operator()(eoPop<EOT>& _newgen, unsigned _newsize)
+	void operator()(Pop<EOT>& _newgen, unsigned _newsize)
 	{
 	    unsigned oldSize = _newgen.size();
 	    if (_newsize == 0)
@@ -220,7 +220,7 @@ namespace eo
 	    if (oldSize == _newsize)
 		return;
 	    if (oldSize < _newsize)
-		throw std::logic_error("eoDetTournamentTruncate: Cannot truncate to a larger size!\n");
+		throw std::logic_error("DetTournamentTruncate: Cannot truncate to a larger size!\n");
 
 	    // Now OK to erase some losers
 	    for (unsigned i=0; i<oldSize - _newsize; i++)
@@ -230,7 +230,7 @@ namespace eo
 	
 		    // Jeroen Eggermont stdc++v3  patch
 		    // in the new code from stdc++v3 an iterator from a container<T> is no longer an pointer to T
-		    // Because eo already contained a fuction using eoPop<EOT>::iterator's we will use the following
+		    // Because eo already contained a fuction using Pop<EOT>::iterator's we will use the following
 	
 		    _newgen.erase( inverse_deterministic_tournament(_newgen.begin(), _newgen.end(), t_size) );
 	
@@ -241,29 +241,29 @@ namespace eo
     };
 
     /** a truncate class based on a repeated deterministic (reverse!) tournament
-	To be used in SSGA-like replacements (e.g. see eoSSGAStochTournamentReplacement)
+	To be used in SSGA-like replacements (e.g. see SSGAStochTournamentReplacement)
 	@ingroup Replacors
     */
     template <class EOT> 
-    class eoStochTournamentTruncate : public eoReduce<EOT>
+    class StochTournamentTruncate : public Reduce<EOT>
     {
     public:
-	eoStochTournamentTruncate(double _t_rate):
+	StochTournamentTruncate(double _t_rate):
 	    t_rate(_t_rate)
 	{
 	    if (t_rate <= 0.5)
 		{ 
-		    eo::log << eo::warnings << "Warning, Rate for eoStochTournamentTruncate adjusted to 0.51" << std::endl;
+		    log << warnings << "Warning, Rate for StochTournamentTruncate adjusted to 0.51" << std::endl;
 		    t_rate = 0.51;
 		}
 	    if (t_rate > 1)
 		{
-		    eo::log << eo::warnings << "Warning, Rate for eoStochTournamentTruncate adjusted to 1" << std::endl;
+		    log << warnings << "Warning, Rate for StochTournamentTruncate adjusted to 1" << std::endl;
 		    t_rate = 1;
 		}
 	}
 
-	void operator()(eoPop<EOT>& _newgen, unsigned _newsize)
+	void operator()(Pop<EOT>& _newgen, unsigned _newsize)
 	{
 	    unsigned oldSize = _newgen.size();
 	    if (_newsize == 0)
@@ -274,7 +274,7 @@ namespace eo
 	    if (oldSize == _newsize)
 		return;
 	    if (oldSize < _newsize)
-		throw std::logic_error("eoStochTournamentTruncate: Cannot truncate to a larger size!\n");
+		throw std::logic_error("StochTournamentTruncate: Cannot truncate to a larger size!\n");
 	    // Now OK to erase some losers
 	    for (unsigned i=0; i<oldSize - _newsize; i++)
 		{
@@ -283,7 +283,7 @@ namespace eo
 	
 		    // Jeroen Eggermont stdc++v3  patch
 		    // in the new code from stdc++v3 an iterator from a container<T> is no longer an pointer to T
-		    // Because eo already contained a fuction using eoPop<EOT>::iterator's we will use the following
+		    // Because eo already contained a fuction using Pop<EOT>::iterator's we will use the following
 	
 		    _newgen.erase( inverse_stochastic_tournament(_newgen.begin(), _newgen.end(), t_rate) );
 	

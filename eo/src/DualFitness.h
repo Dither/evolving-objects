@@ -31,8 +31,8 @@ Johann Dréo <johann.dreo@thalesgroup.com>
 #include <utility> // for std::pair
 #include <string>
 
-#include <utils/eoStat.h>
-#include <utils/eoLogger.h>
+#include <utils/Stat.h>
+#include <utils/Logger.h>
 
 namespace eo
 {
@@ -47,8 +47,8 @@ namespace eo
      * that must be always considered as better than others while having the same fitness type.
      *
      * Wraps a scalar fitness _values such as a double or int, with the option of
-     * maximizing (using less<BaseType>, @see eoMaximizingDualFitness)
-     * or minimizing (using greater<BaseType>, @see eoMinimizingDualFitness).
+     * maximizing (using less<BaseType>, @see MaximizingDualFitness)
+     * or minimizing (using greater<BaseType>, @see MinimizingDualFitness).
      *
      * Suitable constructors, assignments and casts are defined to work
      * with those quantities as if they were a pair of: a BaseType and a boolean.
@@ -68,7 +68,7 @@ namespace eo
      *  a feasible fitness is when both are feasible, else the result is an unfeasibe fitness)
      */
     template <class BaseType, class Compare >
-    class eoDualFitness
+    class DualFitness
     {
     protected:
 	//! Scalar type of the fitness (generally a double)
@@ -83,25 +83,25 @@ namespace eo
 	/*!
 	 * Unfeasible by default
 	 */
-	eoDualFitness() : 
+	DualFitness() : 
 	    _value(), 
 	    _is_feasible(false) 
 	{}
 
 	//! Copy constructor
-	eoDualFitness(const eoDualFitness& other) :
+	DualFitness(const DualFitness& other) :
 	    _value(other._value),
 	    _is_feasible(other._is_feasible) 
 	{}
 
 	//! Constructor from explicit value/feasibility
-	eoDualFitness(const BaseType& v, const bool& is_feasible) : 
+	DualFitness(const BaseType& v, const bool& is_feasible) : 
 	    _value(v),
 	    _is_feasible(is_feasible)
 	{}
 
 	//! From a std::pair (first element is the value, second is the feasibility)
-	eoDualFitness(const std::pair<BaseType,bool>& dual) :
+	DualFitness(const std::pair<BaseType,bool>& dual) :
 	    _value(dual.first),
 	    _is_feasible(dual.second)
 	{}
@@ -117,16 +117,16 @@ namespace eo
 	}
 
 	//! Copy operator from a std::pair
-	eoDualFitness& operator=(const std::pair<BaseType,bool>& v)
+	DualFitness& operator=(const std::pair<BaseType,bool>& v)
 	{
 	    _value = v.first;
 	    _is_feasible = v.second;
 	    return *this; 
 	}
  
-	//! Copy operator from another eoDualFitness
+	//! Copy operator from another DualFitness
 	template <class F, class Cmp>
-	eoDualFitness<F,Cmp> & operator=(const eoDualFitness<BaseType, Compare>& other )
+	DualFitness<F,Cmp> & operator=(const DualFitness<BaseType, Compare>& other )
 	{
 	    if (this != &other) {
 		this->_value = other._value; 
@@ -140,9 +140,9 @@ namespace eo
 	/*!
 	 * Use less as a default comparison operator 
 	 * (see the "Compare" template of the class to change this behaviour,
-	 * @see eoMinimizingDualFitness for an example).
+	 * @see MinimizingDualFitness for an example).
 	 */
-	bool operator<(const eoDualFitness& other) const
+	bool operator<(const DualFitness& other) const
 	{ 
 	    // am I better (less, by default) than the other ?
 
@@ -163,20 +163,20 @@ namespace eo
 	}
 
 	//! Greater: if the other is lesser than me
-	bool operator>( const eoDualFitness<BaseType, Compare>& other ) const  { return other < *this; }
+	bool operator>( const DualFitness<BaseType, Compare>& other ) const  { return other < *this; }
 
 	//! Less or equal: if the other is not lesser than me
-	bool operator<=( const eoDualFitness<BaseType, Compare>& other ) const { return !(other < *this); }
+	bool operator<=( const DualFitness<BaseType, Compare>& other ) const { return !(other < *this); }
 
 	//! Greater or equal: if the other is not greater than me
-	bool operator>=(const eoDualFitness<BaseType, Compare>& other ) const { return !(*this < other); }
+	bool operator>=(const DualFitness<BaseType, Compare>& other ) const { return !(*this < other); }
 
     public:
 
 	//! Add a given fitness to the current one
 	template <class F, class Cmp>
 	friend
-	eoDualFitness<F,Cmp> & operator+=( eoDualFitness<F,Cmp> & from, const eoDualFitness<F,Cmp> & that )
+	DualFitness<F,Cmp> & operator+=( DualFitness<F,Cmp> & from, const DualFitness<F,Cmp> & that )
 	{
 	    from._value += that._value;
 
@@ -189,7 +189,7 @@ namespace eo
 	//! Substract a given fitness to the current one
 	template <class F, class Cmp>
 	friend
-	eoDualFitness<F,Cmp> & operator-=( eoDualFitness<F,Cmp> & from, const eoDualFitness<F,Cmp> & that )
+	DualFitness<F,Cmp> & operator-=( DualFitness<F,Cmp> & from, const DualFitness<F,Cmp> & that )
 	{
 	    from._value -= that._value;
 
@@ -201,33 +201,33 @@ namespace eo
 
 	// Add this fitness's value to that other, and return a _new_ instance with the result.
 	template <class F, class Cmp>
-	eoDualFitness<F,Cmp> operator+(const eoDualFitness<F,Cmp> & that) 
+	DualFitness<F,Cmp> operator+(const DualFitness<F,Cmp> & that) 
 	{
-	    eoDualFitness<F,Cmp> from( *this );
+	    DualFitness<F,Cmp> from( *this );
 	    return from += that;
 	}
 
 	// Add this fitness's value to that other, and return a _new_ instance with the result.
 	template <class F, class Cmp>
-	eoDualFitness<F,Cmp> operator-(const eoDualFitness<F,Cmp> & that) 
+	DualFitness<F,Cmp> operator-(const DualFitness<F,Cmp> & that) 
 	{
-	    eoDualFitness<F,Cmp> from( *this );
+	    DualFitness<F,Cmp> from( *this );
 	    return from -= that;
 	}
 
-	//! Print an eoDualFitness instance as a pair of numbers, separated by a space
+	//! Print an DualFitness instance as a pair of numbers, separated by a space
 	template <class F, class Cmp>
 	friend
-	std::ostream& operator<<(std::ostream& os, const eoDualFitness<F, Cmp>& f)
+	std::ostream& operator<<(std::ostream& os, const DualFitness<F, Cmp>& f)
 	{
 	    os << f._value << " " << f._is_feasible;
 	    return os;
 	}
 
-	//! Read an eoDualFitness instance as a pair of numbers, separated by a space
+	//! Read an DualFitness instance as a pair of numbers, separated by a space
 	template <class F, class Cmp>
 	friend 
-	std::istream& operator>>(std::istream& is, eoDualFitness<F, Cmp>& f)
+	std::istream& operator>>(std::istream& is, DualFitness<F, Cmp>& f)
 	{
 	    F value;
 	    is >> value;
@@ -241,49 +241,49 @@ namespace eo
     };
 
     //! Compare dual fitnesses as if we were maximizing
-    typedef eoDualFitness<double, std::less<double> >    eoMaximizingDualFitness;
+    typedef DualFitness<double, std::less<double> >    MaximizingDualFitness;
 
     //! Compare dual fitnesses as if we were minimizing
-    typedef eoDualFitness<double, std::greater<double> > eoMinimizingDualFitness;
+    typedef DualFitness<double, std::greater<double> > MinimizingDualFitness;
 
     //! A predicate that returns the feasibility of a given dual fitness
     /** Use this in STL algorithm that use binary predicates (e.g. count_if, find_if, etc.)
      */
     template< class EOT>
-    bool eoIsFeasible ( const EOT & sol ) { return sol.fitness().is_feasible(); }
+    bool IsFeasible ( const EOT & sol ) { return sol.fitness().is_feasible(); }
 
 
-    /** Embed two eoStat and call the first one on the feasible individuals and
+    /** Embed two Stat and call the first one on the feasible individuals and
      * the second one on the unfeasible ones, merge the two resulting value in
      * a string, separated by a given marker.
      */
     //template<class EOT, class T>
     template<class EOT, class EOSTAT>
-    class eoDualStatSwitch : public eoStat< EOT, std::string >
+    class eoDualStatSwitch : public Stat< EOT, std::string >
     {
     public:
-	using eoStat<EOT,std::string>::value;
+	using Stat<EOT,std::string>::value;
 
-	//    eoDualStatSwitch( eoStat<EOT,T> & stat_feasible,  eoStat<EOT,T> & stat_unfeasible, std::string sep=" "  ) :
+	//    eoDualStatSwitch( Stat<EOT,T> & stat_feasible,  Stat<EOT,T> & stat_unfeasible, std::string sep=" "  ) :
 	eoDualStatSwitch( EOSTAT & stat_feasible,  EOSTAT & stat_unfeasible, std::string sep=" "  ) :
 	    _stat_feasible(stat_feasible), 
 	    _stat_unfeasible(stat_unfeasible), 
 	    _sep(sep),
-	    eoStat<EOT,std::string>(
+	    Stat<EOT,std::string>(
 				    "?"+sep+"?", 
 				    stat_feasible.longName()+sep+stat_unfeasible.longName() 
 				    )
 	{ }
 
-	virtual void operator()( const eoPop<EOT> & pop )
+	virtual void operator()( const Pop<EOT> & pop )
 	{
-	    eoPop<EOT> pop_feasible;
+	    Pop<EOT> pop_feasible;
 	    pop_feasible.reserve(pop.size());
 
-	    eoPop<EOT> pop_unfeasible;
+	    Pop<EOT> pop_unfeasible;
 	    pop_unfeasible.reserve(pop.size());
 
-	    for( typename eoPop<EOT>::const_iterator ieot=pop.begin(), iend=pop.end(); ieot!=iend; ++ieot ) {
+	    for( typename Pop<EOT>::const_iterator ieot=pop.begin(), iend=pop.end(); ieot!=iend; ++ieot ) {
 		/*
 		  if( ieot->invalid() ) {
 		  eo::log << eo::errors << "ERROR: trying to access to an invalid fitness" << std::endl;
@@ -306,8 +306,8 @@ namespace eo
 	}
 
     protected:
-	//    eoStat<EOT,T> & _stat_feasible;
-	//    eoStat<EOT,T> & _stat_unfeasible;
+	//    Stat<EOT,T> & _stat_feasible;
+	//    Stat<EOT,T> & _stat_unfeasible;
 	EOSTAT & _stat_feasible;
 	EOSTAT & _stat_unfeasible;
 

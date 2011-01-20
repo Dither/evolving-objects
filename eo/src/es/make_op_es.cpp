@@ -30,7 +30,7 @@
 #endif 
 
 /** This file contains ***INSTANCIATED DEFINITIONS*** of operators fns
- * of the library for ***eoReal*** evolution inside EO.
+ * of the library for ***Real*** evolution inside EO.
  * It should be included in the file that calls any of the corresponding fns
  * Compiling this file allows one to generate part of the library (i.e. object
  * files that you just need to link with your own main and fitness code).
@@ -51,32 +51,32 @@ namespace eo
 
     // operators
     ////////////
-    eoGenOp<eoEsSimple<double> >&  make_op(eoParser& _parser, eoState& _state, eoRealInitBounded<eoEsSimple<double> >& _init)
+    GenOp<EsSimple<double> >&  make_op(Parser& _parser, State& _state, RealInitBounded<EsSimple<double> >& _init)
     {
 	return do_make_op(_parser, _state, _init);
     }
 
-    eoGenOp<eoEsSimple<eoMinimizingFitness> >&  make_op(eoParser& _parser, eoState& _state, eoRealInitBounded<eoEsSimple<eoMinimizingFitness> >& _init)
+    GenOp<EsSimple<MinimizingFitness> >&  make_op(Parser& _parser, State& _state, RealInitBounded<EsSimple<MinimizingFitness> >& _init)
     {
 	return do_make_op(_parser, _state, _init);
     }
 
-    eoGenOp<eoEsStdev<double> >&  make_op(eoParser& _parser, eoState& _state, eoRealInitBounded<eoEsStdev<double> >& _init)
+    GenOp<EsStdev<double> >&  make_op(Parser& _parser, State& _state, RealInitBounded<EsStdev<double> >& _init)
     {
 	return do_make_op(_parser, _state, _init);
     }
 
-    eoGenOp<eoEsStdev<eoMinimizingFitness> >&  make_op(eoParser& _parser, eoState& _state, eoRealInitBounded<eoEsStdev<eoMinimizingFitness> >& _init)
+    GenOp<EsStdev<MinimizingFitness> >&  make_op(Parser& _parser, State& _state, RealInitBounded<EsStdev<MinimizingFitness> >& _init)
     {
 	return do_make_op(_parser, _state, _init);
     }
 
-    eoGenOp<eoEsFull<double> >&  make_op(eoParser& _parser, eoState& _state, eoRealInitBounded<eoEsFull<double> >& _init)
+    GenOp<EsFull<double> >&  make_op(Parser& _parser, State& _state, RealInitBounded<EsFull<double> >& _init)
     {
 	return do_make_op(_parser, _state, _init);
     }
 
-    eoGenOp<eoEsFull<eoMinimizingFitness> >&  make_op(eoParser& _parser, eoState& _state, eoRealInitBounded<eoEsFull<eoMinimizingFitness> >& _init)
+    GenOp<EsFull<MinimizingFitness> >&  make_op(Parser& _parser, State& _state, RealInitBounded<EsFull<MinimizingFitness> >& _init)
     {
 	return do_make_op(_parser, _state, _init);
     }

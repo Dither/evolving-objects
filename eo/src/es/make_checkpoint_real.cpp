@@ -30,7 +30,7 @@
 #endif 
 
 /** This file contains ***INSTANCIATED DEFINITIONS*** of checkpoint fns
- * of the library for evolution of ***eoReal*** inside EO.
+ * of the library for evolution of ***Real*** inside EO.
  * It should be included in the file that calls any of the corresponding fns
  * Compiling this file allows one to generate part of the library (i.e. object
  * files that you just need to link with your own main and fitness code).
@@ -43,7 +43,7 @@
 // The templatized code
 #include <do/make_checkpoint.h>
 // the instanciating EOType
-#include <es/eoReal.h>
+#include <es/Real.h>
 
 namespace eo
 {
@@ -52,11 +52,11 @@ namespace eo
 
     // checkpoint
     /////////////
-    eoCheckPoint<eoReal<double> >& make_checkpoint(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoReal<double> >& _eval, eoContinue<eoReal<double> >& _continue)
+    CheckPoint<Real<double> >& make_checkpoint(Parser& _parser, State& _state, EvalFuncCounter<Real<double> >& _eval, Continue<Real<double> >& _continue)
     {
 	return do_make_checkpoint(_parser, _state, _eval, _continue);
     }
-    eoCheckPoint<eoReal<eoMinimizingFitness> >& make_checkpoint(eoParser& _parser, eoState& _state, eoEvalFuncCounter<eoReal<eoMinimizingFitness> >& _eval, eoContinue<eoReal<eoMinimizingFitness> >& _continue) 
+    CheckPoint<Real<MinimizingFitness> >& make_checkpoint(Parser& _parser, State& _state, EvalFuncCounter<Real<MinimizingFitness> >& _eval, Continue<Real<MinimizingFitness> >& _continue) 
     {
 	return do_make_checkpoint(_parser, _state, _eval, _continue);
     }

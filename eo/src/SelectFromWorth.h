@@ -28,20 +28,20 @@
 
 #include <iostream>
 //-----------------------------------------------------------------------------
-#include <eoSelectOne.h>
-#include <eoPerf2Worth.h>
+#include <SelectOne.h>
+#include <Perf2Worth.h>
 #include <utils/selectors.h>
 //-----------------------------------------------------------------------------
 
 namespace eo
 {
 
-    /** selects one element from a population (is an eoSelectOne)
+    /** selects one element from a population (is an SelectOne)
 	but the selection is based on a std::vector of Worth that is different
 	from the fitnesses (e.g. EO fitness is what Koza terms "raw fitness",
 	Worth is what the selection is based upon).
 
-	see class eoPerf2Worth: an eoStat that transforms fitnesses into Worthes
+	see class Perf2Worth: an Stat that transforms fitnesses into Worthes
 
 	Note: Worthes will not always be doubles - see some multi-objective
 	techniques where it is a std::pair of doubles ...
@@ -53,17 +53,17 @@ namespace eo
 	@ingroup Selectors
     */
     template <class EOT, class WorthType = double>
-    class eoSelectFromWorth : public eoSelectOne<EOT>
+    class SelectFromWorth : public SelectOne<EOT>
     {
     public:
 
-	/* Default ctor from an eoPerf2Worth object */
-	eoSelectFromWorth(eoPerf2Worth<EOT, WorthType>& _perf2Worth)
+	/* Default ctor from an Perf2Worth object */
+	SelectFromWorth(Perf2Worth<EOT, WorthType>& _perf2Worth)
 	    : perf2Worth(_perf2Worth)
         {}
 
 	/* setup the worthes */
-	virtual void setup(const eoPop<EOT>& pop) {
+	virtual void setup(const Pop<EOT>& pop) {
 	    perf2Worth(pop);
 #ifndef NDEBUG
 	    fitness.resize(pop.size());
@@ -76,41 +76,41 @@ namespace eo
 
     protected:
 
-	eoPerf2Worth<EOT, WorthType>& perf2Worth;
+	Perf2Worth<EOT, WorthType>& perf2Worth;
 
 #ifndef NDEBUG
 	std::vector<typename EOT::Fitness> fitness;
 	void check_sync(unsigned index, const EOT& _eo) {
 	    if (fitness[index] != _eo.fitness()) {
-		throw std::runtime_error("eoSelectFromWorth: fitnesses are not in sync");
+		throw std::runtime_error("SelectFromWorth: fitnesses are not in sync");
 	    }
 	}
 #endif
     };
 
 
-    /** An instance of eoSelectPerf2Worth that does selection from the Worthes
+    /** An instance of SelectPerf2Worth that does selection from the Worthes
      *  using a ... determinisitic tournament, yes!
 
      @ingroup Selectors
     */
     template <class EOT, class WorthT = double>
-    class eoDetTournamentWorthSelect : public eoSelectFromWorth<EOT, WorthT>
+    class DetTournamentWorthSelect : public SelectFromWorth<EOT, WorthT>
     {
     public:
 
-	using eoSelectFromWorth<EOT, WorthT>::perf2Worth;
+	using SelectFromWorth<EOT, WorthT>::perf2Worth;
 
 	typedef typename std::vector<WorthT>::iterator worthIterator;
 
-	/* Default ctor from an eoPerf2Worth object +  tournament size */
-	eoDetTournamentWorthSelect(eoPerf2Worth<EOT, WorthT>& perf2Worth,
+	/* Default ctor from an Perf2Worth object +  tournament size */
+	DetTournamentWorthSelect(Perf2Worth<EOT, WorthT>& perf2Worth,
 				   unsigned _tSize)
-	    : eoSelectFromWorth<EOT, WorthT>(perf2Worth), tSize(_tSize) {}
+	    : SelectFromWorth<EOT, WorthT>(perf2Worth), tSize(_tSize) {}
 
 	/* Perform deterministic tournament on worthes by calling the
 	   appropriate fn see selectors.h */
-	virtual const EOT& operator()(const eoPop<EOT>& pop) {
+	virtual const EOT& operator()(const Pop<EOT>& pop) {
 	    worthIterator it = deterministic_tournament(perf2Worth.value().begin(),
 							perf2Worth.value().end(),
 							tSize);
@@ -128,29 +128,29 @@ namespace eo
 	unsigned tSize;
     };
 
-    /** An instance of eoSelectPerf2Worth that does selection from the Worthes
+    /** An instance of SelectPerf2Worth that does selection from the Worthes
      *  using a ... stochastic tournament, yes!
 
      @ingroup Selectors
     */
     template <class EOT, class WorthT = double>
-    class eoStochTournamentWorthSelect : public eoSelectFromWorth<EOT, WorthT>
+    class StochTournamentWorthSelect : public SelectFromWorth<EOT, WorthT>
     {
     public:
 
-	using eoSelectFromWorth<EOT, WorthT>::perf2Worth;
+	using SelectFromWorth<EOT, WorthT>::perf2Worth;
 
 	typedef typename std::vector<WorthT>::iterator worthIterator;
 
-	/* Default ctor from an eoPerf2Worth object +  tournament rate */
-	eoStochTournamentWorthSelect(eoPerf2Worth<EOT, WorthT> &_perf2Worth, double _tRate)
-	    : eoSelectFromWorth<EOT, WorthT>(_perf2Worth), tRate(_tRate)
+	/* Default ctor from an Perf2Worth object +  tournament rate */
+	StochTournamentWorthSelect(Perf2Worth<EOT, WorthT> &_perf2Worth, double _tRate)
+	    : SelectFromWorth<EOT, WorthT>(_perf2Worth), tRate(_tRate)
         {}
 
 	/* Perform stochastic tournament on worthes
 	   by calling the appropriate fn in selectors.h
 	*/
-	virtual const EOT& operator()(const eoPop<EOT>& _pop) {
+	virtual const EOT& operator()(const Pop<EOT>& _pop) {
 	    worthIterator it = stochastic_tournament(perf2Worth.value().begin(),
 						     perf2Worth.value().end(),
 						     tRate);
@@ -169,32 +169,32 @@ namespace eo
 	double tRate;
     };
 
-    /** An instance of eoSelectPerf2Worth that does selection from the Worthes
+    /** An instance of SelectPerf2Worth that does selection from the Worthes
      *  using a ... roulette wheel selection, yes!
 
      @ingroup Selectors
     */
     template <class EOT, class WorthT = double>
-    class eoRouletteWorthSelect : public eoSelectFromWorth<EOT, WorthT>
+    class RouletteWorthSelect : public SelectFromWorth<EOT, WorthT>
     {
     public:
 
-	using eoSelectFromWorth<EOT, WorthT>::perf2Worth;
+	using SelectFromWorth<EOT, WorthT>::perf2Worth;
 
 	typedef typename std::vector<WorthT>::iterator worthIterator;
 
 
-	/* Default ctor from an eoPerf2Worth object */
-	eoRouletteWorthSelect(eoPerf2Worth<EOT, WorthT> &_perf2Worth)
-	    : eoSelectFromWorth<EOT, WorthT>(_perf2Worth)
+	/* Default ctor from an Perf2Worth object */
+	RouletteWorthSelect(Perf2Worth<EOT, WorthT> &_perf2Worth)
+	    : SelectFromWorth<EOT, WorthT>(_perf2Worth)
         {}
 
 	/* We have to override the default behavior to compute the total
 	 * only once!
 	 */
-	virtual void setup(const eoPop<EOT>& _pop)
+	virtual void setup(const Pop<EOT>& _pop)
 	{
-	    eoSelectFromWorth<EOT, WorthT>::setup(_pop);
+	    SelectFromWorth<EOT, WorthT>::setup(_pop);
 	    total = 0.0;
 	    for (worthIterator it = perf2Worth.value().begin();
 		 it<perf2Worth.value().end(); ++it)
@@ -205,7 +205,7 @@ namespace eo
 	   by calling the appropriate fn
 	   see selectors.h
 	*/
-	virtual const EOT& operator()(const eoPop<EOT>& _pop) {
+	virtual const EOT& operator()(const Pop<EOT>& _pop) {
 	    //     cout << "On affiche les worths\n";
 	    //     for (unsigned i=0;
 	    // 	 i<perf2Worth.value().size();
