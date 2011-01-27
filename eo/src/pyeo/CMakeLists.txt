@@ -16,7 +16,7 @@
 # ----------------------------------------------------------------------------
 
 # change this to your local boost-path 
-SET(BOOST_PATH "C:/development/libs/os/boost/boost_1_33_1")
+SET(BOOST_PATH "/usr/include/boost")
 
 
 # ----------------------------------------------------------------------------
