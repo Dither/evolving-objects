@@ -25,38 +25,19 @@ Authors:
     Caner Candan <caner.candan@thalesgroup.com>
 */
 
-#ifndef _edoBounderBound_h
-#define _edoBounderBound_h
+#ifndef _edo_BounderNo_h
+#define _edo_BounderNo_h
 
-#include "edoBounder.h"
+#include "Bounder.h"
 
-template < typename EOT >
-class edoBounderBound : public edoBounder< EOT >
+namespace edo
 {
-public:
-    edoBounderBound( EOT min, EOT max )
-	: edoBounder< EOT >( min, max )
-    {}
-
-    void operator()( EOT& x )
+    template < typename EOT >
+    class BounderNo : public Bounder< EOT >
     {
-	unsigned int size = x.size();
-	assert(size > 0);
+    public:
+	void operator()( EOT& ) {}
+    };
+}
 
-	for (unsigned int d = 0; d < size; ++d) // browse all dimensions
-	    {
-		if (x[d] < this->min()[d])
-		    {
-			x[d] = this->min()[d];
-			continue;
-		    }
-
-		if (x[d] > this->max()[d])
-		    {
-			x[d] = this->max()[d];
-		    }
-	    }
-    }
-};
-
-#endif // !_edoBounderBound_h
+#endif // !_edo_BounderNo_h

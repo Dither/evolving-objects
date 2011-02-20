@@ -25,39 +25,42 @@ Authors:
     Caner Candan <caner.candan@thalesgroup.com>
 */
 
-#ifndef _edoBounderRng_h
-#define _edoBounderRng_h
+#ifndef _edo_BounderRng_h
+#define _edo_BounderRng_h
 
-#include "edoBounder.h"
+#include "Bounder.h"
 
-template < typename EOT >
-class edoBounderRng : public edoBounder< EOT >
+namespace edo
 {
-public:
-    edoBounderRng( EOT min, EOT max, eoRndGenerator< double > & rng )
-	: edoBounder< EOT >( min, max ), _rng(rng)
-    {}
-
-    void operator()( EOT& x )
+    template < typename EOT >
+    class BounderRng : public Bounder< EOT >
     {
-	unsigned int size = x.size();
-	assert(size > 0);
+    public:
+	BounderRng( EOT min, EOT max, eo::RndGenerator< double > & rng )
+	    : Bounder< EOT >( min, max ), _rng(rng)
+	{}
 
-	for (unsigned int d = 0; d < size; ++d) // browse all dimensions
-	    {
+	void operator()( EOT& x )
+	{
+	    unsigned int size = x.size();
+	    assert(size > 0);
 
-		// FIXME: attention: les bornes RNG ont les memes bornes quelque soit les dimensions idealement on voudrait avoir des bornes differentes pour chaque dimensions.
+	    for (unsigned int d = 0; d < size; ++d) // browse all dimensions
+		{
 
-		if (x[d] < this->min()[d] || x[d] > this->max()[d])
-		    {
-			x[d] = _rng();
-		    }
-	    }
-    }
+		    // FIXME: attention: les bornes RNG ont les memes bornes quelque soit les dimensions idealement on voudrait avoir des bornes differentes pour chaque dimensions.
 
-private:
-    eoRndGenerator< double> & _rng;
-};
+		    if (x[d] < this->min()[d] || x[d] > this->max()[d])
+			{
+			    x[d] = _rng();
+			}
+		}
+	}
 
-#endif // !_edoBounderRng_h
+    private:
+	eo::RndGenerator< double> & _rng;
+    };
+}
+
+#endif // !_edo_BounderRng_h
 

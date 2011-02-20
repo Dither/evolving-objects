@@ -25,30 +25,35 @@ Authors:
     Caner Candan <caner.candan@thalesgroup.com>
 */
 
-#ifndef _edoBounder_h
-#define _edoBounder_h
+#ifndef _edo_VectorBounds_h
+#define _edo_VectorBounds_h
 
-#include <eoFunctor.h>
-
-template < typename EOT >
-class edoBounder : public eoUF< EOT&, void >
+namespace edo
 {
-public:
-    edoBounder( EOT min = EOT(1, 0), EOT max = EOT(1, 0) )
-	: _min(min), _max(max)
+    template < typename EOT >
+    class VectorBounds
     {
-	assert(_min.size() > 0);
-	assert(_min.size() == _max.size());
-    }
+    public:
+	VectorBounds(EOT min, EOT max)
+	    : _min(min), _max(max)
+	{
+	    assert(_min.size() > 0);
+	    assert(_min.size() == _max.size());
+	}
 
-    // virtual void operator()( EOT& ) = 0 (provided by eoUF< A1, R >)
+	EOT min(){return _min;}
+	EOT max(){return _max;}
 
-    EOT& min(){return _min;}
-    EOT& max(){return _max;}
+	unsigned int size()
+	{
+	    assert(_min.size() == _max.size());
+	    return _min.size();
+	}
 
-private:
-    EOT _min;
-    EOT _max;
-};
+    private:
+	EOT _min;
+	EOT _max;
+    };
+}
 
-#endif // !_edoBounder_h
+#endif // !_edo_VectorBounds_h

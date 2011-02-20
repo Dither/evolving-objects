@@ -28,49 +28,49 @@ Authors:
 #ifndef _edo_
 #define _edo_
 
-#include "edoAlgo.h"
-#include "edoEDASA.h"
-#include "edoEDA.h"
+#include "Algo.h"
+#include "EDASA.h"
+#include "EDA.h"
 
-#include "edoDistrib.h"
-#include "edoUniform.h"
-#include "edoNormalMono.h"
-#include "edoNormalMulti.h"
+#include "Distrib.h"
+#include "Uniform.h"
+#include "NormalMono.h"
+#include "NormalMulti.h"
 
-#include "edoEstimator.h"
-#include "edoEstimatorUniform.h"
-#include "edoEstimatorNormalMono.h"
-#include "edoEstimatorNormalMulti.h"
+#include "Estimator.h"
+#include "EstimatorUniform.h"
+#include "EstimatorNormalMono.h"
+#include "EstimatorNormalMulti.h"
 
-#include "edoModifier.h"
-#include "edoModifierDispersion.h"
-#include "edoModifierMass.h"
-#include "edoUniformCenter.h"
-#include "edoNormalMonoCenter.h"
-#include "edoNormalMultiCenter.h"
+#include "Modifier.h"
+#include "ModifierDispersion.h"
+#include "ModifierMass.h"
+#include "UniformCenter.h"
+#include "NormalMonoCenter.h"
+#include "NormalMultiCenter.h"
 
-#include "edoSampler.h"
-#include "edoSamplerUniform.h"
-#include "edoSamplerNormalMono.h"
-#include "edoSamplerNormalMulti.h"
+#include "Sampler.h"
+#include "SamplerUniform.h"
+#include "SamplerNormalMono.h"
+#include "SamplerNormalMulti.h"
 
-#include "edoVectorBounds.h"
+#include "VectorBounds.h"
 
-#include "edoBounder.h"
-#include "edoBounderNo.h"
-#include "edoBounderBound.h"
-#include "edoBounderRng.h"
+#include "Bounder.h"
+#include "BounderNo.h"
+#include "BounderBound.h"
+#include "BounderRng.h"
 
-#include "edoContinue.h"
-#include "utils/edoCheckPoint.h"
+#include "Continue.h"
+#include "utils/CheckPoint.h"
 
-#include "utils/edoStat.h"
-#include "utils/edoStatUniform.h"
-#include "utils/edoStatNormalMono.h"
-#include "utils/edoStatNormalMulti.h"
+#include "utils/Stat.h"
+#include "utils/StatUniform.h"
+#include "utils/StatNormalMono.h"
+#include "utils/StatNormalMulti.h"
 
-#include "utils/edoFileSnapshot.h"
-#include "utils/edoPopStat.h"
+#include "utils/FileSnapshot.h"
+#include "utils/PopStat.h"
 
 #endif // !_edo_
 

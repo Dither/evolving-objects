@@ -25,37 +25,42 @@ Authors:
     Caner Candan <caner.candan@thalesgroup.com>
 */
 
-#ifndef _doContinue_h
-#define _doContinue_h
+#ifndef _edo_Continue_h
+#define _edo_Continue_h
 
-#include <eoFunctor.h>
-#include <eoPersistent.h>
+#include <eo/Functor.h>
+#include <eo/Persistent.h>
 
-//! edoContinue< EOT > classe fitted to Distribution Object library
-
-template < typename D >
-class edoContinue : public eoUF< const D&, bool >, public eoPersistent
+namespace edo
 {
-public:
-    virtual std::string className(void) const { return "edoContinue"; }
 
-    void readFrom(std::istream&)
+    //! Continue< EOT > classe fitted to Distribution Object library
+
+    template < typename D >
+    class Continue : public eo::UF< const D&, bool >, public eo::Persistent
     {
-	/* It should be implemented by subclasses ! */
-    }
+    public:
+	virtual std::string className(void) const { return "Continue"; }
 
-    void printOn(std::ostream&) const
+	void readFrom(std::istream&)
+	{
+	    /* It should be implemented by subclasses ! */
+	}
+
+	void printOn(std::ostream&) const
+	{
+	    /* It should be implemented by subclasses ! */
+	}
+    };
+
+    template < typename D >
+    class DummyContinue : public Continue< D >
     {
-	/* It should be implemented by subclasses ! */
-    }
-};
+	bool operator()(const D&){ return true; }
 
-template < typename D >
-class edoDummyContinue : public edoContinue< D >
-{
-    bool operator()(const D&){ return true; }
+	virtual std::string className() const { return "DummyContinue"; }
+    };
 
-    virtual std::string className() const { return "edoDummyContinue"; }
-};
+}
 
-#endif // !_edoContinue_h
+#endif // !_edo_Continue_h

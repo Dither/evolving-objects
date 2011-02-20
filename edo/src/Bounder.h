@@ -25,19 +25,33 @@ Authors:
     Caner Candan <caner.candan@thalesgroup.com>
 */
 
-#ifndef _edoDistrib_h
-#define _edoDistrib_h
+#ifndef _edo_Bounder_h
+#define _edo_Bounder_h
 
-#include <eoFunctor.h>
+#include <eo/Functor.h>
 
-template < typename EOT >
-class edoDistrib : public eoFunctorBase
+namespace edo
 {
-public:
-    //! Alias for the type
-    typedef EOT EOType;
+    template < typename EOT >
+    class Bounder : public eo::UF< EOT&, void >
+    {
+    public:
+	Bounder( EOT min = EOT(1, 0), EOT max = EOT(1, 0) )
+	    : _min(min), _max(max)
+	{
+	    assert(_min.size() > 0);
+	    assert(_min.size() == _max.size());
+	}
 
-    virtual ~edoDistrib(){}
-};
+	// virtual void operator()( EOT& ) = 0 (provided by eo::UF< A1, R >)
 
-#endif // !_edoDistrib_h
+	EOT& min(){return _min;}
+	EOT& max(){return _max;}
+
+    private:
+	EOT _min;
+	EOT _max;
+    };
+}
+
+#endif // !_edo_Bounder_h

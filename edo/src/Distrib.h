@@ -25,34 +25,22 @@ Authors:
     Caner Candan <caner.candan@thalesgroup.com>
 */
 
-#ifndef _edoNormalMono_h
-#define _edoNormalMono_h
+#ifndef _edo_Distrib_h
+#define _edo_Distrib_h
 
-#include "edoDistrib.h"
+#include <eo/Functor.h>
 
-template < typename EOT >
-class edoNormalMono : public edoDistrib< EOT >
+namespace edo
 {
-public:
-    edoNormalMono( const EOT& mean, const EOT& variance )
-	: _mean(mean), _variance(variance)
+    template < typename EOT >
+    class Distrib : public eo::FunctorBase
     {
-	assert(_mean.size() > 0);
-	assert(_mean.size() == _variance.size());
-    }
+    public:
+	//! Alias for the type
+	typedef EOT EOType;
 
-    unsigned int size()
-    {
-	assert(_mean.size() == _variance.size());
-	return _mean.size();
-    }
+	virtual ~Distrib(){}
+    };
+}
 
-    EOT mean(){return _mean;}
-    EOT variance(){return _variance;}
-
-private:
-    EOT _mean;
-    EOT _variance;
-};
-
-#endif // !_edoNormalMono_h
+#endif // !_edo_Distrib_h

@@ -25,16 +25,22 @@ Authors:
     Caner Candan <caner.candan@thalesgroup.com>
 */
 
-#ifndef _edoBounderNo_h
-#define _edoBounderNo_h
+#ifndef _edo_Uniform_h
+#define _edo_Uniform_h
 
-#include "edoBounder.h"
+#include "Distrib.h"
+#include "VectorBounds.h"
 
-template < typename EOT >
-class edoBounderNo : public edoBounder< EOT >
+namespace edo
 {
-public:
-    void operator()( EOT& ) {}
-};
+    template < typename EOT >
+    class Uniform : public Distrib< EOT >, public VectorBounds< EOT >
+    {
+    public:
+	Uniform(EOT min, EOT max)
+	    : VectorBounds< EOT >(min, max)
+	{}
+    };
+}
 
-#endif // !_edoBounderNo_h
+#endif // !_edo_Uniform_h

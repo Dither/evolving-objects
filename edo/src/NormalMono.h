@@ -25,20 +25,37 @@ Authors:
     Caner Candan <caner.candan@thalesgroup.com>
 */
 
+#ifndef _edo_NormalMono_h
+#define _edo_NormalMono_h
 
-#ifndef _edoAlgo_h
-#define _edoAlgo_h
+#include "Distrib.h"
 
-#include <eoAlgo.h>
-
-template < typename D >
-class edoAlgo : public eoAlgo< typename D::EOType >
+namespace edo
 {
-    //! Alias for the type
-    typedef typename D::EOType EOT;
+    template < typename EOT >
+    class NormalMono : public Distrib< EOT >
+    {
+    public:
+	NormalMono( const EOT& mean, const EOT& variance )
+	    : _mean(mean), _variance(variance)
+	{
+	    assert(_mean.size() > 0);
+	    assert(_mean.size() == _variance.size());
+	}
 
-public:
-    virtual ~edoAlgo(){}
-};
+	unsigned int size()
+	{
+	    assert(_mean.size() == _variance.size());
+	    return _mean.size();
+	}
 
-#endif // !_edoAlgo_h
+	EOT mean(){return _mean;}
+	EOT variance(){return _variance;}
+
+    private:
+	EOT _mean;
+	EOT _variance;
+    };
+}
+
+#endif // !_edo_NormalMono_h

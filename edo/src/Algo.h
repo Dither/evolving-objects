@@ -25,32 +25,23 @@ Authors:
     Caner Candan <caner.candan@thalesgroup.com>
 */
 
-#ifndef _edoVectorBounds_h
-#define _edoVectorBounds_h
 
-template < typename EOT >
-class edoVectorBounds
+#ifndef _Algo_h
+#define _Algo_h
+
+#include <eo/Algo.h>
+
+namespace edo
 {
-public:
-    edoVectorBounds(EOT min, EOT max)
-	: _min(min), _max(max)
+    template < typename D >
+    class Algo : public eo::Algo< typename D::EOType >
     {
-	assert(_min.size() > 0);
-	assert(_min.size() == _max.size());
-    }
+	//! Alias for the type
+	typedef typename D::EOType EOT;
 
-    EOT min(){return _min;}
-    EOT max(){return _max;}
+    public:
+	virtual ~Algo(){}
+    };
+}
 
-    unsigned int size()
-    {
-	assert(_min.size() == _max.size());
-	return _min.size();
-    }
-
-private:
-    EOT _min;
-    EOT _max;
-};
-
-#endif // !_edoVectorBounds_h
+#endif // !_Algo_h
