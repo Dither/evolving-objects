@@ -69,6 +69,7 @@ SET (TEST_LIST
   t-openmp
   #t-eoDualFitness
   t-eoParser
+  t-eoCtor
   )
 
 
