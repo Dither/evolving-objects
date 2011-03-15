@@ -35,7 +35,13 @@ class eoPopCtor : public eoCtor< EOT, eoPop >
 {
 public:
     eoPopCtor( const size_t size ) : _size( size ) {}
-    eoPop< EOT > operator()() { return eoPop< EOT >( _size ); }
+
+    eoPop< EOT > operator()()
+    {
+	eoPop< EOT > pop;
+	pop.resize(_size);
+	return pop;
+    }
 
 private:
     const size_t _size;
