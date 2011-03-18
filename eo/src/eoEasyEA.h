@@ -37,6 +37,7 @@
 #include <eoMergeReduce.h>
 #include <eoReplacement.h>
 
+#include <utils/eoPopCtor.h>
 
 
 template <class EOT> class eoIslandsEasyEA ;
@@ -78,7 +79,26 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
         selectTransform(dummySelect, dummyTransform),
         breed(_breed),
         mergeReduce(dummyMerge, dummyReduce),
-        replace(_replace)
+        replace(_replace),
+	popbuilder(dummyPopbuilder)
+    {}
+
+    /** NEW Ctor taking a breed and merge and pop constructor */
+    eoEasyEA(
+      eoContinue<EOT>& _continuator,
+      eoEvalFunc<EOT>& _eval,
+      eoBreed<EOT>& _breed,
+      eoReplacement<EOT>& _replace,
+      eoPopCtor<EOT>& _popbuilder
+    ) : continuator(_continuator),
+        eval (_eval),
+        loopEval(_eval),
+        popEval(loopEval),
+        selectTransform(dummySelect, dummyTransform),
+        breed(_breed),
+        mergeReduce(dummyMerge, dummyReduce),
+        replace(_replace),
+	popbuilder(_popbuilder)
     {}
 
     /*
@@ -112,7 +132,8 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
         selectTransform(dummySelect, dummyTransform),
         breed(_breed),
         mergeReduce(dummyMerge, dummyReduce),
-        replace(_replace)
+        replace(_replace),
+	popbuilder(dummyPopbuilder)
     {}
 
 
@@ -130,7 +151,8 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
         selectTransform(_select, _transform),
         breed(selectTransform),
         mergeReduce(dummyMerge, dummyReduce),
-        replace(_replace)
+        replace(_replace),
+	popbuilder(dummyPopbuilder)
     {}
 
     /// Ctor eoBreed, eoMerge and eoReduce.
@@ -147,7 +169,8 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
         selectTransform(dummySelect, dummyTransform),
         breed(_breed),
         mergeReduce(_merge, _reduce),
-        replace(mergeReduce)
+        replace(mergeReduce),
+	popbuilder(dummyPopbuilder)
     {}
 
     /// Ctor eoSelect, eoTransform, and eoReplacement
@@ -164,7 +187,8 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
         selectTransform(_select, _transform),
         breed(selectTransform),
         mergeReduce(dummyMerge, dummyReduce),
-        replace(_replace)
+        replace(_replace),
+	popbuilder(dummyPopbuilder)
     {}
     
     /// Ctor eoSelect, eoTransform, eoMerge and eoReduce.
@@ -182,7 +206,8 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
         selectTransform(_select, _transform),
         breed(selectTransform),
         mergeReduce(_merge, _reduce),
-        replace(mergeReduce)
+        replace(mergeReduce),
+	popbuilder(dummyPopbuilder)
     {}
 
 
@@ -191,7 +216,8 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
     /// Apply a few generation of evolution to the population.
     virtual void operator()(eoPop<EOT>& _pop)
     {
-      eoPop<EOT> offspring, empty_pop;
+      eoPop<EOT> offspring = popbuilder();
+      eoPop<EOT> empty_pop;
 
       popEval(empty_pop, _pop); // A first eval of pop.
 
@@ -266,9 +292,12 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
     // to instantiate it.
     eoNoElitism<EOT>          dummyMerge;
     eoTruncate<EOT>           dummyReduce;
+    eoDummyPopCtor<EOT>       dummyPopbuilder;
 
     eoMergeReduce<EOT>        mergeReduce;
     eoReplacement<EOT>&       replace;
+
+    eoCtor<EOT, eoPop>&	      popbuilder;
 
     // Friend classes
     friend class eoIslandsEasyEA <EOT> ;
@@ -280,4 +309,3 @@ Example of a test program building an EA algorithm.
 */
 
 #endif
-
