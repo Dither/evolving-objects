@@ -97,7 +97,7 @@ public :
     size_t sz = current - dest.begin();
     if (dest.capacity() < dest.size() + how_many)
     {
-	//dest.reserve(dest.size() + how_many);
+      dest.reserve(dest.size() + how_many);
     }
 
     current = dest.begin() + sz;
