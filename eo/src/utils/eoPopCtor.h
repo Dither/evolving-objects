@@ -39,7 +39,7 @@ public:
     eoPop< EOT > operator()()
     {
 	eoPop< EOT > pop;
-	pop.resize(_size);
+	pop.reserve(_size);
 	return pop;
     }
 
