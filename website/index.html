@@ -19,35 +19,51 @@
 
 <body>
 
-<div id="alt">
-    <img style="clear:left;" src="eo_logo.png" alt="Evolving Objects logo" />
-    <div id="menu">
-        <p>C++ evolutionary computation components framework</p>
-        <script type="text/javascript" src="http://www.ohloh.net/p/16924/widgets/project_thin_badge.js"></script>
-
+    <div id="banner">
+         <img id="logo" src="eo_logo.png" alt="Evolving Objects logo" />
+        
         <div class="shortcuts">
-        <p>Shortcuts:</p>
+            <!-- <p>Shortcuts:</p> -->
         <ul>
-            <li><a href="http://sourceforge.net/project/showfiles.php?group_id=9775">Download</a></li>
+            <!--<li><a href="http://sourceforge.net/project/showfiles.php?group_id=9775">Download</a></li>-->
             <li><a href="http://eodev.sourceforge.net/eo/tutorial/html/eoTutorial.html">Tutorial</a></li>
-            <li><a href="http://eodev.sourceforge.net/eo/doc/html/index.html">API documentation</a></li>
+            <li><a href="http://eodev.sourceforge.net/eo/doc/html/index.html">Documentation</a></li>
+            <li><a href="https://lists.sourceforge.net/lists/listinfo/eodev-main/">Mailing list</a></li>
             <li><a href="http://sourceforge.net/project/?group_id=9775">Project page</a></li>
-            <li><a href="http://chat.jabberfr.org/muckl_int/index.php?room=eo">Chat with us</a></li>
+            <!--<li><a href="http://chat.jabberfr.org/muckl_int/index.php?room=eo">Chat with us</a></li>-->
             <li><a href="https://sourceforge.net/apps/trac/eodev/wiki/WikiStart">Submit a bug</a></li>
-            <li>see also <a href="http://paradiseo.gforge.inria.fr/">ParadisEO</a></li>
+            <!--<li>see also <a href="http://paradiseo.gforge.inria.fr/">ParadisEO</a></li>-->
+
+            
+
+
+
         </ul>
         </div>
 
-        <div class="shortcuts">
+
+         <!-- <p>C++ evolutionary computation components framework</p> -->
+         <p id="description">EO is a C++ open-source <em>evolutionary computation library</em>. EO helps you to write your own stochastic optimization algorithms insanely fast by assembling components.</p>
+
+
+          <a id="download" href="https://sourceforge.net/projects/eodev/files/">Download EO</a>
+         <div class="spacer"></div>
+    </div> <!-- id="banner" -->
+
+    <div id="page">
+
+<div id="alt">
+    <div id="menu">
+        <!--<div class="shortcuts">-->
+        <div>
         <ol>
-            <lh>Jump to section:</lh>
+            <!-- <lh>Jump to section:</lh> -->
             <li>
                 <ol>
                     <lh><a href="#Features">Features</a></lh>
                     <li><a href="#Component-based">Component-based</a></li>
                     <li><a href="#Main-Features">Main Features</a></li>
                     <li><a href="#Portability">Portability</a></li>
-                    <li><a href="#Presentations">Presentations</a></li>
                 </ol>
             </li>
             <li>
@@ -57,22 +73,21 @@
                     <li><a href="#Facts">Facts</a></li>
                     <li><a href="#License">License</a></li>
                     <li><a href="#Documentation">Documentation</a></li>
+                    <li><a href="#Presentations">Presentations</a></li>
                 </ol>
             </li>
             <li>
                 <ol>
-                    <a href="#Development">Development</a></li>
-                    <li><a href="#Mailing-lists">Mailing-lists</a></li>
-                    <li><a href="#Get-involved">Get involved</a></li>
-                    <li><a href="#Related-software">Related software</a></li>
-                    <li><a href="#Authors">Authors</a></li>
-                    <li><a href="#Links">Links</a></li>
+                    <a href="#Related-software">Related software</a></li>
                 </ol>
             </li>
         </ol>
     </div><!-- class=shortcuts -->
 
-        <ul class="badges">
+    <ul class="badges">
+        <li>
+        <script type="text/javascript" src="http://www.ohloh.net/p/16924/widgets/project_thin_badge.js"></script>
+        </li>
 <li>
 <!-- ++Begin Dynamic Feed Wizard Generated Code++ -->
   <!--
@@ -125,7 +140,45 @@
   </script>
 <!-- ++End Dynamic Feed Control Wizard Generated Code++ -->
 </li>
-            <li> <a href="http://sourceforge.net/projects/eodev"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=9775&amp;type=8" width="80" height="15" alt="Get Evolving Objects at SourceForge.net. Fast, secure and Free Open Source software downloads" /></a></li>
+<li> <a href="http://sourceforge.net/projects/eodev"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=9775&amp;type=8" width="80" height="15" alt="Get Evolving Objects at SourceForge.net. Fast, secure and Free Open Source software downloads" /></a></li>
+
+<li>
+<script src="http://widgets.twimg.com/j/2/widget.js"></script>
+<script>
+new TWTR.Widget({
+  version: 2,
+  type: 'search',
+  search: 'eodev',
+  interval: 6000,
+  title: 'EO',
+  subject: 'Evolving Objects Framework',
+  width: 'auto',
+  height: 300,
+  theme: {
+    shell: {
+      background: '#3366CC',
+      color: '#ffffff'
+    },
+    tweets: {
+      background: '#ffffff',
+      color: '#444444',
+      links: '#1985b5'
+    }
+  },
+  features: {
+    scrollbar: false,
+    loop: true,
+    live: true,
+    hashtags: true,
+    timestamp: true,
+    avatars: true,
+    toptweets: true,
+    behavior: 'default'
+  }
+}).render().start();
+</script>
+</li>
+
 </ul>
     
     </div> <!-- id=menu -->
@@ -134,12 +187,14 @@
 <div id="main">
 
 
-<h1><a name="Plan"></a>Evolving Objects (EO): an Evolutionary Computation Framework</h1>
+    <div id="introduction">
 
-    <p>EO is <em>a template-based, ANSI-C++ evolutionary computation library</em> which helps you to write your own stochastic optimization algorithms insanely fast.</p>
+    <div id="intro_plan">
 
+<h1><a name="Plan"></a>An Evolutionary Computation Framework</h1>
+<!--
     <div style="font-size:1.5em;color:red;border:thin solid red; background-color:#fee;margin:1em;padding:2em;text-align:center;">We have lost all the mailing-list subscriptions in a crash, please subscribe again on the <a href="https://lists.sourceforge.net/lists/listinfo/eodev-main">eodev-main subscription page</a>.</div>
-
+    -->
     <p>Evolutionary algorithms forms a family of algorithms inspired by the theory of evolution, that solve various problems. 
     They evolve a set of solutions to a given problem, in order to produce the best results.
     These are stochastic algorithms, because they iteratively use random processes.
@@ -148,8 +203,20 @@
     </p>
 
     <p>With the help of EO, you can easily design evolutionary algorithms that will find solutions to virtually all kind of hard optimization problems, from continuous to combinatorial ones.</p>
+     
+    </div> <!-- id="intro_plan" -->
 
-    <p>If you want to know how to help us to improve EO, the easiest way is to click on the following button:
+    <div id="intro_involved">
+
+    <h1><a name="be-involved"></a>Be involved</h1>
+
+<p>EO is an open development effort; that is why we have
+created a mailing list to discuss future developments, solve technical
+problems, announce releases, publish patches, and discuss evolutionary
+computation in general. Browse the archives or join the <a
+href="http://sourceforge.net/mail/?group_id=9775">EO mailing list</a>.</p>
+      
+    <p>If you want to know how to help us to improve EO, the easiest way is to click on the following button and check what can be done by newcomers:
 
 <form method="POST" action="http://openhatch.org/+do/project.views.wanna_help_do">
     <input type="hidden" name="from_offsite" value="True" />
@@ -172,8 +239,13 @@
 <br />
 <br />
 </p>
+  
 
-<p>If you need immediate support or have any question, you can join us on the official chatroom. Just go on our <a href="http://chat.jabberfr.org/muckl_int/index.php?room=eo">webchat interface</a> and enter your nick. If you already have an XMPP account (Jabber or Google Talk, for example), you can directly connect to the <a href="xmpp:eo@chat.jabberfr.org">eo@chat.jabberfr.org</a> MUC with your favorite client.</p>
+<p>If you need immediate support or have any question, you can also join us on the official chatroom. Just go on our <a href="http://chat.jabberfr.org/muckl_int/index.php?room=eo">webchat interface</a> and enter your nick. If you already have an XMPP account (Jabber or Google Talk, for example), you can directly connect to the <a href="xmpp:eo@chat.jabberfr.org">eo@chat.jabberfr.org</a> MUC with your favorite client.</p>
+
+    </div> <!-- id="intro_involved" -->
+    <div class="spacer"></div>
+</div> <!-- id="introduction" -->
 
 <h1><a name="Features"></a>Features <a href="#Plan">⤒</a></h1>
 
@@ -293,67 +365,6 @@
         is a good chance that eo-0.9.3z.1 works. It is tested on Linux
         with gcc-2.9x and several systems (IRIX, Solaris) with egcs. </p>
         
-
-    <h2><a name="Presentations"></a>Presentations</h2>
- 
-        <p> A functional and "philosophical" overview of EO was presented at <a
-        href="http://www.cmap.polytechnique.fr/%7Eea01/">EA'01 conference</a>.
-        You can download <a
-        href="http://eodev.sourceforge.net/eo/doc/EO_EA2001.pdf">the paper</a>
-        or <a href="http://eodev.sourceforge.net/eo/doc/LeCreusot.pdf">the
-        slides</a>, or browse them right here:</p>
-        
-<div style="text-align:center;" id="__ss_4878872"><strong style="display:block;margin:12px 0 4px"><a href="http://www.slideshare.net/nojhan/evolving-objects-yet-another-evolutionary-computation-library" title="Evolving Objects: Yet Another Evolutionary Computation Library?">Evolving Objects: Yet Another Evolutionary Computation Library?</a></strong><object id="__sse4878872" width="425" height="355"><param name="movie" value="http://static.slidesharecdn.com/swf/ssplayer2.swf?doc=lecreusot-100731121355-phpapp01&stripped_title=evolving-objects-yet-another-evolutionary-computation-library" /><param name="allowFullScreen" value="true"/><param name="allowScriptAccess" value="always"/><embed name="__sse4878872" src="http://static.slidesharecdn.com/swf/ssplayer2.swf?doc=lecreusot-100731121355-phpapp01&stripped_title=evolving-objects-yet-another-evolutionary-computation-library" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="355"></embed></object></div>
-
-
-        <p>You can also read this <a href="http://geneura.ugr.es/~jmerelo/GAPPT/index.html">
-        PowerPoint presentation</a>, that shows the EO philosophy. 
-        It includes a Visual Basic macro for evolving objects in Visual Basic
-        for Applications. </p>
-
-        <p>EO is described in the following scientific article:<br />
-            <blockquote>M. Keijzer, J.J. Merelo, G. Romero, G., M. Schoenauer, 
-            <a href= "http://www.lri.fr/~marc/EO/EO-EA01.ps.gz">"Evolving
-            objects: A general purpose evolutionary computation
-            library",</a> <i>Artificial Evolution</i>, <b>2310</b>, 829--888 (2002).</blockquote>
-        </p>
-        
-<p>
-<font face="monospace">
-@<font color="#0000ff">Article</font>{<font color="#ff00ff">Keijzer2001</font>,<br>
-&nbsp;&nbsp;<font color="#a52a2a">title</font>&nbsp;=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;Evolving Objects: A General Purpose Evolutionary Computation Library &quot;,<br>
-&nbsp;&nbsp;<font color="#a52a2a">author</font>&nbsp;=&nbsp;&nbsp;&nbsp; &quot;Maarten Keijzer and J. J. Merelo and G. Romero and M. Schoenauer&quot;,<br>
-&nbsp;&nbsp;<font color="#a52a2a">journal</font>&nbsp;=&nbsp;&nbsp;&nbsp;&quot;Artificial Evolution&quot;,<br>
-&nbsp;&nbsp;<font color="#a52a2a">year</font>&nbsp;=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;2002&quot;,<br>
-&nbsp;&nbsp;<font color="#a52a2a">volume</font>&nbsp;=&nbsp;&nbsp;&nbsp; &quot;2310&quot;,<br>
-&nbsp;&nbsp;<font color="#a52a2a">pages</font>&nbsp;=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;829--888&quot;,<br>
-&nbsp;&nbsp;<font color="#a020f0">keywords</font>&nbsp;=&nbsp; &quot;genetic algorithms, genetic programming, evolutionary computation, metaheuristic, computational intelligence, optimization&quot;,<br>
-&nbsp;&nbsp;<font color="#a020f0">URL</font>&nbsp;=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;<a href="http://www.lri.fr/~marc/EO/EO-EA01.ps.gz">http://www.lri.fr/~marc/EO/EO-EA01.ps.gz</a>&quot;,<br>
-&nbsp;&nbsp;<font color="#ff00ff">size</font>&nbsp;=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;12 pages&quot;,<br>
-&nbsp;&nbsp;<font color="#a020f0">abstract</font>&nbsp;=&nbsp; &quot;This paper presents the evolving objects library<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (EOlib), an object-oriented framework for evolutionary<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; computation (EC)&nbsp;that aims to provide a flexible set of<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; classes to build EC applications. EOlib design<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; objective is to be able to evolve any object in which<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fitness makes sense.&quot;,<br>
-}<br>
-<br>
-</font>
-</p>
-        
-        <p>Here is a list of some known publications that used EO:</p>
-        <ul class="publications">
-            <li>J.J. Gilijamse, J. Küpper, S. Hoekstra, S.Y.T. van de Meerakker, G. Meijer,
-              <a href= "http://dx.doi.org/10.1103/PhysRevA.73.063410">Optimizing the Stark-decelerator beamline for the trapping of
-              cold molecules using evolutionary strategies</a>,
-              <i> Physical Review</i>, A <b>73</b>, 063410 (2006). <br/>
-              Also available at <a href= "http://arxiv.org/abs/physics/0603108"><i>arXiv</i>
-                  physics/0603108 (2006)</a>.</li>
-              <li>Johann Dreo, <a href="http://www.nojhan.net/pro/spip.php?article31">Using Performance Fronts for Parameter Setting of Stochastic Metaheuristics</a>, <i>Genetic and Evolutionary Computation Conference</i>, (2009).</li>
-              <li>Jacques Bibaï, Pierre Savéant, Marc Schoenauer, Vincent Vidal, <a href="http://www.aaai.org/ocs/index.php/ICAPS/ICAPS10/paper/view/1414">An Evolutionary Metaheuristic Based on State Decomposition for Domain-Independent Satisficing Planning</a>, <i>Twentieth International Conference on Automated Planning and Scheduling </i> (2010).</li>
-              <li>Jacques Bibaï, Pierre Savéant, Marc Schoenauer, Vincent Vidal, <a href="">An Evolutionary Metaheuristic for Domain-Independent Satisficing Planning</a>, <i>Genetic and Evolutionary Computation Conference</i> (2010). <em>Silver Medal at the Human-Competitive Competition</em></li>
-      </ul>
-      
         
 
 <h1><a name="Code"></a>Code <a href="#Plan">⤒</a></h1>
@@ -432,16 +443,69 @@
         detail.</p>
 
 
-<h1><a name="Development"></a>Development <a href="#Plan">⤒</a></h1>
-
-    <h2><a name="Mailing-lists"></a>Mailing-lists</h2>
-
-        <p>EO is an open development effort; that is why we have
-        created mailing lists to discuss future developments, solve technical
-        problems, announce releases, publish patches, and discuss evolutionary
-        computation in general. Browse the archives or join the <a
-        href="http://sourceforge.net/mail/?group_id=9775">EO mailing lists</a>.</p>
+    <h2><a name="Presentations"></a>Presentations</h2>
+ 
+        <p> A functional and "philosophical" overview of EO was presented at <a
+        href="http://www.cmap.polytechnique.fr/%7Eea01/">EA'01 conference</a>.
+        You can download <a
+        href="http://eodev.sourceforge.net/eo/doc/EO_EA2001.pdf">the paper</a>
+        or <a href="http://eodev.sourceforge.net/eo/doc/LeCreusot.pdf">the
+        slides</a>, or browse them right here:</p>
         
+<div style="text-align:center;" id="__ss_4878872"><strong style="display:block;margin:12px 0 4px"><a href="http://www.slideshare.net/nojhan/evolving-objects-yet-another-evolutionary-computation-library" title="Evolving Objects: Yet Another Evolutionary Computation Library?">Evolving Objects: Yet Another Evolutionary Computation Library?</a></strong><object id="__sse4878872" width="425" height="355"><param name="movie" value="http://static.slidesharecdn.com/swf/ssplayer2.swf?doc=lecreusot-100731121355-phpapp01&stripped_title=evolving-objects-yet-another-evolutionary-computation-library" /><param name="allowFullScreen" value="true"/><param name="allowScriptAccess" value="always"/><embed name="__sse4878872" src="http://static.slidesharecdn.com/swf/ssplayer2.swf?doc=lecreusot-100731121355-phpapp01&stripped_title=evolving-objects-yet-another-evolutionary-computation-library" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="355"></embed></object></div>
+
+
+        <p>You can also read this <a href="http://geneura.ugr.es/~jmerelo/GAPPT/index.html">
+        PowerPoint presentation</a>, that shows the EO philosophy. 
+        It includes a Visual Basic macro for evolving objects in Visual Basic
+        for Applications. </p>
+
+        <p>EO is described in the following scientific article:<br />
+            <blockquote>M. Keijzer, J.J. Merelo, G. Romero, G., M. Schoenauer, 
+            <a href= "http://www.lri.fr/~marc/EO/EO-EA01.ps.gz">"Evolving
+            objects: A general purpose evolutionary computation
+            library",</a> <i>Artificial Evolution</i>, <b>2310</b>, 829--888 (2002).</blockquote>
+        </p>
+        
+<p>
+<font face="monospace">
+@<font color="#0000ff">Article</font>{<font color="#ff00ff">Keijzer2001</font>,<br>
+&nbsp;&nbsp;<font color="#a52a2a">title</font>&nbsp;=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;Evolving Objects: A General Purpose Evolutionary Computation Library &quot;,<br>
+&nbsp;&nbsp;<font color="#a52a2a">author</font>&nbsp;=&nbsp;&nbsp;&nbsp; &quot;Maarten Keijzer and J. J. Merelo and G. Romero and M. Schoenauer&quot;,<br>
+&nbsp;&nbsp;<font color="#a52a2a">journal</font>&nbsp;=&nbsp;&nbsp;&nbsp;&quot;Artificial Evolution&quot;,<br>
+&nbsp;&nbsp;<font color="#a52a2a">year</font>&nbsp;=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;2002&quot;,<br>
+&nbsp;&nbsp;<font color="#a52a2a">volume</font>&nbsp;=&nbsp;&nbsp;&nbsp; &quot;2310&quot;,<br>
+&nbsp;&nbsp;<font color="#a52a2a">pages</font>&nbsp;=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;829--888&quot;,<br>
+&nbsp;&nbsp;<font color="#a020f0">keywords</font>&nbsp;=&nbsp; &quot;genetic algorithms, genetic programming, evolutionary computation, metaheuristic, computational intelligence, optimization&quot;,<br>
+&nbsp;&nbsp;<font color="#a020f0">URL</font>&nbsp;=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;<a href="http://www.lri.fr/~marc/EO/EO-EA01.ps.gz">http://www.lri.fr/~marc/EO/EO-EA01.ps.gz</a>&quot;,<br>
+&nbsp;&nbsp;<font color="#ff00ff">size</font>&nbsp;=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;12 pages&quot;,<br>
+&nbsp;&nbsp;<font color="#a020f0">abstract</font>&nbsp;=&nbsp; &quot;This paper presents the evolving objects library<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (EOlib), an object-oriented framework for evolutionary<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; computation (EC)&nbsp;that aims to provide a flexible set of<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; classes to build EC applications. EOlib design<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; objective is to be able to evolve any object in which<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fitness makes sense.&quot;,<br>
+}<br>
+<br>
+</font>
+</p>
+        
+        <p>Here is a list of some known publications that used EO:</p>
+        <ul class="publications">
+            <li>J.J. Gilijamse, J. Küpper, S. Hoekstra, S.Y.T. van de Meerakker, G. Meijer,
+              <a href= "http://dx.doi.org/10.1103/PhysRevA.73.063410">Optimizing the Stark-decelerator beamline for the trapping of
+              cold molecules using evolutionary strategies</a>,
+              <i> Physical Review</i>, A <b>73</b>, 063410 (2006). <br/>
+              Also available at <a href= "http://arxiv.org/abs/physics/0603108"><i>arXiv</i>
+                  physics/0603108 (2006)</a>.</li>
+              <li>Johann Dreo, <a href="http://www.nojhan.net/pro/spip.php?article31">Using Performance Fronts for Parameter Setting of Stochastic Metaheuristics</a>, <i>Genetic and Evolutionary Computation Conference</i>, (2009).</li>
+              <li>Jacques Bibaï, Pierre Savéant, Marc Schoenauer, Vincent Vidal, <a href="http://www.aaai.org/ocs/index.php/ICAPS/ICAPS10/paper/view/1414">An Evolutionary Metaheuristic Based on State Decomposition for Domain-Independent Satisficing Planning</a>, <i>Twentieth International Conference on Automated Planning and Scheduling </i> (2010).</li>
+              <li>Jacques Bibaï, Pierre Savéant, Marc Schoenauer, Vincent Vidal, <a href="">An Evolutionary Metaheuristic for Domain-Independent Satisficing Planning</a>, <i>Genetic and Evolutionary Computation Conference</i> (2010). <em>Silver Medal at the Human-Competitive Competition</em></li>
+      </ul>
+      
+
+<!--
+<h1><a name="Development"></a>Development <a href="#Plan">⤒</a></h1>
 
     <h2><a name="Get-involved"></a>Get involved</h2>
 
@@ -462,8 +526,9 @@
           <li> <a href="https://sourceforge.net/projects/eodev/support">Technical Support</a></li>
           <li> <a href="https://sourceforge.net/scm/?type=git&group_id=9775">Code repository</a></li>
         </ul>
+        -->
 
-    <h2><a name="Related-software"></a>Related software</h2>
+    <h1><a name="Related-software"></a>Related software</h1>
 
         <p>The softwares listed here are using EO, but they are not maintained by the EO team. 
         They may not be free softwares or may even be outdated.</p>
@@ -487,7 +552,22 @@
 
 
         
+<!--
+    <h2><a name="Links"></a>Links</h2>
 
+        <ul>
+          <li><a href="http://coco.gforge.inria.fr/">COCO (COmparing Continuous Optimisers)</a>, a platform for systematic and sound comparisons of real-parameter global optimisers. COCO provides benchmark function testbeds and tools for processing and visualizing data generated by one or several optimizers.</li>
+          <li><a href="http://www.aip.de/~ast/EvolCompFAQ" >The Hitch-Hiker's Guide to Evolutionary Computation</a>, FAQ for <a href="news:comp.ai.genetic">comp.ai.genetic</a>.</li>
+          <li>Wikipedia entries on <a href="http://en.wikipedia.org/wiki/Evolutionary_algorithm">Evolutionary algorithms</a>.</li>
+          <li>Charles Darwin: <a href="http://en.wikipedia.org/wiki/The_Origin_of_Species" >The Origin of Species</a>.</li>
+      </ul>
+-->
+
+  </div> <!-- id=main -->
+  <div class="spacer"></div>
+</div> <!-- id="page" -->
+
+<div id="footer">
 
     <h2><a name="Authors"></a>Authors</h2>
     
@@ -513,17 +593,7 @@
         <p>The project is now maintained by <a href="http://johann.dreo.fr">Johann Dréo</a>,
         working on it with the help of <a href="http://caner.candan.fr">Caner Candan</a>.</p>
 
-
-    <h2><a name="Links"></a>Links</h2>
-
-        <ul>
-          <li><a href="http://coco.gforge.inria.fr/">COCO (COmparing Continuous Optimisers)</a>, a platform for systematic and sound comparisons of real-parameter global optimisers. COCO provides benchmark function testbeds and tools for processing and visualizing data generated by one or several optimizers.</li>
-          <li><a href="http://www.aip.de/~ast/EvolCompFAQ" >The Hitch-Hiker's Guide to Evolutionary Computation</a>, FAQ for <a href="news:comp.ai.genetic">comp.ai.genetic</a>.</li>
-          <li>Wikipedia entries on <a href="http://en.wikipedia.org/wiki/Evolutionary_algorithm">Evolutionary algorithms</a>.</li>
-          <li>Charles Darwin: <a href="http://en.wikipedia.org/wiki/The_Origin_of_Species" >The Origin of Species</a>.</li>
-      </ul>
-
-  </div> <!-- id=main -->
+</div> <!-- id="footer" -->
 
 
 <!-- Piwik -->

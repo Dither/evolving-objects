@@ -19,13 +19,44 @@ html {
 }
 
 body {
-    color: #333333;
+    background-color:#235;
+    color:#ccc;
     font-family:Arial, sans-serif;
     font-size:0.83em;
+    padding:0px;
+}
 
-    background-image:url("fronde.png");
-    background-repeat:no-repeat;
-    background-position:bottom left;
+#banner {
+    padding:2em;
+    font-size:1.1em;
+    width:800px;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+img#logo {
+    float:left;
+}
+
+#banner #description {
+    font-family:serif;
+    font-size:1.2em;
+    width:50%;
+    float:left;
+    margin:2em;
+}
+
+#banner #download {
+    background-color:#36C;
+    color:white;
+    padding:1em;
+    margin-top:8em;
+    float:right;
+    -moz-border-radius:10px;
+    border-top:2px solid #58e;
+    border-left:2px solid #58e;
+    border-bottom:2px solid #14a;
+    border-right:2px solid #14a;
 }
 
 #alt {
@@ -36,8 +67,7 @@ body {
 }
 
 .shortcuts {
-    text-align:left;
-    clear:both;
+    text-align:right;
 }
 
 .shortcuts p {
@@ -46,7 +76,24 @@ body {
 }
 
 .shortcuts ul {
-    margin-top:0em;
+    list-style-type:none;
+    display:inline;
+}
+
+.shortcuts ul li {
+    display:inline;
+    margin:0px;
+}
+
+.shortcuts a {
+    padding:1em;
+    color:white;
+}
+
+.shortcuts a:hover {
+    color:white;
+    background-color:#36C;
+    text-decoration:none;
 }
 
 ul.badges {
@@ -63,9 +110,31 @@ ul.badges li {
     padding:0.5em;
 }
 
+
+#page {
+    clear:left;
+    margin:0px;
+    padding:1em;
+    background-color:white;
+    color: #333;
+    background-image:url("fronde.png");
+    background-repeat:no-repeat;
+    background-position:bottom left;
+}
+
 #main {
     float:right;
     width:75%;
+}
+
+#intro_plan {
+    width:45%;
+    float:left;
+}
+
+#intro_involved {
+    width:45%;
+    float:right;
 }
 
 blockquote {
@@ -165,6 +234,10 @@ ul#login li {
     display:inline;
 }
 
+#menu {
+    text-align:left;
+}
+
 ul#menu {
     clear:both;
     margin: 0;
@@ -195,16 +268,6 @@ ul#menu li a {
 ul#menu li a:hover { background: #3366CC; color: #FFFFFF; }
 ul#menu a.selected:link { background: #3366CC; color: #FFFFFF; }
 ul#menu a.selected:visited { background: #3366CC; color: #FFFFFF; }
-
-#page {
-    font-size:1.0em;
-    padding:1em;
-    margin:1em;
-    /*width:650px;
-    float:left;*/
-    clear:left;
-}
-
 
 #foot {
     color:#000000;
@@ -274,4 +337,16 @@ ul#menu a.selected:visited { background: #3366CC; color: #FFFFFF; }
     text-align:left;
     font-weight:normal;
     font-style:italic;
+}
+
+#footer {
+    padding:2em;
+}
+
+#footer a {
+    color:white;
+}
+
+.spacer {
+    clear:both;
 }
