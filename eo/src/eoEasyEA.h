@@ -36,8 +36,9 @@
 #include <eoBreed.h>
 #include <eoMergeReduce.h>
 #include <eoReplacement.h>
-
-
+#include <omp.h>
+#include <fstream>
+#include <sstream>
 
 template <class EOT> class eoIslandsEasyEA ;
 
@@ -185,7 +186,7 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
         mergeReduce(dummyMerge, dummyReduce),
         replace(_replace)
     {}
-    
+
     /// Ctor eoSelect, eoTransform, eoMerge and eoReduce.
     eoEasyEA(
       eoContinue<EOT>& _continuator,
@@ -210,6 +211,14 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
     /// Apply a few generation of evolution to the population.
     virtual void operator()(eoPop<EOT>& _pop)
     {
+	double elapsed_time = 0;
+	double evaluation_elapsed_time = 0;
+	double variation_elapsed_time = 0;
+	double replace_elapsed_time = 0;
+	unsigned int ngenerations = 0;
+
+	double start_time = omp_get_wtime();
+
       _pop.reserve(offspring.capacity());
 
       eoPop<EOT> empty_pop;
@@ -223,11 +232,32 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
               unsigned pSize = _pop.size();
               offspring.clear(); // new offspring
 
-              breed(_pop, offspring);
+	      {
+		  double start_time = omp_get_wtime();
 
-              popEval(_pop, offspring); // eval of parents + offspring if necessary
+		  breed(_pop, offspring);
 
-              replace(_pop, offspring); // after replace, the new pop. is in _pop
+		  double end_time = omp_get_wtime();
+		  variation_elapsed_time += end_time - start_time;
+	      }
+
+	      {
+		  double start_time = omp_get_wtime();
+
+		  popEval(_pop, offspring); // eval of parents + offspring if necessary
+
+		  double end_time = omp_get_wtime();
+		  evaluation_elapsed_time += end_time - start_time;
+	      }
+
+	      {
+		  double start_time = omp_get_wtime();
+
+		  replace(_pop, offspring); // after replace, the new pop. is in _pop
+
+		  double end_time = omp_get_wtime();
+		  replace_elapsed_time += end_time - start_time;
+	      }
 
               if (pSize > _pop.size())
                 throw std::runtime_error("Population shrinking!");
@@ -241,8 +271,21 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
               s.append( " in eoEasyEA");
               throw std::runtime_error( s );
             }
+
+	  ++ngenerations;
+
         }
       while ( continuator( _pop ) );
+
+      double end_time = omp_get_wtime();
+      elapsed_time += end_time - start_time;
+
+      std::cout << "Evaluation elapsed time: " << evaluation_elapsed_time << std::endl;
+      std::cout << "Variation elapsed time: " << variation_elapsed_time << std::endl;
+      std::cout << "Replace elapsed time: " << replace_elapsed_time << std::endl;
+      std::cout << "Elapsed time: " << elapsed_time << std::endl;
+      std::cout << "# generations: " << ngenerations << std::endl;
+
     }
 
   protected :
