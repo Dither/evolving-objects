@@ -78,6 +78,26 @@ void apply(eoUF<EOT&, void>& _proc, std::vector<EOT>& _pop)
 #endif // !_OPENMP
 }
 
+// template <class EOT>
+// void apply(eoUF<EOT&, void>& _proc, std::vector<EOT>& _pop)
+// {
+//     size_t size = _pop.size();
+
+//     eoLogger log;
+//     log << eo::file("evaluation_times.txt");
+
+// #pragma omp parallel for schedule(dynamic) if(eo::parallel.isEnabled())
+//     for (size_t i = 0; i < size; ++i)
+// 	{
+// 	    double t1 = omp_get_wtime();
+// 	    _proc(_pop[i]);
+// 	    double t2 = omp_get_wtime();
+
+// #pragma omp critical
+// 	    log << t2-t1 << std::endl;
+// 	}
+// }
+
 /**
   This is a variant of apply<EOT> which is called in parallel
   thanks to OpenMP.
