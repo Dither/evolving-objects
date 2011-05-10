@@ -59,7 +59,9 @@ INCLUDE(FindGnuplot)
 
 INCLUDE(CheckLibraryExists)
 
-INCLUDE(ConfigureChecks.cmake)
+IF(UNIX)
+  INCLUDE(ConfigureChecks.cmake)
+ENDIF(UNIX)
 
 INCLUDE(Dart OPTIONNAL)
 
