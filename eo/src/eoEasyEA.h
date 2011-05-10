@@ -98,7 +98,7 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
         mergeReduce(dummyMerge, dummyReduce),
         replace(_replace)
     {
-	offspring.reserve(_offspringSize); // This line avoids an incremental resize of offsprings.
+        offspring.reserve(_offspringSize); // This line avoids an incremental resize of offsprings.
     }
 
     /*
@@ -136,8 +136,8 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
     {}
 
 
-	/// Ctor eoSelect, eoTransform, eoReplacement and an eoPopEval
-	eoEasyEA(
+        /// Ctor eoSelect, eoTransform, eoReplacement and an eoPopEval
+        eoEasyEA(
       eoContinue<EOT>& _continuator,
       eoPopEvalFunc<EOT>& _eval,
       eoSelect<EOT>& _select,
@@ -334,7 +334,7 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
     eoMergeReduce<EOT>        mergeReduce;
     eoReplacement<EOT>&       replace;
 
-    eoPop<EOT>		      offspring;
+    eoPop<EOT>                offspring;
 
     // Friend classes
     friend class eoIslandsEasyEA <EOT> ;
@@ -346,4 +346,3 @@ Example of a test program building an EA algorithm.
 */
 
 #endif
-
