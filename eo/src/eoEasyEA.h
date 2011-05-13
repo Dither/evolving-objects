@@ -79,7 +79,8 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
         selectTransform(dummySelect, dummyTransform),
         breed(_breed),
         mergeReduce(dummyMerge, dummyReduce),
-        replace(_replace)
+        replace(_replace),
+	isFirstCall(true)
     {}
 
     /** Ctor taking a breed and merge, an overload of ctor to define an offspring size */
@@ -96,7 +97,8 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
         selectTransform(dummySelect, dummyTransform),
         breed(_breed),
         mergeReduce(dummyMerge, dummyReduce),
-        replace(_replace)
+        replace(_replace),
+	isFirstCall(true)
     {
         offspring.reserve(_offspringSize); // This line avoids an incremental resize of offsprings.
     }
@@ -114,7 +116,9 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
       selectTransform (dummySelect, dummyTransform),
       breed (_breed),
       mergeReduce (dummyMerge, dummyReduce),
-      replace (_replace) {
+      replace (_replace),
+      isFirstCall(true)
+    {
 
     }
     */
@@ -132,7 +136,8 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
         selectTransform(dummySelect, dummyTransform),
         breed(_breed),
         mergeReduce(dummyMerge, dummyReduce),
-        replace(_replace)
+        replace(_replace),
+	isFirstCall(true)
     {}
 
 
@@ -150,7 +155,8 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
         selectTransform(_select, _transform),
         breed(selectTransform),
         mergeReduce(dummyMerge, dummyReduce),
-        replace(_replace)
+        replace(_replace),
+	isFirstCall(true)
     {}
 
     /// Ctor eoBreed, eoMerge and eoReduce.
@@ -167,7 +173,8 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
         selectTransform(dummySelect, dummyTransform),
         breed(_breed),
         mergeReduce(_merge, _reduce),
-        replace(mergeReduce)
+        replace(mergeReduce),
+	isFirstCall(true)
     {}
 
     /// Ctor eoSelect, eoTransform, and eoReplacement
@@ -184,7 +191,8 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
         selectTransform(_select, _transform),
         breed(selectTransform),
         mergeReduce(dummyMerge, dummyReduce),
-        replace(_replace)
+        replace(_replace),
+	isFirstCall(true)
     {}
 
     /// Ctor eoSelect, eoTransform, eoMerge and eoReduce.
@@ -202,7 +210,8 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
         selectTransform(_select, _transform),
         breed(selectTransform),
         mergeReduce(_merge, _reduce),
-        replace(mergeReduce)
+        replace(mergeReduce),
+	isFirstCall(true)
     {}
 
 
@@ -211,6 +220,14 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
     /// Apply a few generation of evolution to the population.
     virtual void operator()(eoPop<EOT>& _pop)
     {
+	if (isFirstCall)
+	    {
+		size_t total_capacity = _pop.capacity() + offspring.capacity();
+		_pop.reserve(total_capacity);
+		offspring.reserve(total_capacity);
+		isFirstCall = false;
+	    }
+
 	double elapsed_time = 0;
 	double evaluation_elapsed_time = 0;
 	double variation_elapsed_time = 0;
@@ -218,8 +235,6 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
 	unsigned int ngenerations = 0;
 
 	double start_time = omp_get_wtime();
-
-      _pop.reserve(offspring.capacity());
 
       eoPop<EOT> empty_pop;
 
@@ -335,6 +350,8 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
     eoReplacement<EOT>&       replace;
 
     eoPop<EOT>                offspring;
+
+    bool		      isFirstCall;
 
     // Friend classes
     friend class eoIslandsEasyEA <EOT> ;
