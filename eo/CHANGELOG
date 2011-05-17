@@ -1,3 +1,117 @@
+Merge: b6a3d2f cdd2a0d
+Author: nojhan <nojhan@gmail.com>
+Date:   Mon May 16 16:11:33 2011 +0200
+
+    Merge branch 'master' of ssh://localhost:8479/gitroot/eodev/eodev into eo_1.2.0
+
+Author: Caner Candan <caner.candan@thalesgroup.com>
+Date:   Fri May 13 11:53:47 2011 +0200
+
+    * eoEPReduce: moved the vector tmPop in attribute in order to keep memory capacity and avoir allocation/deallocation at each call to this function
+
+Author: Caner Candan <caner.candan@thalesgroup.com>
+Date:   Fri May 13 11:37:49 2011 +0200
+
+    * eoEasyEA: reserving same size allocation for parents and offspring in order to forcast the swapping in replacement operator
+
+Merge: 65b62e9 4703121
+Author: Caner Candan <caner.candan@thalesgroup.com>
+Date:   Thu May 12 10:44:57 2011 +0200
+
+    Merge branch 'master' of ssh://localhost:9001/gitroot/eodev/eodev
+
+Author: Caner Candan <caner.candan@thalesgroup.com>
+Date:   Thu May 12 10:39:36 2011 +0200
+
+    + utils/eoParserLogger.h: added deprecated class with a warning message
+
+Author: Caner Candan <caner.candan@thalesgroup.com>
+Date:   Thu May 12 10:15:18 2011 +0200
+
+    * eoDualFitness: overrided the operator equal in order to compare equality between two dual fitness
+
+Merge: 3138657 25f675b
+Author: nojhan <nojhan@gmail.com>
+Date:   Wed May 11 22:08:57 2011 +0200
+
+    Merge branch 'master' of ssh://eodev.git.sourceforge.net/gitroot/eodev/eodev
+
+Author: nojhan <nojhan@gmail.com>
+Date:   Wed May 11 21:59:29 2011 +0200
+
+    remove the ML warning ; add a download button
+
+Author: Caner Candan <caner.candan@thalesgroup.com>
+Date:   Wed May 11 15:29:29 2011 +0200
+
+    * eoLogger: last issues fixed
+
+Author: Caner Candan <caner.candan@thalesgroup.com>
+Date:   Wed May 11 15:28:41 2011 +0200
+
+    * indentation, whitespace cleanup
+
+Author: Caner Candan <caner.candan@thalesgroup.com>
+Date:   Wed May 11 14:56:47 2011 +0200
+
+    * eoLogger: replaced ssize_t to size_t fixing compatibility issue on Windows
+
+Author: Caner Candan <caner.candan@thalesgroup.com>
+Date:   Wed May 11 14:52:24 2011 +0200
+
+    a small update on build tutorial script file
+
+Author: Caner Candan <caner.candan@thalesgroup.com>
+Date:   Wed May 11 14:49:42 2011 +0200
+
+    * eoLogger: replaced _INTERIX by _WIN32 in order to use io.h header
+
+Author: Caner Candan <caner.candan@thalesgroup.com>
+Date:   Wed May 11 14:47:35 2011 +0200
+
+    ticker #11 fixed: Merge eoParser and eoParserLogger
+
+Author: Caner Candan <caner.candan@thalesgroup.com>
+Date:   Wed May 11 12:06:54 2011 +0200
+
+    * eoLogger.h: indentation
+
+Author: Caner Candan <caner.candan@thalesgroup.com>
+Date:   Wed May 11 12:00:08 2011 +0200
+
+    * eoParserLogger.h: added editor parameters header
+
+Author: nojhan <nojhan@gmail.com>
+Date:   Tue May 10 23:38:56 2011 +0200
+
+    next version is 1.3.0
+
+Author: nojhan <nojhan@gmail.com>
+Date:   Tue May 10 23:15:48 2011 +0200
+
+    version 1.2.0-beta2
+
+Author: nojhan <nojhan@gmail.com>
+Date:   Tue May 10 23:08:23 2011 +0200
+
+    updated release protocol
+
+Merge: 65d966b e728665
+Author: Caner Candan <caner.candan@thalesgroup.com>
+Date:   Tue May 10 16:33:55 2011 +0200
+
+    Merge branch 'master' of ssh://localhost:9001/gitroot/eodev/eodev
+
+Author: Caner Candan <caner.candan@thalesgroup.com>
+Date:   Tue May 10 16:32:08 2011 +0200
+
+    * CHANGELOG
+
+Author: nojhan <nojhan@gmail.com>
+Date:   Tue May 10 15:59:40 2011 +0200
+
+    small corrections
+
 Author: Caner Candan <caner.candan@thalesgroup.com>
 Date:   Tue May 10 15:33:42 2011 +0200
 
