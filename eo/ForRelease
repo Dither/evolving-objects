@@ -1,19 +1,45 @@
-In order to create a new release from the current cvs sources perform the
+In order to create a new release from the current repository, perform the
 following steps:
 
-- Set version number in configure.in and doc/eo.cfg
+- If necessary, create a branch named "eo_x.y.z"
+- Set version number in eo-conf.cmake
 - Check/update NEWS file, set release date and version in NEWS.
-- Run `make check && make dist`
-- Test distribution (unpack, configure, make check)
-- Tag released code in cvs, in order to allow a branch to be created at that
-  version if the necessity will arise later
-- Put distribution files at SourceForge
+- use the "archive_current.sh" script to create the source archive
+- Build the packages
+- Put source archive and packages files at SourceForge
 - Post news on SourceForge project-page
 - Send announcement to mailing lists
-- Bump version number to next x.y.z-cvs in configure.in and doc/eo.cfg
+- Bump version number to next "x.y.z-edge" in eo-conf.cmake
 
-# Local Variables:
-# coding: iso-8859-1
-# mode: text
-# fill-column: 80
-# End:
+
+When reaching stable versions:
+- prepare a message with the following template:
+    -----8<-----
+    A new version of the "Evolving Objects" framework is available.
+
+    EO is a template-based, C++ evolutionary computation library which
+    helps you to write your own stochastic optimization algorithms
+    insanely fast.
+
+    Learn more about EO on the official website:
+    http://eodev.sourceforge.net/
+
+    You will find the release x.y.z at the following address:
+    https://sourceforge.net/projects/eodev/files/eo/
+
+    Here is a summary of the change log:
+    - XXXXX
+    - and more…
+
+    Do not hesitate to submit the bugs you will face:
+    https://sourceforge.net/apps/trac/eodev/wiki/WikiStart
+
+    Happy evolutionary hacking.
+    -----8<-----
+- Post the message to:
+    - EO news https://sourceforge.net/news/?group_id=9775
+    - EO mailing list: eodev-main@lists.sourceforge.net
+    - ParadisEO mailing list: paradiseo-users@lists.gforge.inria.fr
+    - EC-digest maling list: ec-digest-l@listserv.gmu.edu
+    - JET mailing list: jet@inria.fr
+

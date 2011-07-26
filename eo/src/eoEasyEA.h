@@ -78,8 +78,29 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
         selectTransform(dummySelect, dummyTransform),
         breed(_breed),
         mergeReduce(dummyMerge, dummyReduce),
-        replace(_replace)
+        replace(_replace),
+	isFirstCall(true)
     {}
+
+    /** Ctor taking a breed and merge, an overload of ctor to define an offspring size */
+    eoEasyEA(
+      eoContinue<EOT>& _continuator,
+      eoEvalFunc<EOT>& _eval,
+      eoBreed<EOT>& _breed,
+      eoReplacement<EOT>& _replace,
+      unsigned _offspringSize
+    ) : continuator(_continuator),
+        eval (_eval),
+        loopEval(_eval),
+        popEval(loopEval),
+        selectTransform(dummySelect, dummyTransform),
+        breed(_breed),
+        mergeReduce(dummyMerge, dummyReduce),
+        replace(_replace),
+	isFirstCall(true)
+    {
+        offspring.reserve(_offspringSize); // This line avoids an incremental resize of offsprings.
+    }
 
     /*
     eoEasyEA(eoContinue <EOT> & _continuator,
@@ -94,7 +115,9 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
       selectTransform (dummySelect, dummyTransform),
       breed (_breed),
       mergeReduce (dummyMerge, dummyReduce),
-      replace (_replace) {
+      replace (_replace),
+      isFirstCall(true)
+    {
 
     }
     */
@@ -112,12 +135,13 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
         selectTransform(dummySelect, dummyTransform),
         breed(_breed),
         mergeReduce(dummyMerge, dummyReduce),
-        replace(_replace)
+        replace(_replace),
+	isFirstCall(true)
     {}
 
 
-	/// Ctor eoSelect, eoTransform, eoReplacement and an eoPopEval
-	eoEasyEA(
+        /// Ctor eoSelect, eoTransform, eoReplacement and an eoPopEval
+        eoEasyEA(
       eoContinue<EOT>& _continuator,
       eoPopEvalFunc<EOT>& _eval,
       eoSelect<EOT>& _select,
@@ -130,7 +154,8 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
         selectTransform(_select, _transform),
         breed(selectTransform),
         mergeReduce(dummyMerge, dummyReduce),
-        replace(_replace)
+        replace(_replace),
+	isFirstCall(true)
     {}
 
     /// Ctor eoBreed, eoMerge and eoReduce.
@@ -147,7 +172,8 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
         selectTransform(dummySelect, dummyTransform),
         breed(_breed),
         mergeReduce(_merge, _reduce),
-        replace(mergeReduce)
+        replace(mergeReduce),
+	isFirstCall(true)
     {}
 
     /// Ctor eoSelect, eoTransform, and eoReplacement
@@ -164,9 +190,10 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
         selectTransform(_select, _transform),
         breed(selectTransform),
         mergeReduce(dummyMerge, dummyReduce),
-        replace(_replace)
+        replace(_replace),
+	isFirstCall(true)
     {}
-    
+
     /// Ctor eoSelect, eoTransform, eoMerge and eoReduce.
     eoEasyEA(
       eoContinue<EOT>& _continuator,
@@ -182,7 +209,8 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
         selectTransform(_select, _transform),
         breed(selectTransform),
         mergeReduce(_merge, _reduce),
-        replace(mergeReduce)
+        replace(mergeReduce),
+	isFirstCall(true)
     {}
 
 
@@ -191,7 +219,15 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
     /// Apply a few generation of evolution to the population.
     virtual void operator()(eoPop<EOT>& _pop)
     {
-      eoPop<EOT> offspring, empty_pop;
+	if (isFirstCall)
+	    {
+		size_t total_capacity = _pop.capacity() + offspring.capacity();
+		_pop.reserve(total_capacity);
+		offspring.reserve(total_capacity);
+		isFirstCall = false;
+	    }
+
+      eoPop<EOT> empty_pop;
 
       popEval(empty_pop, _pop); // A first eval of pop.
 
@@ -270,6 +306,10 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
     eoMergeReduce<EOT>        mergeReduce;
     eoReplacement<EOT>&       replace;
 
+    eoPop<EOT>                offspring;
+
+    bool		      isFirstCall;
+
     // Friend classes
     friend class eoIslandsEasyEA <EOT> ;
     friend class eoDistEvalEasyEA <EOT> ;
@@ -280,4 +320,3 @@ Example of a test program building an EA algorithm.
 */
 
 #endif
-
