@@ -32,6 +32,7 @@
 #include <eoFunctor.h>
 #include <vector>
 #include <omp.h>
+#include <numeric> // accumulate
 
 /**
   Applies a unary function to a std::vector of things.
@@ -45,31 +46,74 @@ void apply(eoUF<EOT&, void>& _proc, std::vector<EOT>& _pop)
 
 #ifdef _OPENMP
 
-    double t1 = 0;
+    std::vector< double > times_per_eval(size, 0);
+    std::vector< double > times_per_thread(eo::parallel.nthreads(), 0);
 
-    if ( eo::parallel.enableResults() )
-	{
-	    t1 = omp_get_wtime();
-	}
+    bool enableResults = eo::parallel.enableResults();
 
     if (!eo::parallel.isDynamic())
 	{
-#pragma omp parallel for if(eo::parallel.isEnabled()) //default(none) shared(_proc, _pop, size)
-	    for (size_t i = 0; i < size; ++i) { _proc(_pop[i]); }
+#pragma omp parallel for if(eo::parallel.isEnabled()) firstprivate(enableResults)
+	    //doesnot work with gcc 4.1.2
+	    //default(none) shared(_proc, _pop, size)
+	    for (size_t i = 0; i < size; ++i)
+		{
+		    if ( enableResults )
+			{
+			    times_per_eval[i] = omp_get_wtime(); // first measure
+			}
+
+		    _proc(_pop[i]); // evaluation
+
+		    if ( enableResults )
+			{
+			    times_per_eval[i] = omp_get_wtime() - times_per_eval[i]; // last measure
+			    times_per_thread[omp_get_thread_num()] += times_per_eval[i];
+			}
+		}
 	}
     else
 	{
-#pragma omp parallel for schedule(dynamic) if(eo::parallel.isEnabled())
+#pragma omp parallel for schedule(dynamic) if(eo::parallel.isEnabled()) firstprivate(enableResults)
 	    //doesnot work with gcc 4.1.2
 	    //default(none) shared(_proc, _pop, size)
-	    for (size_t i = 0; i < size; ++i) { _proc(_pop[i]); }
+	    for (size_t i = 0; i < size; ++i)
+		{
+		    if ( enableResults )
+			{
+			    times_per_eval[i] = omp_get_wtime(); // first measure
+			}
+
+		    _proc(_pop[i]); // evaluation
+
+		    if ( enableResults )
+			{
+			    times_per_eval[i] = omp_get_wtime() - times_per_eval[i]; // last measure
+			    times_per_thread[omp_get_thread_num()] += times_per_eval[i];
+			}
+		}
 	}
 
-    if ( eo::parallel.enableResults() )
+    if ( enableResults )
 	{
-	    double t2 = omp_get_wtime();
-	    eoLogger log;
-	    log << eo::file(eo::parallel.prefix()) << t2 - t1 << ' ';
+	    {
+		eoLogger log( eo::file( eo::parallel.prefix() + "_times_per_eval.txt" ) );
+		log << times_per_eval.size() << ' ';
+		std::copy(times_per_eval.begin(), times_per_eval.end(), std::ostream_iterator<double>(log, " "));
+		log << std::endl;
+	    }
+
+	    {
+		eoLogger log( eo::file( eo::parallel.prefix() + "_times_per_thread.txt" ) );
+		log << times_per_thread.size() << ' ';
+		std::copy(times_per_thread.begin(), times_per_thread.end(), std::ostream_iterator<double>(log, " "));
+		log << std::endl;
+	    }
+
+	    {
+		eoLogger log( eo::file( eo::parallel.prefix() + "_accumulated_sequential_times.txt" ) );
+		log << times_per_eval.size() << ' ' << std::accumulate( times_per_eval.begin(), times_per_eval.end(), 0.0) << std::endl;
+	    }
 	}
 
 #else // _OPENMP
@@ -78,6 +122,31 @@ void apply(eoUF<EOT&, void>& _proc, std::vector<EOT>& _pop)
 
 #endif // !_OPENMP
 }
+
+#endif // !_apply_h
+
+
+//// DEPRECATED ////
+//
+// template <class EOT>
+// void apply(eoUF<EOT&, void>& _proc, std::vector<EOT>& _pop)
+// {
+//     size_t size = _pop.size();
+
+//     eoLogger log;
+//     log << eo::file("evaluation_times.txt");
+
+// #pragma omp parallel for schedule(dynamic) if(eo::parallel.isEnabled())
+//     for (size_t i = 0; i < size; ++i)
+// 	{
+// 	    double t1 = omp_get_wtime();
+// 	    _proc(_pop[i]);
+// 	    double t2 = omp_get_wtime();
+
+// #pragma omp critical
+// 	    log << t2-t1 << std::endl;
+// 	}
+// }
 
 /**
   This is a variant of apply<EOT> which is called in parallel
@@ -115,5 +184,3 @@ void apply(eoUF<EOT&, void>& _proc, std::vector<EOT>& _pop)
 // 	_proc(_pop[i]);
 //     }
 // }
-
-#endif
