@@ -1,5 +1,5 @@
 // -*- mode: c++; c-indent-level: 4; c++-member-init-indent: 8; comment-column: 35; -*-
- 
+
 //-----------------------------------------------------------------------------
 // t-FitnessAssembledEA.cpp
 // Marc Wintermantel & Oliver Koenig
@@ -11,19 +11,19 @@
     modify it under the terms of the GNU Lesser General Public
     License as published by the Free Software Foundation; either
     version 2 of the License, or (at your option) any later version.
- 
+
     This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
     Lesser General Public License for more details.
- 
+
     You should have received a copy of the GNU Lesser General Public
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- 
+
     Contact: todos@geneura.ugr.es, http://geneura.ugr.es
-             Marc.Schoenauer@inria.fr
-             mak@dhi.dk
+	     Marc.Schoenauer@inria.fr
+	     mak@dhi.dk
 */
 //-----------------------------------------------------------------------------
 #ifdef HAVE_CONFIG_H
@@ -50,7 +50,7 @@
 #include <do/make_continue.h>		// The stopping criterion
 #include <do/make_checkpoint_assembled.h>	// Outputs (stats, population dumps, ...)
 #include <do/make_algo_scalar.h>	// Evolution engine (selection and replacement)
-#include <do/make_run.h>		// simple call to the algo.stays there for consistency reasons 
+#include <do/make_run.h>		// simple call to the algo.stays there for consistency reasons
 
 using namespace eo;
 
@@ -64,7 +64,7 @@ public:
   AssembledEvalFunc() {
     
     // Define a temporary fitness object to have access to its static traits
-    typename EOT::Fitness tmpfit(3, 0.0);    
+    typename EOT::Fitness tmpfit(3, 0.0);
     tmpfit.setDescription(0,"Fitness");
     tmpfit.setDescription(1,"Some Value");
     tmpfit.setDescription(2,"Other Value");
@@ -73,27 +73,27 @@ public:
 
   void operator()(EOT& _eo){
 
-    // Define temporary fitness object 
+    // Define temporary fitness object
     // (automatically gets initialized with size given in constructor)
     typename EOT::Fitness tmpfit;
-    
+
     // Eval some dummy fitness
     double sum1=0.0, sum2=0.0;
     for (unsigned i=0; i < _eo.size(); ++i){
       sum1 += _eo[i]*_eo[i];
       sum2 += fabs(_eo[i]) + fabs(_eo[i]);
     }
-    
+
     // Store some fitness terms
     tmpfit[1]= sum1;
     tmpfit[2]= sum2;
-    
+
     // Store the fitness
     tmpfit = (sum1 + sum2)/_eo.size();
 
     // Pass it
     _eo.fitness( tmpfit );
-  
+
   }
 };
 
@@ -102,7 +102,7 @@ public:
 
 // now use all of the above, + representation dependent things
 int main(int argc, char* argv[]){
-  
+
   std::cout << "-----------------------------------" << std::endl;
   std::cout << "START t-FitnessAssembledEA" << std::endl;
 
@@ -161,7 +161,7 @@ int main(int argc, char* argv[]){
     std::cout << "Final Population\n";
     pop.sortedPrintOn(std::cout);
     std::cout << std::endl;
-    
+
   }
   catch(std::exception& e)
     {

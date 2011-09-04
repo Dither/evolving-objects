@@ -21,8 +21,8 @@
     Contact: todos@geneura.ugr.es, http://geneura.ugr.es
              Marc.Schoenauer@polytechnique.fr
              mak@dhi.dk
-	     Johann Dréo <nojhan@gmail.com>
-	     Caner Candan <caner@candan.fr>
+             Johann Dréo <nojhan@gmail.com>
+             Caner Candan <caner@candan.fr>
 */
 //-----------------------------------------------------------------------------
 // the same thing can probably be done in MS environement, but I hoave no way

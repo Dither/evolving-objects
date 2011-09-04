@@ -37,4 +37,3 @@ SET(GA_VERSION ${GLOBAL_VERSION})
 SET_TARGET_PROPERTIES(ga PROPERTIES VERSION "${GA_VERSION}")
 
 ######################################################################################
-

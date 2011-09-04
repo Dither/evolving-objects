@@ -1,13 +1,13 @@
 /**
 
  *	Pool allocator for the subtree and parse tree classes (homebrew and not compliant to ANSI allocator requirements)
- *  (c) copyright Maarten Keijzer 1999, 2000 
+ *  (c) copyright Maarten Keijzer 1999, 2000
 
- * Permission to copy, use,  modify, sell and distribute this software is granted provided 
+ * Permission to copy, use,  modify, sell and distribute this software is granted provided
  * this copyright notice appears in all copies. This software is provided "as is" without
  * express or implied warranty, and with no claim as to its suitability for
  * any purpose.
- 
+
  * Permission to modify the code and to distribute modified code is granted,
  * provided the above notices are retained, and a notice that the code was
  * modified is included with the above copyright notice.

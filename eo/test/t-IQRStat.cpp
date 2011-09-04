@@ -1,4 +1,3 @@
-
 #include <eo>
 #include <es.h>
 #include <utils/Stat.h>
@@ -41,7 +40,7 @@ int main()
     pop.push_back( sol4 );
     // on the sphere function everyone has the same fitness of 1
     if( test(pop, 0) != 0 ) {
-        exit(1);
+	exit(1);
     }
 
     pop.erase(pop.begin(),pop.end());
@@ -56,7 +55,7 @@ int main()
     pop.push_back( sol3 );
     pop.push_back( sol4 );
     if( test(pop, 1) != 1 ) {
-        exit(1);
+	exit(1);
     }
 
     // test on a random normal distribution
@@ -65,7 +64,6 @@ int main()
     pop = Pop<realVec>( 1000000, init_N );
     double iqr = test(pop, 1.09);
     if( iqr < 1.08 || iqr > 1.11 ) {
-        exit(1);
+	exit(1);
     }
 }
-

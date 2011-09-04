@@ -20,7 +20,7 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
     Contact: todos@geneura.ugr.es, http://geneura.ugr.es
-    		 thomas.legrand@lifl.fr
+                 thomas.legrand@lifl.fr
              Marc.Schoenauer@polytechnique.fr
              mak@dhi.dk
  */

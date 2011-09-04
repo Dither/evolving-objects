@@ -14,16 +14,16 @@ class DualSphere : public EvalFunc<EOT>
 public:
     virtual void operator()( EOT & x )
     {
-        if( x.invalid() ) { return; }
+	if( x.invalid() ) { return; }
 
-        double sum = 0;
-        int sign = 1;
-        for( unsigned int i=0, s=x.size(); i<s; ++i ) {
-            sum += x[i] * x[i];
-            sign *= x[i]<0 ? -1 : 1;
-        }
+	double sum = 0;
+	int sign = 1;
+	for( unsigned int i=0, s=x.size(); i<s; ++i ) {
+	    sum += x[i] * x[i];
+	    sign *= x[i]<0 ? -1 : 1;
+	}
 
-        x.fitness( std::make_pair( sum, sign>0 ? true : false ) );
+	x.fitness( std::make_pair( sum, sign>0 ? true : false ) );
     }
 };
 
@@ -61,7 +61,7 @@ int main()
     pop.push_back( sol4 );
     // on the sphere function everyone has the same fitness of 1
     if( test(pop, 0) != 0 ) {
-        exit(1);
+	exit(1);
     }
 
     pop.erase(pop.begin(),pop.end());
@@ -76,7 +76,7 @@ int main()
     pop.push_back( sol3 );
     pop.push_back( sol4 );
     if( test(pop, 1) != 1 ) {
-        exit(1);
+	exit(1);
     }
 
     // test on a random normal distribution
@@ -85,6 +85,6 @@ int main()
     pop = Pop<DualVector>( 1000000, init_N );
     double iqr = test(pop, 1.09);
     if( iqr < 1.08 || iqr > 1.11 ) {
-        exit(1);
+	exit(1);
     }
 }

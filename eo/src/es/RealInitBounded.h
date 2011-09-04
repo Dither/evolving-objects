@@ -3,7 +3,7 @@
 //-----------------------------------------------------------------------------
 // RealInitBounded.h
 // (c) EEAAX 2000 - Maarten Keijzer 2000
-/* 
+/*
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
     License as published by the Free Software Foundation; either

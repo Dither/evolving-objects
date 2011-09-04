@@ -30,7 +30,7 @@
 
     Contact: todos@geneura.ugr.es, http://geneura.ugr.es
 
-             jeggermo@liacs.nl
+	     jeggermo@liacs.nl
 
 */
 
@@ -146,7 +146,7 @@ int main(int argc, char *argv[])
 
 	// the parameters are passed on as well
 
-        RegFitness eval(generationCounter, initSequence, parameter);
+	RegFitness eval(generationCounter, initSequence, parameter);
 
 
 
@@ -158,13 +158,13 @@ int main(int argc, char *argv[])
 
 	// create the initial population
 
-        Pop pop(parameter.population_size, initializer);
+	Pop pop(parameter.population_size, initializer);
 
 
 
 	// and evaluate the individuals
 
-        apply<EoType>(eval, pop);
+	apply<EoType>(eval, pop);
 
 
 
@@ -335,10 +335,3 @@ int main(int argc, char *argv[])
 
 
 }
-
-
-
-
-
-
-

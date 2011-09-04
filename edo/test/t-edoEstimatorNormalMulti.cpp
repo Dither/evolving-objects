@@ -1,6 +1,6 @@
 /*
-The Evolving Distribution Objects framework (EDO) is a template-based, 
-ANSI-C++ evolutionary computation library which helps you to write your 
+The Evolving Distribution Objects framework (EDO) is a template-based,
+ANSI-C++ evolutionary computation library which helps you to write your
 own estimation of distribution algorithms.
 
 This library is free software; you can redistribute it and/or
@@ -31,9 +31,6 @@ Authors:
 #include <eo>
 #include <mo>
 
-#include <utils/eoLogger.h>
-#include <utils/eoParserLogger.h>
-
 #include <edo>
 
 #include "Rosenbrock.h"
@@ -49,7 +46,7 @@ int main(int ac, char** av)
     // (0) parser + eo routines
     //-----------------------------------------------------
 
-    eoParserLogger parser(ac, av);
+    eoParser parser(ac, av);
 
     std::string	section("Algorithm parameters");
 

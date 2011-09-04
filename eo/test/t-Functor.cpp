@@ -13,7 +13,7 @@ class Tester : public Init<int>
 public :
     void operator()(int& i)
     {
-        i=1;
+	i=1;
     }
 };
 

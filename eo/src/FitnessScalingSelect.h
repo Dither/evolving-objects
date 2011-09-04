@@ -3,7 +3,7 @@
 //-----------------------------------------------------------------------------
 // FitnessScalingSelect.h
 // (c) GeNeura Team, 1998, Maarten Keijzer 2000, Marc Schoenauer 2001
-/* 
+/*
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
     License as published by the Free Software Foundation; either
@@ -57,5 +57,4 @@ namespace eo
 
 }
 
-#endif 
-
+#endif

@@ -10,7 +10,7 @@
  * algorithm:
  *
  *	- Numerical issues are now treated 'before' going into the eigenvector decomposition
- *	    (this was done out of convenience)
+ *          (this was done out of convenience)
  *	- dMaxSignifiKond (smallest x such that x == x + 1.0) replaced by
  *	  numeric_limits<double>::epsilon() (smallest x such that 1.0 != 1.0 + x)
  *

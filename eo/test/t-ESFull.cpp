@@ -76,9 +76,9 @@ int main_function(int argc, char *argv[])
     // and save
     if (!save_name.value().empty())
     {
-        string file_name = save_name.value();
-        save_name.value() = ""; // so that it does not appear in the parser section of the state file
-        state.save(file_name);
+	string file_name = save_name.value();
+	save_name.value() = ""; // so that it does not appear in the parser section of the state file
+	state.save(file_name);
     }
 
 	return 0;
@@ -98,11 +98,11 @@ int main(int argc, char **argv)
 
     try
     {
-        main_function(argc, argv);
+	main_function(argc, argv);
     }
     catch(std::exception& e)
     {
-        std::cout << "Exception: " << e.what() << '\n';
+	std::cout << "Exception: " << e.what() << '\n';
     }
 
     return 1;
@@ -120,7 +120,7 @@ void runAlgorithm(EOT, Parser& _parser, State& _state, RealVectorBounds& _bounds
 
     if (lambda_rate.value() < 1.0f)
     {
-        throw logic_error("lambda_rate must be larger than 1 in a comma strategy");
+	throw logic_error("lambda_rate must be larger than 1 in a comma strategy");
     }
 
     // Initialization
@@ -137,8 +137,8 @@ void runAlgorithm(EOT, Parser& _parser, State& _state, RealVectorBounds& _bounds
     }
     else
     {
-        // evaluate initial population
-        apply<EOT>(eval, pop);
+	// evaluate initial population
+	apply<EOT>(eval, pop);
     }
 
     // Ok, time to set up the algorithm

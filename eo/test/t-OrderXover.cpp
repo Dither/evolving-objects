@@ -53,7 +53,7 @@ int main()
       //eval(chrom);
       pop.push_back(chrom);
     }
-       
+
   // a shift mutation
   OrderXover<Chrom> cross;
   
@@ -62,9 +62,9 @@ int main()
 
   cross(pop[0],pop[1]);
   cross(pop[1],pop[2]);
-      
+
    for (i = 0; i < POP_SIZE; ++i) {
-	std::cout << " Initial chromosome n�" << i << " becomes : " << pop[i] << " after orderXover" << std::endl;	
+	std::cout << " Initial chromosome n�" << i << " becomes : " << pop[i] << " after orderXover" << std::endl;
 	check_permutation(pop[i]);
    }
   return 0;

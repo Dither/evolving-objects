@@ -29,12 +29,12 @@ main()
       eval(chrom);
       pop.push_back(chrom);
     }
-  
+
   std::cout << "population:" << std::endl;
   for (i = 0; i < pop.size(); ++i)
     std::cout << "\t" << pop[i] << " " << pop[i].fitness() << std::endl;
 
-  
+
   // selection
   eoLottery<Chrom> lottery;
 
@@ -45,7 +45,7 @@ main()
   Breeder<Chrom> breeder( propSel );
   propSel.addOp(bitflip, 0.25);
   propSel.addOp(xover, 0.75);
-  
+
   // replacement
   eoInclusion<Chrom> inclusion;
 
@@ -65,11 +65,10 @@ main()
 	std::cout << "exception: " << e.what() << std::endl;;
 	exit(EXIT_FAILURE);
     }
-  
+
   std::cout << "pop" << std::endl;
   for (i = 0; i < pop.size(); ++i)
     std::cout << "\t" <<  pop[i] << " " << pop[i].fitness() << std::endl;
-  
+
   return 0;
 }
-

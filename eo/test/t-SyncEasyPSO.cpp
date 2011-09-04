@@ -21,7 +21,7 @@ double real_value (const Particle & _particle)
 {
     double sum = 0;
     for (unsigned i = 0; i < _particle.size ()-1; i++)
-        sum += pow(_particle[i],2);
+	sum += pow(_particle[i],2);
     return (sum);
 }
 
@@ -52,15 +52,15 @@ int main()
 
     // perform position initialization
     pop.append (POP_SIZE, random);
-  
+
     // topology
     LinearTopology<Particle> topology(NEIGHBORHOOD_SIZE);
 
 	// the full initializer
     Initializer <Particle> init(eval,veloRandom,localInit,topology,pop);
     init();
-    
-   
+
+
     // bounds
     RealVectorBounds bnds(VEC_SIZE,-1.5,1.5);
 
@@ -82,23 +82,23 @@ int main()
     // flight
     try
     {
-        pso1(pop);
-        std::cout << "FINAL POPULATION AFTER SYNC PSO n°1:" << std::endl;
+	pso1(pop);
+	std::cout << "FINAL POPULATION AFTER SYNC PSO n°1:" << std::endl;
     	for (i = 0; i < pop.size(); ++i)
-        	std::cout << "\t" <<  pop[i] << " " << pop[i].fitness() << std::endl;
-        
-        pso2(pop);
-         std::cout << "FINAL POPULATION AFTER SYNC PSO n°2:" << std::endl;
+		std::cout << "\t" <<  pop[i] << " " << pop[i].fitness() << std::endl;
+
+	pso2(pop);
+	 std::cout << "FINAL POPULATION AFTER SYNC PSO n°2:" << std::endl;
     	for (i = 0; i < pop.size(); ++i)
-        	std::cout << "\t" <<  pop[i] << " " << pop[i].fitness() << std::endl;
+		std::cout << "\t" <<  pop[i] << " " << pop[i].fitness() << std::endl;
     }
     catch (std::exception& e)
     {
-        std::cout << "exception: " << e.what() << std::endl;;
-        exit(EXIT_FAILURE);
+	std::cout << "exception: " << e.what() << std::endl;;
+	exit(EXIT_FAILURE);
     }
 
-   
+
 
     return 0;
 }

@@ -68,7 +68,7 @@ int main(int argc, char **argv)
 {
     try
     {
-        main_function(argc, argv);
+	main_function(argc, argv);
     }
     catch(std::exception& e)
     {

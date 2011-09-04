@@ -3,7 +3,7 @@
  * CMA-ES.
  *
  * Copyright (C) 1996, 2003, Nikolaus Hansen
- *	     (C) 2005, Maarten Keijzer
+ *           (C) 2005, Maarten Keijzer
  *
  * License: LGPL (see source file)
  *

@@ -31,22 +31,22 @@ int test_select()
     }
 
     Select select;
-    
+
     unsigned ndraws = 10000;
-    
+
     for (unsigned i = 0; i < ndraws; ++i)
     {
 	const TestEO& eo = select(pop);
-	
+
 	counts[eo.index]++;
     }
 
     cout << "Threshold = " << 1./sqrt(double(ndraws)) << endl;
-    
+
     for (unsigned i = 0; i < 4; ++i)
     {
 	cout << counts[i]/ndraws << ' ';
-    
+
 	double c = counts[i]/ndraws;
 
 	if (fabs(c - probs[i]) > 1./sqrt((double)ndraws)) {
@@ -54,7 +54,7 @@ int test_select()
 	    return 1;
 	}
     }
-   
+
     cout << endl;
     return 0;
 }
@@ -67,4 +67,3 @@ int main()
     
     return test_select<StochasticUniversalSelect<TestEO> >();
 }
-

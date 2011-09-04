@@ -23,22 +23,22 @@
 
   ******      Arity      ******
     \code
-	int arity(void) const
+        int arity(void) const
     \endcode
 
-	Note:	the default constructor of a Node should provide a
-			Node with arity 0!
+        Note:	the default constructor of a Node should provide a
+                        Node with arity 0!
 
   ******    Evaluation   ******
 
   A parse_tree is evaluated through one of it's apply() members:
 
-	1) parse_tree::apply(RetVal)
+        1) parse_tree::apply(RetVal)
 
-	   is the simplest evaluation, it will call
+           is the simplest evaluation, it will call
 
     \code
-	   RetVal Node::operator()(RetVal, subtree<Node, RetVal>::const_iterator)
+           RetVal Node::operator()(RetVal, subtree<Node, RetVal>::const_iterator)
     \endcode
 
        (Unfortunately the first RetVal argument is mandatory (although you
@@ -49,7 +49,7 @@
        error. That is why you have to call tree.apply(double()) instead.)
 
 
-	2) parse_tree::apply(RetVal v, It values)
+        2) parse_tree::apply(RetVal v, It values)
 
        will call:
 
@@ -58,10 +58,10 @@
     \endcode
 
        where It is whatever type you desire (most of the time
-	   this will be a std::vector containing the values of your
-	   variables);
+           this will be a std::vector containing the values of your
+           variables);
 
-	3) parse_tree::apply(RetVal, It values, It2 moreValues)
+        3) parse_tree::apply(RetVal, It values, It2 moreValues)
 
        will call:
 
@@ -69,26 +69,26 @@
        RetVal Node::operator()(RetVal, subtree<... , It values, It2 moreValues)
     \endcode
 
-	   although I do not see the immediate use of this, however...
+           although I do not see the immediate use of this, however...
 
-	4) parse_tree::apply(RetVal, It values, It2 args, It3 adfs)
+        4) parse_tree::apply(RetVal, It values, It2 args, It3 adfs)
 
-		that calls:
+                that calls:
 
     \code
        RetVal Node::operator()(subtree<... , It values, It2 args, It3 adfs)
     \endcode
 
-		can be useful for implementing adfs.
+                can be useful for implementing adfs.
 
 
-	In general it is a good idea to leave the specifics of the
-	arguments open so that different ways of evaluation remain
-	possible. Implement the simplest eval as:
+        In general it is a good idea to leave the specifics of the
+        arguments open so that different ways of evaluation remain
+        possible. Implement the simplest eval as:
 
     \code
-	template <class It>
-		RetVal operator()(RetVal dummy, It begin) const
+        template <class It>
+                RetVal operator()(RetVal dummy, It begin) const
     \endcode
 
   ******	Internal Structure    ******
@@ -99,10 +99,10 @@
 
   The nodes are stored in a tree like :
 
-			node4
-			/  \
-		 node3 node2
-		        / \
+                        node4
+                        /  \
+                 node3 node2
+                        / \
             node1 node0
 
   where nodes 2 and 4 have arity 2 and nodes 0,1 and 3 arity 0 (terminals)
@@ -129,9 +129,9 @@
 
   will not crash and result in a tree structured as:
 
-		node4
-		/  \
-	 node3 node0
+                node4
+                /  \
+         node3 node0
 
   Note that the rank numbers no longer specify their place in the tree:
 
@@ -858,12 +858,12 @@ namespace eo
 
 		using base_const_iterator::node;
 
-		typedef std::forward_iterator_tag iterator_category;
-		typedef const T value_type;
-		typedef size_t distance_type;
-		typedef size_t difference_type;
-		typedef const T* pointer;
-		typedef const T& reference;
+                typedef std::forward_iterator_tag iterator_category;
+                typedef const T value_type;
+                typedef size_t distance_type;
+                typedef size_t difference_type;
+                typedef const T* pointer;
+                typedef const T& reference;
 
 		embedded_const_iterator() : base_const_iterator() {}
 		embedded_const_iterator(const subtree* n): base_const_iterator(n)  {}
@@ -916,7 +916,7 @@ namespace eo
 		if (!empty())
 		    pushed.push_back(_root);
 
-		_root = t;
+                _root = t;
 
 		for (typename subtree::iterator it = _root.begin(); it != _root.end(); it++)
 		    {

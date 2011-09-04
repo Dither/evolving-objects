@@ -85,11 +85,11 @@ int main(int argc, char **argv)
 #endif
     try
     {
-        main_function(argc, argv);
+	main_function(argc, argv);
     }
     catch(std::exception& e)
     {
-        std::cout << "Exception: " << e.what() << '\n';
+	std::cout << "Exception: " << e.what() << '\n';
     }
 }
 

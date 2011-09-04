@@ -63,7 +63,7 @@ int main()
       eval(chrom);
       pop.push_back(chrom);
     }
-       
+
   // a shift mutation
   ShiftMutation <Chrom> shift;
   
@@ -74,7 +74,7 @@ int main()
       std::cout << " ... becomes : " << pop[i] << " after shift mutation" << std::endl;
       check_permutation(pop[i]);
     }
-   
+
   return 0;
 }
 

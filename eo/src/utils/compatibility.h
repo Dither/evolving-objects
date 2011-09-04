@@ -2,12 +2,12 @@
 
   -----------------------------------------------------------------------------
   compatibility.h
-      File to store some compiler specific stuff in. Currently handles, or 
+      File to store some compiler specific stuff in. Currently handles, or
       least tries to handle the min() max() problems when using MSVC
 
 
  (c) Maarten Keijzer (mak@dhi.dk) and GeNeura Team, 1999, 2000
- 
+
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
     License as published by the Free Software Foundation; either
@@ -44,7 +44,7 @@ namespace eo
 #endif
 
 #if defined(_MSC_VER) && (_MSC_VER < 1300)
-/* 
+/*
 Maarten: added this code here because Mirkosoft has the
 nasty habit of #define min and max in stdlib.h (and windows.h)
 I'm trying to undo this horrible macro magic (microsoft yet macrohard)
@@ -87,4 +87,4 @@ namespace eo
 
 #endif
         // _MSC_VER
-#endif 
+#endif

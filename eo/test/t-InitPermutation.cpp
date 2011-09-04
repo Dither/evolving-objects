@@ -36,7 +36,7 @@ bool check_permutation(const Chrom & _chrom)
 						 s.append( " Wrong permutation in t-InitPermutation");
 	    				 throw std::runtime_error( s );	
 				}
-	return true;				
+	return true;
 }
 
 int main()
@@ -63,7 +63,7 @@ int main()
       check_permutation(chrom);
       pop.push_back(chrom);
     }
-    
+
   return 0;
 }
 

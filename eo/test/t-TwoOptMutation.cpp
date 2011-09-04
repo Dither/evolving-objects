@@ -64,7 +64,7 @@ int main()
       eval(chrom);
       pop.push_back(chrom);
     }
-       
+
   // a twoOpt mutation
   TwoOptMutation <Chrom> twoOpt;
   
@@ -75,7 +75,7 @@ int main()
       std::cout << " ... becomes : " << pop[i] << " after twoOpt mutation" << std::endl;
       check_permutation(pop[i]);
     }
-   
+
   return 0;
 }
 

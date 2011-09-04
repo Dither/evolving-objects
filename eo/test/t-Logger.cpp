@@ -12,7 +12,7 @@ using namespace eo;
 
 //-----------------------------------------------------------------------------
 
-int	main(int ac, char** av)
+int main(int ac, char** av)
 {
     ParserLogger	parser(ac, av);
 

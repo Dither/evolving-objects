@@ -5,10 +5,10 @@
 #pragma warning(disable:4786)
 #endif
 
-#include <stdexcept>  // runtime_error 
+#include <stdexcept>  // runtime_error
 
 //-----------------------------------------------------------------------------
-// tt.cpp: 
+// tt.cpp:
 //
 //-----------------------------------------------------------------------------
 
@@ -75,13 +75,13 @@ int the_main(int argc, char **argv)
 
     if (parser.userNeedsHelp())
       {
-        parser.printHelp(std::cout);
-        exit(1);
+	parser.printHelp(std::cout);
+	exit(1);
       }
 
     unsigned i;
 
-    std::cout << "Testing the replacements\nParents SIze = " << pSize 
+    std::cout << "Testing the replacements\nParents SIze = " << pSize
 	 << " and offspring size = " << oSize << std::endl;
 
     rng.reseed(42);
@@ -215,11 +215,11 @@ int main(int argc, char **argv)
 {
     try
     {
-        the_main(argc, argv);
+	the_main(argc, argv);
     }
     catch(std::exception& e)
     {
-        std::cout << "Exception: " << e.what() << std::endl;
+	std::cout << "Exception: " << e.what() << std::endl;
     }
 
 }

@@ -248,7 +248,7 @@ namespace std {
   istream& operator>>(istream& is, mlp::layer& l)
   {
     for (mlp::layer::iterator li = l.begin() ; li != l.end() ; li++) {
-        is >> *li;
+	is >> *li;
     }
     return is;
   }

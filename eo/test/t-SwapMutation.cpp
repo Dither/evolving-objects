@@ -64,8 +64,8 @@ int main()
       eval(chrom);
       pop.push_back(chrom);
     }
-    
-    
+
+
   // a swap mutation
   SwapMutation <Chrom> swap;
   
@@ -76,7 +76,7 @@ int main()
       std::cout << " ... becomes : " << pop[i] << " after swap mutation" << std::endl;
       check_permutation(pop[i]);
     }
-    
+
   return 0;
 }
 

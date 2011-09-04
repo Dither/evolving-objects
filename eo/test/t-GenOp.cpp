@@ -19,7 +19,7 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
     Contact: mkeijzer@dhi.dk
-             Marc.Schoenauer@polytechnique.fr
+	     Marc.Schoenauer@polytechnique.fr
  */
 //-----------------------------------------------------------------------------
 
@@ -40,10 +40,10 @@ struct Dummy : public EO<double>
     Dummy(std::string _s="") : s(_s) {}
 
     void printOn(std::ostream & _os) const
-        {
-            EO<double>::printOn(_os);
-            _os << " - " << s ;
-        }
+	{
+	    EO<double>::printOn(_os);
+	    _os << " - " << s ;
+	}
 
     std::string s;
 };
@@ -181,9 +181,9 @@ void init(Pop<Dummy> & _pop, unsigned _pSize)
   for (unsigned i=0; i<_pSize; i++)
     {
 	std::ostringstream os;
-        os << i;
-        _pop[i] = Dummy(os.str());
-        _pop[i].fitness(i);
+	os << i;
+	_pop[i] = Dummy(os.str());
+	_pop[i].fitness(i);
     }
 }
 
@@ -203,8 +203,8 @@ int the_main(int argc, char **argv)
    // i.e. in case you need parameters somewhere else, postpone these
     if (parser.userNeedsHelp())
       {
-        parser.printHelp(std::cout);
-        exit(1);
+	parser.printHelp(std::cout);
+	exit(1);
       }
 
   ////////////////////////////////// define operators
@@ -381,11 +381,11 @@ int main(int argc, char **argv)
 {
     try
     {
-        the_main(argc, argv);
+	the_main(argc, argv);
     }
     catch(std::exception& e)
     {
-        std::cout << "Exception: " << e.what() << std::endl;
+	std::cout << "Exception: " << e.what() << std::endl;
     }
 
 }

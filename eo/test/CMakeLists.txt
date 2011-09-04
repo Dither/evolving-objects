@@ -94,6 +94,21 @@ ELSEIF(ENABLE_CMAKE_TESTING)
     INSTALL(TARGETS ${test} RUNTIME DESTINATION share/eo/test COMPONENT test)
   ENDFOREACH (test)
 
+  SET(RESOURCES
+    boxplot.py
+    boxplot_to_png.py
+    boxplot_to_pdf.py
+    t-openmp.py
+    )
+
+  FOREACH(file ${RESOURCES})
+    EXECUTE_PROCESS(
+      COMMAND ${CMAKE_COMMAND} -E copy_if_different
+      ${CMAKE_CURRENT_SOURCE_DIR}/${file}
+      ${CMAKE_CURRENT_BINARY_DIR}/${file}
+      )
+  ENDFOREACH(file)
+
 ENDIF(ENABLE_MINIMAL_CMAKE_TESTING)
 
 ######################################################################################

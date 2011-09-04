@@ -3,7 +3,7 @@
 //-----------------------------------------------------------------------------
 // DetTournament.h
 // (c) GeNeura Team, 1998 - EEAAX 1999
-/* 
+/*
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
     License as published by the Free Software Foundation; either
@@ -28,7 +28,7 @@
 
 //-----------------------------------------------------------------------------
 
-#include <functional>  // 
+#include <functional>  //
 #include <numeric>     // accumulate
 
 #include <Functor.h>
@@ -76,4 +76,3 @@ namespace eo
 }
 
 #endif
-
