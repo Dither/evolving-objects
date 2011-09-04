@@ -9,13 +9,15 @@
 //#include <apply.h>
 #include "real_value.h"
 
+using namespace eo;
+
 //-----------------------------------------------------------------------------
 
-typedef eoReal< eoMinimizingFitness > EOT;
+typedef Real< MinimizingFitness > EOT;
 
 int main(int ac, char** av)
 {
-    eoParser parser(ac, av);
+    Parser parser(ac, av);
 
     unsigned int popSize = parser.getORcreateParam((unsigned int)100, "popSize", "Population Size", 'P', "Evolution Engine").value();
     unsigned int dimSize = parser.getORcreateParam((unsigned int)10, "dimSize", "Dimension Size", 'd', "Evolution Engine").value();
@@ -28,16 +30,16 @@ int main(int ac, char** av)
 
     rng.reseed( seedParam );
 
-    eoUniformGenerator< double > gen(-5, 5);
-    eoInitFixedLength< EOT > init( dimSize, gen );
+    UniformGenerator< double > gen(-5, 5);
+    InitFixedLength< EOT > init( dimSize, gen );
 
-    eoEvalFuncPtr< EOT, double, const std::vector< double >& > mainEval( real_value );
-    eoEvalFuncCounter< EOT > eval( mainEval );
+    EvalFuncPtr< EOT, double, const std::vector< double >& > mainEval( real_value );
+    EvalFuncCounter< EOT > eval( mainEval );
 
-    eoPop< EOT > pop( popSize, init );
+    Pop< EOT > pop( popSize, init );
 
     //apply< EOT >( eval, pop );
-    eoPopLoopEval< EOT > popEval( eval );
+    PopLoopEval< EOT > popEval( eval );
     popEval( pop, pop );
 
     eo::log << eo::quiet << "DONE!" << std::endl;

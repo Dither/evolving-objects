@@ -58,5 +58,3 @@ namespace eo
 }
 
 #endif // !PARSER_LOGGER_H
-
-#endif // !EO_PARSER_LOGGER_H

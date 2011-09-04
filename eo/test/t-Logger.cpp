@@ -14,7 +14,7 @@ using namespace eo;
 
 int main(int ac, char** av)
 {
-    ParserLogger	parser(ac, av);
+    Parser parser(ac, av);
 
     if (parser.userNeedsHelp())
 	{
