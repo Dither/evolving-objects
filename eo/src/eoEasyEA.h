@@ -36,8 +36,9 @@
 #include <eoBreed.h>
 #include <eoMergeReduce.h>
 #include <eoReplacement.h>
-
-
+#include <omp.h>
+#include <fstream>
+#include <sstream>
 
 template <class EOT> class eoIslandsEasyEA ;
 
@@ -78,8 +79,29 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
         selectTransform(dummySelect, dummyTransform),
         breed(_breed),
         mergeReduce(dummyMerge, dummyReduce),
-        replace(_replace)
+        replace(_replace),
+	isFirstCall(true)
     {}
+
+    /** Ctor taking a breed and merge, an overload of ctor to define an offspring size */
+    eoEasyEA(
+      eoContinue<EOT>& _continuator,
+      eoEvalFunc<EOT>& _eval,
+      eoBreed<EOT>& _breed,
+      eoReplacement<EOT>& _replace,
+      unsigned _offspringSize
+    ) : continuator(_continuator),
+        eval (_eval),
+        loopEval(_eval),
+        popEval(loopEval),
+        selectTransform(dummySelect, dummyTransform),
+        breed(_breed),
+        mergeReduce(dummyMerge, dummyReduce),
+        replace(_replace),
+	isFirstCall(true)
+    {
+        offspring.reserve(_offspringSize); // This line avoids an incremental resize of offsprings.
+    }
 
     /*
     eoEasyEA(eoContinue <EOT> & _continuator,
@@ -94,7 +116,9 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
       selectTransform (dummySelect, dummyTransform),
       breed (_breed),
       mergeReduce (dummyMerge, dummyReduce),
-      replace (_replace) {
+      replace (_replace),
+      isFirstCall(true)
+    {
 
     }
     */
@@ -112,12 +136,13 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
         selectTransform(dummySelect, dummyTransform),
         breed(_breed),
         mergeReduce(dummyMerge, dummyReduce),
-        replace(_replace)
+        replace(_replace),
+	isFirstCall(true)
     {}
 
 
-	/// Ctor eoSelect, eoTransform, eoReplacement and an eoPopEval
-	eoEasyEA(
+        /// Ctor eoSelect, eoTransform, eoReplacement and an eoPopEval
+        eoEasyEA(
       eoContinue<EOT>& _continuator,
       eoPopEvalFunc<EOT>& _eval,
       eoSelect<EOT>& _select,
@@ -130,7 +155,8 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
         selectTransform(_select, _transform),
         breed(selectTransform),
         mergeReduce(dummyMerge, dummyReduce),
-        replace(_replace)
+        replace(_replace),
+	isFirstCall(true)
     {}
 
     /// Ctor eoBreed, eoMerge and eoReduce.
@@ -147,7 +173,8 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
         selectTransform(dummySelect, dummyTransform),
         breed(_breed),
         mergeReduce(_merge, _reduce),
-        replace(mergeReduce)
+        replace(mergeReduce),
+	isFirstCall(true)
     {}
 
     /// Ctor eoSelect, eoTransform, and eoReplacement
@@ -164,9 +191,10 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
         selectTransform(_select, _transform),
         breed(selectTransform),
         mergeReduce(dummyMerge, dummyReduce),
-        replace(_replace)
+        replace(_replace),
+	isFirstCall(true)
     {}
-    
+
     /// Ctor eoSelect, eoTransform, eoMerge and eoReduce.
     eoEasyEA(
       eoContinue<EOT>& _continuator,
@@ -182,7 +210,8 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
         selectTransform(_select, _transform),
         breed(selectTransform),
         mergeReduce(_merge, _reduce),
-        replace(mergeReduce)
+        replace(mergeReduce),
+	isFirstCall(true)
     {}
 
 
@@ -191,7 +220,23 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
     /// Apply a few generation of evolution to the population.
     virtual void operator()(eoPop<EOT>& _pop)
     {
-      eoPop<EOT> offspring, empty_pop;
+	if (isFirstCall)
+	    {
+		size_t total_capacity = _pop.capacity() + offspring.capacity();
+		_pop.reserve(total_capacity);
+		offspring.reserve(total_capacity);
+		isFirstCall = false;
+	    }
+
+	double elapsed_time = 0;
+	double evaluation_elapsed_time = 0;
+	double variation_elapsed_time = 0;
+	double replace_elapsed_time = 0;
+	unsigned int ngenerations = 0;
+
+	double start_time = omp_get_wtime();
+
+      eoPop<EOT> empty_pop;
 
       popEval(empty_pop, _pop); // A first eval of pop.
 
@@ -202,11 +247,32 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
               unsigned pSize = _pop.size();
               offspring.clear(); // new offspring
 
-              breed(_pop, offspring);
+	      {
+		  double start_time = omp_get_wtime();
 
-              popEval(_pop, offspring); // eval of parents + offspring if necessary
+		  breed(_pop, offspring);
 
-              replace(_pop, offspring); // after replace, the new pop. is in _pop
+		  double end_time = omp_get_wtime();
+		  variation_elapsed_time += end_time - start_time;
+	      }
+
+	      {
+		  double start_time = omp_get_wtime();
+
+		  popEval(_pop, offspring); // eval of parents + offspring if necessary
+
+		  double end_time = omp_get_wtime();
+		  evaluation_elapsed_time += end_time - start_time;
+	      }
+
+	      {
+		  double start_time = omp_get_wtime();
+
+		  replace(_pop, offspring); // after replace, the new pop. is in _pop
+
+		  double end_time = omp_get_wtime();
+		  replace_elapsed_time += end_time - start_time;
+	      }
 
               if (pSize > _pop.size())
                 throw std::runtime_error("Population shrinking!");
@@ -220,8 +286,21 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
               s.append( " in eoEasyEA");
               throw std::runtime_error( s );
             }
+
+	  ++ngenerations;
+
         }
       while ( continuator( _pop ) );
+
+      double end_time = omp_get_wtime();
+      elapsed_time += end_time - start_time;
+
+      std::cout << "Evaluation elapsed time: " << evaluation_elapsed_time << std::endl;
+      std::cout << "Variation elapsed time: " << variation_elapsed_time << std::endl;
+      std::cout << "Replace elapsed time: " << replace_elapsed_time << std::endl;
+      std::cout << "Elapsed time: " << elapsed_time << std::endl;
+      std::cout << "# generations: " << ngenerations << std::endl;
+
     }
 
   protected :
@@ -270,6 +349,10 @@ template<class EOT> class eoEasyEA: public eoAlgo<EOT>
     eoMergeReduce<EOT>        mergeReduce;
     eoReplacement<EOT>&       replace;
 
+    eoPop<EOT>                offspring;
+
+    bool		      isFirstCall;
+
     // Friend classes
     friend class eoIslandsEasyEA <EOT> ;
     friend class eoDistEvalEasyEA <EOT> ;
@@ -280,4 +363,3 @@ Example of a test program building an EA algorithm.
 */
 
 #endif
-
