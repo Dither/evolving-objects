@@ -2,6 +2,6 @@
 
 mkdir -p release
 cd release
-cmake -DWITH_BOOST=1 ..
+cmake -DWITH_EIGEN=1 ..
 make
 cd ..
