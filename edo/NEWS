@@ -1,5 +1,7 @@
-* current release
+* 1.3.0-beta
+    - a beta implementation of the CMA-ES algorithm
     - alternative implementation of the multi-normal operators using the Eigen3 library
+    - refactoring of the algorithms templates in two alternatives (stateless and adaptive, see the documentation)
 
 * release 0.0 (2011-09-15)
     - basic design for estimation of distribution algorithms and, more generally for randomized search heuristics
