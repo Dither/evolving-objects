@@ -14,6 +14,7 @@
 # - ga
 # - cma
 # - mpi
+# - serial
 #
 # You can use FIND_PACKAGE( EO COMPONENTS ... ) to enable one or several components.
 #
@@ -28,7 +29,7 @@ IF(EO_FIND_COMPONENTS)
     SET(EO_USE_${_COMPONENT} 1)
   ENDFOREACH(component)
 
-  # To make sure we don't use PyEO, ES, GA, CMA, MPI when there arent in COMPONENTS
+  # To make sure we don't use PyEO, ES, GA, CMA, MPI, SERIAL when there arent in COMPONENTS
   IF(NOT EO_USE_PYEO)
     SET(EO_DONT_USE_PYEO 1)
   ELSE(NOT EO_USE_PYEO)
@@ -58,6 +59,12 @@ IF(EO_FIND_COMPONENTS)
   ELSE(NOT EO_USE_MPI)
     SET(EO_LIBRARIES_TO_FIND ${EO_LIBRARIES_TO_FIND} eompi)
   ENDIF(NOT EO_USE_MPI)
+
+  IF(NOT EO_USE_SERIAL)
+    SET(EO_DONT_USE_SERIAL 1)
+  ELSE(NOT EO_USE_SERIAL)
+    SET(EO_LIBRARIES_TO_FIND ${EO_LIBRARIES_TO_FIND} eoserial)
+  ENDIF(NOT EO_USE_SERIAL)
 ENDIF(EO_FIND_COMPONENTS)
 
 IF(NOT EO_INCLUDE_DIRS)
