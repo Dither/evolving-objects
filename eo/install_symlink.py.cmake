@@ -11,10 +11,10 @@ DATA = {
     'links': [ ("%s/src" % SOURCE, "%s/include/%s" % (PREFIX, NAME)),
                ("%s/doc" % BINARY, "%s/share/%s/doc" % (PREFIX, NAME)),
                ("%s/%s.pc" % (BINARY, NAME), "%s/lib/pkgconfig/%s.pc" % (PREFIX, NAME)),
-	       ]
+               ]
     }
 
-LIBRARIES = ["libcma.a", "libeo.a", "libeoutils.a", "libes.a", "libga.a"]
+LIBRARIES = ["libcma.a", "libeo.a", "libeoutils.a", "libes.a", "libga.a", "libeompi.a", "libeoserial.a"]
 DATA['links'] += [ ("%s/lib/%s" % (BINARY, lib), "%s/lib/%s" % (PREFIX, lib)) for lib in LIBRARIES ]
 
 import os, sys
@@ -32,15 +32,15 @@ def uninstall():
 
 def install():
     for dirname in DATA['dirs']:
-        try: 
-            os.makedirs(dirname) 
-        except(os.error): 
+        try:
+            os.makedirs(dirname)
+        except(os.error):
             pass
-    for src, dst in DATA['links']: 
+    for src, dst in DATA['links']:
         try:
             os.symlink(src, dst)
         except:
-            pass    
+            pass
     print('All symlinks have been installed.')
 
 def data():
