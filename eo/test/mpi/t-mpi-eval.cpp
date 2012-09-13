@@ -39,50 +39,7 @@ using namespace std;
 
 //-----------------------------------------------------------------------------
 
-class eoRealSerializable : public eoReal< eoMinimizingFitness >, public eoserial::Persistent
-{
-    public:
-
-        eoRealSerializable(unsigned size = 0, double value = 0.0):
-            eoReal<eoMinimizingFitness>(size, value) {}
-
-        eoserial::Object* pack() const
-        {
-            eoserial::Object* obj = new eoserial::Object;
-            obj->add( "array",
-                    eoserial::makeArray< vector<double>, eoserial::MakeAlgorithm >
-                    ( *this )
-                    );
-
-            bool invalidFitness = invalid();
-            obj->add("invalid", eoserial::make( invalidFitness ) );
-            if( !invalidFitness )
-            {
-                double fitnessVal = fitness();
-                obj->add("fitness", eoserial::make( fitnessVal ) );
-            }
-            return obj;
-        }
-
-        void unpack( const eoserial::Object* obj )
-        {
-            this->clear();
-            eoserial::unpackArray< vector<double>, eoserial::Array::UnpackAlgorithm >
-                ( *obj, "array", *this );
-
-            bool invalidFitness;
-            eoserial::unpack( *obj, "invalid", invalidFitness );
-            if( invalidFitness ) {
-                invalidate();
-            } else {
-                double fitnessVal;
-                eoserial::unpack<double>( *obj, "fitness", fitnessVal );
-                fitness( fitnessVal );
-            }
-        }
-};
-
-typedef eoRealSerializable EOT;
+typedef eoReal< eoMinimizingFitness > EOT;
 
 /*
  * Wrapper for HandleResponse: shows the best answer, as it is found.

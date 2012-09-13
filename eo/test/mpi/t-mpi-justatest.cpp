@@ -6,20 +6,16 @@
 
 #include <eo>
 #include <es.h>
+#include <ga.h>
 
 #include <eoInt.h>
-
-#include "SerializableEOReal.h"
-#include "SerializableEOBit.h"
-
-#include "real_value.h"
 
 using namespace std;
 using namespace eo::mpi;
 
-typedef eoserial::eoReal<double> Real;
-typedef eoserial::eoBit<double> Bit;
-typedef eoserial::eoInt<double> Int;
+typedef eoReal<double> Real;
+typedef eoBit<double> Bit;
+typedef eoInt<double> Int;
 typedef Int Indi;
 
 int main(int argc, char **argv)

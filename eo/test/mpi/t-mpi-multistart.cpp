@@ -23,59 +23,10 @@ using namespace eo::mpi;
 
 using namespace std;
 
-/*
- * eoReal is a vector of double: we just have to serializes the value and the fitness.
- */
-class SerializableEOReal: public eoReal<double>, public eoserial::Persistent
-{
-public:
-
-    SerializableEOReal(unsigned size = 0, double value = 0.0) :
-            eoReal<double>(size, value)
-    {
-        // empty
-    }
-
-    void unpack( const eoserial::Object* obj )
-    {
-        this->clear();
-        eoserial::unpackArray
-            < std::vector<double>, eoserial::Array::UnpackAlgorithm >
-            ( *obj, "vector", *this );
-
-        bool invalidFitness;
-        eoserial::unpack( *obj, "invalid_fitness", invalidFitness );
-        if( invalidFitness )
-        {
-            this->invalidate();
-        } else
-        {
-            double f;
-            eoserial::unpack( *obj, "fitness", f );
-            this->fitness( f );
-        }
-    }
-
-    eoserial::Object* pack( void ) const
-    {
-        eoserial::Object* obj = new eoserial::Object;
-        obj->add( "vector", eoserial::makeArray< std::vector<double>, eoserial::MakeAlgorithm >( *this ) );
-
-        bool invalidFitness = this->invalid();
-        obj->add( "invalid_fitness", eoserial::make( invalidFitness ) );
-        if( !invalidFitness )
-        {
-            obj->add( "fitness", eoserial::make( this->fitness() ) );
-        }
-
-        return obj;
-    }
-};
-
 // REPRESENTATION
 //-----------------------------------------------------------------------------
 // define your individuals
-typedef SerializableEOReal Indi;
+typedef eoReal< double > Indi;
 
 // EVAL
 //-----------------------------------------------------------------------------

@@ -28,7 +28,9 @@ Old contact: todos@geneura.ugr.es, http://geneura.ugr.es
 #include <EO.h>
 #include <utils/eoLogger.h>
 
+#ifdef WITH_MPI
 #include <serial/eoSerial.h>
+#endif // !WITH_MPI
 
 /**
  @defgroup Representations Representations
@@ -52,6 +54,9 @@ std::vector<>), copy ctor,
 */
 template <class FitT, class GeneType>
 class eoVector : public EO<FitT>, public std::vector<GeneType>
+#ifdef WITH_MPI
+	       , public eoserial::Persistent
+#endif // !WITH_MPI
 {
 public:
 
@@ -129,6 +134,45 @@ public:
                 operator[](i) = atom;
             }
         }
+
+#ifdef WITH_MPI
+    void unpack( const eoserial::Object* obj )
+	{
+	    this->clear();
+	    eoserial::unpackArray
+		< std::vector<GeneType>, eoserial::Array::UnpackAlgorithm >
+		( *obj, "vector", *this );
+
+	    bool invalidFitness;
+            eoserial::unpack( *obj, "invalid_fitness", invalidFitness );
+	    if( invalidFitness )
+		{
+		    this->invalidate();
+		}
+	    else
+		{
+		    FitT f;
+		    eoserial::unpack( *obj, "fitness", f );
+		    this->fitness( f );
+		}
+	}
+
+    eoserial::Object* pack( void ) const
+	{
+	    eoserial::Object* obj = new eoserial::Object;
+	    obj->add( "vector", eoserial::makeArray< std::vector<GeneType>, eoserial::MakeAlgorithm >( *this ) );
+
+	    bool invalidFitness = this->invalid();
+	    obj->add( "invalid_fitness", eoserial::make( invalidFitness ) );
+	    if( !invalidFitness )
+		{
+		    obj->add( "fitness", eoserial::make( this->fitness() ) );
+		}
+
+	    return obj;
+	}
+#endif // !WITH_MPI
+
 };
 /** @example t-eoVector.cpp
  */
@@ -154,62 +198,6 @@ template <class FitT, class GeneType>
 bool operator>(const eoVector<FitT, GeneType>& _eo1, const eoVector<FitT, GeneType>& _eo2)
 {
     return _eo1.operator>(_eo2);
-}
-
-
-namespace eoserial
-{
-    /*
-    * eoVector is a vector of GenType: we just have to serializes the value and the fitness.
-    *
-    * Daemon inheriting because of the eoserial classes inheriting two times the same class eoVector.
-    */
-    template <typename FitT, typename GenType>
-    class eoVector : virtual public ::eoVector<FitT, GenType>, public Persistent
-    {
-    public:
-	eoVector(unsigned size = 0, GenType value = GenType())
-	    : ::eoVector<FitT, GenType>(size, value)
-	{
-	    // empty
-	}
-
-	void unpack( const Object* obj )
-	{
-	    this->clear();
-	    unpackArray
-		< std::vector<GenType>, Array::UnpackAlgorithm >
-		( *obj, "vector", *this );
-
-	    bool invalidFitness;
-	    unpack( *obj, "invalid_fitness", invalidFitness );
-	    if( invalidFitness )
-		{
-		    this->invalidate();
-		}
-	    else
-		{
-		    FitT f;
-		    unpack( *obj, "fitness", f );
-		    this->fitness( f );
-		}
-	}
-
-	Object* pack( void ) const
-	{
-	    Object* obj = new Object;
-	    obj->add( "vector", makeArray< std::vector<GenType>, MakeAlgorithm >( *this ) );
-
-	    bool invalidFitness = this->invalid();
-	    obj->add( "invalid_fitness", make( invalidFitness ) );
-	    if( !invalidFitness )
-		{
-		    obj->add( "fitness", make( this->fitness() ) );
-		}
-
-	    return obj;
-	}
-    };
 }
 
 #endif
