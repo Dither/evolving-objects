@@ -42,6 +42,8 @@
 
 #include "eoVector.h"
 
+#include <serial/eoSerial.h>
+
 /** @defgroup bitstring Bit strings
 
 Various functions for a bitstring representation.
@@ -53,13 +55,15 @@ Example of a complete test program that use various bitstrings operators:
 */
 
 /** Implementation of bitstring chromosome.
-
-@class eoBit eoBit.h ga/eoBit.h
-@ingroup bitstring
-
-Based on STL's std::vector<bool> specialization.
-*/
-template <class FitT> class eoBit: public eoVector<FitT, bool>
+ *
+ * @class eoBit eoBit.h ga/eoBit.h
+ * @ingroup bitstring
+ *
+ * Daemon inheriting because of the eoserial classes inheriting two times the same class eoVector.
+ *
+ * Based on STL's std::vector<bool> specialization.
+ */
+template <class FitT> class eoBit: virtual public eoVector<FitT, bool>
 {
 public:
 
@@ -113,6 +117,14 @@ public:
         }
     }
 };
+
+namespace eoserial
+{
+    /*
+    * eoBit is a vector of bool: we just have to serializes the value and the fitness.
+    */
+    template <typename FitT> class eoBit : public ::eoBit<FitT>, public eoVector<FitT, bool> {};
+}
 
 //-----------------------------------------------------------------------------
 

@@ -28,6 +28,7 @@ Old contact: todos@geneura.ugr.es, http://geneura.ugr.es
 #include <EO.h>
 #include <utils/eoLogger.h>
 
+#include <serial/eoSerial.h>
 
 /**
  @defgroup Representations Representations
@@ -155,6 +156,61 @@ bool operator>(const eoVector<FitT, GeneType>& _eo1, const eoVector<FitT, GeneTy
     return _eo1.operator>(_eo2);
 }
 
+
+namespace eoserial
+{
+    /*
+    * eoVector is a vector of GenType: we just have to serializes the value and the fitness.
+    *
+    * Daemon inheriting because of the eoserial classes inheriting two times the same class eoVector.
+    */
+    template <typename FitT, typename GenType>
+    class eoVector : virtual public ::eoVector<FitT, GenType>, public Persistent
+    {
+    public:
+	eoVector(unsigned size = 0, GenType value = GenType())
+	    : ::eoVector<FitT, GenType>(size, value)
+	{
+	    // empty
+	}
+
+	void unpack( const Object* obj )
+	{
+	    this->clear();
+	    unpackArray
+		< std::vector<GenType>, Array::UnpackAlgorithm >
+		( *obj, "vector", *this );
+
+	    bool invalidFitness;
+	    unpack( *obj, "invalid_fitness", invalidFitness );
+	    if( invalidFitness )
+		{
+		    this->invalidate();
+		}
+	    else
+		{
+		    FitT f;
+		    unpack( *obj, "fitness", f );
+		    this->fitness( f );
+		}
+	}
+
+	Object* pack( void ) const
+	{
+	    Object* obj = new Object;
+	    obj->add( "vector", makeArray< std::vector<GenType>, MakeAlgorithm >( *this ) );
+
+	    bool invalidFitness = this->invalid();
+	    obj->add( "invalid_fitness", make( invalidFitness ) );
+	    if( !invalidFitness )
+		{
+		    obj->add( "fitness", make( this->fitness() ) );
+		}
+
+	    return obj;
+	}
+    };
+}
 
 #endif
 

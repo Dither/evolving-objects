@@ -31,12 +31,16 @@
 
 #include <eoVector.h>
 
+#include <serial/eoSerial.h>
+
 /** eoInt: implementation of simple integer-valued chromosome.
-  * based on eoVector class
-  *
-  * @ingroup Representations
-*/
-template <class FitT> class eoInt: public eoVector<FitT, int>
+ * based on eoVector class
+ *
+ * Daemon inheriting because of the eoserial classes inheriting two times the same class eoVector.
+ *
+ * @ingroup Representations
+ */
+template <class FitT> class eoInt: virtual public eoVector<FitT, int>
 {
  public:
 
@@ -57,6 +61,14 @@ template <class FitT> class eoInt: public eoVector<FitT, int>
 };
 /** @example t-eoInt.cpp
  */
+
+namespace eoserial
+{
+    /*
+    * eoInt is a vector of bool: we just have to serializes the value and the fitness.
+    */
+    template <typename FitT> class eoInt : public ::eoInt<FitT>, public eoVector<FitT, int> {};
+}
 
 //-----------------------------------------------------------------------------
 

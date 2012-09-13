@@ -31,12 +31,16 @@
 
 #include <eoVector.h>
 
+#include <serial/eoSerial.h>
+
 /** eoReal: implementation of simple real-valued chromosome.
-  * based on eoVector class
+ * based on eoVector class
+ *
+ * Daemon inheriting because of the eoserial classes inheriting two times the same class eoVector.
  *
  * @ingroup Real
-*/
-template <class FitT> class eoReal: public eoVector<FitT, double>
+ */
+template <class FitT> class eoReal: virtual public eoVector<FitT, double>
 {
  public:
 
@@ -57,6 +61,14 @@ template <class FitT> class eoReal: public eoVector<FitT, double>
 };
 /** @example t-eoReal.cpp
  */
+
+namespace eoserial
+{
+    /*
+     * eoReal is a vector of double: we just have to serializes the value and the fitness.
+     */
+    template <typename FitT> class eoReal : public ::eoReal<FitT>, public eoVector<FitT, double> {};
+}
 
 //-----------------------------------------------------------------------------
 
