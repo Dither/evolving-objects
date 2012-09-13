@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+mkdir -p release
+cd release
+cmake -DWITH_MPI=1 ..
+make
+cd ..
