@@ -47,16 +47,21 @@ public:
 
     virtual std::string	className() const;
 
-    inline bool isEnabled() const { return _isEnabled.value(); }
-    inline bool isDynamic() const { return _isDynamic.value(); }
-
-    std::string prefix() const;
-
-    inline unsigned int nthreads() const { return _nthreads.value(); }
-    inline unsigned int packetSize() const { return _packetSize.value(); }
-
-    inline bool enableResults() const { return _enableResults.value(); }
+#if defined(WITH_OMP) or defined(WITH_MPI)
     inline bool doMeasure() const { return _doMeasure.value(); }
+    inline bool isDynamic() const { return _isDynamic.value(); }
+#endif // !WITH_OMP or WITH_MPI
+
+#ifdef WITH_OMP
+    inline bool isEnabled() const { return _isEnabled.value(); }
+    std::string prefix() const;
+    inline unsigned int nthreads() const { return _nthreads.value(); }
+    inline bool enableResults() const { return _enableResults.value(); }
+#endif // !WITH_OMP
+
+#ifdef WITH_MPI
+    inline unsigned int packetSize() const { return _packetSize.value(); }
+#endif // !WITH_MPI
 
     friend void make_parallel(eoParser&);
 
@@ -64,14 +69,23 @@ private:
     void _createParameters( eoParser& );
 
 private:
-    eoValueParam<bool> _isEnabled;
+    double _t_start;
+
+#if defined(WITH_OMP) or defined(WITH_MPI)
     eoValueParam<bool> _isDynamic;
+    eoValueParam<bool> _doMeasure;
+#endif // !WITH_OMP or WITH_MPI
+
+#ifdef WITH_OMP
+    eoValueParam<bool> _isEnabled;
     eoValueParam<std::string> _prefix;
     eoValueParam<unsigned int> _nthreads;
     eoValueParam<bool> _enableResults;
-    eoValueParam<bool> _doMeasure;
+#endif // !WITH_OMP
+
+#ifdef WITH_MPI
     eoValueParam<unsigned int> _packetSize;
-    double _t_start;
+#endif // !WITH_MPI
 };
 
 void make_parallel(eoParser&);
