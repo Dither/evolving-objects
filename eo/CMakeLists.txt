@@ -54,6 +54,11 @@ IF(WITH_OMP)
     ENDIF()
 ENDIF()
 
+IF(CXX11)
+  SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c11")
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+ENDIF(CXX11)
+
 INCLUDE(CMakeBackwardCompatibilityCXX)
 
 INCLUDE(FindDoxygen)
