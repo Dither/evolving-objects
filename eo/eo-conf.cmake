@@ -12,6 +12,6 @@ SET(WITH_OMP FALSE CACHE BOOL "Use OpenMP ?" FORCE)
 # If you plan to use MPI, precise here where are the static libraries from
 # openmpi and boost::mpi.
 
-SET(WITH_MPI FALSE CACHE BOOL "Use mpi ?" FORCE)
+SET(WITH_MPI TRUE CACHE BOOL "Use mpi ?" FORCE)
 SET(MPI_DIR "/mpi/directory" CACHE PATH "OpenMPI directory" FORCE)
 
