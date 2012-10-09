@@ -40,6 +40,10 @@ Caner Candan <caner.candan@thalesgroup.com>
 
 #include "eoLogger.h"
 
+#ifdef WITH_MPI
+#include <mpi/eoMpiNode.h>
+#endif // !WITH_MPI
+
 void eoLogger::_init()
 {
     _standard_io_streams[&std::cout] = 1;
@@ -144,6 +148,13 @@ void eoLogger::addLevel(std::string name, eo::Levels level)
 
 void eoLogger::printLevels() const
 {
+#ifdef WITH_MPI
+    if ( eo::mpi::Node::comm().rank() )
+	{
+	    ::exit(0);
+	}
+#endif // !WITH_MPI
+
     std::cout << "Available verbose levels:" << std::endl;
 
     for (std::vector<std::string>::const_iterator it = _sortedLevels.begin(), end = _sortedLevels.end();
@@ -195,6 +206,9 @@ int eoLogger::outbuf::overflow(int_type c)
         if (_fd >= 0 && c != EOF)
           {
               ::write(_fd, &c, 1);
+// #ifdef WITH_MPI
+// 	      ::sync();
+// #endif // !WITH_MPI
           }
       }
     return c;
