@@ -46,6 +46,10 @@ Authors:
 #include <eoInit.h>
 #include <utils/rnd_generators.h>  // for shuffle method
 
+#ifdef WITH_MPI
+#include <serial/eoSerial.h>
+#endif // !WITH_MPI
+
 /** A std::vector of EO object, to be used in all algorithms
  *      (selectors, operators, replacements, ...).
  *
@@ -63,6 +67,9 @@ Authors:
  */
 template<class EOT>
 class eoPop: public std::vector<EOT>, public eoObject, public eoPersistent
+#ifdef WITH_MPI
+	   , public eoserial::Persistent
+#endif // !WITH_MPI
 {
     public:
 
@@ -373,6 +380,24 @@ class eoPop: public std::vector<EOT>, public eoObject, public eoPersistent
             for (unsigned i=0; i<size(); i++)
                 this->operator[](i).invalidate();
         }
+
+
+#ifdef WITH_MPI
+	void unpack( const eoserial::Object* obj )
+	{
+	    this->clear();
+	    eoserial::unpackArray
+		< std::vector<EOT>, eoserial::Array::UnpackAlgorithm >
+	    ( *obj, "vector", *this );
+	}
+
+	eoserial::Object* pack( void ) const
+	{
+	    eoserial::Object* obj = new eoserial::Object;
+	    obj->add( "vector", eoserial::makeArray< std::vector<EOT>, eoserial::MakeAlgorithm >( *this ) );
+	    return obj;
+	}
+#endif // !WITH_MPI
 
 }; // class eoPop
 
