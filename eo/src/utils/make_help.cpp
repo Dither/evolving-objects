@@ -32,6 +32,10 @@
 
 #include <utils/eoParser.h>
 
+#ifdef WITH_MPI
+#include <mpi/eoMpiNode.h>
+#endif // !WITH_MPI
+
 using namespace std;
 
 /** Generation of the status file, and output of the help message if needed
@@ -62,6 +66,13 @@ void make_help(eoParser & _parser)
    // i.e. in case you need parameters somewhere else, postpone these
     if (_parser.userNeedsHelp())
       {
+#ifdef WITH_MPI
+	  if ( eo::mpi::Node::comm().rank() )
+	  {
+	      exit(1);
+	  }
+#endif // !WITH_MPI
+
         _parser.printHelp(cout);
         cout << "You can use an edited copy of file " << statusParam.value()
              << " as parameter file" << endl;
