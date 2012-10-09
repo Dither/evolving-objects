@@ -70,12 +70,27 @@ namespace mpi
         public:
 
         /**
+         * @brief Inits MPI context without arguments.
+         *
+         */
+        environment();
+
+        /**
          * @brief Inits MPI context.
          *
          * @param argc Number of params in command line (same as one in main)
          * @param argv Strings containing params (same as one in main)
          */
         environment(int argc, char**argv);
+
+        /**
+         * @brief Inits MPI context with thread support.
+         *
+         * @param argc Number of params in command line (same as one in main)
+         * @param argv Strings containing params (same as one in main)
+	 * @param required Desired level of thread support (integer): : MPI_THREAD_SINGLE, MPI_THREAD_FUNNELED, MPI_THREAD_SERIALIZED, MPI_THREAD_MULTIPLE
+         */
+        environment(int argc, char**argv, int required);
 
         /**
          * @brief Closes MPI context.
@@ -95,7 +110,7 @@ namespace mpi
         /**
          * @brief Converts a MPI_Status into a status.
          */
-        status( const MPI_Status & s );
+        status( const MPI_Status & s, bool flag = true );
 
         /**
          * @brief Returns the tag of the associated communication.
@@ -116,6 +131,7 @@ namespace mpi
             int _source;
             int _tag;
             int _error;
+	    bool _flag;
     };
 
     /**
@@ -158,6 +174,14 @@ namespace mpi
          */
         void send( int dest, int tag, int n );
 
+        /**
+         * @brief Sends an integer to dest on default channel "commands".
+         *
+         * @param dest MPI rank of the receiver
+         * @param n The integer to send
+         */
+        void send( int dest, int n );
+
         /*
          * @brief Receives an integer from src on channel "tag".
          *
@@ -166,6 +190,128 @@ namespace mpi
          * @param n Where to save the received integer
          */
         void recv( int src, int tag, int& n );
+
+        /*
+         * @brief Receives an integer from src on default channel "commands".
+         *
+         * @param src MPI rank of the sender
+         * @param n Where to save the received integer
+         */
+        void recv( int src, int& n );
+
+        /*
+         * ISEND / IRECV INT
+         */
+
+        /**
+         * @brief Non-blocking method to send an integer to dest on channel "tag".
+         *
+         * @param dest MPI rank of the receiver
+         * @param tag MPI tag of message
+         * @param n The integer to send
+         */
+        status isend( int dest, int tag, int n );
+
+        /**
+         * @brief Non-blocking method to send an integer to dest on default channel "commands".
+         *
+         * @param dest MPI rank of the receiver
+         * @param n The integer to send
+         */
+        status isend( int dest, int n );
+
+        /*
+         * @brief Non-blocking method to receive an integer from src on channel "tag".
+         *
+         * @param src MPI rank of the sender
+         * @param tag MPI tag of message
+         * @param n Where to save the received integer
+         */
+        status irecv( int src, int tag, int& n );
+
+        /*
+         * @brief Non-blocking method to receive an integer from src on default channel "commands".
+         *
+         * @param src MPI rank of the sender
+         * @param n Where to save the received integer
+         */
+        status irecv( int src, int& n );
+
+        /*
+         * SEND / RECV BOOL
+         */
+
+        /**
+         * @brief Sends a boolean to dest on channel "tag".
+         *
+         * @param dest MPI rank of the receiver
+         * @param tag MPI tag of message
+         * @param b The boolean to send
+         */
+        void send( int dest, int tag, bool b );
+
+        /**
+         * @brief Sends a boolean to dest on default channel "commands".
+         *
+         * @param dest MPI rank of the receiver
+         * @param b The boolean to send
+         */
+        void send( int dest, bool b );
+
+        /*
+         * @brief Receives a boolean from src on channel "tag".
+         *
+         * @param src MPI rank of the sender
+         * @param tag MPI tag of message
+         * @param b Where to save the received boolean
+         */
+        void recv( int src, int tag, bool& b );
+
+        /*
+         * @brief Receives a boolean from src on default channel "commands".
+         *
+         * @param src MPI rank of the sender
+         * @param b Where to save the received boolean
+         */
+        void recv( int src, bool& b );
+
+        /*
+         * ISEND / IRECV BOOL
+         */
+
+        /**
+         * @brief Non-blocking method to send a boolean to dest on channel "tag".
+         *
+         * @param dest MPI rank of the receiver
+         * @param tag MPI tag of message
+         * @param b The boolean to send
+         */
+        status isend( int dest, int tag, bool b );
+
+        /**
+         * @brief Non-blocking method to send a boolean to dest on default channel "commands".
+         *
+         * @param dest MPI rank of the receiver
+         * @param b The boolean to send
+         */
+        status isend( int dest, bool b );
+
+        /*
+         * @brief Non-blocking method to receive a boolean from src on channel "tag".
+         *
+         * @param src MPI rank of the sender
+         * @param tag MPI tag of message
+         * @param b Where to save the received boolean
+         */
+        status irecv( int src, int tag, bool& b );
+
+        /*
+         * @brief Non-blocking method to receive a boolean from src on default channel "commands".
+         *
+         * @param src MPI rank of the sender
+         * @param b Where to save the received boolean
+         */
+        status irecv( int src, bool& b );
 
         /*
          * SEND / RECV STRING
@@ -180,6 +326,14 @@ namespace mpi
          */
         void send( int dest, int tag, const std::string& str );
 
+        /**
+         * @brief Sends a string to dest on default channel "commands".
+         *
+         * @param dest MPI rank of the receiver
+         * @param str The std::string to send
+         */
+        void send( int dest, const std::string& str );
+
         /*
          * @brief Receives a string from src on channel "tag".
          *
@@ -188,6 +342,54 @@ namespace mpi
          * @param std::string Where to save the received string
          */
         void recv( int src, int tag, std::string& str );
+
+        /*
+         * @brief Receives a string from src on default channel "commands".
+         *
+         * @param src MPI rank of the sender
+         * @param tag MPI tag of message
+         * @param std::string Where to save the received string
+         */
+        void recv( int src, std::string& str );
+
+        /*
+         * ISEND / IRECV STRING
+         */
+
+        /**
+         * @brief Non-blocking method to send a string to dest on channel "tag".
+         *
+         * @param dest MPI rank of the receiver
+         * @param tag MPI tag of message
+         * @param str The std::string to send
+         */
+        status isend( int dest, int tag, const std::string& str );
+
+        /**
+         * @brief Non-blocking method to send a string to dest on default channel "commands".
+         *
+         * @param dest MPI rank of the receiver
+         * @param str The std::string to send
+         */
+        status isend( int dest, const std::string& str );
+
+        /*
+         * @brief Non-blocking method to receive a string from src on channel "tag".
+         *
+         * @param src MPI rank of the sender
+         * @param tag MPI tag of message
+         * @param std::string Where to save the received string
+         */
+        status irecv( int src, int tag, std::string& str );
+
+        /*
+         * @brief Non-blocking method to receive a string from src on default channel "commands".
+         *
+         * @param src MPI rank of the sender
+         * @param tag MPI tag of message
+         * @param std::string Where to save the received string
+         */
+        status irecv( int src, std::string& str );
 
         /*
          * SEND / RECV Objects
@@ -201,6 +403,14 @@ namespace mpi
          * @param persistent The object to send (it must absolutely implement eoserial::Persistent)
          */
         void send( int dest, int tag, const eoserial::Persistent & persistent );
+
+        /**
+         * @brief Sends an eoserial::Persistent to dest on default channel "commands".
+         *
+         * @param dest MPI rank of the receiver
+         * @param persistent The object to send (it must absolutely implement eoserial::Persistent)
+         */
+        void send( int dest, const eoserial::Persistent & persistent );
 
         /**
          * @brief Sends an array of eoserial::Persistent to dest on channel "tag".
@@ -233,6 +443,20 @@ namespace mpi
             send( dest, tag, ss.str() );
         }
 
+        /**
+         * @brief Sends an array of eoserial::Persistent to dest on default channel "commands".
+         *
+         * @param dest MPI rank of the receiver
+         * @param table The array of eoserial::Persistent objects
+         * @param size The number of elements to send (no check is done, the user has to be sure that the size won't
+         * overflow!)
+         */
+        template< class T >
+        void send( int dest, T* table, int size )
+        {
+	    send(dest, 0, table, size);
+	}
+
         /*
          * @brief Receives an eoserial::Persistent object from src on channel "tag".
          *
@@ -241,6 +465,14 @@ namespace mpi
          * @param persistent Where to unpack the serialized object?
          */
         void recv( int src, int tag, eoserial::Persistent & persistent );
+
+        /*
+         * @brief Receives an eoserial::Persistent object from src on default channel "commands".
+         *
+         * @param src MPI rank of the sender
+         * @param persistent Where to unpack the serialized object?
+         */
+        void recv( int src, eoserial::Persistent & persistent );
 
         /*
          * @brief Receives an array of eoserial::Persistent from src on channel "tag".
@@ -272,6 +504,150 @@ namespace mpi
         }
 
         /*
+         * @brief Receives an array of eoserial::Persistent from src on default channel "commands".
+         *
+         * @param src MPI rank of the sender
+         * @param table The table in which we're saving the received objects. It must have been allocated by the user,
+         * as no allocation is performed here.
+         * @param size The number of elements to receive (no check is done, the user has to be sure that the size won't
+         * overflow!)
+         */
+        template< class T >
+        void recv( int src, T* table, int size )
+        {
+	    recv(src, 0, table, size);
+	}
+
+        /*
+         * ISEND / IRECV Objects
+         */
+
+        /**
+         * @brief Non-blocking method to send an eoserial::Persistent to dest on channel "tag".
+         *
+         * @param dest MPI rank of the receiver
+         * @param tag MPI tag of message
+         * @param persistent The object to send (it must absolutely implement eoserial::Persistent)
+         */
+        status isend( int dest, int tag, const eoserial::Persistent & persistent );
+
+        /**
+         * @brief Non-blocking method to send an eoserial::Persistent to dest on default channel "commands".
+         *
+         * @param dest MPI rank of the receiver
+         * @param persistent The object to send (it must absolutely implement eoserial::Persistent)
+         */
+        status isend( int dest, const eoserial::Persistent & persistent );
+
+        /**
+         * @brief Non-blocking method to send an array of eoserial::Persistent to dest on channel "tag".
+         *
+         * @param dest MPI rank of the receiver
+         * @param tag MPI tag of message
+         * @param table The array of eoserial::Persistent objects
+         * @param size The number of elements to send (no check is done, the user has to be sure that the size won't
+         * overflow!)
+         */
+        template< class T >
+        status isend( int dest, int tag, T* table, int size )
+        {
+            // Puts all the values into an array
+            eoserial::Array* array = new eoserial::Array;
+
+            for( int i = 0; i < size; ++i )
+            {
+                array->push_back( table[i].pack() );
+            }
+
+            // Encapsulates the array into an object
+            eoserial::Object* obj = new eoserial::Object;
+            obj->add( "array", array );
+            std::stringstream ss;
+            obj->print( ss );
+            delete obj;
+
+            // Sends the object as a string
+            return isend( dest, tag, ss.str() );
+        }
+
+        /**
+         * @brief Non-blocking method to send an array of eoserial::Persistent to dest on default channel "commands".
+         *
+         * @param dest MPI rank of the receiver
+         * @param table The array of eoserial::Persistent objects
+         * @param size The number of elements to send (no check is done, the user has to be sure that the size won't
+         * overflow!)
+         */
+        template< class T >
+        status isend( int dest, T* table, int size )
+        {
+	    return isend(dest, 0, table, size);
+	}
+
+        /*
+         * @brief Non-blocking method to receive an eoserial::Persistent object from src on channel "tag".
+         *
+         * @param src MPI rank of the sender
+         * @param tag MPI tag of message
+         * @param persistent Where to unpack the serialized object?
+         */
+        status irecv( int src, int tag, eoserial::Persistent & persistent );
+
+        /*
+         * @brief Non-blocking method to receive an eoserial::Persistent object from src on default channel "commands".
+         *
+         * @param src MPI rank of the sender
+         * @param persistent Where to unpack the serialized object?
+         */
+        status irecv( int src, eoserial::Persistent & persistent );
+
+        /*
+         * @brief Non-blocking method to receive an array of eoserial::Persistent from src on channel "tag".
+         *
+         * @param src MPI rank of the sender
+         * @param tag MPI tag of message
+         * @param table The table in which we're saving the received objects. It must have been allocated by the user,
+         * as no allocation is performed here.
+         * @param size The number of elements to receive (no check is done, the user has to be sure that the size won't
+         * overflow!)
+         */
+        template< class T >
+        status irecv( int src, int tag, T* table, int size )
+        {
+            // Receives the string which contains the object
+            std::string asText;
+            status stat = irecv( src, tag, asText );
+
+            // Parses the object and retrieves the table
+            eoserial::Object* obj = eoserial::Parser::parse( asText );
+            eoserial::Array* array = static_cast<eoserial::Array*>( (*obj)["array"] );
+
+            // Retrieves all the values from the array
+            for( int i = 0; i < size; ++i )
+            {
+                eoserial::unpackObject( *array, i, table[i] );
+            }
+            delete obj;
+
+	    return stat;
+        }
+
+        /*
+         * @brief Non-blocking method to receive an array of eoserial::Persistent from src on default channel "commands".
+         *
+         * @param src MPI rank of the sender
+         * @param table The table in which we're saving the received objects. It must have been allocated by the user,
+         * as no allocation is performed here.
+         * @param size The number of elements to receive (no check is done, the user has to be sure that the size won't
+         * overflow!)
+         */
+        template< class T >
+        status irecv( int src, T* table, int size )
+        {
+	    return irecv(src, 0, table, size);
+	}
+
+        /*
          * Other methods
          */
 
@@ -285,6 +661,18 @@ namespace mpi
          * @param tag MPI tag of the expected message (any_tag if it can be any tag)
          */
         status probe( int src = any_source, int tag = any_tag );
+
+
+        /**
+         * @brief Wrapper for MPI_Iprobe
+         *
+         * Waits for a message to come from process having rank src, on the channel
+         * tag.
+         *
+         * @param src MPI rank of the sender (any_source if it can be any sender)
+         * @param tag MPI tag of the expected message (any_tag if it can be any tag)
+         */
+        status iprobe( int src = any_source, int tag = any_tag );
 
         /**
          * @brief Wrapper for MPI_Barrier
