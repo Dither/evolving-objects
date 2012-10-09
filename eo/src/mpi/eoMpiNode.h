@@ -42,6 +42,14 @@ namespace eo
             public:
 
                 /**
+                 * @brief Initializes the MPI environment.
+                 *
+                 * Should be called at the beginning of every parallel program.
+                 *
+                 */
+                static void init();
+
+                /**
                  * @brief Initializes the MPI environment with argc and argv.
                  *
                  * Should be called at the beginning of every parallel program.
@@ -50,6 +58,18 @@ namespace eo
                  * @param argv Main's argv
                  */
                 static void init( int argc, char** argv );
+
+                /**
+                 * @brief Initializes the MPI + thread environment with argc, argv and required.
+                 *
+                 * Should be called at the beginning of every parallel program.
+                 *
+                 * @param argc Main's argc
+                 * @param argv Main's argv
+		 * @param required Desired level of thread support (integer): MPI_THREAD_SINGLE, MPI_THREAD_FUNNELED, MPI_THREAD_SERIALIZED, MPI_THREAD_MULTIPLE
+                 */
+	        static void init( int argc, char** argv, int required );
+
 
                 /**
                  * @brief Returns the global mpi::communicator

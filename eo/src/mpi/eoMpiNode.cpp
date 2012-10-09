@@ -25,9 +25,19 @@ namespace eo
 {
     namespace mpi
     {
+        void Node::init()
+        {
+            static bmpi::environment env;
+        }
+
         void Node::init( int argc, char** argv )
         {
             static bmpi::environment env( argc, argv );
+        }
+
+        void Node::init( int argc, char** argv, int required )
+        {
+            static bmpi::environment env( argc, argv, required );
         }
 
         bmpi::communicator& Node::comm()
